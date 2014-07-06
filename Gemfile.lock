@@ -46,10 +46,17 @@ GEM
     coderay (1.1.0)
     columnize (0.8.9)
     daemons (1.1.9)
+    database_rewinder (0.2.0)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
+    diff-lcs (1.2.5)
     erubis (2.7.0)
     eventmachine (1.0.3)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     hike (1.2.3)
     hirb (0.7.2)
     hirb-unicode (0.0.5)
@@ -102,6 +109,22 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.3.2)
+    rspec-core (3.0.2)
+      rspec-support (~> 3.0.0)
+    rspec-expectations (3.0.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.0.0)
+    rspec-mocks (3.0.2)
+      rspec-support (~> 3.0.0)
+    rspec-rails (3.0.1)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.0.0)
+      rspec-expectations (~> 3.0.0)
+      rspec-mocks (~> 3.0.0)
+      rspec-support (~> 3.0.0)
+    rspec-support (3.0.2)
     slop (3.5.0)
     sprockets (2.12.1)
       hike (~> 1.2)
@@ -136,6 +159,8 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bullet
+  database_rewinder
+  factory_girl_rails
   hirb
   hirb-unicode
   jbuilder
@@ -144,5 +169,6 @@ DEPENDENCIES
   pry-stack_explorer
   rails (= 4.1.4)
   rails-api
+  rspec-rails
   sqlite3
   thin

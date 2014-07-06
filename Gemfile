@@ -21,3 +21,9 @@ group :development do
   gem 'pry-stack_explorer'
   gem 'pry-byebug'
 end
+
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'database_rewinder'
+end
