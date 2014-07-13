@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/iTakeshi/sorcery.git
+  revision: a470f9225e8d8f932139a69c72a906baee0bbe6b
+  branch: user_approval
+  specs:
+    sorcery (0.8.6)
+      bcrypt (~> 3.1)
+      oauth (~> 0.4, >= 0.4.4)
+      oauth2 (>= 0.8.0, < 1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -31,6 +41,7 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     arel (5.0.1.20140414130214)
+    bcrypt (3.1.7)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -57,6 +68,8 @@ GEM
     factory_girl_rails (4.4.1)
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     hike (1.2.3)
     hirb (0.7.2)
     hirb-unicode (0.0.5)
@@ -67,6 +80,7 @@ GEM
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     json (1.8.1)
+    jwt (1.0.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -74,6 +88,15 @@ GEM
     mime-types (1.25.1)
     minitest (5.3.5)
     multi_json (1.10.1)
+    multi_xml (0.5.5)
+    multipart-post (2.0.0)
+    oauth (0.4.7)
+    oauth2 (0.9.4)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
     polyglot (0.3.5)
     pry (0.10.0)
       coderay (~> 1.1.0)
@@ -170,5 +193,6 @@ DEPENDENCIES
   rails (= 4.1.4)
   rails-api
   rspec-rails
+  sorcery!
   sqlite3
   thin

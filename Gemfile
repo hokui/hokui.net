@@ -8,6 +8,8 @@ gem 'jbuilder'
 
 gem 'thin'
 
+gem 'sorcery', github: 'iTakeshi/sorcery', branch: 'user_approval'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
