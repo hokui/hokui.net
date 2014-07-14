@@ -24,6 +24,8 @@ GEM
       activesupport (= 4.1.4)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    active_model_serializers (0.8.1)
+      activemodel (>= 3.0)
     activemodel (4.1.4)
       activesupport (= 4.1.4)
       builder (~> 3.1)
@@ -76,9 +78,6 @@ GEM
       hirb (~> 0.5)
       unicode-display_width (~> 0.1.1)
     i18n (0.6.9)
-    jbuilder (2.1.1)
-      activesupport (>= 3.0.0, < 5)
-      multi_json (~> 1.2)
     json (1.8.1)
     jwt (1.0.0)
     kawaii_validation (0.0.2)
@@ -181,6 +180,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   annotate
   better_errors
   binding_of_caller
@@ -189,7 +189,6 @@ DEPENDENCIES
   factory_girl_rails
   hirb
   hirb-unicode
-  jbuilder
   kawaii_validation
   pry-byebug
   pry-rails

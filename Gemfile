@@ -4,7 +4,7 @@ gem 'rails', '4.1.4'
 gem 'rails-api'
 gem 'sqlite3'
 
-gem 'jbuilder'
+gem 'active_model_serializers'
 
 gem 'thin'
 
