@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140714022218) do
+ActiveRecord::Schema.define(version: 20140714025046) do
+
+  create_table "graduation_years", force: true do |t|
+    t.integer  "year",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "graduation_years", ["year"], name: "index_graduation_years_on_year", unique: true
 
   create_table "users", force: true do |t|
     t.string   "email",                                           null: false
@@ -36,10 +44,12 @@ ActiveRecord::Schema.define(version: 20140714022218) do
     t.date     "birthday",                                        null: false
     t.string   "email_mobile"
     t.boolean  "admin",                           default: false, null: false
+    t.integer  "graduation_year_id",              default: 1,     null: false
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["graduation_year_id"], name: "index_users_on_graduation_year_id"
   add_index "users", ["handle_name"], name: "index_users_on_handle_name", unique: true
   add_index "users", ["last_logout_at", "last_activity_at"], name: "index_users_on_last_logout_at_and_last_activity_at"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token"
