@@ -32,4 +32,10 @@ class User < ActiveRecord::Base
   authenticates_with_sorcery!
 
   belongs_to :graduation_year
+
+  validates(:email)       { presence; uniqueness; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
+  validates(:first_name)  { presence }
+  validates(:given_name)  { presence }
+  validates(:handle_name) { presence; uniqueness }
+  validates(:birthday)    { presence }
 end
