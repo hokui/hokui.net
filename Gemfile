@@ -10,6 +10,8 @@ gem 'thin'
 
 gem 'sorcery', github: 'iTakeshi/sorcery', branch: 'user_approval'
 
+gem 'kawaii_validation'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
