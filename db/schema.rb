@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140713133617) do
+ActiveRecord::Schema.define(version: 20140714022218) do
 
   create_table "users", force: true do |t|
-    t.string   "email",                           null: false
-    t.string   "crypted_password",                null: false
-    t.string   "salt",                            null: false
+    t.string   "email",                                           null: false
+    t.string   "crypted_password",                                null: false
+    t.string   "salt",                                            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "activation_state"
@@ -30,10 +30,17 @@ ActiveRecord::Schema.define(version: 20140713133617) do
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
     t.string   "last_login_from_ip_address"
+    t.string   "first_name",                      default: "",    null: false
+    t.string   "given_name",                      default: "",    null: false
+    t.string   "handle_name",                     default: "",    null: false
+    t.date     "birthday",                                        null: false
+    t.string   "email_mobile"
+    t.boolean  "admin",                           default: false, null: false
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["handle_name"], name: "index_users_on_handle_name", unique: true
   add_index "users", ["last_logout_at", "last_activity_at"], name: "index_users_on_last_logout_at_and_last_activity_at"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token"
 
