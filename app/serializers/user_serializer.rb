@@ -10,7 +10,7 @@ class UserSerializer < ActiveModel::Serializer
              :errors
 
   def full_name
-    "#{object.family_name} #{object.given_name}"
+    object.full_name
   end
 
   def errors

@@ -38,4 +38,8 @@ class User < ActiveRecord::Base
   validates(:given_name)  { presence }
   validates(:handle_name) { presence; uniqueness }
   validates(:birthday)    { presence }
+
+  def full_name
+    "#{family_name} #{given_name}"
+  end
 end
