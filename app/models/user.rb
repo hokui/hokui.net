@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   belongs_to :graduation_year
 
   validates(:email)       { presence; uniqueness; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
-  validates(:family_name)  { presence }
+  validates(:family_name) { presence }
   validates(:given_name)  { presence }
   validates(:handle_name) { presence; uniqueness }
   validates(:birthday)    { presence }
