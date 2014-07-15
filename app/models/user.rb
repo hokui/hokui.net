@@ -42,4 +42,12 @@ class User < ActiveRecord::Base
   def full_name
     "#{family_name} #{given_name}"
   end
+
+  def email_local
+    email.split("@").first
+  end
+
+  def activation_url
+    Rails.application.routes.url_helpers.user_activation_url(email_local, activation_token)
+  end
 end
