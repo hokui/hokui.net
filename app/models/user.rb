@@ -50,4 +50,8 @@ class User < ActiveRecord::Base
   def activation_url
     Rails.application.routes.url_helpers.user_activation_url(email_local, activation_token)
   end
+
+  def send_activation_needed_email!
+    UserMailer.email_confirmation_on_create(self).deliver
+  end
 end
