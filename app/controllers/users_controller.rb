@@ -1,8 +1,11 @@
 class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
-    @user.save
-    render json: @user
+    if @user.save
+      render json: @user, status: 201
+    else
+      render json: @user, status: 422
+    end
   end
 
   private

@@ -7,15 +7,10 @@ class UserSerializer < ActiveModel::Serializer
              :email_mobile,
              :admin,
              :graduation_year_id,
-             :persisted,
              :errors
 
   def full_name
     "#{object.family_name} #{object.given_name}"
-  end
-
-  def persisted
-    object.persisted?
   end
 
   def errors
