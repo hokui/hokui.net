@@ -19,7 +19,7 @@
 #  last_logout_at                  :datetime
 #  last_activity_at                :datetime
 #  last_login_from_ip_address      :string(255)
-#  first_name                      :string(255)      default(""), not null
+#  family_name                     :string(255)      default(""), not null
 #  given_name                      :string(255)      default(""), not null
 #  handle_name                     :string(255)      default(""), not null
 #  birthday                        :date             not null

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140714025046) do
+ActiveRecord::Schema.define(version: 20140715001501) do
 
   create_table "graduation_years", force: true do |t|
     t.integer  "year",       null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20140714025046) do
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
     t.string   "last_login_from_ip_address"
-    t.string   "first_name",                      default: "",    null: false
+    t.string   "family_name",                     default: "",    null: false
     t.string   "given_name",                      default: "",    null: false
     t.string   "handle_name",                     default: "",    null: false
     t.date     "birthday",                                        null: false
