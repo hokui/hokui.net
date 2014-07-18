@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140715001501) do
+ActiveRecord::Schema.define(version: 20140718005304) do
+
+  create_table "access_tokens", force: true do |t|
+    t.integer  "user_id",          null: false
+    t.string   "token",            null: false
+    t.datetime "last_activity_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "access_tokens", ["token"], name: "index_access_tokens_on_token", unique: true
 
   create_table "graduation_years", force: true do |t|
     t.integer  "year",       null: false
