@@ -4,9 +4,13 @@ gem 'rails', '4.1.4'
 gem 'rails-api'
 gem 'sqlite3'
 
-gem 'jbuilder'
+gem 'active_model_serializers'
 
 gem 'thin'
+
+gem 'sorcery', github: 'iTakeshi/sorcery', branch: 'user_approval'
+
+gem 'kawaii_validation'
 
 group :development do
   gem 'better_errors'
