@@ -14,3 +14,18 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+
+
+# front-end part below
+
+/node_modules
+/public/bower_components
+/.sass-cache
+
+/public/index.html
+/public/app
+/public/components
+
+/dist
+
