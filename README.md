@@ -19,3 +19,9 @@ Gemを更新してDBをリセット
 bundle install
 bundle exec rake db:dev
 ```
+
+フロントのビルド
+--------
+```
+grunt
+```
