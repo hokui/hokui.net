@@ -1,0 +1,19 @@
+@keyframes rotate
+    0%
+        transform: rotateZ(0deg)
+    100%
+        transform: rotateZ(360deg)
+
+.rotating
+    $size: 70px
+    width: $size
+    height: $size
+    text-align: center
+    line-height: $size
+
+    animation-name: rotate
+    animation-duration: 1s
+    animation-timing-function: linear
+    animation-iteration-count: infinite
+    .icon
+        font-size: 60px
