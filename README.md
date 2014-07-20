@@ -13,7 +13,7 @@ gem install mailcatcher
 mailcatcher
 ```
 
-`git pull upstream master`した後毎回
+`git pull upstream master`した後毎回  
 Gemを更新してDBをリセット
 ```
 bundle install
