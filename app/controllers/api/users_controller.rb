@@ -1,4 +1,15 @@
 class Api::UsersController < Api::ApplicationController
+  before_action :set_user, only: :show
+
+  def index
+    @users = User.all
+    render json: @users
+  end
+
+  def show
+    render json: @user
+  end
+
   def create
     @user = User.new(user_params)
     if @user.save
@@ -10,6 +21,10 @@ class Api::UsersController < Api::ApplicationController
   end
 
   private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
 
   def user_params
     json_params = ActionController::Parameters.new(
