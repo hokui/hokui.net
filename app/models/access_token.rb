@@ -20,6 +20,15 @@ class AccessToken < ActiveRecord::Base
 
   before_validation :generate_token, :update_last_activity_time, on: :create
 
+  def self.find_token(token)
+    access_token = self.find_by(token: token)
+    if access_token && !access_token.expired?
+      access_token
+    else
+      nil
+    end
+  end
+
   def self.delete_expired
     self
       .where
