@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Hokui.net</title>
-  </head>
-  <body>
-    <p>
-      This is dummy page. Feel free to edit this file.
-    </p>
+  <meta charset="utf-8">
+  <title>hokui.net</title>
+  <base href="/"><!-- injector:css -->
+<link rel="stylesheet" href="/app/app.css">
+<link rel="stylesheet" href="/app/bootstrap.css">
+<link rel="stylesheet" href="/app/fontawesome.css">
+<!-- endinjector -->
+  <!-- bower:js -->
+  <script src="bower_components/es5-shim/es5-shim.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/json3/lib/json3.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <!-- endbower -->
+  <!-- injector:js -->
+  <script src="/app/app.js"></script>
+  <script src="/app/main/main.js"></script>
+  <!-- endinjector -->
+  <body ng-app="hokuiApp">
+    <div ui-view></div>
   </body>
 </html>
