@@ -14,4 +14,10 @@ class Api::SessionsController < Api::ApplicationController
       render json: { logged_in: false }, status: 422
     end
   end
+
+  def destroy
+    @access_token.destroy
+    @current_user = nil
+    head 200
+  end
 end
