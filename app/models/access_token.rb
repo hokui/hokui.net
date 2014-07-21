@@ -18,7 +18,7 @@ class AccessToken < ActiveRecord::Base
   validates(:user_id) { presence }
   validates(:token)   { presence; uniqueness }
 
-  before_create :generate_token, :update_last_activity_time
+  before_validation :generate_token, :update_last_activity_time, on: :create
 
   def self.delete_expired
     self
