@@ -8,6 +8,8 @@ gem 'active_model_serializers'
 
 gem 'thin'
 
+gem 'whenever', require: false
+
 gem 'sorcery', github: 'iTakeshi/sorcery', branch: 'user_approval'
 
 gem 'kawaii_validation'
