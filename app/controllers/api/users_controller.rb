@@ -1,7 +1,7 @@
 class Api::UsersController < Api::ApplicationController
   skip_before_action :require_login_with_token, only: :create
   before_action :set_user, only: :show
-  after_action :verify_authorized, except: :create
+  after_action :verify_authorized, except: [:create, :profile]
 
   def index
     @users = User.all
@@ -22,6 +22,10 @@ class Api::UsersController < Api::ApplicationController
     else
       render json: @user, status: 422
     end
+  end
+
+  def profile
+    render json: @current_user
   end
 
   private
