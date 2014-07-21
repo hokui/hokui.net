@@ -1,13 +1,16 @@
 class Api::UsersController < Api::ApplicationController
   skip_before_action :require_login_with_token, only: :create
   before_action :set_user, only: :show
+  after_action :verify_authorized, except: :create
 
   def index
     @users = User.all
+    authorize User
     render json: @users
   end
 
   def show
+    authorize @user
     render json: @user
   end
 
