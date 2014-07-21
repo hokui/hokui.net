@@ -11,6 +11,7 @@ gem 'thin'
 gem 'whenever', require: false
 
 gem 'sorcery', github: 'iTakeshi/sorcery', branch: 'user_approval'
+gem 'pundit'
 
 gem 'kawaii_validation'
 
