@@ -13,3 +13,10 @@ u = User.create(
 )
 u.activate!
 u.approve!
+
+AccessToken.skip_callback(:validation, :before, :generate_token)
+AccessToken.create(
+  user:  u,
+  token: "4ebbcf209ca3625dfe0b2595d627ffacd90f8cefd69722712a451a7c291643af"
+)
+AccessToken.set_callback(:validation, :before, :generate_token)
