@@ -7,7 +7,8 @@ class Api::ApplicationController < ActionController::API
   private
 
   def require_login_with_token
-    @access_token = AccessToken.find_token(params[:token])
+    token = request.headers["Access-Token"]
+    @access_token = AccessToken.find_token(token)
 
     if @access_token
       unless defined?(@current_user)
