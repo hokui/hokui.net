@@ -1,4 +1,6 @@
 class Api::SessionsController < Api::ApplicationController
+  skip_before_action :require_login_with_token, only: :create
+
   def create
     json_hash = JSON.parse(request.body.read)
     email    = json_hash["email"]

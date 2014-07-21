@@ -1,4 +1,5 @@
 class Api::UsersController < Api::ApplicationController
+  skip_before_action :require_login_with_token, only: :create
   before_action :set_user, only: :show
 
   def index
