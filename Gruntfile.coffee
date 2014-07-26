@@ -90,7 +90,7 @@ module.exports = (grunt) ->
                 ]
                 tasks: ['injector:sass', 'sass:devel', 'autoprefixer', 'injector:css']
             js:
-                files: 'client/app/**/*.coffee'
+                files: 'client/**/*.coffee'
                 tasks: ['coffee', 'injector:js']
 
             options:
@@ -133,9 +133,13 @@ module.exports = (grunt) ->
                 files:
                     '<%= conf.dest %>/index.html': [
                         [
-                            '<%= conf.dest %>/{app,components}/**/*.js',
-                            '<%= conf.dest %>/{app,components}/**/*.spec.js',
-                            '<%= conf.dest %>/{app,components}/**/*.mock.js',
+                            '<%= conf.dest %>/app/app.js',
+                            '<%= conf.dest %>/components/**/*.js',
+                            '<%= conf.dest %>/components/**/*.spec.js',
+                            '<%= conf.dest %>/components/**/*.mock.js',
+                            '<%= conf.dest %>/app/**/*.js',
+                            '<%= conf.dest %>/app/**/*.spec.js',
+                            '<%= conf.dest %>/app/**/*.mock.js',
                         ]
                     ]
 
