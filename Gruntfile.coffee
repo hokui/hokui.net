@@ -78,6 +78,15 @@ module.exports = (grunt) ->
 
                 ]
 
+        copy:
+            js_lib:
+                files: [
+                    expand: true
+                    cwd: '<%= conf.src %>/lib'
+                    src: ['**']
+                    dest: '<%= conf.dest %>/lib'
+                ]
+
         watch:
             jade:
                 files: [
@@ -92,6 +101,9 @@ module.exports = (grunt) ->
             js:
                 files: 'client/**/*.coffee'
                 tasks: ['coffee', 'injector:js']
+            copy:
+                files: 'client/lib/**/*'
+                tasks: ['copy']
 
             options:
                 spawn: false
@@ -133,6 +145,8 @@ module.exports = (grunt) ->
                 files:
                     '<%= conf.dest %>/index.html': [
                         [
+                            '<%= conf.dest %>/lib/jszip.js',
+                            '<%= conf.dest %>/lib/**/*.js',
                             '<%= conf.dest %>/app/app.js',
                             '<%= conf.dest %>/components/**/*.js',
                             '<%= conf.dest %>/components/**/*.spec.js',
@@ -176,6 +190,8 @@ module.exports = (grunt) ->
         'autoprefixer'
 
         'coffee'
+
+        'copy'
 
         'jade:devel'
         'injector:js'
