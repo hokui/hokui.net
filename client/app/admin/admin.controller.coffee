@@ -2,7 +2,7 @@ angular.module('hokuiApp').controller 'AdminCtrl', [
     '$scope', '$rootScope', 'Auth',
     ($scope, $rootScope, Auth) ->
         if not Auth.current.active
-            $rootScope.$broadcast 'unauthorized',
+            $rootScope.$broadcast 'unauthorize',
                 message: 'You need to log in.'
         else
             if not Auth.current.user.admin
@@ -16,7 +16,6 @@ angular.module('hokuiApp').controller('AdminUserCtrl', [
     '$scope', 'User', 'Token',
     ($scope, User, Token) ->
 
-        # Rails still needs token url query...
         User.get {}, (data)->
             $scope.users = data.users
 
