@@ -43,7 +43,8 @@ module.exports = (grunt) ->
                         '<%= conf.src %>/app',
                         '<%= conf.src %>/components'
                     ]
-                    sourceMap: true
+                    # This option produces "Segmentation fault: 11"
+                    # sourceMap: true
                 files:
                     '<%= conf.dest %>/app/bootstrap.css' : '<%= conf.src %>/app/bootstrap.sass'
                     '<%= conf.dest %>/app/fontawesome.css' : '<%= conf.src %>/app/fontawesome.sass'
