@@ -9,7 +9,11 @@ class Api::SessionsController < Api::ApplicationController
     user = User.authenticate(email, password)
     if user
       access_token = AccessToken.create(user: user)
-      render json: { logged_in: true, token: access_token.token }, status: 201
+      render json: {
+        logged_in: true,
+        token: access_token.token,
+        user: UserSerializer.new(user)
+      }, status: 201, root: false
     else
       render json: { logged_in: false }, status: 422
     end
