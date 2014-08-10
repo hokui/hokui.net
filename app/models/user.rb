@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   authenticates_with_sorcery!
 
   belongs_to :graduation_year
-  has_many :access_tokens
+  has_many :access_tokens, dependent: :destroy
 
   validates(:email)       { presence; uniqueness; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
   validates(:family_name) { presence }
