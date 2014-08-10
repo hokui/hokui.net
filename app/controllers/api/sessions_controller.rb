@@ -1,5 +1,5 @@
 class Api::SessionsController < Api::ApplicationController
-  skip_before_action :require_login_with_token, only: :create
+  skip_before_action :require_login_with_token
 
   def create
     json_hash = JSON.parse(request.body.read)
@@ -16,8 +16,14 @@ class Api::SessionsController < Api::ApplicationController
   end
 
   def destroy
-    @access_token.destroy
-    @current_user = nil
-    head 200
+    token = request.headers["Access-Token"]
+    access_token = AccessToken.find_token(token)
+
+    if access_token
+      access_token.destroy
+      render json: { logged_out: true }, status: 200
+    else
+      render json: { logged_out: false }, status: 200
+    end
   end
 end
