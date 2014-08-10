@@ -1,0 +1,11 @@
+div(ng-include='"/components/navbar/navbar.html"')
+
+h1
+    a(ui-sref='admin') Admin page
+
+ul
+    li
+        a(ui-sref="admin.user") user
+
+div(ui-view="user")
+

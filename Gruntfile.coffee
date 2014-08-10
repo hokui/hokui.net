@@ -43,7 +43,8 @@ module.exports = (grunt) ->
                         '<%= conf.src %>/app',
                         '<%= conf.src %>/components'
                     ]
-                    sourceMap: true
+                    # This option produces "Segmentation fault: 11"
+                    # sourceMap: true
                 files:
                     '<%= conf.dest %>/app/bootstrap.css' : '<%= conf.src %>/app/bootstrap.sass'
                     '<%= conf.dest %>/app/fontawesome.css' : '<%= conf.src %>/app/fontawesome.sass'
@@ -78,6 +79,15 @@ module.exports = (grunt) ->
 
                 ]
 
+        copy:
+            js_lib:
+                files: [
+                    expand: true
+                    cwd: '<%= conf.src %>/lib'
+                    src: ['**']
+                    dest: '<%= conf.dest %>/lib'
+                ]
+
         watch:
             jade:
                 files: [
@@ -90,8 +100,11 @@ module.exports = (grunt) ->
                 ]
                 tasks: ['injector:sass', 'sass:devel', 'autoprefixer', 'injector:css']
             js:
-                files: 'client/app/**/*.coffee'
+                files: 'client/**/*.coffee'
                 tasks: ['coffee', 'injector:js']
+            copy:
+                files: 'client/lib/**/*'
+                tasks: ['copy']
 
             options:
                 spawn: false
@@ -133,9 +146,15 @@ module.exports = (grunt) ->
                 files:
                     '<%= conf.dest %>/index.html': [
                         [
-                            '<%= conf.dest %>/{app,components}/**/*.js',
-                            '<%= conf.dest %>/{app,components}/**/*.spec.js',
-                            '<%= conf.dest %>/{app,components}/**/*.mock.js',
+                            '<%= conf.dest %>/lib/jszip.js',
+                            '<%= conf.dest %>/lib/**/*.js',
+                            '<%= conf.dest %>/app/app.js',
+                            '<%= conf.dest %>/components/**/*.js',
+                            '<%= conf.dest %>/components/**/*.spec.js',
+                            '<%= conf.dest %>/components/**/*.mock.js',
+                            '<%= conf.dest %>/app/**/*.js',
+                            '<%= conf.dest %>/app/**/*.spec.js',
+                            '<%= conf.dest %>/app/**/*.mock.js',
                         ]
                     ]
 
@@ -172,6 +191,8 @@ module.exports = (grunt) ->
         'autoprefixer'
 
         'coffee'
+
+        'copy'
 
         'jade:devel'
         'injector:js'

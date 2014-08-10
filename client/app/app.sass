@@ -1,3 +1,5 @@
+@import "bootstrap_variables"
+
 
 // injector:sass
 @import "main/main.sass"
@@ -8,3 +10,9 @@
 
 html, body
     height: 100%
+
+body
+    padding: 70px 16px 0
+    @media (max-width: $grid-float-breakpoint)
+        padding: 70px 8px 0
+

@@ -1,12 +1,45 @@
-.head
-    ul.breadcrumb
-        li
-          a(href="/") Home
-          span.divider
+div(ng-include='"/components/navbar/navbar.html"')
 
 .jumbotron
     h1 This is main page.
     p {{message}}
     .rotating
         .icon.fa.fa-child
+    ul
+        li
+            a(ui-sref="login") Login
+        li
+            a(ui-sref="logout") Logout
+        li
+            a(ui-sref="admin") Admin
+
+
+.panel.panel-default(ng-if="current.active")
+    .panel-heading
+        h3 you are active as {{current.user.handle_name}}
+    .panel-body
+        h3 Your token
+        dl.dl-horizontal
+            dt token
+            dd {{Token.get()}}
+        h3 Your profile
+        dl.dl-horizontal
+            dt handle name
+            dd {{current.user.handle_name}}
+
+            dt emain
+            dd {{current.user.email}}
+
+            dt is admin
+            dd {{current.user.admin}}
+
+            dt birthday
+            dd {{current.user.birthday}}
+
+            dt graduation_year_id
+            dd {{current.user.graduation_year_id}}
+
+            dt email_mobile
+            dd {{current.user.email_mobile}}
+
 
