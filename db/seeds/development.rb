@@ -44,3 +44,19 @@ AccessToken.create(
   token: "1936be4f6d3da5ea51676736dfde47cf25476fdcb34fcb01e4d8cbbf20818fba"
 )
 AccessToken.set_callback(:validation, :before, :generate_token)
+
+unless not_activated = User.find_by(email: "not_activated@ec.hokudai.ac.jp")
+  not_activated = User.create(
+    email:              "not_activated@ec.hokudai.ac.jp",
+    password:           "not_activated",
+    family_name:        "not_activated",
+    given_name:         "not_activated",
+    handle_name:        "not_activated",
+    birthday:           "1990-01-01",
+    email_mobile:       "not_activated@example.com",
+    graduation_year_id: gy.id,
+    admin:              false
+  )
+end
+not_activated.activation_token = "d1nbuwA8vmVKRJR9xzrn"
+not_activated.save!

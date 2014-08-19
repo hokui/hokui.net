@@ -5,11 +5,10 @@ Rails.application.routes.draw do
     resources :users,   only: [:index, :show, :create] do
       collection do
         get :profile
+        get :activate
       end
     end
   end
-
-  get "/users/activate/:email_local/:activation_token" => "users#activate", as: :user_activation
 
   match "*path" => "application#index", via: [:get, :post]
   root :to => "application#index", via: [:get, :post]
