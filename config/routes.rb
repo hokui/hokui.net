@@ -7,6 +7,9 @@ Rails.application.routes.draw do
         get  :profile
         post :activate
       end
+      member do
+        get  :approve
+      end
     end
   end
 
