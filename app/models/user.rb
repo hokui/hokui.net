@@ -40,6 +40,8 @@ class User < ActiveRecord::Base
   validates(:handle_name) { presence; uniqueness }
   validates(:birthday)    { presence }
 
+  after_create :send_activation_needed_email!
+
   def full_name
     "#{family_name} #{given_name}"
   end

@@ -31,21 +31,32 @@
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
-  let(:user) { create(:admin) }
+  describe "instance methods" do
+    describe "activation_url" do
+      it "includes local part of email and activation token" do
+        user = create(:admin)
+        expect(user.activation_url).to     include(user.email_local)
+        expect(user.activation_url).not_to include("hokudai.ac.jp")
+        expect(user.activation_url).to     include(user.activation_token)
+      end
+    end
 
-  describe "activation_url" do
-    it "includes local part of email and activation token" do
-      expect(user.activation_url).to     include(user.email_local)
-      expect(user.activation_url).not_to include("hokudai.ac.jp")
-      expect(user.activation_url).to     include(user.activation_token)
+    describe "send_activation_needed_email!" do
+      it "sends a mail" do
+        user = build(:admin)
+        expect(UserMailer).to receive(:email_confirmation_on_create)
+                              .and_return(double("UserMailer", deliver: true))
+                              .with(an_instance_of(User))
+        user.send_activation_needed_email!
+      end
     end
   end
 
-  describe "send_activation_needed_email!" do
-    it "sends a mail" do
-      old_size = ActionMailer::Base.deliveries.size
-      user.send_activation_needed_email!
-      expect(ActionMailer::Base.deliveries.size).to eq old_size + 1
+  context "registration" do
+    it "automatically send welcome email" do
+      user = build(:admin)
+      expect(user).to receive(:send_activation_needed_email!).once
+      user.save
     end
   end
 end
