@@ -31,6 +31,15 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :user do
+  factory :admin, class: User do
+    email              "admin@ec.hokudai.ac.jp"
+    password           "admin"
+    family_name        "admin"
+    given_name         "admin"
+    handle_name        "admin"
+    birthday           "1990-01-01"
+    email_mobile       "admin@example.com"
+    graduation_year_id 1
+    admin              true
   end
 end
