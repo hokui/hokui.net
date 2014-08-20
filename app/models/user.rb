@@ -49,7 +49,8 @@ class User < ActiveRecord::Base
   end
 
   def activation_url
-    Rails.application.routes.url_helpers.user_activation_url(email_local, activation_token)
+    host = Rails.application.routes.default_url_options[:host]
+    "http://#{host}/activate/?email_local=#{email_local}&activation_token=#{activation_token}"
   end
 
   def send_activation_needed_email!

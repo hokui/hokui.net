@@ -1,7 +1,7 @@
 class Api::UsersController < Api::ApplicationController
-  skip_before_action :require_login_with_token, only: :create
+  skip_before_action :require_login_with_token, only: [:create, :activate]
   before_action :set_user, only: :show
-  after_action :verify_authorized, except: [:create, :profile]
+  after_action :verify_authorized, except: [:create, :profile, :activate]
 
   def index
     @users = User.all
@@ -26,6 +26,16 @@ class Api::UsersController < Api::ApplicationController
 
   def profile
     render json: @current_user
+  end
+
+  def activate
+    user = User.load_from_activation_token(params[:activation_token])
+    if user && user.email_local == params[:email_local]
+      user.activate!
+      head 200
+    else
+      head 400
+    end
   end
 
   private
