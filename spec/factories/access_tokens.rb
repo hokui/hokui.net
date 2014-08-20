@@ -15,7 +15,7 @@
 FactoryGirl.define do
   factory :access_token do
     user_id          1
-    token            "4ebbcf209ca3625dfe0b2595d627ffacd90f8cefd69722712a451a7c291643af"
+    token            SecureRandom.hex(32)
     last_activity_at "2014-07-18 09:53:04"
   end
 end
