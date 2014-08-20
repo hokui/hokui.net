@@ -8,7 +8,7 @@ Rails.application.routes.draw do
         post :activate
       end
       member do
-        get  :approve
+        post :approve
       end
     end
   end
