@@ -6,4 +6,8 @@ class UserPolicy < Struct.new(:user, :user_record)
   def show?
     user.admin? or user == user_record
   end
+
+  def approve?
+    user.admin?
+  end
 end

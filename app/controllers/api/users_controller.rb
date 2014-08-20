@@ -1,6 +1,6 @@
 class Api::UsersController < Api::ApplicationController
   skip_before_action :require_login_with_token, only: [:create, :activate]
-  before_action :set_user, only: :show
+  before_action :set_user, only: [:show, :approve]
   after_action :verify_authorized, except: [:create, :profile, :activate]
 
   def index
@@ -36,6 +36,12 @@ class Api::UsersController < Api::ApplicationController
     else
       head 400
     end
+  end
+
+  def approve
+    authorize @user
+    @user.approve!
+    head 200
   end
 
   private
