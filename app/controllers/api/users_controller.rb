@@ -32,9 +32,9 @@ class Api::UsersController < Api::ApplicationController
     user = User.load_from_activation_token(params[:activation_token])
     if user && user.email_local == params[:email_local]
       user.activate!
-      render json: { activated: true }, status: 200
+      head 200
     else
-      render json: { activated: false }, status: 400
+      head 400
     end
   end
 
