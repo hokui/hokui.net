@@ -4,8 +4,8 @@ Rails.application.routes.draw do
 
     resources :users,   only: [:index, :show, :create] do
       collection do
-        get :profile
-        get :activate
+        get  :profile
+        post :activate
       end
     end
   end
