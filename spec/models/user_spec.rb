@@ -31,5 +31,21 @@
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:user) { create(:admin) }
+
+  describe "activation_url" do
+    it "includes local part of email and activation token" do
+      expect(user.activation_url).to     include(user.email_local)
+      expect(user.activation_url).not_to include("hokudai.ac.jp")
+      expect(user.activation_url).to     include(user.activation_token)
+    end
+  end
+
+  describe "send_activation_needed_email!" do
+    it "sends a mail" do
+      old_size = ActionMailer::Base.deliveries.size
+      user.send_activation_needed_email!
+      expect(ActionMailer::Base.deliveries.size).to eq old_size + 1
+    end
+  end
 end
