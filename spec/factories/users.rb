@@ -42,3 +42,4 @@ FactoryGirl.define do
     graduation_year_id 1
     admin              true
   end
+end
