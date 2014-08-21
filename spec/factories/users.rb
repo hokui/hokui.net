@@ -42,4 +42,16 @@ FactoryGirl.define do
     graduation_year_id 1
     admin              true
   end
+
+  factory :guest, class: User do
+    email              "guest@ec.hokudai.ac.jp"
+    password           "guest"
+    family_name        "guest"
+    given_name         "guest"
+    handle_name        "guest"
+    birthday           "1990-01-01"
+    email_mobile       "guest@example.com"
+    graduation_year_id 1
+    admin              false
+  end
 end
