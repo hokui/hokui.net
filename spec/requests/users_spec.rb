@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "Users" do
   describe "GET /api/users" do
-    it "returns a list of users to an admin" do
+    it "returns a list of users to an admin", autodoc: true do
       admin = create_admin_with_token
       get_with_token(admin, "/api/users")
       expect(response.status).to eq(200)
     end
 
-    it "returns 403 to a guest" do
+    it "returns 403 to a guest", autodoc: true do
       guest = create_guest_with_token
       get_with_token(guest, "/api/users")
       expect(response.status).to eq(403)
@@ -21,20 +21,20 @@ RSpec.describe "Users" do
   end
 
   describe "GET /api/users/1" do
-    it "returns user profile to an admin" do
+    it "returns user profile to an admin", autodoc: true do
       admin = create_admin_with_token
       guest = create_guest_with_token
       get_with_token(admin, "api/users/#{guest.id}")
       expect(response.status).to eq(200)
     end
 
-    it "returns user profile to a guest if the client requests profile of oneself" do
+    it "returns user profile to a guest if the client requests profile of oneself", autodoc: true do
       guest = create_guest_with_token
       get_with_token(guest, "api/users/#{guest.id}")
       expect(response.status).to eq(200)
     end
 
-    it "returns 403 to a guest if the client requests profile of another user" do
+    it "returns 403 to a guest if the client requests profile of another user", autodoc: true do
       admin = create_admin_with_token
       guest = create_guest_with_token
       get_with_token(guest, "api/users/#{admin.id}")
@@ -55,7 +55,7 @@ RSpec.describe "Users" do
       @params[:user].delete(:admin)
     end
 
-    it "creates new user" do
+    it "creates new user", autodoc: true do
       old_size = User.count
       post("/api/users", @params.to_json)
       expect(response.status).to eq(201)
@@ -72,7 +72,7 @@ RSpec.describe "Users" do
   end
 
   describe "GET /api/users/profile" do
-    it "returns self profile to an user" do
+    it "returns self profile to an user", autodoc: true do
       guest = create_guest_with_token
       get_with_token(guest, "/api/users/profile")
       expect(response.status).to eq(200)
@@ -89,12 +89,12 @@ RSpec.describe "Users" do
       @guest = create(:guest)
     end
 
-    it "successes if the guest is previously unactivated" do
+    it "successes if the guest is previously unactivated", autodoc: true do
       post("/api/users/activate?email_local=#{@guest.email_local}&activation_token=#{@guest.activation_token}")
       expect(response.status).to eq(200)
     end
 
-    it "fails if the guest is already activated" do
+    it "fails if the guest is already activated", autodoc: true do
       @guest.activate!
       post("/api/users/activate?email_local=#{@guest.email_local}&activation_token=#{@guest.activation_token}")
       expect(response.status).to eq(400)
@@ -107,12 +107,12 @@ RSpec.describe "Users" do
       @guest = create_guest_with_token
     end
 
-    it "successes when an admin approves a guest" do
+    it "successes when an admin approves a guest", autodoc: true do
       post_with_token(@admin, "/api/users/#{@guest.id}/approve")
       expect(response.status).to eq(200)
     end
 
-    it "returns 403 to a guest" do
+    it "returns 403 to a guest", autodoc: true do
       post_with_token(@guest, "/api/users/#{@guest.id}/approve")
       expect(response.status).to eq(403)
     end
