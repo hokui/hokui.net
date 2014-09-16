@@ -1,5 +1,8 @@
 hokui.net
 =========
+[![Build Status](https://travis-ci.org/hokui/hokui.net.svg)](https://travis-ci.org/hokui/hokui.net)
+[![Code Climate](https://codeclimate.com/github/hokui/hokui.net/badges/gpa.svg)](https://codeclimate.com/github/hokui/hokui.net)
+[![Test Coverage](https://codeclimate.com/github/hokui/hokui.net/badges/coverage.svg)](https://codeclimate.com/github/hokui/hokui.net)
 
 開発環境
 --------
@@ -13,7 +16,7 @@ gem install mailcatcher
 mailcatcher
 ```
 
-`git pull upstream master`した後毎回  
+`git pull upstream master`した後毎回
 Gemを更新してDBをリセット
 ```
 bundle install

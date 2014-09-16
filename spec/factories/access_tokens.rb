@@ -14,8 +14,8 @@
 
 FactoryGirl.define do
   factory :access_token do
-    user_id 1
-    token "MyString"
+    user_id          1
+    token            SecureRandom.hex(32)
     last_activity_at "2014-07-18 09:53:04"
   end
 end

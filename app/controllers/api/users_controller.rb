@@ -17,7 +17,6 @@ class Api::UsersController < Api::ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      @user.send_activation_needed_email!
       render json: @user, status: 201
     else
       render json: @user, status: 422

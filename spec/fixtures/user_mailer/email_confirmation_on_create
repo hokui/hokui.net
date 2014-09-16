@@ -1,3 +1,0 @@
-UserMailer#email_confirmation_on_create
-
-Hi, find me in app/views/user_mailer/email_confirmation_on_create
