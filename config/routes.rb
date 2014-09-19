@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   namespace :api do
-    resource  :session, only: [:create, :destroy]
+    resource  :session,          only: [:create, :destroy]
 
-    resources :users,   only: [:index, :show, :create] do
+    resources :users,            only: [:index, :show, :create] do
       collection do
         get  :profile
         post :activate
@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         post :approve
       end
     end
+
+    resources :graduation_years, only: [:index, :show, :create, :update, :destroy]
   end
 
   match "*path" => "application#index", via: [:get, :post]
