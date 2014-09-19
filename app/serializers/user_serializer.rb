@@ -6,7 +6,7 @@ class UserSerializer < ActiveModel::Serializer
              :birthday,
              :email_mobile,
              :admin,
-             :graduation_year_id,
+             :class_year_id,
              :errors
 
   def full_name

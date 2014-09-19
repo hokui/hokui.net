@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: graduation_years
+# Table name: class_years
 #
 #  id         :integer          not null, primary key
 #  year       :integer          not null
@@ -11,7 +11,7 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :graduation_year do
-    year 2017
+  factory :class_year do
+    year 93
   end
 end

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :graduation_years, only: [:index, :show, :create, :update, :destroy]
+    resources :class_years, only: [:index, :show, :create, :update, :destroy]
   end
 
   match "*path" => "application#index", via: [:get, :post]

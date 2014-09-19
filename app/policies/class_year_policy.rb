@@ -1,4 +1,4 @@
-class GraduationYearPolicy < Struct.new(:user, :graduation_year)
+class ClassYearPolicy < Struct.new(:user, :class_year)
   def create?
     user.admin?
   end

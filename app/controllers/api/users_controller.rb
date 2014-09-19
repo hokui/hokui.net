@@ -53,8 +53,8 @@ class Api::UsersController < Api::ApplicationController
     json_params = ActionController::Parameters.new(
       JSON.parse(request.body.read)
     )
-    graduation_year =
-      GraduationYear.find_by(year: json_params[:user][:class_year] + 1924)
+    class_year =
+      ClassYear.find_by(year: json_params[:user][:class_year])
     json_params.
       require(:user).
       permit(
@@ -66,6 +66,6 @@ class Api::UsersController < Api::ApplicationController
         :birthday,
         :email_mobile
       ).
-      merge(graduation_year: graduation_year)
+      merge(class_year: class_year)
   end
 end

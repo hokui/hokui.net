@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: graduation_years
+# Table name: class_years
 #
 #  id         :integer          not null, primary key
 #  year       :integer          not null
@@ -8,7 +8,8 @@
 #  updated_at :datetime
 #
 
-require 'rails_helper'
+class ClassYear < ActiveRecord::Base
+  has_many :users
 
-RSpec.describe GraduationYear, :type => :model do
+  validates(:year) { presence; uniqueness; numericality(greater_than: 90, less_than: 150) }
 end
