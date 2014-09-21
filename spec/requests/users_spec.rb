@@ -48,10 +48,10 @@ RSpec.describe "Users" do
 
   describe "POST /api/users" do
     before do
-      create(:graduation_year)
+      create(:class_year)
       @params = { user: FactoryGirl.attributes_for(:guest) }
       @params[:user][:class_year] = 93
-      @params[:user].delete(:graduation_year_id)
+      @params[:user].delete(:class_year_id)
       @params[:user].delete(:admin)
     end
 

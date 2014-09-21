@@ -25,22 +25,22 @@
 #  birthday                        :date             not null
 #  email_mobile                    :string(255)
 #  admin                           :boolean          default(FALSE), not null
-#  graduation_year_id              :integer          default(1), not null
+#  class_year_id                   :integer          default(1), not null
 #
 
 class User < ActiveRecord::Base
   authenticates_with_sorcery!
 
-  belongs_to :graduation_year
+  belongs_to :class_year
   has_many :access_tokens, dependent: :destroy
 
-  validates(:email)              { presence; uniqueness; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
-  validates(:family_name)        { presence }
-  validates(:given_name)         { presence }
-  validates(:handle_name)        { presence; uniqueness }
-  validates(:birthday)           { presence }
-  validates(:crypted_password)   { presence }
-  validates(:graduation_year_id) { presence }
+  validates(:email)            { presence; uniqueness; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
+  validates(:family_name)      { presence }
+  validates(:given_name)       { presence }
+  validates(:handle_name)      { presence; uniqueness }
+  validates(:birthday)         { presence }
+  validates(:crypted_password) { presence }
+  validates(:class_year_id)    { presence }
 
   after_create :send_activation_needed_email!
 

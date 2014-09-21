@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: graduation_years
+# Table name: class_years
 #
 #  id         :integer          not null, primary key
 #  year       :integer          not null
@@ -8,6 +8,10 @@
 #  updated_at :datetime
 #
 
-class GraduationYear < ActiveRecord::Base
-  has_many :users
+# Read about factories at https://github.com/thoughtbot/factory_girl
+
+FactoryGirl.define do
+  factory :class_year do
+    year 93
+  end
 end

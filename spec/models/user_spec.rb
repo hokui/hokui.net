@@ -25,7 +25,7 @@
 #  birthday                        :date             not null
 #  email_mobile                    :string(255)
 #  admin                           :boolean          default(FALSE), not null
-#  graduation_year_id              :integer          default(1), not null
+#  class_year_id                   :integer          default(1), not null
 #
 
 require 'rails_helper'

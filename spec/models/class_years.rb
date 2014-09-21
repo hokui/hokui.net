@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: graduation_years
+# Table name: class_years
 #
 #  id         :integer          not null, primary key
 #  year       :integer          not null
@@ -10,5 +10,5 @@
 
 require 'rails_helper'
 
-RSpec.describe GraduationYear, :type => :model do
+RSpec.describe ClassYear, :type => :model do
 end
