@@ -28,6 +28,7 @@ class Api::UsersController < Api::ApplicationController
   end
 
   def activate
+    params = ActionController::Parameters.new(JSON.parse(request.body.read))
     user = User.load_from_activation_token(params[:activation_token])
     if user && user.email_local == params[:email_local]
       user.activate!
