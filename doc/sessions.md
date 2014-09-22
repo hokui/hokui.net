@@ -1,33 +1,47 @@
-## DELETE /api/session
-Destroys existing access token.
+## POST /api/session
+Returns new access token and user profile.
 
 ### Example
 
 #### Request
 ```
-DELETE /api/session HTTP/1.1
-Accept: application/json
-Access-Token: 498dc4e7a2711be58beab8611f91bc76877da610f8b82fda3ec17ba5b51ace7b
-Content-Length: 0
-Content-Type: application/json
+POST /api/session HTTP/1.1
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Content-Length: 53
+Content-Type: application/x-www-form-urlencoded
 Host: www.example.com
+
+{"email":"guest@ec.hokudai.ac.jp","password":"guest"}
 ```
 
 #### Response
 ```
-HTTP/1.1 200
+HTTP/1.1 201
 Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 19
+Content-Length: 293
 Content-Type: application/json; charset=utf-8
-ETag: "375ee5cd444bb99803430a565181a517"
+ETag: "32717d5759119cdecc674c1cba668f03"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: b7b4b0e7-bc5e-44d2-9e11-a704b6fcfb6a
-X-Runtime: 0.001712
+X-Request-Id: cdced8cb-aea7-406f-b232-bcf9ba03bcfa
+X-Runtime: 0.158283
 X-XSS-Protection: 1; mode=block
 
 {
-  "logged_out": true
+  "logged_in": true,
+  "token": "b1bae6ffeb78ceab84c46dc976839746bfa58c63eea0308fb19fb270c88396e2",
+  "user": {
+    "id": 1,
+    "email": "guest@ec.hokudai.ac.jp",
+    "full_name": "guest guest",
+    "handle_name": "guest",
+    "birthday": "1990-01-01",
+    "email_mobile": "guest@example.com",
+    "admin": false,
+    "class_year_id": 1,
+    "errors": {
+    }
+  }
 }
 ```
 
@@ -55,8 +69,8 @@ Content-Length: 19
 Content-Type: application/json; charset=utf-8
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 0e7fd1f4-fac1-42b6-aaa8-3325b770091d
-X-Runtime: 0.109133
+X-Request-Id: f054f256-0d1d-479e-9e71-d4174f4ffd99
+X-Runtime: 0.146837
 X-XSS-Protection: 1; mode=block
 
 {
@@ -64,49 +78,35 @@ X-XSS-Protection: 1; mode=block
 }
 ```
 
-## POST /api/session
-Returns new access token and user profile.
+## DELETE /api/session
+Destroys existing access token.
 
 ### Example
 
 #### Request
 ```
-POST /api/session HTTP/1.1
-Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-Content-Length: 53
-Content-Type: application/x-www-form-urlencoded
+DELETE /api/session HTTP/1.1
+Accept: application/json
+Access-Token: 28f410a0084d0fcdcf7e4068b4cc987e7ca9cc478d760279895cd28444da4922
+Content-Length: 0
+Content-Type: application/json
 Host: www.example.com
-
-{"email":"guest@ec.hokudai.ac.jp","password":"guest"}
 ```
 
 #### Response
 ```
-HTTP/1.1 201
+HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 293
+Content-Length: 19
 Content-Type: application/json; charset=utf-8
-ETag: "b6a7c36b6c5c57122316a4bd3ee2f7fd"
+ETag: "375ee5cd444bb99803430a565181a517"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 5a0e692f-5e3b-45fe-aa99-e4209eea44a0
-X-Runtime: 0.112720
+X-Request-Id: 8df4a7ee-a6a0-490f-8d27-61ed99422f67
+X-Runtime: 0.004475
 X-XSS-Protection: 1; mode=block
 
 {
-  "logged_in": true,
-  "token": "3bfe3c4240018b4c6ae9e7790efcb00403eea2d8a85cf0e824e9fda98225aece",
-  "user": {
-    "id": 1,
-    "email": "guest@ec.hokudai.ac.jp",
-    "full_name": "guest guest",
-    "handle_name": "guest",
-    "birthday": "1990-01-01",
-    "email_mobile": "guest@example.com",
-    "admin": false,
-    "class_year_id": 1,
-    "errors": {
-    }
-  }
+  "logged_out": true
 }
 ```
