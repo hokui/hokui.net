@@ -26,5 +26,5 @@ bundle exec rake db:dev
 フロントのビルド
 --------
 ```
-grunt
+npm start
 ```
