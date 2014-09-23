@@ -1,0 +1,17 @@
+a(ui-sref="admin.year.detail.edit({id: ''})") 新規作成
+
+table.table.table-bordered.table-condensed.table-hover
+    thead
+        tr
+            th ID
+            th 期
+            th 作成
+            th 更新
+    tbody
+        tr(ng-repeat="year in years")
+            td {{year.id}}
+            td
+                a(ui-sref="admin.year.detail({id:year.id})")
+                    | {{year.year}}
+            td {{year.created_at | date:'yyyy年MM月dd日HH時mm分'}}
+            td {{year.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
