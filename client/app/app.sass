@@ -1,18 +1,66 @@
-@import "bootstrap_variables"
+@import "bootstrap/variables"
+@import "bootstrap/mixins"
+
+@mixin fill
+    left: 0
+    top: 0
+    right: 0
+    bottom: 0
+
+.overlay
+    position: fixed
+    @include fill
 
 
-// injector:sass
-@import "main/main.sass"
+@mixin topfix($gutter: 16px)
+    padding-top: $navbar-height + $gutter
+
+.topfix
+    @include topfix
+
+@mixin clearfix()
+    &:after
+        content: "."
+        display: block
+        height: 0
+        clear: both
+        visibility: hidden
+
+.clearfix
+    @include clearfix
+
+
+
+
+
+// inject:sass
+@import "admin/_admin.sass"
+@import "main/_main.sass"
+@import "nav/_nav.sass"
 // endinjector
 
 *
-    box-sizing: content-box
+    box-sizing: border-box
 
 html, body
     height: 100%
 
-body
-    padding: 70px 16px 0
-    @media (max-width: $grid-float-breakpoint)
-        padding: 70px 8px 0
+.link
+    cursor: pointer
 
+table.table.table-2col
+    tbody
+        tr
+
+            th,td
+                // padding: 12px
+                // line-height: 1.6em
+                vertical-align: middle
+            th
+                text-align: center
+                font-weight: 400
+                white-space: nowrap;
+    th
+        background: darken($body-bg, 5%)
+    td
+        background: $body-bg
