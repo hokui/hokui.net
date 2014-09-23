@@ -1,0 +1,13 @@
+.navbar.navbar-default
+    box-shadow: 0 0 2px rgba(#000, .1)
+    .nav.navbar-nav
+        li.active>a
+            @media (min-width: $grid-float-breakpoint-max)
+                border-bottom: solid 2px $brand-primary
+                box-sizing: border-box
+                background-color: transparent
+        li>a
+            @media (min-width: $grid-float-breakpoint-max)
+                border-bottom: solid 2px transparent
+                transition: border-bottom-color .2s ease-in-out
+
