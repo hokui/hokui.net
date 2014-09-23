@@ -4,6 +4,10 @@ class Api::ApplicationController < ActionController::API
 
   before_action :require_login_with_token
 
+  def default_serializer_options
+    { root: false }
+  end
+
   private
 
   def require_login_with_token
