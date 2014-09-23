@@ -1,0 +1,52 @@
+.topfix
+.container
+    h1 Signup
+    form.form-horizontal(role="form", ng-submit="performSignup()")
+        .panel.panel-default
+            .panel-body
+                .form-group
+                    label.control-label.col-md-3(for="signupInputFamilyName") 苗字
+                    .col-md-8
+                        input.form-control(type="text", ng-model="user.family_name", id="signupInputFamilyName", placeholder="苗字")
+                .form-group
+                    label.control-label.col-md-3(for="signupInputGivenName") 名前
+                    .col-md-8
+                        input.form-control(type="text", ng-model="user.given_name", id="signupInputGivenName", placeholder="名前")
+                .form-group
+                    label.control-label.col-md-3(for="signupInputHandleName") ニックネーム
+                    .col-md-8
+                        input.form-control(type="text", ng-model="user.handle_name", id="signupInputHandleName", placeholder="ニックネーム")
+                .form-group
+                    label.control-label.col-md-3(for="signupInputBirthday") 生年月日
+                    .col-md-8
+                        input.form-control(type="date", ng-model="user.birthday", id="signupInputBirthday")
+                .form-group
+                    label.control-label.col-md-3(for="signupInputEmail") ELSMメール
+                    .col-md-8
+                        input.form-control(type="email", ng-model="user.email", id="signupInputEmail", ng-pattern="/^[A-Za-z0-9._%+-]+@ec.hokudai.ac.jp$/", placeholder="example@ec.hokudai.ac.jp")
+
+                .form-group
+                    label.control-label.col-md-3(for="signupInputEmailMobile") 携帯メール
+                    .col-md-8
+                        input.form-control(type="email", ng-model="user.email_mobile", id="signupInputEmailMobile", placeholder="携帯メール")
+
+                .form-group
+                    label.control-label.col-md-3(for="signupInputYear") 期を選択
+                    .col-md-8
+                        select.form-control(ng-model="user.class_year" ng-options="year.year as year.year for year in years")
+
+                .form-group
+                    label.control-label.col-md-3(for="signupInputPassword") パスワード
+                    .col-md-8
+                        input.form-control(type="password", ng-model="user.password", id="signupInputPassword", placeholder="パスワード")
+
+                .form-group
+                    label.control-label.col-md-3(for="signupInputPassword") パスワードの確認
+                    .col-md-8
+                        input.form-control(type="password", ng-model="reenteredPassword", id="signupInputPassword", placeholder="確認のためパスワードをもう一度入力")
+
+            .panel-footer
+                .form-group
+                    .col-md-8.col-md-offset-3
+                        button.btn.btn-primary(type="submit") Signup
+
