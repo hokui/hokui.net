@@ -2,15 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "ClassYears", :type => :request do
   describe "GET /api/class_years" do
-    it "returns a list of class years", autodoc: true do
-      guest = create_guest_with_token
-      get_with_token(guest, "/api/class_years")
-      expect(response.status).to eq(200)
-    end
-
-    it "returns 401 to an unauthorized client" do
+    it "returns a list of class years, if ever client is unauthorized", autodoc: true do
       get("/api/class_years")
-      expect(response.status).to eq(401)
+      expect(response.status).to eq(200)
     end
   end
 

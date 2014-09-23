@@ -1,4 +1,5 @@
 class Api::ClassYearsController < Api::ApplicationController
+  skip_before_action :require_login_with_token, only: :index
   before_action :set_class_year, only: [:show, :update, :destroy]
   after_action :verify_authorized, except: [:index, :show]
 
