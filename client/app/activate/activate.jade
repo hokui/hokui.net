@@ -1,0 +1,9 @@
+.topfix
+.container
+    h1 Activate
+    ul
+        li email: {{email}}
+        li token: {{token}}
+
+    .well.well-lg
+        p(ng-bind-html="status | linky")
