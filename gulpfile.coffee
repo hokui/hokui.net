@@ -227,7 +227,7 @@ g.task 'index', ->
     .pipe $.jade pretty: not conf.prod
     .pipe $.inject(
         g.src(target, read: false),
-            ignorePath: ['public/', 'client/']
+            ignorePath: ['public/', 'client/', '/dist']
     )
 
     if not conf.prod
@@ -235,7 +235,7 @@ g.task 'index', ->
             g.src(bowerFiles(),
                     base: conf.bowerDir
                     read: false),
-                ignorePath: ['public/', 'client/']
+                ignorePath: ['public/', 'client/', '/dist']
                 name: 'bower'
         )
 
