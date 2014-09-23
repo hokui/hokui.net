@@ -13,6 +13,8 @@ angular.module appName
                 resolve:
                     users: (User)->
                         User.query().$promise
+                    years: (ClassYear)->
+                        ClassYear.query().$promise
 
             'main@admin.user':
                 templateUrl: '/app/admin/user/list.html'
@@ -28,12 +30,13 @@ angular.module appName
 
 
 .controller 'AdminUserCtrl',
-    ($scope, users) ->
+    ($scope, users, years) ->
         $scope.users = users
+        $scope.years = years
 
 
 .controller 'AdminUserListCtrl',
-    ($scope, User, Token, $state) ->
+    ($scope, User, Token, $state, IDRetrieve) ->
 
         $scope.showDetail = (user)->
             $state.go 'admin.user.detail', id: user.id
@@ -47,6 +50,10 @@ angular.module appName
             cls = states[user.approval_state].cls
             html = "<i class=\"fa #{cls}\"></i>"
             html
+
+        $scope.getYear = (id)->
+            IDRetrieve($scope.years, id).year
+
 
 
 .controller 'AdminUserDetailCtrl',

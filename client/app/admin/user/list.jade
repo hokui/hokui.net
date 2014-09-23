@@ -12,7 +12,7 @@
         tbody
             tr(ng-repeat="user in users")
                 td {{user.id}}
-                td {{user.class_year_id}}
+                td {{getYear(user.class_year_id)}}
                 td
                     a(ui-sref="admin.user.detail({id: user.id})")
                         | {{user.family_name}} {{user.given_name}}
