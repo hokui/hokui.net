@@ -30,7 +30,8 @@ angular.module appName
                 sec = sec - 1
                 if sec < 0
                     $state.go 'main'
-                $timeout countDown, 1000
+                else
+                    $timeout countDown, 1000
             countDown()
         .error (err) ->
             $scope.status = "すでに登録の受付が行われているか、無効なURLです。ご不明な点がありましたら、#{admin}までお問い合わせください。"
