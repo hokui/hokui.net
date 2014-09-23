@@ -19,9 +19,6 @@ angular.module appName
 
         admin = 'hokui.net@gmail.com'
 
-        $scope.token = token
-        $scope.emain = email
-
         $http.post '/api/users/activate',
             email_local: email
             activation_token: token
