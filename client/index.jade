@@ -1,13 +1,15 @@
 doctype html
-html
-    meta(charset='utf-8')
-    title hokui.net
-    base(href="/")
-    <!-- injector:css -->
-    <!-- endinjector -->
-    <!-- bower:js -->
-    <!-- endbower -->
-    <!-- injector:js -->
-    <!-- endinjector -->
-    body(ng-app='hokuiApp')
+html(ng-app="hokuiApp")
+    meta(charset="utf-8")
+    title 北医ネット
+    <!-- inject:css -->
+    <!-- endinject -->
+    link(href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet")
+    link(href="//fonts.googleapis.com/css?family=Raleway:200" rel="stylesheet")
+    body
+        div(ng-include='"/components/nav/nav.html"')
         div(ui-view)
+        <!-- bower:js -->
+        <!-- endinject -->
+        <!-- inject:js -->
+        <!-- endinject -->
