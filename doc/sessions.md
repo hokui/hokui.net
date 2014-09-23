@@ -20,16 +20,16 @@ HTTP/1.1 201
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 293
 Content-Type: application/json; charset=utf-8
-ETag: "32717d5759119cdecc674c1cba668f03"
+ETag: "ee90bd3154a28265eb42751d24cdedb9"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: cdced8cb-aea7-406f-b232-bcf9ba03bcfa
-X-Runtime: 0.158283
+X-Request-Id: 21fc0cfa-bd44-4678-88e6-5d14885dce77
+X-Runtime: 0.211345
 X-XSS-Protection: 1; mode=block
 
 {
   "logged_in": true,
-  "token": "b1bae6ffeb78ceab84c46dc976839746bfa58c63eea0308fb19fb270c88396e2",
+  "token": "6fd8316e5a940d669896a76b448ad894d40783d90c961833cb31697aefda5b31",
   "user": {
     "id": 1,
     "email": "guest@ec.hokudai.ac.jp",
@@ -69,8 +69,8 @@ Content-Length: 19
 Content-Type: application/json; charset=utf-8
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: f054f256-0d1d-479e-9e71-d4174f4ffd99
-X-Runtime: 0.146837
+X-Request-Id: 87b07320-3268-4142-bbba-7ac3aa198241
+X-Runtime: 0.191720
 X-XSS-Protection: 1; mode=block
 
 {
@@ -87,7 +87,7 @@ Destroys existing access token.
 ```
 DELETE /api/session HTTP/1.1
 Accept: application/json
-Access-Token: 28f410a0084d0fcdcf7e4068b4cc987e7ca9cc478d760279895cd28444da4922
+Access-Token: 3f4bb04c57106258959f47acf3dc91f6b768033035518e37e6daa7b2964e466f
 Content-Length: 0
 Content-Type: application/json
 Host: www.example.com
@@ -102,8 +102,8 @@ Content-Type: application/json; charset=utf-8
 ETag: "375ee5cd444bb99803430a565181a517"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 8df4a7ee-a6a0-490f-8d27-61ed99422f67
-X-Runtime: 0.004475
+X-Request-Id: 49f82993-a988-406a-83d5-606c4fec5df8
+X-Runtime: 0.003037
 X-XSS-Protection: 1; mode=block
 
 {

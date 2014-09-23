@@ -123,4 +123,26 @@ RSpec.describe "Users" do
       expect(response.status).to eq(401)
     end
   end
+
+  describe "DELETE /api/users/1" do
+    it "successes", autodoc: true do
+      admin = create_admin_with_token
+      guest = create(:guest)
+      delete_with_token(admin, "/api/users/#{guest.id}")
+      expect(response.status).to eq(200)
+    end
+
+    it "returns 403 to a guest", autodoc: true do
+      guest = create_guest_with_token
+      admin = create(:admin)
+      delete_with_token(guest, "/api/users/#{admin.id}")
+      expect(response.status).to eq(403)
+    end
+
+    it "returns 401 to an unauthorized client" do
+      guest = create(:guest)
+      delete("/api/users/#{guest.id}")
+      expect(response.status).to eq(401)
+    end
+  end
 end
