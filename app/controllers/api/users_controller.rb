@@ -1,6 +1,6 @@
 class Api::UsersController < Api::ApplicationController
   skip_before_action :require_login_with_token, only: [:create, :activate]
-  before_action :set_user, only: [:show, :approve]
+  before_action :set_user, only: [:show, :destroy, :approve]
   after_action :verify_authorized, except: [:create, :profile, :activate]
 
   def index
@@ -21,6 +21,12 @@ class Api::UsersController < Api::ApplicationController
     else
       render json: @user, status: 422
     end
+  end
+
+  def destroy
+    authorize @user
+    @user.destroy
+    head 200
   end
 
   def profile

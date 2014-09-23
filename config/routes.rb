@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   namespace :api do
-    resource  :session,          only: [:create, :destroy]
+    resource  :session,     only: [               :create,          :destroy]
 
-    resources :users,            only: [:index, :show, :create] do
+    resources :users,       only: [:index, :show, :create,          :destroy] do
       collection do
         get  :profile
         post :activate
