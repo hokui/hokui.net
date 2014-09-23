@@ -1,0 +1,15 @@
+a(ui-sref="admin.user") 一覧に戻る
+alert(ng-if="!!error", type="warning") {{error}}
+
+div(ng-if="!!user.id")
+
+    button.btn.btn-primary(ng-disabled="!approvable", ng-click="approve()") Approve
+    table.table.table-2col
+        tbody
+            tr(ng-repeat="(k, v) in user")
+                th {{k}}
+                td {{v}}
+            tr
+                th アクティベーションURL
+                td {{activationUrl()}}
+
