@@ -1,45 +1,32 @@
-div(ng-include='"/components/navbar/navbar.html"')
+.main
+    .hero
+        .hero-bg
+        h1.hero-title HOKUI.NET
+        .hero-elocution
+            | This is brand new hokui.net powered by Rails and Angular.js.
+            ul.list-inline
+                li
+                    a(ui-sref="login") Sign in
+                li
+                    a(ui-sref="signup") Sign up
 
-.jumbotron
-    h1 This is main page.
-    p {{message}}
-    .rotating
-        .icon.fa.fa-child
-    ul
-        li
-            a(ui-sref="login") Login
-        li
-            a(ui-sref="logout") Logout
-        li
-            a(ui-sref="admin") Admin
+    .container-fluid
 
+        .panel.panel-default
+            .panel-heading
+                h3 {{status}}
+            .panel-body
+                p {{message}}
+                div(ng-if="!!Token.get()")
+                    h3 Your token
+                    dl.dl-horizontal
+                        dt token
+                        dd {{Token.get()}}
+                div(ng-if="current.active")
+                    h3 Your profile
+                    dl.dl-horizontal
+                        dt(ng-repeat-start="(k, v) in current.user") {{k}}
+                        dd(ng-repeat-end) {{v}}
 
-.panel.panel-default(ng-if="current.active")
-    .panel-heading
-        h3 you are active as {{current.user.handle_name}}
-    .panel-body
-        h3 Your token
-        dl.dl-horizontal
-            dt token
-            dd {{Token.get()}}
-        h3 Your profile
-        dl.dl-horizontal
-            dt handle name
-            dd {{current.user.handle_name}}
-
-            dt emain
-            dd {{current.user.email}}
-
-            dt is admin
-            dd {{current.user.admin}}
-
-            dt birthday
-            dd {{current.user.birthday}}
-
-            dt class_year_id
-            dd {{current.user.class_year_id}}
-
-            dt email_mobile
-            dd {{current.user.email_mobile}}
 
 

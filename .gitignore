@@ -19,14 +19,11 @@
 
 # front-end part below
 
+npm-debug.log
+
 /node_modules
-/public/bower_components
 /.sass-cache
 
-/public/index.html
-/public/app
-/public/components
-/public/lib
+/public
 
 /dist
-

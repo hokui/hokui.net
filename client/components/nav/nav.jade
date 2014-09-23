@@ -1,0 +1,23 @@
+.navbar.navbar-default.navbar-fixed-top(ng-controller='NavCtrl')
+    .container
+        .navbar-header
+            button.navbar-toggle(type='button', ng-click='isCollapsed = !isCollapsed', ng-blur="isCollapsed = true")
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            .visible-xs-block
+                a.navbar-brand(ui-sref='main') Hokui.net
+
+        .navbar-collapse.collapse(collapse='isCollapsed')
+            ul.nav.navbar-nav
+                li(ng-repeat='item in items', ng-class="navClass(item)", ng-if="isVisible(item)")
+                    a(ui-sref='{{item.state}}') {{item.title}}
+
+            ul.nav.navbar-nav.navbar-right
+                li(ng-if="isVisible(signup)", ng-class="navClass(signup)")
+                    a(ui-sref="{{signup.state}}") {{signup.title}}
+
+                li(ng-class="navClass(authItem())")
+                    a(ng-href="{{toHref(authItem().state)}}") {{authItem().title}}
+

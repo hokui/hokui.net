@@ -1,0 +1,12 @@
+.topfix
+.container
+    h3 ログアウト
+    p(ng-if="!!message") {{message}}
+    form(role="form", ng-submit="performLogout()")
+        .panel.panel-default
+            .panel-body
+                .form-group
+                    .col-md-10.col-md-offset-2
+                        button.btn.btn-primary(type="submit", ng-disabled="!Auth.current.active") Logout
+
+

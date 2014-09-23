@@ -1,0 +1,39 @@
+.main
+    .hero
+        position: relative
+        // height: 600px
+        overflow: hidden
+        margin-bottom: 16px
+        padding: $navbar-height+30px 24px 48px
+
+    .hero-bg
+        z-index: -1000
+        position: absolute
+        @include fill
+        background: url("/img/pattern.gif")
+        background-size: 256px 216px
+        background-repeat: repeat
+        $blur: 6px
+        filter: blur($blur) brightness(110%) contrast(80%)
+        margin: -$blur
+
+    .hero-title
+        text-align: center
+        font-family: Raleway, $font-family-sans-serif
+        font-size: 96px
+        color: #333
+
+        margin-top: 80px
+        margin-bottom: 24px
+
+    .hero-elocution
+        font-size: 20px
+        text-align: center
+        background-color: rgba(#fff, .5)
+        width: 80%
+        padding: 16px 32px
+        @include center-block
+        @media (max-width: $grid-float-breakpoint)
+            width: 100%
+
+

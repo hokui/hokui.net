@@ -1,0 +1,24 @@
+a(ui-sref="admin.year") 一覧に戻る
+alert(ng-if="!!error", type="warning") {{error}}
+
+
+div(ng-if="!!year.id")
+    h3
+        a(ui-sref="admin.year.detail({id: year.id})")
+            | {{year.year}}
+    a(ui-sref=".edit") 編集
+    table.table.table-2col
+        tr
+            th ID
+            td {{year.id}}
+        tr
+            th 期
+            td {{year.year}}期
+        tr
+            th 作成
+            td {{year.created_at | date:'yyyy年MM月dd日HH時mm分'}}
+        tr
+            th 更新
+            td {{year.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
+
+div.admin-year-edit-view(ui-view="edit")

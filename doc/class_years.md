@@ -1,3 +1,74 @@
+## DELETE /api/class_years/1
+Destroys specified record.
+
+### Example
+
+#### Request
+```
+DELETE /api/class_years/1 HTTP/1.1
+Accept: application/json
+Access-Token: b65f3688ffcfce474f59e74eb55fff6109c4fbb987b4496e60cd553dd7682ae2
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 1
+Content-Type: application/json
+ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 245d1dd0-db4a-4a2b-8fbc-0c8dec32c2c7
+X-Runtime: 0.010200
+X-XSS-Protection: 1; mode=block
+```
+
+## POST /api/class_years
+Creates new class year.
+
+### Example
+
+#### Request
+```
+POST /api/class_years HTTP/1.1
+Accept: application/json
+Access-Token: 48011a180cd1797a9fde700fd6dd679c6b66b0ea438189025d785bb8f180212c
+Content-Length: 26
+Content-Type: application/json
+Host: www.example.com
+
+{
+  "class_year": {
+    "year": 93
+  }
+}
+```
+
+#### Response
+```
+HTTP/1.1 201
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 108
+Content-Type: application/json; charset=utf-8
+ETag: "abc7cfbadffa3d5c85eefc552af31686"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 5966890c-d488-438a-8c98-637a7f02ff2b
+X-Runtime: 0.020478
+X-XSS-Protection: 1; mode=block
+
+{
+  "id": 1,
+  "year": 93,
+  "created_at": "2014-09-23T22:46:25.435+09:00",
+  "updated_at": "2014-09-23T22:46:25.435+09:00"
+}
+```
+
 ## GET /api/class_years/1
 Returns class year.
 
@@ -7,7 +78,7 @@ Returns class year.
 ```
 GET /api/class_years/1 HTTP/1.1
 Accept: application/json
-Access-Token: c8f0544a2345ec1c813e792c0e18d476e2882b14140d3ef1034fd53edeed0ebd
+Access-Token: 294b013c73bc07673b98938fc1a8a18dc640b46d57d7e7a765ce45d6b84db434
 Content-Length: 0
 Content-Type: application/json
 Host: www.example.com
@@ -19,19 +90,52 @@ HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 108
 Content-Type: application/json; charset=utf-8
-ETag: "b86549aa523067460312fdc721fee64c"
+ETag: "bcd58321e3f178b7d0aaef4e4c9ebc58"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: ec24af57-48ad-4c34-971c-75ae4156da97
-X-Runtime: 0.002734
+X-Request-Id: 97564023-52c8-4115-85fc-5c396f227cae
+X-Runtime: 0.003878
 X-XSS-Protection: 1; mode=block
 
 {
   "id": 1,
   "year": 93,
-  "created_at": "2014-09-23T22:34:45.650+09:00",
-  "updated_at": "2014-09-23T22:34:45.650+09:00"
+  "created_at": "2014-09-23T22:46:25.680+09:00",
+  "updated_at": "2014-09-23T22:46:25.680+09:00"
 }
+```
+
+## GET /api/class_years
+Returns a list of class years.
+
+### Example
+
+#### Request
+```
+GET /api/class_years HTTP/1.1
+Accept: application/json
+Access-Token: 8afa6c7da529215bc2c93705164b073f6220e10bdbc885b301da444dcc27d998
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 2
+Content-Type: application/json; charset=utf-8
+ETag: "d751713988987e9331980363e24189ce"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: ef738593-9996-49c9-a066-7b2cf9681758
+X-Runtime: 0.003315
+X-XSS-Protection: 1; mode=block
+
+[
+
+]
 ```
 
 ## PATCH 
@@ -43,7 +147,7 @@ Updates class year.
 ```
 PATCH /api/class_years/1 HTTP/1.1
 Accept: application/json
-Access-Token: 15b9d53f350af587ba1a88a38d0f350bd535ab336806b5345df990cd0255fef5
+Access-Token: 5fd4c1fb230566b2ad09b5699418b3bc966abf896f3df5cb86c748b22afd12ac
 Content-Length: 26
 Content-Type: application/json
 Host: www.example.com
@@ -64,111 +168,7 @@ Content-Type: application/json
 ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 44511628-7e01-4e0d-9cd9-50379e37e704
-X-Runtime: 0.005569
+X-Request-Id: 3df56333-1b80-42ed-af80-ce78f12d714f
+X-Runtime: 0.005311
 X-XSS-Protection: 1; mode=block
-```
-
-## POST /api/class_years
-Creates new class year.
-
-### Example
-
-#### Request
-```
-POST /api/class_years HTTP/1.1
-Accept: application/json
-Access-Token: 536c13b6c2ee82712786b0270ae726320420bccf9206b233eb7621e4ef5ef3b8
-Content-Length: 26
-Content-Type: application/json
-Host: www.example.com
-
-{
-  "class_year": {
-    "year": 93
-  }
-}
-```
-
-#### Response
-```
-HTTP/1.1 201
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 108
-Content-Type: application/json; charset=utf-8
-ETag: "16754111af2d578270acdc1b29cedb44"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: b61c9640-431b-4a0e-9858-1bf4a15557f3
-X-Runtime: 0.003577
-X-XSS-Protection: 1; mode=block
-
-{
-  "id": 1,
-  "year": 93,
-  "created_at": "2014-09-23T22:34:46.223+09:00",
-  "updated_at": "2014-09-23T22:34:46.223+09:00"
-}
-```
-
-## DELETE /api/class_years/1
-Destroys specified record.
-
-### Example
-
-#### Request
-```
-DELETE /api/class_years/1 HTTP/1.1
-Accept: application/json
-Access-Token: ea548df2de79a59e75fe88afd9ac0ce3a75357117b73e896eb43dd235771615d
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 1
-Content-Type: application/json
-ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 9cb7fd08-d53e-4780-9c5b-375986aa1057
-X-Runtime: 0.002824
-X-XSS-Protection: 1; mode=block
-```
-
-## GET /api/class_years
-Returns a list of class years.
-
-### Example
-
-#### Request
-```
-GET /api/class_years HTTP/1.1
-Accept: application/json
-Access-Token: af98d2c46a418efcbf7a1d21cfded5826723ea3abafc4accdf676a34aaf2e7e8
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 2
-Content-Type: application/json; charset=utf-8
-ETag: "d751713988987e9331980363e24189ce"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 1bd16aa0-3c0e-4532-b5db-8e98323a6d3e
-X-Runtime: 0.002044
-X-XSS-Protection: 1; mode=block
-
-[
-
-]
 ```
