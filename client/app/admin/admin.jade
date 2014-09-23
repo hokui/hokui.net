@@ -1,11 +1,8 @@
-div(ng-include='"/components/navbar/navbar.html"')
+.topfix.admin.container
+    ul.nav.nav-tabs(role="tablist")
+        li(ng-repeat="item in items", ng-class="{active: isActive(item.state)}")
+            a(ui-sref="{{item.state}}") {{item.title}}
 
-h1
-    a(ui-sref='admin') Admin page
 
-ul
-    li
-        a(ui-sref="admin.user") user
-
-div(ui-view="user")
+    div.admin-view(ui-view="main")
 
