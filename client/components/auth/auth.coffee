@@ -1,7 +1,7 @@
 'use strict'
 
-angular.module('hokuiApp').factory('Auth', [
-    '$http', '$rootScope', '$q', 'Token',
+angular.module appName
+.factory 'Auth',
     ($http, $rootScope, $q, Token) ->
         current:
             active: false
@@ -9,29 +9,27 @@ angular.module('hokuiApp').factory('Auth', [
 
         login: (user) ->
             deferred = $q.defer()
-            $http.post('/api/session',
+            $http.post '/api/session',
                 email: user.email
                 password: user.password
-            ).success((data) =>
+            .success (data) =>
                 Token.set(data.token)
                 @current.active = true
                 @current.user = data.user
                 deferred.resolve @current
-                $rootScope.$broadcast 'authenticate', message: 'You logged in.'
-            ).error((err) ->
+            .error (err) ->
                 deferred.reject err
-            )
+
             deferred.promise
 
         logout: (callback) ->
             deferred = $q.defer()
             if Token.get()
-                $http.delete('/api/session', {}
-                ).success((data) =>
+                $http.delete '/api/session', {}
+                .success (data) =>
                     @silentLogout()
-                    $rootScope.$broadcast 'deauthenticate', message: 'You logged out.'
                     deferred.resolve()
-                )
+
             else
                 @silentLogout()
                 deferred.resolve()
@@ -47,22 +45,20 @@ angular.module('hokuiApp').factory('Auth', [
         check: (callback) ->
             deferred = $q.defer()
             if Token.get()
-                $http.get('/api/users/profile', {}
-                ).success((data) =>
+                $http.get '/api/users/profile', {}
+                .success (data) =>
                     @current.active = true
-                    @current.user = data.user
+                    @current.user = data
                     deferred.resolve @current
-                ).error((err) =>
+                .error (err) =>
                     deferred.reject @current
-                )
+
             else
                 @silentLogout()
                 deferred.reject @current
 
             deferred.promise
 
-
-]).run(['Auth', 'Token', '$location', (Auth, Token, $location)->
+.run (Auth)->
     Auth.check()
-])
 
