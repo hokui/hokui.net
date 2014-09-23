@@ -6,20 +6,20 @@ class Api::UsersController < Api::ApplicationController
   def index
     @users = User.all
     authorize User
-    render json: @users
+    render json: UserSerializer.new(@users)
   end
 
   def show
     authorize @user
-    render json: @user
+    render json: UserSerializer.new(@user)
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
-      render json: @user, status: 201
+      render json: UserSerializer.new(@user), status: 201
     else
-      render json: @user, status: 422
+      render json: UserSerializer.new(@user), status: 422
     end
   end
 
@@ -30,7 +30,7 @@ class Api::UsersController < Api::ApplicationController
   end
 
   def profile
-    render json: @current_user
+    render json: UserSerializer.new(@current_user)
   end
 
   def activate
