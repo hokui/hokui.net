@@ -15,7 +15,7 @@
                 td {{getYear(user.class_year_id)}}
                 td
                     a(ui-sref="admin.user.detail({id: user.id})")
-                        | {{user.family_name}} {{user.given_name}}
+                        | {{user.full_name}}
                 td {{user.handle_name}}
                 td
                     div(ng-if="user.admin")
