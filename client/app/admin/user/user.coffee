@@ -36,9 +36,6 @@ angular.module appName
 .controller 'AdminUserListCtrl',
     ($scope, User, Token, $state, IDRetrieve) ->
 
-        $scope.showDetail = (user)->
-            $state.go 'admin.user.detail', id: user.id
-
         $scope.getYear = (id)->
             IDRetrieve($scope.years, id).year
 
@@ -49,12 +46,22 @@ angular.module appName
 
         $scope.user = IDRetrieve($scope.users, user_id)
 
-        $scope.approvable =
-            $scope.user.activation_state is 'active' and $scope.user.approval_state is 'waiting'
+        $scope.approvable = (user)->
+            user.activation_state is 'active' and user.approval_state is 'waiting'
 
-        $scope.approve = ->
-            if not $scope.approvable
-                console.log 'dont approve!!'
+        $scope.deleteUser = (user)->
+            user.$remove (data)->
+                $state.transitionTo 'admin.user', {},
+                    reload: true
+                    inherit: false
+                    notify: true
+            , (err)->
+                console.log err
+                console.log 'cant delete user'
+
+        $scope.approve = (user)->
+            if not $scope.approvable(user)
+                console.log 'cant approve'
 
             $http.post "/api/users/#{$scope.user.id}/approve",
                 {}

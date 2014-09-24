@@ -3,7 +3,12 @@ alert(ng-if="!!error", type="warning") {{error}}
 
 div(ng-if="!!user.id")
 
-    button.btn.btn-primary(ng-disabled="!approvable", ng-click="approve()") Approve
+    ul.list-inline
+        li
+            button.btn.btn-sm.btn-primary(ng-disabled="!approvable(user)", ng-click="approve(user)") Approve
+        li
+            button.btn.btn-sm.btn-danger(ng-click="deleteUser(user)") Delete
+
     table.table.table-2col
         tbody
             tr(ng-repeat="(k, v) in user")
