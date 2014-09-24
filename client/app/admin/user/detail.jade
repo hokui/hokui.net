@@ -5,7 +5,7 @@ div(ng-if="!!user.id")
 
     ul.list-inline
         li
-            button.btn.btn-sm.btn-primary(ng-disabled="!approvable(user)", ng-click="approve(user)") Approve
+            button.btn.btn-sm.btn-primary(ng-disabled="!approvable(user)", ng-click="approveUser(user)") Approve
         li
             button.btn.btn-sm.btn-danger(ng-click="deleteUser(user)") Delete
 

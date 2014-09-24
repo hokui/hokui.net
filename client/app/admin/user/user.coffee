@@ -29,25 +29,27 @@ angular.module appName
 
 
 .controller 'AdminUserCtrl',
-    ($scope, users, years) ->
+    ($scope, $http, $state, IDRetrieve, users, years) ->
         $scope.users = users
         $scope.years = years
 
-.controller 'AdminUserListCtrl',
-    ($scope, User, Token, $state, IDRetrieve) ->
-
-        $scope.getYear = (id)->
-            IDRetrieve($scope.years, id).year
-
-
-.controller 'AdminUserDetailCtrl',
-    ($scope, User, $stateParams, $http, $state, IDRetrieve, $location) ->
-        user_id = $stateParams.id
-
-        $scope.user = IDRetrieve($scope.users, user_id)
-
         $scope.approvable = (user)->
             user.activation_state is 'active' and user.approval_state is 'waiting'
+
+        $scope.getYear = (user)->
+            IDRetrieve($scope.years, user.class_year_id).year
+
+        $scope.approveUser = (user)->
+            if not $scope.approvable(user)
+                console.log 'cant approve'
+
+            $http.post "/api/users/#{user.id}/approve",
+                {}
+            .success (data)->
+                user.approval_state = 'approved'
+                if user.approve_processing?
+                    delete user['approve_processing']
+
 
         $scope.deleteUser = (user)->
             user.$remove (data)->
@@ -59,15 +61,44 @@ angular.module appName
                 console.log err
                 console.log 'cant delete user'
 
-        $scope.approve = (user)->
-            if not $scope.approvable(user)
-                console.log 'cant approve'
+.controller 'AdminUserListCtrl',
+    ($scope, $templateCache) ->
+        # activation_state
+        #   pending : メール認証待ち
+        #   active  : メール認証済
+        # approval_state
+        #   waiting : 管理人承認待ち
+        #   approved: active!
 
-            $http.post "/api/users/#{$scope.user.id}/approve",
-                {}
-            .success (data)->
-                $state.transitionTo 'admin.user', {},
-                    reload: true
-                    inherit: false
-                    notify: true
+        $scope.processApprove = (user)->
+            user.approve_processing = true
+
+        $scope.status = (user)->
+            t = ''
+            switch user.activation_state
+                when 'pending'
+                    t = 'pending'
+                when 'active'
+                    switch user.approval_state
+                        when 'waiting'
+                            if user.approve_processing?
+                                t = 'approve_processing'
+                            else
+                                t = 'waiting'
+                        when 'approved'
+                            t = 'active'
+                        else
+                            t = 'annon'
+                else
+                    t = 'annon'
+
+            template = "admin.user.list.status.#{t}.html"
+
+
+.controller 'AdminUserDetailCtrl',
+    ($scope, $stateParams, IDRetrieve) ->
+        user_id = $stateParams.id
+
+        $scope.user = IDRetrieve($scope.users, user_id)
+
 
