@@ -8,18 +8,15 @@ del = require 'del'
 ###*
 manual inclusions
 ###
-es = require 'event-stream'
 bowerFiles = require 'main-bower-files'
-wiredep = require('wiredep').stream
 seq = require 'run-sequence'
-
+sort = require 'sort-stream'
 
 ###*
 preparalations
 ###
 
 p = console.log
-
 
 class Conf
     setProd: (isProd)->
@@ -78,7 +75,6 @@ g.task 'copy:static', ()->
     .pipe g.dest "#{conf.dest}"
 
 
-
 g.task 'css:vendor', ['copy:fonts'], ->
 
     src = "#{conf.src}/vendor/**/*.{sass,scss}"
@@ -99,32 +95,6 @@ g.task 'css:vendor', ['copy:fonts'], ->
         t.pipe g.dest dest
 
 
-
-g.task 'inject:sass', ->
-    target = [
-        "#{conf.src}/{app,components}/**/*.{sass,scss}"
-        "!#{conf.src}/app/app.sass"
-    ]
-
-    t = g.src "#{conf.src}/app/app.sass"
-    .pipe $.plumber()
-    .pipe $.inject(
-        g.src(target, read: false),
-        {
-            starttag: '// inject:sass'
-            endtag: '// endinject'
-            transform: (filePath, file, i, length)->
-                filePath = filePath.replace('client/app/', '')
-                filePath = filePath.replace('client/components/', '')
-                filePath = filePath.replace('client/vendor/', '')
-                return "@import \"#{filePath}\""
-            addRootSlash: false
-        }
-    )
-    .pipe g.dest "#{conf.src}/app/"
-
-
-
 g.task 'css:app', ->
     src = "#{conf.src}/app/app.sass"
     dest = "#{conf.dest}/app"
@@ -133,7 +103,6 @@ g.task 'css:app', ->
         "#{conf.src}/{app,components}/**/*.{sass,scss}"
         "!#{conf.src}/app/app.sass"
     ]
-
 
     t = g.src src
     .pipe $.plumber()
@@ -150,6 +119,7 @@ g.task 'css:app', ->
             addRootSlash: false
         }
     )
+    .pipe sort()
     .pipe g.dest "#{conf.src}/app/"
     .pipe $.sass {
         includePaths: conf.sassPath
@@ -248,7 +218,7 @@ g.task 'index', ->
 
 g.task 'min:js', ->
     # concat order
-    # 1. vendor/vendor.js: bower componentns
+    # 1. vendor/vendor.js: bower js
     # 2. app/app.js: app script
     # 3. app/templates.js: templates
 
@@ -260,7 +230,7 @@ g.task 'min:js', ->
 
     t = g.src target
     .pipe $.concat 'app.min.js'
-    # .pipe $.uglify mangle: false
+    .pipe $.uglify mangle: false
     .pipe g.dest "#{conf.dest}"
 
 
@@ -280,6 +250,7 @@ g.task 'min:css', ->
     .pipe g.dest("#{conf.dest}")
 
 
+
 ###*
 integrated tasks
 ###
@@ -291,6 +262,7 @@ g.task 'watch', ->
     g.watch "#{conf.src}/{app,components}/**/*.{sass,scss}", ['css:app']
     g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['css:vendor']
     g.watch "#{conf.src}/**/*.coffee", ['js']
+
 
 g.task 'build', (cb)->
     if conf.prod
@@ -310,6 +282,7 @@ g.task 'build', (cb)->
             cb
         )
 
+
 g.task 'prod', ->
     conf.setProd(true)
 
@@ -320,5 +293,4 @@ g.task 'default', (cb)->
         'watch'
         cb
     )
-
 

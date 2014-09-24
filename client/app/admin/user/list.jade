@@ -8,11 +8,11 @@
                 th ハンドルネーム
                 th 管理者
                 th メールアドレス
-                th 認証
+                th 状態
         tbody
             tr(ng-repeat="user in users")
                 td {{user.id}}
-                td {{getYear(user.class_year_id)}}
+                td {{getYear(user)}}
                 td
                     a(ui-sref="admin.user.detail({id: user.id})")
                         | {{user.full_name}}
@@ -23,15 +23,20 @@
                             i.fa.fa-heart.heart-pink
                 td {{user.email}}
                 td
-                    div(ng-switch="user.approval_state")
-                        div(ng-switch-when="approved")
-                            .text-center
-                                i.fa.fa-heart.link.heart-pink(tooltip="active!",  tooltip-placement="right")
-                        div(ng-switch-when="waiting")
-                            div(ng-switch="user.activation_state")
-                                div(ng-switch-when="pending")
-                                    .text-center
-                                        i.fa.fa-times.link(tooltip="本人待ち", tooltip-placement="right")
-                                div(ng-switch-when="active")
-                                    .text-center
-                                        i.fa.fa-frown-o.link(tooltip="管理人待ち", tooltip-placement="right")
+                    .text-center(ng-include="status(user)")
+
+
+script(type="text/ng-template", id="admin.user.list.status.active.html")
+    i.fa.fa-heart.link.heart-pink(tooltip="active!",  tooltip-placement="right")
+
+script(type="text/ng-template", id="admin.user.list.status.pending.html")
+    i.fa.fa-times.link(tooltip="メール認証待ち",  tooltip-placement="right")
+
+script(type="text/ng-template", id="admin.user.list.status.waiting.html")
+    i.fa.fa-frown-o.link(tooltip="管理人承認待ち",  tooltip-placement="right", ng-click="processApprove(user)")
+
+script(type="text/ng-template", id="admin.user.list.status.approve_processing.html")
+    i.fa.fa-heart-o.link.heart-pink(tooltip="click to approve",  tooltip-placement="right", ng-click="approveUser(user)")
+
+script(type="text/ng-template", id="admin.user.list.status.annon.html")
+    i.fa.fa-question.link(tooltip="不明な状態",  tooltip-placement="right")

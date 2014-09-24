@@ -1,0 +1,7 @@
+.notify(ng-controller='NotifyCtrl', ng-class="{ 'notify-hidden': !Notification.current().visible }")
+    .alert.alert-dismissible(ng-class="alertType()")
+        button(type="button", class="close", data-dismiss="alert", ng-click="Notification.hide()")
+            span(aria-hidden="true") &times;
+            span.sr-only Close
+        | {{Notification.current().message}}
+

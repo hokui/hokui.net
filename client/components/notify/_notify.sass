@@ -1,0 +1,14 @@
+.notify
+    z-index: 100
+    position: fixed
+    top: 100%
+    width: 600px
+    left: 50%
+    transform: translate(-50%, -80px)
+    transition: transform .4s ease-out
+
+    .alert
+        margin: 0
+
+    &.notify-hidden
+        transform: translate(-50%, 0px)
