@@ -23,8 +23,7 @@ angular.module appName
             email_local: email
             activation_token: token
         .success (data) =>
-            period = 5
-            sec = period
+            sec = 5
             countDown = ->
                 $scope.status = "正常に受理されました。管理者の承認をお待ちください。#{sec}秒後にトップに戻ります"
                 sec = sec - 1

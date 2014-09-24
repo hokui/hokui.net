@@ -28,12 +28,10 @@ angular.module appName
                 controller: 'AdminUserDetailCtrl'
 
 
-
 .controller 'AdminUserCtrl',
     ($scope, users, years) ->
         $scope.users = users
         $scope.years = years
-
 
 .controller 'AdminUserListCtrl',
     ($scope, User, Token, $state, IDRetrieve) ->
@@ -41,19 +39,8 @@ angular.module appName
         $scope.showDetail = (user)->
             $state.go 'admin.user.detail', id: user.id
 
-        $scope.approvalState = (user)->
-            states =
-                approved:
-                    cls: 'fa-heart'
-                waiting:
-                    cls: 'fa-heart-o'
-            cls = states[user.approval_state].cls
-            html = "<i class=\"fa #{cls}\"></i>"
-            html
-
         $scope.getYear = (id)->
             IDRetrieve($scope.years, id).year
-
 
 
 .controller 'AdminUserDetailCtrl',
@@ -64,14 +51,6 @@ angular.module appName
 
         $scope.approvable =
             $scope.user.activation_state is 'active' and $scope.user.approval_state is 'waiting'
-
-        $scope.activationUrl = ->
-            $state.href 'activate', {
-                email_local: $scope.user.email.replace /@.*/, ''
-                activation_token: $scope.user.activation_token
-            },{
-                absolute: true
-            }
 
         $scope.approve = ->
             if not $scope.approvable
