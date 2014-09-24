@@ -10,7 +10,7 @@ manual inclusions
 ###
 bowerFiles = require 'main-bower-files'
 seq = require 'run-sequence'
-
+sort = require 'sort-stream'
 
 ###*
 preparalations
@@ -119,6 +119,7 @@ g.task 'css:app', ->
             addRootSlash: false
         }
     )
+    .pipe sort()
     .pipe g.dest "#{conf.src}/app/"
     .pipe $.sass {
         includePaths: conf.sassPath
