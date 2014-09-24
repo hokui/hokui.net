@@ -35,11 +35,13 @@ angular.module appName
         $scope.authItem = ->
             if Auth.current.active then authItems.logout else authItems.login
 
-        $scope.isCollapsed = true
-
         $scope.isVisible = (item)->
             if item.visible? then item.visible() else true
 
         $scope.navClass = (item)->
             active: $state.includes(item.state)
             disabled : if item.disable? then item.disable() else false
+
+        $scope.isCollapsed = true
+
+
