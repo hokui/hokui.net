@@ -14,7 +14,6 @@ angular.module appName
                     years: (ClassYear)->
                         ClassYear.query().$promise
 
-
             'main@admin.year':
                 templateUrl: '/app/admin/year/list.html'
                 controller: 'AdminYearListCtrl'
@@ -39,9 +38,10 @@ angular.module appName
         console.log 'enter adminyear ctrl'
         $scope.years = years
 
+
 .controller 'AdminYearListCtrl',
     ($scope, ClassYear) ->
-        # noop
+
 
 .controller 'AdminYearDetailCtrl',
     ($scope, ClassYear, $state, $stateParams, IDRetrieve) ->
@@ -54,7 +54,6 @@ angular.module appName
                     $scope.error = 'Not Found'
         else
             $scope.year = new ClassYear()
-
 
 
 .controller 'AdminYearEditCtrl',

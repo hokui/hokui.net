@@ -28,60 +28,77 @@ angular.module appName
                 controller: 'AdminUserDetailCtrl'
 
 
-
 .controller 'AdminUserCtrl',
-    ($scope, users, years) ->
+    ($scope, $http, $state, IDRetrieve, users, years) ->
         $scope.users = users
         $scope.years = years
 
+        $scope.approvable = (user)->
+            user.activation_state is 'active' and user.approval_state is 'waiting'
 
-.controller 'AdminUserListCtrl',
-    ($scope, User, Token, $state, IDRetrieve) ->
+        $scope.getYear = (user)->
+            IDRetrieve($scope.years, user.class_year_id).year
 
-        $scope.showDetail = (user)->
-            $state.go 'admin.user.detail', id: user.id
+        $scope.approveUser = (user)->
+            if not $scope.approvable(user)
+                console.log 'cant approve'
 
-        $scope.approvalState = (user)->
-            states =
-                approved:
-                    cls: 'fa-heart'
-                waiting:
-                    cls: 'fa-heart-o'
-            cls = states[user.approval_state].cls
-            html = "<i class=\"fa #{cls}\"></i>"
-            html
-
-        $scope.getYear = (id)->
-            IDRetrieve($scope.years, id).year
-
-
-
-.controller 'AdminUserDetailCtrl',
-    ($scope, User, $stateParams, $http, $state, IDRetrieve, $location) ->
-        user_id = $stateParams.id
-
-        $scope.user = IDRetrieve($scope.users, user_id)
-
-        $scope.approvable =
-            $scope.user.activation_state is 'active' and $scope.user.approval_state is 'waiting'
-
-        $scope.activationUrl = ->
-            $state.href 'activate', {
-                email_local: $scope.user.email.replace /@.*/, ''
-                activation_token: $scope.user.activation_token
-            },{
-                absolute: true
-            }
-
-        $scope.approve = ->
-            if not $scope.approvable
-                console.log 'dont approve!!'
-
-            $http.post "/api/users/#{$scope.user.id}/approve",
+            $http.post "/api/users/#{user.id}/approve",
                 {}
             .success (data)->
+                user.approval_state = 'approved'
+                if user.approve_processing?
+                    delete user['approve_processing']
+
+
+        $scope.deleteUser = (user)->
+            user.$remove (data)->
                 $state.transitionTo 'admin.user', {},
                     reload: true
                     inherit: false
                     notify: true
+            , (err)->
+                console.log err
+                console.log 'cant delete user'
+
+.controller 'AdminUserListCtrl',
+    ($scope, $templateCache) ->
+        # activation_state
+        #   pending : メール認証待ち
+        #   active  : メール認証済
+        # approval_state
+        #   waiting : 管理人承認待ち
+        #   approved: active!
+
+        $scope.processApprove = (user)->
+            user.approve_processing = true
+
+        $scope.status = (user)->
+            t = ''
+            switch user.activation_state
+                when 'pending'
+                    t = 'pending'
+                when 'active'
+                    switch user.approval_state
+                        when 'waiting'
+                            if user.approve_processing?
+                                t = 'approve_processing'
+                            else
+                                t = 'waiting'
+                        when 'approved'
+                            t = 'active'
+                        else
+                            t = 'annon'
+                else
+                    t = 'annon'
+
+            template = "admin.user.list.status.#{t}.html"
+
+
+.controller 'AdminUserDetailCtrl',
+    ($scope, $stateParams, IDRetrieve) ->
+        user_id = $stateParams.id
+
+        $scope.user = IDRetrieve($scope.users, user_id)
+
 

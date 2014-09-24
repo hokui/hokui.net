@@ -143,23 +143,8 @@ $caret-width-large:         5px !default;
 
 //== Tables
 //
-//## Customizes the `.table` component with basic values, each used across all table variations.
 
-//** Padding for `<th>`s and `<td>`s.
-$table-cell-padding:            8px !default;
-//** Padding for cells in `.table-condensed`.
-$table-condensed-cell-padding:  5px !default;
-
-//** Default background color used for all tables.
-$table-bg:                      transparent !default;
-//** Background color used for `.table-striped`.
-$table-bg-accent:               #f9f9f9 !default;
-//** Background color used for `.table-hover`.
-$table-bg-hover:                #f5f5f5 !default;
-$table-bg-active:               $table-bg-hover !default;
-
-//** Border color for table and cell borders.
-$table-border-color:            #ddd !default;
+@import "variables_tables";
 
 
 //== Buttons
@@ -437,18 +422,7 @@ $state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !
 //
 //##
 
-//** Tooltip max width
-$tooltip-max-width:           200px !default;
-//** Tooltip text color
-$tooltip-color:               #fff !default;
-//** Tooltip background color
-$tooltip-bg:                  #000 !default;
-$tooltip-opacity:             .9 !default;
-
-//** Tooltip arrow width
-$tooltip-arrow-width:         5px !default;
-//** Tooltip arrow color
-$tooltip-arrow-color:         $tooltip-bg !default;
+@import "variables_tooltips";
 
 
 //== Popovers

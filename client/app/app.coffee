@@ -33,5 +33,3 @@ angular.module appName, [
             return path
         else
             return false
-
-.constant 'AdminAdress', 'hokui.net@gmail.com'
