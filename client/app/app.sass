@@ -30,13 +30,10 @@
     @include clearfix
 
 
-
-
-
 // inject:sass
-@import "nav/_nav.sass"
 @import "admin/_admin.sass"
 @import "main/_main.sass"
+@import "nav/_nav.sass"
 // endinjector
 
 *
@@ -53,14 +50,12 @@ table.table.table-2col
         tr
 
             th,td
-                // padding: 12px
-                // line-height: 1.6em
                 vertical-align: middle
             th
                 text-align: center
                 font-weight: 400
                 white-space: nowrap;
     th
-        background: darken($body-bg, 5%)
+        background: $table-bg-accent
     td
-        background: $body-bg
+        background: $table-bg
