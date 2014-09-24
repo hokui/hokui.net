@@ -107,7 +107,7 @@ g.task 'css:app', ->
     t = g.src src
     .pipe $.plumber()
     .pipe $.inject(
-        g.src(target, read: false).pipe $.order(),
+        g.src(target, read: false),
         {
             starttag: '// inject:sass'
             endtag: '// endinject'
