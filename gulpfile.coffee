@@ -90,9 +90,8 @@ g.task 'css:vendor', ['copy:fonts'], ->
 
     if conf.prod
         t.pipe $.concat 'vendor.css'
-        .pipe g.dest dest
-    else
-        t.pipe g.dest dest
+
+    t.pipe g.dest dest
 
 
 g.task 'css:app', ->
@@ -133,7 +132,10 @@ g.task 'css', ['css:app', 'css:vendor']
 
 
 g.task 'js', ->
-    t = g.src ["#{conf.src}/**/*.coffee", "!#{conf.bowerDir}/**/*.coffee"]
+    t = g.src [
+        "#{conf.src}/{components,app}/**/*.coffee",
+        "!#{conf.bowerDir}/**/*.coffee"
+    ]
     .pipe $.sourcemaps.init()
     .pipe $.plumber()
     .pipe $.coffee(
@@ -146,10 +148,8 @@ g.task 'js', ->
         t
         .pipe $.ngAnnotate()
         .pipe $.concat 'app/app.js'
-        .pipe g.dest "#{conf.dest}/"
-    else
-        t
-        .pipe g.dest "#{conf.dest}/"
+
+    t.pipe g.dest "#{conf.dest}/"
     t
 
 
@@ -187,8 +187,10 @@ g.task 'index', ->
         target = [
             "#{conf.dest}/vendor/**/*.css"
             "#{conf.dest}/app/app.css"
+            "#{conf.dest}/components/service.js"
+            "#{conf.dest}/components/**/*.js"
             "#{conf.dest}/app/app.js"
-            "#{conf.dest}/{app,components}/**/*.js"
+            "#{conf.dest}/app/**/*.js"
         ]
 
 
