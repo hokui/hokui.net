@@ -9,7 +9,7 @@ angular.module appName, [
     'ngAnimate'
     'ui.router'
     'ui.bootstrap'
-    'angularLocalStorage'
+    serviceName
 ]
 
 .config ($urlRouterProvider, $locationProvider) ->
@@ -33,3 +33,35 @@ angular.module appName, [
             return path
         else
             return false
+
+
+.config (TokenProvider)->
+    TokenProvider.tokenKey 'Access-Token'
+    TokenProvider.storageKey 'token'
+    TokenProvider.tokenPrefix ''
+
+
+.run ($rootScope, PageRestriction, $state, Auth)->
+
+    hooking_first_change = true
+    unregister = $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
+        go = ->
+            hooking_first_change = false
+            $state.transitionTo toState, toParams
+
+        Auth.check().then go, go
+        ev.preventDefault()
+        unregister()
+
+
+    $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
+        if hooking_first_change
+            return
+        can = PageRestriction(toState, fromState)
+        if not can
+            ev.preventDefault()
+
+
+
+angular.element(document).ready ->
+    angular.bootstrap document, [appName]
