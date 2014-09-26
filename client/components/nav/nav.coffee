@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module appName
+angular.module serviceName
+
 .controller 'NavCtrl',
     ($scope, $state, Auth) ->
         $scope.Auth = Auth
@@ -13,7 +14,7 @@ angular.module appName
         ,
             title: 'Admin'
             state: 'admin'
-            visible: -> Auth.current.user?.admin
+            visible: -> Auth.can 'admin'
         ]
 
         authItems =
@@ -27,13 +28,13 @@ angular.module appName
         $scope.signup =
             state: 'signup'
             title: 'Signup'
-            visible: -> not Auth.current.active
+            visible: -> not Auth.active()
 
         $scope.toHref = (state)->
             $state.href(state)
 
         $scope.authItem = ->
-            if Auth.current.active then authItems.logout else authItems.login
+            if Auth.active() then authItems.logout else authItems.login
 
         $scope.isVisible = (item)->
             if item.visible? then item.visible() else true
@@ -43,5 +44,6 @@ angular.module appName
             disabled : if item.disable? then item.disable() else false
 
         $scope.isCollapsed = true
+
 
 
