@@ -10,4 +10,6 @@
 #
 
 class Subject < ActiveRecord::Base
+  validates(:title_ja) { presence; uniqueness }
+  validates(:title_en) { presence; uniqueness; format(with: /\A[0-9a-z_]+\Z/) }
 end

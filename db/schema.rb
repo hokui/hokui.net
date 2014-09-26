@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 20140926052122) do
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
 
   create_table "subjects", force: true do |t|
-    t.string   "title_ja"
-    t.string   "title_en"
+    t.string   "title_ja",   null: false
+    t.string   "title_en",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
