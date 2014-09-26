@@ -1,5 +1,5 @@
 div(ng-if="!error")
-    form.form-horizontal(role="form", ng-submit="saveYear()")
+    form.form-horizontal(role="form", ng-submit="doSaveYear(new_year)")
         .panel.panel-default
             .panel-heading
                 h3 {{title}}
@@ -7,7 +7,7 @@ div(ng-if="!error")
                 .form-group
                     label.control-label.col-md-2(for="yearInputYear") 期
                     .col-md-10
-                        input.form-control(type="number", placeholder="期", id="yearInputEmail", ng-model="year.year")
+                        input.form-control(type="number", placeholder="期", id="yearInputEmail", ng-model="new_year.year")
             .panel-footer.clearfix
                 .pull-left
                     div(ng-if="editing")
@@ -16,5 +16,6 @@ div(ng-if="!error")
                         a.btn.btn-default(ui-sref="admin.year") 戻る
                 .pull-right
                     button.btn.btn-primary(type="submit") 保存
-                    button.btn.btn-danger(ng-if="editing", ng-click="deleteYear()") 削除
+                    button.btn.btn-danger(type="button", ng-if="editing", ng-click="deleteYear(year)") {{deleteBtnLabel()}}
+                    button.btn.btn-sm.btn-default(type="button", ng-if="deleting", ng-click="stopDeleting()") やっぱりやめる
 

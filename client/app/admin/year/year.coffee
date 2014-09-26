@@ -34,9 +34,9 @@ angular.module appName
 
 
 .controller 'AdminYearCtrl',
-    ($scope, ClassYear, years) ->
-        console.log 'enter adminyear ctrl'
-        $scope.years = years
+    ($scope, years, ResourceStore) ->
+        $scope.years = ResourceStore years
+
 
 
 .controller 'AdminYearListCtrl',
@@ -44,39 +44,65 @@ angular.module appName
 
 
 .controller 'AdminYearDetailCtrl',
-    ($scope, ClassYear, $state, $stateParams, IDRetrieve) ->
-        console.log 'enter detail ctrl'
+    ($scope, ClassYear, $state, $stateParams, Notify) ->
         year_id = $stateParams.id
 
         if year_id isnt ''
-                $scope.year = IDRetrieve($scope.years, year_id)
-                if not $scope.year?
-                    $scope.error = 'Not Found'
-        else
-            $scope.year = new ClassYear()
+            $scope.year =$scope.years.get year_id
+            if not $scope.year?
+                $state.go 'admin.year'
+                Notify "Not found class_year(id: \"#{year_id}\")", type: 'warning'
 
 
 .controller 'AdminYearEditCtrl',
-    ($scope, ClassYear, $state, $stateParams) ->
-        $scope.editing = $scope.year.id?
+    ($scope, ClassYear, $state, $stateParams, Notify) ->
+        $scope.editing = $scope.year?.id?
         $scope.title = if $scope.editing then '編集' else '新規作成'
 
-        reload = (state, params)->
-            $state.transitionTo state, params,
-                reload: true
-                inherit: false
-                notify: true
+        $scope.deleting = false
 
-        $scope.saveYear = ->
+        $scope.new_year = new ClassYear()
+        if $scope.editing
+            $scope.new_year.id = $scope.year.id
+            $scope.new_year.year = $scope.year.year
+
+
+        $scope.doSaveYear = (year)->
             if $scope.editing
-                $scope.year.$update {}, (data)->
-                    reload 'admin.year.detail', {id: data.id}
+                # $scope.year.$update {}, (data)->
+                ClassYear.update {id: year.id}, year, (data)->
+                    $scope.years.set year.id, year
+                    $state.go 'admin.year.detail', {id: $scope.year.id}
+                    Notify '保存しました。'
             else
-                $scope.year.$save {}, (data)->
-                    reload 'admin.year.detail', {id: data.id}
+                $scope.new_year.$save {}, (data)->
+                    $scope.years.add data
+                    $state.go 'admin.year.detail', {id: data.id}
+                    Notify '新規作成しました。'
 
-        $scope.deleteYear = ->
+        $scope.doDeleteYear = (year)->
             $scope.year.$remove {}, (data)->
-                reload 'admin.year', {},
+                $scope.years.del $scope.year
+                $state.go 'admin.year'
+                Notify '削除しました。', type: 'danger'
+
+        $scope.deleteYear = (year)->
+            if $scope.deleting
+                $scope.doDeleteYear(year)
+            else
+                Notify 'もう一度クリックすると削除します。', type: 'danger'
+                $scope.deleting = true
+
+        $scope.stopDeleting = ->
+            $scope.deleting = false
+            Notify '削除を中断しました。', type: 'warning'
+
+        $scope.deleteBtnLabel = ()->
+            if $scope.deleting
+                return "マジで削除する"
+            else
+                return '削除する'
+
+
 
 
