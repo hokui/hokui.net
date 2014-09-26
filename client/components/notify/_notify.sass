@@ -1,14 +1,26 @@
 .notify
     z-index: 100
     position: fixed
-    top: 100%
-    width: 600px
+    top: auto
+    bottom: 0
     left: 50%
-    transform: translate(-50%, -80px)
-    transition: transform .4s ease-out
+    transform: translate(-50%, 0px)
+    // transition: transform .4s ease-out
 
-    .alert
-        margin: 0
+    @media (min-width: $screen-sm-min)
+        width: 700px
+    width: 80%
 
-    &.notify-hidden
-        transform: translate(-50%, 0px)
+    & > .alert-container
+        position: absolute
+        top: 0
+        transition: transform .4s ease-out
+        transform: translateY(0)
+        width: 100%
+        .alert
+            margin: 0 0 20px
+
+
+    &.notify-shown
+        & > .alert-container
+            transform: translateY(-100%)
