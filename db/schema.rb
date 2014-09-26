@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140718005304) do
+ActiveRecord::Schema.define(version: 20140926052122) do
 
   create_table "access_tokens", force: true do |t|
     t.integer  "user_id",          null: false
@@ -30,6 +30,16 @@ ActiveRecord::Schema.define(version: 20140718005304) do
   end
 
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
+
+  create_table "subjects", force: true do |t|
+    t.string   "title_ja"
+    t.string   "title_en"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "subjects", ["title_en"], name: "index_subjects_on_title_en", unique: true
+  add_index "subjects", ["title_ja"], name: "index_subjects_on_title_ja", unique: true
 
   create_table "users", force: true do |t|
     t.string   "email",                                           null: false

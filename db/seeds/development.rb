@@ -60,3 +60,7 @@ unless not_activated = User.find_by(email: "not_activated@ec.hokudai.ac.jp")
 end
 not_activated.activation_token = "d1nbuwA8vmVKRJR9xzrn"
 not_activated.save!
+
+s1 = Subject.create!(title_ja: "生化学Ⅰ", title_en: "biochemistry_1")
+s2 = Subject.create!(title_ja: "生理学Ⅰ", title_en: "physiology_1")
+
