@@ -11,6 +11,10 @@
                 li
                     a(ui-sref="signup") Sign up
 
+    .well
+        a.btn.btn-default(ui-sref="admin") go to admin
+        p try to access with non-admin and unregistered user
+
     .container-fluid
 
         .panel.panel-default
@@ -23,10 +27,10 @@
                     dl.dl-horizontal
                         dt token
                         dd {{Token.get()}}
-                div(ng-if="current.active")
+                div(ng-if="Auth.active()")
                     h3 Your profile
                     dl.dl-horizontal
-                        dt(ng-repeat-start="(k, v) in current.user") {{k}}
+                        dt(ng-repeat-start="(k, v) in Auth.user()") {{k}}
                         dd(ng-repeat-end) {{v}}
 
 

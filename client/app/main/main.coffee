@@ -9,12 +9,12 @@ angular.module appName
         controller: 'MainCtrl'
 
 .controller 'MainCtrl',
-    ($scope, Token, Auth) ->
-        $scope.current = Auth.current
+    ($scope, Token, Auth, $state, Notify) ->
+        $scope.Auth = Auth
         $scope.Token = Token
 
-        if Auth.current.active
-            $scope.status = "you are active as #{Auth.current.user.handle_name}"
+        if Auth.active()
+            $scope.status = "you are active as #{Auth.user().handle_name}"
             $scope.message = "your info is below."
         else
             $scope.status = "you are inactive"
