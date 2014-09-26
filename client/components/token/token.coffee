@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module appName
+angular.module serviceName
+
 .provider 'Token', class
 
     constructor: () ->
@@ -56,9 +57,4 @@ angular.module appName
             storage.remove(storage_key)
             delete $http.defaults.headers.common[token_key]
 
-
-.config (TokenProvider)->
-    TokenProvider.tokenKey 'Access-Token'
-    TokenProvider.storageKey 'token'
-    TokenProvider.tokenPrefix ''
 

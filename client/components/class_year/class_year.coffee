@@ -1,9 +1,9 @@
 'use strict'
 
-angular.module appName
+angular.module serviceName
 
 .factory 'ClassYear',
-    ($resource) ->
+    ($resource, IDRetrieve) ->
         $resource "/api/class_years/:id", {id: '@id'},
             get:
                 method: 'GET'
@@ -24,10 +24,5 @@ angular.module appName
                     angular.toJson class_year: data
 
 
-.factory 'ClassYearStore',
-    (ClassYear) ->
-        years: []
-        get: ->
-            ClassYear.query {}, (data)->
-                @years = data
+
 
