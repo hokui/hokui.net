@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module appName
+angular.module serviceName
 
 .factory 'IDRetrieve',
     () ->
@@ -11,3 +11,22 @@ angular.module appName
                 if ''+obj[pk_field] is ''+pk
                     return obj
             return null
+
+.factory 'ResourceStore',
+    (IDRetrieve)->
+        (base)->
+            angular.extend base,
+                get: (id)->
+                    IDRetrieve this, id, 'id'
+
+                set: (id, obj)->
+                    _obj = @get id
+                    angular.extend _obj, obj
+
+                add: (obj)->
+                    this.push obj
+
+                del: (obj)->
+                    i = this.indexOf obj
+                    if i > -1
+                        this.splice i, 1
