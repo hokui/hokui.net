@@ -29,17 +29,17 @@ angular.module appName
 
 
 .controller 'AdminUserCtrl',
-    ($scope, $http, $state, IDRetrieve, users, years) ->
-        $scope.users = users
-        $scope.years = years
+    ($scope, $http, $state, Notify, ResourceStore, users, years) ->
+        $scope.users = ResourceStore users
+        $scope.years = ResourceStore years
 
         $scope.approvable = (user)->
             user.activation_state is 'active' and user.approval_state is 'waiting'
 
         $scope.getYear = (user)->
-            IDRetrieve($scope.years, user.class_year_id).year
+            $scope.years.get(user.class_year_id).year
 
-        $scope.approveUser = (user)->
+        $scope.doApproveUser = (user)->
             if not $scope.approvable(user)
                 console.log 'cant approve'
 
@@ -47,22 +47,21 @@ angular.module appName
                 {}
             .success (data)->
                 user.approval_state = 'approved'
-                if user.approve_processing?
-                    delete user['approve_processing']
+                Notify "「#{user.handle_name}」さんを認証しました。"
 
 
-        $scope.deleteUser = (user)->
+        $scope.doDeleteUser = (user)->
+            user_name = user.handle_name
             user.$remove (data)->
-                $state.transitionTo 'admin.user', {},
-                    reload: true
-                    inherit: false
-                    notify: true
+                $scope.users.del user
+                $state.go 'admin.user'
+                Notify "「#{user_name}」さんを削除しました。", type: 'danger'
             , (err)->
                 console.log err
                 console.log 'cant delete user'
 
 .controller 'AdminUserListCtrl',
-    ($scope, $templateCache) ->
+    ($scope, $templateCache, Notify) ->
         # activation_state
         #   pending : メール認証待ち
         #   active  : メール認証済
@@ -70,8 +69,16 @@ angular.module appName
         #   waiting : 管理人承認待ち
         #   approved: active!
 
-        $scope.processApprove = (user)->
-            user.approve_processing = true
+        approvingUsers = {}
+
+
+        $scope.doApproveUser = (user)->
+            if approvingUsers[user.id]?
+                $scope.approveUser user
+            else
+                approvingUsers[user.id] = true
+                Notify 'もう一度クリックすると認証します。'
+
 
         $scope.status = (user)->
             t = ''
@@ -81,7 +88,7 @@ angular.module appName
                 when 'active'
                     switch user.approval_state
                         when 'waiting'
-                            if user.approve_processing?
+                            if approvingUsers[user.id]?
                                 t = 'approve_processing'
                             else
                                 t = 'waiting'
@@ -96,9 +103,28 @@ angular.module appName
 
 
 .controller 'AdminUserDetailCtrl',
-    ($scope, $stateParams, IDRetrieve) ->
+    ($scope, $stateParams, Notify) ->
         user_id = $stateParams.id
 
-        $scope.user = IDRetrieve($scope.users, user_id)
+        $scope.deleting = false
+        $scope.user = $scope.users.get user_id
+
+        $scope.deleteBtnLabel = ()->
+            if $scope.deleting
+                return "マジで削除する"
+            else
+                return '削除する'
+
+        $scope.stopDeleting = ->
+            $scope.deleting = false
+            Notify '削除を中断しました。', type: 'warning'
+
+        $scope.deleteUser = (user)->
+            if $scope.deleting
+                $scope.doDeleteUser user
+            else
+                $scope.deleting = true
+                Notify 'もう一度クリックすると削除します。', type: 'danger'
+
 
 
