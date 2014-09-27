@@ -72,9 +72,9 @@ angular.module appName
         approvingUsers = {}
 
 
-        $scope.doApproveUser = (user)->
+        $scope.approveUser = (user)->
             if approvingUsers[user.id]?
-                $scope.approveUser user
+                $scope.doApproveUser user
             else
                 approvingUsers[user.id] = true
                 Notify 'もう一度クリックすると認証します。'
