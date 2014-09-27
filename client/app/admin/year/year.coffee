@@ -63,16 +63,13 @@ angular.module appName
 
         $scope.new_year = new ClassYear()
         if $scope.editing
-            $scope.new_year.id = $scope.year.id
-            $scope.new_year.year = $scope.year.year
+            angular.extend $scope.new_year, $scope.year
 
-
-        $scope.doSaveYear = (year)->
+        $scope.doSaveYear = ()->
             if $scope.editing
-                # $scope.year.$update {}, (data)->
-                ClassYear.update {id: year.id}, year, (data)->
-                    $scope.years.set year.id, year
-                    $state.go 'admin.year.detail', {id: $scope.year.id}
+                $scope.new_year.$update {}, (data)->
+                    $scope.years.set data.id, data
+                    $state.go 'admin.year.detail', {id: data.id}
                     Notify '保存しました。'
             else
                 $scope.new_year.$save {}, (data)->
@@ -80,15 +77,15 @@ angular.module appName
                     $state.go 'admin.year.detail', {id: data.id}
                     Notify '新規作成しました。'
 
-        $scope.doDeleteYear = (year)->
+        $scope.doDeleteYear = ()->
             $scope.year.$remove {}, (data)->
                 $scope.years.del $scope.year
                 $state.go 'admin.year'
                 Notify '削除しました。', type: 'danger'
 
-        $scope.deleteYear = (year)->
+        $scope.deleteYear = ()->
             if $scope.deleting
-                $scope.doDeleteYear(year)
+                $scope.doDeleteYear()
             else
                 Notify 'もう一度クリックすると削除します。', type: 'danger'
                 $scope.deleting = true
