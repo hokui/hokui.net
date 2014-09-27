@@ -21,7 +21,7 @@ angular.module serviceName
         _current = {}
 
         _set_defaults = ->
-            _current = angular.extend _current, _defaults
+            angular.extend _current, _defaults
 
         _set_defaults()
 
