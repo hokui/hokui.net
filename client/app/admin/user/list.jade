@@ -33,7 +33,7 @@ script(type="text/ng-template", id="admin.user.list.status.pending.html")
     i.fa.fa-times.link(tooltip="メール認証待ち",  tooltip-placement="right")
 
 script(type="text/ng-template", id="admin.user.list.status.waiting.html")
-    i.fa.fa-frown-o.link(tooltip="管理人承認待ち",  tooltip-placement="right", ng-click="processApprove(user)")
+    i.fa.fa-frown-o.link(tooltip="管理人承認待ち",  tooltip-placement="right", ng-click="approveUser(user)")
 
 script(type="text/ng-template", id="admin.user.list.status.approve_processing.html")
     i.fa.fa-heart-o.link.heart-pink(tooltip="click to approve",  tooltip-placement="right", ng-click="approveUser(user)")

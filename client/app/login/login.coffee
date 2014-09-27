@@ -13,8 +13,8 @@ angular.module appName
 
         $scope.credencials = {}
 
-        if Auth.current.active
-            $scope.message = "You are active as #{Auth.current.user.handle_name}."
+        if Auth.active()
+            $scope.message = "You are active as #{Auth.user().handle_name}."
         else
             $scope.message = "You are inactive. Why not login?"
 

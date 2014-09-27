@@ -7,7 +7,7 @@ div(ng-if="!!year.id")
         a(ui-sref="admin.year.detail({id: year.id})")
             | {{year.year}}
     a(ui-sref=".edit") 編集
-    table.table.table-2col
+    table.table.table-bordered.table-2col
         tr
             th ID
             td {{year.id}}

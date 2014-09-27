@@ -1,11 +1,45 @@
 'use strict'
 
-angular.module appName
+angular.module serviceName
+
 .factory 'Auth',
-    ($http, $rootScope, $q, Token) ->
-        current:
+    ($http, $q, Token) ->
+        _current =
             active: false
             user : {}
+
+        _levels =
+            admin: 2
+            user: 1
+            guest: 0
+
+        level: ->
+            if _current.active and _current.user?
+                if _current.user.admin
+                    return _levels.admin
+                else
+                    return _levels.user
+            else
+                return _levels.guest
+
+        can : (role_or_level)->
+            if role_or_level?
+                if typeof role_or_level isnt 'number'
+                    needs_level = _levels[role_or_level] or 0
+                else
+                    needs_level = role_or_level
+            else
+                needs_level = _levels.user
+
+            _can = needs_level <= @level()
+            return _can
+
+
+        active: ->
+            _current.active
+
+        user: ->
+            _current.user
 
         login: (user) ->
             deferred = $q.defer()
@@ -14,9 +48,9 @@ angular.module appName
                 password: user.password
             .success (data) =>
                 Token.set(data.token)
-                @current.active = true
-                @current.user = data.user
-                deferred.resolve @current
+                _current.active = true
+                _current.user = data.user
+                deferred.resolve _current
             .error (err) ->
                 deferred.reject err
 
@@ -38,8 +72,8 @@ angular.module appName
 
         silentLogout: ()->
             Token.clear()
-            @current.active = false
-            @current.user = {}
+            _current.active = false
+            _current.user = {}
 
 
         check: (callback) ->
@@ -47,18 +81,15 @@ angular.module appName
             if Token.get()
                 $http.get '/api/users/profile', {}
                 .success (data) =>
-                    @current.active = true
-                    @current.user = data
-                    deferred.resolve @current
+                    _current.active = true
+                    _current.user = data
+                    deferred.resolve _current
                 .error (err) =>
-                    deferred.reject @current
+                    deferred.reject _current
 
             else
                 @silentLogout()
-                deferred.reject @current
+                deferred.reject _current
 
             deferred.promise
-
-.run (Auth)->
-    Auth.check()
 

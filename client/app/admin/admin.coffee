@@ -13,6 +13,11 @@ angular.module appName
                 templateUrl: '/app/admin/main.html'
                 controller: 'AdminMainCtrl'
 
+        data:
+            restrict:
+                role: 'admin'
+                error: '/admin 以降へのアクセスは管理者権限が必要です。'
+
     .state 'admin.subject',
         url: '/subject',
         views:
@@ -22,8 +27,7 @@ angular.module appName
 
 .controller 'AdminCtrl',
     ($scope, Auth, $state) ->
-        if not Auth.current.user?.admin
-            $state.go 'main'
+
 
         $scope.isActive = (state)->
             if state is 'admin'

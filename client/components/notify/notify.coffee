@@ -1,73 +1,101 @@
 'use strict'
 
-angular.module appName
+angular.module serviceName
+
 .controller 'NotifyCtrl',
     ($scope, Notification) ->
         $scope.Notification = Notification
 
-        $scope.alertType = ->
-            'alert-info': Notification.current().type is 'info'
-            'alert-success': Notification.current().type is 'success'
-            'alert-warning': Notification.current().type is 'warning'
-            'alert-danger': Notification.current().type is 'danger'
-
 
 .factory 'Notification',
-    ($timeout) ->
-        types = ['info', 'success', 'warning', 'danger']
-        defaults =
-            type: types[0]
-            period: 5000
+    ($timeout, $q) ->
+        _types = ['info', 'success', 'warning', 'danger']
+        _defaults =
+            type: _types[0]
+            period: 4000
+            delay: 0
 
-        current =
-            type: defaults.type
-            period: defaults.period
-            message: ''
-            visible: false
+        _visible = false
+        _message = ''
 
-        timeout_promise = null
+        _current = {}
 
-        cancel_closeing = ->
-            if timeout_promise?
-                $timeout.cancel timeout_promise
+        _set_defaults = ->
+            angular.extend _current, _defaults
+
+        _set_defaults()
+
+        _timeout_promise = null
+
+        _cancel_closeing = ->
+            if _timeout_promise?
+                $timeout.cancel _timeout_promise
                 timeout_promise = null
 
+        ###*
+        interfece
+        ###
+
+        alertClass: ->
+            "alert-#{_current.type}"
+
         current: ->
-            current
+            _current
 
         isVisible: ->
-            current.visible
+            _visible
+
+        getMessage: ->
+            _message
 
         show: (message, options)->
-            cancel_closeing()
+            _cancel_closeing()
+            _set_defaults()
 
-            if options?.type? and (types.indexOf(options.type) > -1)
-                current.type = options.type
+            if options?
+                if options.type? and (_types.indexOf(options.type) > -1)
+                    _current.type = options.type
+
+                if options.period?
+                    p = parseInt(options.period)
+                    _current.period = if p > 0 then p else -1
+
+                if options.delay?
+                    d = parseInt(options.delay)
+                    _current.delay = if d > 0 then d else 0
+
+            _message = message
+
+            _inner_show = =>
+                _visible = true
+                if _current.period > 0
+                    _timeout_promise = $timeout ()=>
+                        @hide()
+                    , _current.period
+
+            if _current.delay > 0
+                $timeout _inner_show, _current.delay
             else
-                current.type = defaults.type
+                _inner_show()
 
-            if options?.period?
-                if options.period > 0
-                    current.period = options.period
-                else
-                    current.period = -1
-            else
-                current.period = defaults.period
-
-            current.message = message
-
-
-            current.visible = true
-
-            if current.period > 0
-                timeout_promise = $timeout @hide, current.period
+            return this
 
         hide: ->
-            cancel_closeing()
-            current.visible = false
+            _cancel_closeing()
+            _visible = false
+
 
 .factory 'Notify',
     (Notification) ->
         (message, options)->
             Notification.show(message, options)
+
+
+.run ($rootScope, Notification)->
+
+    $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
+        Notification.hide()
+
+
+
 

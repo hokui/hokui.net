@@ -5,11 +5,14 @@ div(ng-if="!!user.id")
 
     ul.list-inline
         li
-            button.btn.btn-sm.btn-primary(ng-disabled="!approvable(user)", ng-click="approveUser(user)") Approve
+            button.btn.btn-sm.btn-primary(ng-disabled="!approvable(user)", ng-click="doApproveUser(user)") Approve
         li
-            button.btn.btn-sm.btn-danger(ng-click="deleteUser(user)") Delete
+            button.btn.btn-sm.btn-danger(ng-click="deleteUser(user)") {{deleteBtnLabel()}}
+        li
+            button.btn.btn-sm.btn-default(ng-if="deleting", ng-click="stopDeleting()") やっぱりやめる
 
-    table.table.table-2col
+
+    table.table.table-bordered.table-2col
         tbody
             tr(ng-repeat="(k, v) in user")
                 th {{k}}

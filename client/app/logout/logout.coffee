@@ -20,7 +20,7 @@ angular.module appName
         $scope.$on 'event:logout', (event, data)->
             $state.go 'main'
 
-        if Auth.current.active
-            $scope.message = "you are active as #{Auth.current.user.handle_name}."
+        if Auth.active()
+            $scope.message = "you are active as #{Auth.user().handle_name}."
         else
             $scope.message = "you are inactive."
