@@ -1,8 +1,8 @@
 'use strict'
 
-serviceName = 'hokuiService'
+@serviceName = 'hokuiService'
 
-angular.module serviceName, [
+angular.module @serviceName, [
     'ngCookies'
     'ngResource'
     'ngSanitize'
