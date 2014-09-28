@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "description": "http://hokui.net",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/karma/bin/karma start",
     "start": "npm install && bower install && gulp build"
   },
   "repository": {
