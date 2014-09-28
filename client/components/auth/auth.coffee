@@ -1,9 +1,8 @@
 'use strict'
 
-angular.module serviceName
+angular.module @serviceName
 
-.factory 'Auth',
-    ($http, $q, Token) ->
+.factory 'Auth', ($http, $q, Token) ->
         _current =
             active: false
             user : {}

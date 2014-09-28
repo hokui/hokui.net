@@ -1,15 +1,15 @@
 'use strict'
 
-appName = 'hokuiApp'
+@appName = 'hokuiApp'
 
-angular.module appName, [
+angular.module @appName, [
     'ngCookies'
     'ngResource'
     'ngSanitize'
     'ngAnimate'
     'ui.router'
     'ui.bootstrap'
-    serviceName
+    @serviceName
 ]
 
 .config ($urlRouterProvider, $locationProvider) ->
@@ -62,6 +62,3 @@ angular.module appName, [
             ev.preventDefault()
 
 
-
-angular.element(document).ready ->
-    angular.bootstrap document, [appName]

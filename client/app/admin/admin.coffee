@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module appName
+angular.module @appName
 .config ($stateProvider) ->
     $stateProvider
     .state 'admin',

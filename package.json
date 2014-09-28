@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "description": "http://hokui.net",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/karma/bin/karma start",
     "start": "npm install && bower install && gulp build"
   },
   "repository": {
@@ -33,6 +33,12 @@
     "gulp-sass": "^0.7.3",
     "gulp-sourcemaps": "^1.2.2",
     "gulp-uglify": "^1.0.1",
+    "karma": "^0.12.23",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-coffee-preprocessor": "^0.2.1",
+    "karma-coverage": "git+https://github.com/endaaman/karma-coverage.git#coffee1.8.0",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4",
     "main-bower-files": "^2.0.0",
     "run-sequence": "^0.3.7",
     "sort-stream": "^1.0.0"

@@ -20,10 +20,11 @@
 # front-end part below
 
 npm-debug.log
-
 /node_modules
+
 /.sass-cache
 
 /public
-
 /dist
+
+/coverage
