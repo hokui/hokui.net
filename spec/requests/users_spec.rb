@@ -49,10 +49,10 @@ RSpec.describe "Users" do
   describe "POST /api/users" do
     before do
       create(:class_year)
-      @params = { user: FactoryGirl.attributes_for(:guest) }
-      @params[:user][:class_year] = 93
-      @params[:user].delete(:class_year_id)
-      @params[:user].delete(:admin)
+      @params = FactoryGirl.attributes_for(:guest)
+      @params[:class_year] = 93
+      @params.delete(:class_year_id)
+      @params.delete(:admin)
     end
 
     it "creates new user", autodoc: true do
@@ -63,7 +63,7 @@ RSpec.describe "Users" do
     end
 
     it "does not create new user if params are invalid" do
-      @params[:user][:password] = nil
+      @params[:password] = nil
       old_size = User.count
       post("/api/users", @params.to_json)
       expect(response.status).to eq(422)

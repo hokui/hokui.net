@@ -61,9 +61,8 @@ class Api::UsersController < Api::ApplicationController
       JSON.parse(request.body.read)
     )
     class_year =
-      ClassYear.find_by(year: json_params[:user][:class_year])
+      ClassYear.find_by(year: json_params[:class_year])
     json_params.
-      require(:user).
       permit(
         :email,
         :password,

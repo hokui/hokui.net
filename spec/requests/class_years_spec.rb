@@ -29,19 +29,19 @@ RSpec.describe "ClassYears", :type => :request do
     it "creates new class year", autodoc: true do
       admin = create_admin_with_token
       old_size = ClassYear.count
-      post_with_token(admin, "/api/class_years", { class_year: { year: 93 } }.to_json)
+      post_with_token(admin, "/api/class_years", { year: 93 }.to_json)
       expect(response.status).to eq(201)
       expect(ClassYear.count).to eq(old_size + 1)
     end
 
     it "returns 403 to a guest" do
       guest = create_guest_with_token
-      post_with_token(guest, "/api/class_years", { class_year: { year: 93 } }.to_json)
+      post_with_token(guest, "/api/class_years", { year: 93 }.to_json)
       expect(response.status).to eq(403)
     end
 
     it "returns 401 to an unauthorized client" do
-      post("/api/class_years", { class_year: { year: 93 } }.to_json)
+      post("/api/class_years", { year: 93 }.to_json)
       expect(response.status).to eq(401)
     end
   end
@@ -53,18 +53,18 @@ RSpec.describe "ClassYears", :type => :request do
 
     it "updates class year", autodoc: true do
       admin = create_admin_with_token
-      patch_with_token(admin, "/api/class_years/1", { class_year: { year: 94 } }.to_json)
+      patch_with_token(admin, "/api/class_years/1", { year: 94 }.to_json)
       expect(response.status).to eq(200)
     end
 
     it "returns 403 to a guest" do
       guest = create_guest_with_token
-      patch_with_token(guest, "/api/class_years/1", { class_year: { year: 94 } }.to_json)
+      patch_with_token(guest, "/api/class_years/1", { year: 94 }.to_json)
       expect(response.status).to eq(403)
     end
 
     it "returns 401 to an unauthorized client" do
-      patch("/api/class_years/1", { class_year: { year: 94 } }.to_json)
+      patch("/api/class_years/1", { year: 94 }.to_json)
       expect(response.status).to eq(401)
     end
   end
