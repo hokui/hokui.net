@@ -11,6 +11,7 @@
 
 class Semester < ActiveRecord::Base
   belongs_to :class_year
+  has_and_belongs_to_many :subjects
 
   validates(:identifier) { presence; uniqueness(scope: :class_year_id) }
 end

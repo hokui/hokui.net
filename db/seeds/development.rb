@@ -61,6 +61,15 @@ end
 not_activated.activation_token = "d1nbuwA8vmVKRJR9xzrn"
 not_activated.save!
 
-s1 = Subject.create!(title_ja: "生化学Ⅰ", title_en: "biochemistry_1")
-s2 = Subject.create!(title_ja: "生理学Ⅰ", title_en: "physiology_1")
+sub1 = Subject.create!(title_ja: "生化学", title_en: "biochemistry")
+sub2 = Subject.create!(title_ja: "解剖学", title_en: "anatomy")
+sub3 = Subject.create!(title_ja: "生理学", title_en: "physiology")
+sub4 = Subject.create!(title_ja: "薬理学", title_en: "pharmacology")
 
+sem1 = Semester.create!(class_year_id: 1, identifier: "2a")
+sem2 = Semester.create!(class_year_id: 1, identifier: "2b")
+
+sem1.subjects << sub1
+sem1.subjects << sub2
+sem2.subjects << sub3
+sem2.subjects << sub4

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007000257) do
+ActiveRecord::Schema.define(version: 20141007001623) do
 
   create_table "access_tokens", force: true do |t|
     t.integer  "user_id",          null: false
@@ -40,6 +40,13 @@ ActiveRecord::Schema.define(version: 20141007000257) do
 
   add_index "semesters", ["class_year_id", "identifier"], name: "index_semesters_on_class_year_id_and_identifier", unique: true
   add_index "semesters", ["class_year_id"], name: "index_semesters_on_class_year_id"
+
+  create_table "semesters_subjects", id: false, force: true do |t|
+    t.integer "semester_id", null: false
+    t.integer "subject_id",  null: false
+  end
+
+  add_index "semesters_subjects", ["semester_id", "subject_id"], name: "index_semesters_subjects_on_semester_id_and_subject_id", unique: true
 
   create_table "subjects", force: true do |t|
     t.string   "title_ja",   null: false
