@@ -2,9 +2,14 @@ require 'rails_helper'
 
 RSpec.describe "ClassYears", :type => :request do
   describe "GET /api/class_years" do
+    before do
+      create(:class_year)
+    end
+
     it "returns a list of class years, if ever client is unauthorized", autodoc: true do
       get("/api/class_years")
       expect(response.status).to eq(200)
+      expect(json[0]["year"]).to eq(93)
     end
   end
 
@@ -17,6 +22,7 @@ RSpec.describe "ClassYears", :type => :request do
       guest = create_guest_with_token
       get_with_token(guest, "/api/class_years/1")
       expect(response.status).to eq(200)
+      expect(json["year"]).to eq(93)
     end
 
     it "returns 401 to an unauthorized client" do
@@ -31,6 +37,7 @@ RSpec.describe "ClassYears", :type => :request do
       old_size = ClassYear.count
       post_with_token(admin, "/api/class_years", { year: 93 }.to_json)
       expect(response.status).to eq(201)
+      expect(json["year"]).to eq(93)
       expect(ClassYear.count).to eq(old_size + 1)
     end
 
@@ -55,6 +62,7 @@ RSpec.describe "ClassYears", :type => :request do
       admin = create_admin_with_token
       patch_with_token(admin, "/api/class_years/1", { year: 94 }.to_json)
       expect(response.status).to eq(200)
+      expect(json["year"]).to eq(94)
     end
 
     it "returns 403 to a guest" do
