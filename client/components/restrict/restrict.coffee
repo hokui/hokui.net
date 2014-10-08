@@ -3,24 +3,26 @@
 angular.module serviceName
 
 .factory 'PageRestriction',
-    ($state, Auth, Notify)->
-        (to, from)->
-            can = true
-            if to.data?.restrict?
-                restrict = to.data?.restrict
-                needs_role = to.data.restrict.role
-                error = restrict.error or '権限がありません。'
-                next = restrict.next or false
-                first_visit = from.name is ''
-                can = Auth.can needs_role
-                if not can
-                    if next
-                        $state.go next
-                    else
-                        if first_visit
-                            $state.go 'main'
-                    Notify error, type: 'warning', delay: if first_visit then 500 else 0
+    (Auth)->
+        (state)->
+            _default =
+                error: '権限がありません。'
+                next: 'main'
 
-            can
+            _result =
+                can: true
+
+            if state.data?.restrict?
+                restrict = state.data.restrict
+                _result.can = Auth.can state.data.restrict.role
+
+                if not _result.can
+                    _result.error = restrict.error or _default.error
+                    _result.next = restrict.next or _default.next
+
+            _result
+
+
+
 
 

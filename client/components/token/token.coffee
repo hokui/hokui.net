@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module @serviceName
+angular.module serviceName
 
 .provider 'Token', class
 
@@ -15,7 +15,7 @@ angular.module @serviceName
             if tk isnt ''
                 token_key = tk
             else
-                throw 'tokenKey mustnt be empty'
+                throw new Error('tokenKey mustnt be empty')
         token_key
 
     storageKey: (sk)->
@@ -23,38 +23,61 @@ angular.module @serviceName
             if sk isnt ''
                 storage_key = sk
             else
-                throw 'storageKey mustnt be empty'
+                throw new Error('storageKey mustnt be empty')
         storage_key
 
     tokenPrefix: (tp)->
         if tp?
             token_prefix = tp
+
         token_prefix
 
     $get: ($log, $http, storage)->
-        if token_prefix
-            appending = token_prefix + ' '
-        else
-            appending = ''
 
         token = storage.get(storage_key)
 
-        if token?
-            $http.defaults.headers.common[token_key] = "#{appending}#{token}"
+        obj =
+            storageKey: ->
+                storage_key
 
-        set: (t)->
-            if t?
-                token = t
-                $http.defaults.headers.common[token_key] = "#{appending}#{token}"
-                storage.set(storage_key, t)
-            else
-                @clear()
-                $log.info('Called Token.set(token) with nil token, token is automatically cleared')
-        get: ()->
-            token
-        clear: ()->
-            token = ''
-            storage.remove(storage_key)
-            delete $http.defaults.headers.common[token_key]
+            tokenKey: ->
+                token_key
 
+            tokenPrefix: ->
+                token_prefix
+
+            setToStorage: ->
+                storage.set(storage_key, token)
+
+            tokenHeader: ->
+                if token isnt ''
+                    if token_prefix is ''
+                        return token
+                    else
+                        return "#{token_prefix} #{token}"
+                else
+                    return ''
+
+            set: (t, useStorage)->
+                if (t?)and(t isnt '')
+                    if not useStorage?
+                        useStorage = true
+                    token = '' + t
+                    if useStorage
+                        @setToStorage()
+                    $http.defaults.headers.common[token_key] = @tokenHeader()
+                else
+                    @clear()
+
+            get: ()->
+                token
+
+            clear: ()->
+                token = ''
+                storage.remove(storage_key)
+                delete $http.defaults.headers.common[token_key]
+
+        obj.set token
+
+        obj
 
