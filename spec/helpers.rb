@@ -18,4 +18,8 @@ module Helpers
       end
     }
   end
+
+  def json
+    @json ||= JSON.parse(response.body)
+  end
 end

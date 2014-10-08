@@ -45,7 +45,6 @@ class Api::ClassYearsController < Api::ApplicationController
 
   def class_year_params
     ActionController::Parameters.new(JSON.parse(request.body.read)).
-    require(:class_year).
     permit(
       :year
     )

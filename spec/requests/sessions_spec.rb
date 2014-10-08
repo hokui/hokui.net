@@ -17,6 +17,10 @@ RSpec.describe "Sessions" do
 
       post("/api/session", params.to_json)
       expect(response.status).to eq(201)
+      expect(json["token"].class).to eq(String)
+      expect(json["token"].length).to be > 10
+      expect(json["user"]["full_name"]).to eq("guest guest")
+      expect(json["user"]["crypted_password"]).to be_nil
       expect(AccessToken.count).to eq(old_size + 1)
     end
 
