@@ -6,8 +6,8 @@ module.exports = (config) ->
         'client/components/**/*.coffee'
         'client/app/app.coffee'
         'client/app/**/*.coffee'
-        'client/spec/global.js'
-        'client/spec/**/*.coffee'
+        'client/test/unit/helper_*.coffee'
+        'client/test/unit/**/*.coffee'
     ]
     files = bowerFiles(includeDev: true).concat files
 
@@ -25,7 +25,7 @@ module.exports = (config) ->
 
         preprocessors:
             'client/{app,components}/**/*.coffee': ['coverage']
-            'client/spec/**/*.coffee': ['coffee']
+            'client/test/unit/**/*.coffee': ['coffee']
 
         reporters: ['progress', 'coverage']
 
