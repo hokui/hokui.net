@@ -13,6 +13,12 @@ angular.module serviceName
                 method: 'GET'
                 isArray: true
 
+            update:
+                method: 'PATCH'
+
+            save:
+                method: 'POST'
+
 
 
 
