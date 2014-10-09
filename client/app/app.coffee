@@ -59,7 +59,6 @@ angular.module appName, [
             return
         result = PageRestriction(toState)
         first_visit = fromState.name is ''
-        console.log result
         if not result.can
             ev.preventDefault()
             Notify result.error, type: 'warning', delay: if first_visit then 500 else 0
