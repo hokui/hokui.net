@@ -1,15 +1,15 @@
 'use strict'
 
-@appName = 'hokuiApp'
+window.appName = 'hokuiApp'
 
-angular.module @appName, [
+angular.module appName, [
     'ngCookies'
     'ngResource'
     'ngSanitize'
     'ngAnimate'
     'ui.router'
     'ui.bootstrap'
-    @serviceName
+    serviceName
 ]
 
 .config ($urlRouterProvider, $locationProvider) ->
@@ -41,7 +41,7 @@ angular.module @appName, [
     TokenProvider.tokenPrefix ''
 
 
-.run ($rootScope, PageRestriction, $state, Auth)->
+.run ($rootScope, PageRestriction, $state, Auth, Notify)->
 
     hooking_first_change = true
     unregister = $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
@@ -57,8 +57,11 @@ angular.module @appName, [
     $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
         if hooking_first_change
             return
-        can = PageRestriction(toState, fromState)
-        if not can
+        result = PageRestriction(toState)
+        first_visit = fromState.name is ''
+        if not result.can
             ev.preventDefault()
+            Notify result.error, type: 'warning', delay: if first_visit then 500 else 0
+            $state.go result.next
 
 

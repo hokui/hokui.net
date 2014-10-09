@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module @serviceName
+angular.module serviceName
 
 .controller 'NavCtrl',
     ($scope, $state, Auth) ->

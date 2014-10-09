@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module @serviceName
+angular.module serviceName
 
 .factory 'User',
     ($resource, Token) ->
@@ -15,8 +15,4 @@ angular.module @serviceName
 
             save:
                 method: 'POST'
-                transformRequest: (data)->
-                    angular.toJson user: data
-
-
 

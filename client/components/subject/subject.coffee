@@ -2,9 +2,9 @@
 
 angular.module serviceName
 
-.factory 'ClassYear',
+.factory 'Subject',
     ($resource) ->
-        $resource "/api/class_years/:id", {id: '@id'},
+        $resource "/api/subjects/:id", {id: '@id'},
             get:
                 method: 'GET'
                 isArray: false

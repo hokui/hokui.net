@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module @serviceName
+angular.module serviceName
 
 .controller 'NotifyCtrl',
     ($scope, Notification) ->
@@ -10,7 +10,7 @@ angular.module @serviceName
 .factory 'Notification',
     ($timeout, $q) ->
         _types = ['info', 'success', 'warning', 'danger']
-        _defaults =
+        _default =
             type: _types[0]
             period: 4000
             delay: 0
@@ -20,10 +20,10 @@ angular.module @serviceName
 
         _current = {}
 
-        _set_defaults = ->
-            angular.extend _current, _defaults
+        _set_default = ->
+            angular.extend _current, _default
 
-        _set_defaults()
+        _set_default()
 
         _timeout_promise = null
 
@@ -50,7 +50,7 @@ angular.module @serviceName
 
         show: (message, options)->
             _cancel_closeing()
-            _set_defaults()
+            _set_default()
 
             if options?
                 if options.type? and (_types.indexOf(options.type) > -1)

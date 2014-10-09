@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module @serviceName
+angular.module serviceName
 
 .factory 'Auth', ($http, $q, Token) ->
         _current =
@@ -13,7 +13,7 @@ angular.module @serviceName
             guest: 0
 
         level: ->
-            if _current.active and _current.user?
+            if _current.active and _current.user?.admin?
                 if _current.user.admin
                     return _levels.admin
                 else
@@ -40,12 +40,12 @@ angular.module @serviceName
         user: ->
             _current.user
 
-        login: (user) ->
+        login: (user)->
             deferred = $q.defer()
             $http.post '/api/session',
                 email: user.email
                 password: user.password
-            .success (data) =>
+            .success (data)=>
                 Token.set(data.token)
                 _current.active = true
                 _current.user = data.user
@@ -55,14 +55,17 @@ angular.module @serviceName
 
             deferred.promise
 
-        logout: (callback) ->
+        logout: (callback)->
             deferred = $q.defer()
-            if Token.get()
+            t = Token.get()
+            if t? and t isnt ''
                 $http.delete '/api/session', {}
-                .success (data) =>
+                .success (data)=>
                     @silentLogout()
                     deferred.resolve()
-
+                .error (err)=>
+                    @silentLogout()
+                    deferred.resolve()
             else
                 @silentLogout()
                 deferred.resolve()
@@ -75,17 +78,18 @@ angular.module @serviceName
             _current.user = {}
 
 
-        check: (callback) ->
+        check: (callback)->
             deferred = $q.defer()
-            if Token.get()
+            t = Token.get()
+            if t? and t isnt ''
                 $http.get '/api/users/profile', {}
-                .success (data) =>
+                .success (data)=>
                     _current.active = true
                     _current.user = data
                     deferred.resolve _current
-                .error (err) =>
+                .error (err)=>
+                    @silentLogout()
                     deferred.reject _current
-
             else
                 @silentLogout()
                 deferred.reject _current
