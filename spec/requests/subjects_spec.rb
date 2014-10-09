@@ -2,10 +2,15 @@ require 'rails_helper'
 
 RSpec.describe "Subjects", :type => :request do
   describe "GET /api/subjects" do
+    before do
+      create(:subject)
+    end
+
     it "returns a list of subjects", autodoc: true do
       guest = create_guest_with_token
       get_with_token(guest, "/api/subjects")
       expect(response.status).to eq(200)
+      expect(json[0]["title_ja"]).to eq("生理学")
     end
 
     it "returns 401 to an unauthorized client" do
@@ -23,6 +28,7 @@ RSpec.describe "Subjects", :type => :request do
       guest = create_guest_with_token
       get_with_token(guest, "/api/subjects/1")
       expect(response.status).to eq(200)
+      expect(json["title_ja"]).to eq("生理学")
     end
 
     it "returns 401 to an unauthorized client" do
@@ -35,19 +41,20 @@ RSpec.describe "Subjects", :type => :request do
     it "creates new subject", autodoc: true do
       admin = create_admin_with_token
       old_size = Subject.count
-      post_with_token(admin, "/api/subjects", { subject: { title_ja: "生理学Ⅰ", title_en: "physiology_1" } }.to_json)
+      post_with_token(admin, "/api/subjects", { title_ja: "生理学", title_en: "physiology" }.to_json)
       expect(response.status).to eq(201)
+      expect(json["title_ja"]).to eq("生理学")
       expect(Subject.count).to eq(old_size + 1)
     end
 
     it "returns 403 to a guest" do
       guest = create_guest_with_token
-      post_with_token(guest, "/api/subjects", { subject: { title_ja: "生理学Ⅰ", title_en: "physiology_1" } }.to_json)
+      post_with_token(guest, "/api/subjects", { title_ja: "生理学", title_en: "physiology" }.to_json)
       expect(response.status).to eq(403)
     end
 
     it "returns 401 to an unauthorized client" do
-      post("/api/subjects", { subject: { title_ja: "生理学Ⅰ", title_en: "physiology_1" } }.to_json)
+      post("/api/subjects", { title_ja: "生理学Ⅰ", title_en: "physiology_1" }.to_json)
       expect(response.status).to eq(401)
     end
   end
@@ -59,18 +66,19 @@ RSpec.describe "Subjects", :type => :request do
 
     it "updates subject", autodoc: true do
       admin = create_admin_with_token
-      patch_with_token(admin, "/api/subjects/1", { subject: { title_ja: "生化学Ⅰ", title_en: "biochemistry_1" } }.to_json)
+      patch_with_token(admin, "/api/subjects/1", { title_ja: "生化学", title_en: "biochemistry" }.to_json)
       expect(response.status).to eq(200)
+      expect(json["title_ja"]).to eq("生化学")
     end
 
     it "returns 403 to a guest" do
       guest = create_guest_with_token
-      patch_with_token(guest, "/api/subjects/1", { subject: { title_ja: "生化学Ⅰ", title_en: "biochemistry_1" } }.to_json)
+      patch_with_token(guest, "/api/subjects/1", { title_ja: "生化学", title_en: "biochemistry" }.to_json)
       expect(response.status).to eq(403)
     end
 
     it "returns 401 to an unauthorized client" do
-      patch("/api/subjects/1", { subject: { title_ja: "生化学Ⅰ", title_en: "biochemistry_1" } }.to_json)
+      patch("/api/subjects/1", { title_ja: "生化学", title_en: "biochemistry" }.to_json)
       expect(response.status).to eq(401)
     end
   end

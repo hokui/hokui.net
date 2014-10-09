@@ -6,6 +6,8 @@ RSpec.describe "Users" do
       admin = create_admin_with_token
       get_with_token(admin, "/api/users")
       expect(response.status).to eq(200)
+      expect(json[0]["full_name"]).to eq("admin admin")
+      expect(json[0]["crypted_password"]).to be_nil
     end
 
     it "returns 403 to a guest", autodoc: true do
@@ -26,18 +28,23 @@ RSpec.describe "Users" do
       guest = create_guest_with_token
       get_with_token(admin, "api/users/#{guest.id}")
       expect(response.status).to eq(200)
+      expect(json["full_name"]).to eq("guest guest")
+      expect(json["crypted_password"]).to be_nil
     end
 
     it "returns user profile to a guest if the client requests profile of oneself", autodoc: true do
       guest = create_guest_with_token
       get_with_token(guest, "api/users/#{guest.id}")
       expect(response.status).to eq(200)
+      expect(json["full_name"]).to eq("guest guest")
+      expect(json["crypted_password"]).to be_nil
     end
 
     it "returns 403 to a guest if the client requests profile of another user", autodoc: true do
       admin = create_admin_with_token
       guest = create_guest_with_token
       get_with_token(guest, "api/users/#{admin.id}")
+      expect(response.status).to eq(403)
     end
 
     it "returns 401 to an unauthorized client" do
@@ -49,21 +56,23 @@ RSpec.describe "Users" do
   describe "POST /api/users" do
     before do
       create(:class_year)
-      @params = { user: FactoryGirl.attributes_for(:guest) }
-      @params[:user][:class_year] = 93
-      @params[:user].delete(:class_year_id)
-      @params[:user].delete(:admin)
+      @params = FactoryGirl.attributes_for(:guest)
+      @params[:class_year] = 93
+      @params.delete(:class_year_id)
+      @params.delete(:admin)
     end
 
     it "creates new user", autodoc: true do
       old_size = User.count
       post("/api/users", @params.to_json)
       expect(response.status).to eq(201)
+      expect(json["full_name"]).to eq("guest guest")
+      expect(json["crypted_password"]).to be_nil
       expect(User.count).to eq(old_size + 1)
     end
 
     it "does not create new user if params are invalid" do
-      @params[:user][:password] = nil
+      @params[:password] = nil
       old_size = User.count
       post("/api/users", @params.to_json)
       expect(response.status).to eq(422)
@@ -76,6 +85,8 @@ RSpec.describe "Users" do
       guest = create_guest_with_token
       get_with_token(guest, "/api/users/profile")
       expect(response.status).to eq(200)
+      expect(json["full_name"]).to eq("guest guest")
+      expect(json["crypted_password"]).to be_nil
     end
 
     it "returns 401 to an unauthorized client" do
