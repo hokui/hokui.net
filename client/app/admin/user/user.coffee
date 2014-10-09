@@ -107,7 +107,7 @@ angular.module appName
         user_id = $stateParams.id
 
         $scope.deleting = false
-        $scope.user = $scope.users.get user_id
+        $scope.user = $scope.users.retrieve user_id
 
         $scope.deleteBtnLabel = ()->
             if $scope.deleting

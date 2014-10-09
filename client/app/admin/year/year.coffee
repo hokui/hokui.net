@@ -48,7 +48,7 @@ angular.module appName
         year_id = $stateParams.id
 
         if year_id isnt ''
-            $scope.year =$scope.years.get year_id
+            $scope.year =$scope.years.retrieve year_id
             if not $scope.year?
                 $state.go 'admin.year'
                 Notify "Not found class_year(id: \"#{year_id}\")", type: 'warning'
@@ -68,12 +68,12 @@ angular.module appName
         $scope.doSaveYear = ()->
             if $scope.editing
                 $scope.new_year.$update {}, (data)->
-                    $scope.years.set data.id, data
+                    $scope.years.set data
                     $state.go 'admin.year.detail', {id: data.id}
                     Notify '保存しました。'
             else
                 $scope.new_year.$save {}, (data)->
-                    $scope.years.add data
+                    $scope.years.set data
                     $state.go 'admin.year.detail', {id: data.id}
                     Notify '新規作成しました。'
 
