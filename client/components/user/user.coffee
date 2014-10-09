@@ -15,8 +15,4 @@ angular.module serviceName
 
             save:
                 method: 'POST'
-                transformRequest: (data)->
-                    angular.toJson user: data
-
-
 

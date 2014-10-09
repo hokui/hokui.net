@@ -13,16 +13,6 @@ angular.module serviceName
                 method: 'GET'
                 isArray: true
 
-            update:
-                method: 'PATCH'
-                transformRequest: (data)->
-                    angular.toJson subject: data
-
-            save:
-                method: 'POST'
-                transformRequest: (data)->
-                    angular.toJson subject: data
-
 
 
 

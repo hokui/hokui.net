@@ -15,13 +15,9 @@ angular.module serviceName
 
             update:
                 method: 'PATCH'
-                transformRequest: (data)->
-                    angular.toJson class_year: data
 
             save:
                 method: 'POST'
-                transformRequest: (data)->
-                    angular.toJson class_year: data
 
 
 
