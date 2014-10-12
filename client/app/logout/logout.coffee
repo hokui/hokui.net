@@ -9,16 +9,15 @@ angular.module appName
         controller: 'LogoutCtrl'
 
 .controller 'LogoutCtrl',
-    ($scope, $state, Auth) ->
+    ($scope, $state, Auth, Notify) ->
         $scope.Auth = Auth
 
         $scope.performLogout = ()->
             Auth.logout()
             .then ->
+                console.log 'logout'
                 $state.go 'main'
-
-        $scope.$on 'event:logout', (event, data)->
-            $state.go 'main'
+                Notify 'ログアウトしました。', type: 'info'
 
         if Auth.active()
             $scope.message = "you are active as #{Auth.user().handle_name}."

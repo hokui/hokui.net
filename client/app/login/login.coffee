@@ -9,7 +9,7 @@ angular.module appName
         controller: 'LoginCtrl'
 
 .controller 'LoginCtrl',
-    ($scope, $state, Auth) ->
+    ($scope, $state, Auth, Notify) ->
 
         $scope.credencials = {}
 
@@ -22,6 +22,7 @@ angular.module appName
             Auth.login $scope.credencials
             .then ->
                 $state.go 'main'
+                Notify 'ログインしました。', type: 'success'
             , ->
                 $scope.message = 'invalid email or password'
 

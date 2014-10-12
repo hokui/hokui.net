@@ -12,6 +12,9 @@ angular.module serviceName
             title: 'Help'
             state: 'help'
         ,
+            title: 'Style'
+            state: 'style'
+        ,
             title: 'Admin'
             state: 'admin'
             visible: -> Auth.can 'admin'
