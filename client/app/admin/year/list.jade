@@ -5,13 +5,13 @@ table.table.table-bordered.table-condensed.table-hover
         tr
             th ID
             th 期
-            th 作成
-            th 更新
+            th.hidden-xs 作成
+            th.hidden-xs 更新
     tbody
         tr(ng-repeat="year in years")
             td {{year.id}}
             td
                 a(ui-sref="admin.year.detail({id:year.id})")
                     | {{year.year}}
-            td {{year.created_at | date:'yyyy年MM月dd日HH時mm分'}}
-            td {{year.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
+            td.hidden-xs {{year.created_at | date:'yyyy年MM月dd日HH時mm分'}}
+            td.hidden-xs {{year.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
