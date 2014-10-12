@@ -2,20 +2,36 @@
 // Panels
 // --------------------------------------------------
 
-
 // Base class
 .panel {
   margin-bottom: $line-height-computed;
   background-color: $panel-bg;
   border: 1px solid transparent;
   border-radius: $panel-border-radius;
-  @include box-shadow(0 1px 1px $panel-shadow-color);
+  // @include box-shadow(0 0 1px $panel-shadow-color);
 }
 
 // Panel contents
 .panel-body {
   padding: $panel-body-padding;
   @include clearfix();
+  & > .panel-body-sub {
+    float: left;
+    position: relative;
+    margin-top: -$panel-body-padding;
+    margin-left: -$panel-body-padding;
+    border-radius: 0 0 3px 0;
+    padding: 2px 8px;
+    background-color: #eee;
+    font-size: 14px;
+    margin-bottom: 8px;
+    & + * {
+      clear: left;
+    }
+    // & + .panel {
+    //   margin: 0;
+    // }
+  }
 }
 
 // Optional heading
