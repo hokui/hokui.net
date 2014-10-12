@@ -1,24 +1,18 @@
 @import "bootstrap/variables"
 @import "bootstrap/mixins"
 
-@mixin fill
+=fill
     left: 0
     top: 0
     right: 0
     bottom: 0
 
-.overlay
-    position: fixed
-    @include fill
 
-
-@mixin topfix($gutter: 16px)
+=topfix($gutter: 16px)
     padding-top: $navbar-height + $gutter
 
-.topfix
-    @include topfix
 
-@mixin clearfix()
+=clearfix()
     &:after
         content: "."
         display: block
@@ -26,11 +20,18 @@
         clear: both
         visibility: hidden
 
-.clearfix
-    @include clearfix
 
+=bar-icon-conf($size, $color)
+    width: $size
+    height: $size
+    font-size: $size
+    .bar
+        background-color: $color
+        border-color: $color
 
 // inject:sass
+@import "_app.sass"
+@import "_fonts.sass"
 @import "admin/_admin.sass"
 @import "main/_main.sass"
 @import "nav/_nav.sass"
@@ -38,26 +39,3 @@
 // endinject
 
 
-*
-    box-sizing: border-box
-
-html, body
-    height: 100%
-
-.link
-    cursor: pointer
-
-table.table.table-2col
-    tbody
-        tr
-
-            th,td
-                vertical-align: middle
-            th
-                text-align: center
-                font-weight: 400
-                white-space: nowrap;
-    th
-        background: $table-bg-accent
-    td
-        background: $table-bg
