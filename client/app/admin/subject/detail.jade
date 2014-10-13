@@ -7,7 +7,7 @@ div(ng-if="!!subject.id")
         a(ui-sref="admin.subject.detail({id: subject.id})")
             | {{subject.year}}
     a(ui-sref=".edit") 編集
-    table.table.table-bordered.table-2col
+    table.table.table-bordered.table-horizontal
         tr
             th ID
             td {{subject.id}}

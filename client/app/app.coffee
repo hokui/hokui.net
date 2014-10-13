@@ -12,7 +12,7 @@ angular.module appName, [
     serviceName
 ]
 
-.config ($urlRouterProvider, $locationProvider) ->
+.config ($urlRouterProvider, $locationProvider)->
     $urlRouterProvider.otherwise '/'
     $locationProvider.html5Mode true
     $locationProvider.hashPrefix '!'

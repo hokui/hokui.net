@@ -6,8 +6,8 @@ table.table.table-bordered.table-condensed.table-hover
             th ID
             th 名前
             th 名前(英語)
-            th 作成
-            th 更新
+            th.hidden-xs 作成
+            th.hidden-xs 更新
     tbody
         tr(ng-repeat="subject in subjects")
             td {{subject.id}}
@@ -17,5 +17,5 @@ table.table.table-bordered.table-condensed.table-hover
             td
                 | {{subject.title_en}}
 
-            td {{subject.created_at | date:'yyyy年MM月dd日HH時mm分'}}
-            td {{subject.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
+            td.hidden-xs {{subject.created_at | date:'yyyy年MM月dd日HH時mm分'}}
+            td.hidden-xs {{subject.updated_at | date:'yyyy年MM月dd日HH時mm分'}}

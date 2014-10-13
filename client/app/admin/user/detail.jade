@@ -12,7 +12,7 @@ div(ng-if="!!user.id")
             button.btn.btn-sm.btn-default(ng-if="deleting", ng-click="stopDeleting()") やっぱりやめる
 
 
-    table.table.table-bordered.table-2col
+    table.table.table-bordered.table-horizontal
         tbody
             tr(ng-repeat="(k, v) in user")
                 th {{k}}

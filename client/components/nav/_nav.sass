@@ -2,12 +2,21 @@
     box-shadow: 0 0 2px rgba(#000, .1)
     .nav.navbar-nav
         li.active>a
-            @media (min-width: $grid-float-breakpoint-max)
+            @media (min-width: $screen-xs-max)
                 border-bottom: solid 2px $brand-primary
                 box-sizing: border-box
                 background-color: transparent
         li>a
-            @media (min-width: $grid-float-breakpoint-max)
+            @media (min-width: $screen-xs-max)
                 border-bottom: solid 2px transparent
                 transition: border-bottom-color .2s ease-in-out
 
+    .navbar-header
+        button.navbar-toggle
+            padding: 0
+    @media (max-width: $screen-xs-max)
+        border-bottom: solid 2px $brand-primary
+
+
+.bar-icon.bar-icon-on-navbar
+    +bar-icon-conf(36px, #c9c9c9)
