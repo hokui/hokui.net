@@ -44,7 +44,6 @@ class Api::SubjectsController < Api::ApplicationController
 
   def subject_params
     ActionController::Parameters.new(JSON.parse(request.body.read)).
-    require(:subject).
     permit(
       :title_ja,
       :title_en

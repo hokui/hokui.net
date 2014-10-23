@@ -1,0 +1,194 @@
+.topfix
+
+
+.container
+    .page-header-
+        h1 Style Guide!
+    p This page shows styles used on this site. This will be removed when deployment.
+
+    .page-header
+        h1 Typography
+    table.table.table-bordered
+        tr
+            td
+            th 和文
+            th 欧文
+        tr
+            th default
+            td ヒラギノ角ゴProN → 游ゴシック → メイリオ
+            td Open Sans
+        tr
+            th serif
+            td ヒラギノ明朝ProN → 游明朝 → メイリオ
+            td Georgia → Times New Roman → Times
+        tr
+            th 等幅
+            th n/a
+            td Menlo → Monaco → Consolas → Courier New
+
+    .panel.panel-default
+        .panel-body
+            .panel-body-sub 和文(default)
+            p.
+                これ立てたの絶対忍者だろ･･汚いなさすが忍者きたない
+                俺はこれで忍者きらいになったなあもりにもひきょう過ぎるでしょう？
+                俺は中立の立場で見てきたけどやはりナイト中心で行った方が良い事が判明した
+                忍はウソついてまでＰＴの盾役を確保したいらしいがナイトに相手されてない事くらいいい加減気づけよ
+                ナイトは忍者よりも高みにいるからお前らのイタズラにも笑顔だったがいい加減にしろよ
+    .panel.panel-default
+        .panel-body
+            .panel-body-sub 欧文(default)
+            p.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem eligendi, fuga fugit dicta
+                nesciunt eaque consequuntur quisquam laborum provident ex unde quis sed consectetur excepturi,
+                cumque sint mollitia ipsa facilis molestiae non. Perspiciatis suscipit velit facere harum,
+                nulla, et asperiores doloribus, saepe ipsam tenetur molestiae provident impedit vitae labore minus!
+    .panel.panel-default
+        .panel-body
+            .panel-body-sub 和文(serif)
+            p.serif.
+                これ立てたの絶対忍者だろ･･汚いなさすが忍者きたない
+                俺はこれで忍者きらいになったなあもりにもひきょう過ぎるでしょう？
+                俺は中立の立場で見てきたけどやはりナイト中心で行った方が良い事が判明した
+                忍はウソついてまでＰＴの盾役を確保したいらしいがナイトに相手されてない事くらいいい加減気づけよ
+                ナイトは忍者よりも高みにいるからお前らのイタズラにも笑顔だったがいい加減にしろよ
+    .panel.panel-default
+        .panel-body
+            .panel-body-sub 欧文(serif)
+            p.serif.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem eligendi, fuga fugit dicta
+                nesciunt eaque consequuntur quisquam laborum provident ex unde quis sed consectetur excepturi,
+                cumque sint mollitia ipsa facilis molestiae non. Perspiciatis suscipit velit facere harum,
+                nulla, et asperiores doloribus, saepe ipsam tenetur molestiae provident impedit vitae labore minus!
+    .panel.panel-default
+        .panel-body
+            .panel-body-sub 欧文(monospace)
+            p.mono.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem eligendi, fuga fugit dicta
+                nesciunt eaque consequuntur quisquam laborum provident ex unde quis sed consectetur excepturi,
+                cumque sint mollitia ipsa facilis molestiae non. Perspiciatis suscipit velit facere harum,
+                nulla, et asperiores doloribus, saepe ipsam tenetur molestiae provident impedit vitae labore minus!
+
+    .page-header
+        h1 Heading
+
+    .panel.panel-default
+        .panel-body
+            h1 h1 大見出し
+                small small
+            h2 h2 中見出し
+                small small
+            h3 h3 小見出し
+                small small
+            h4 h4 小小見出し
+                small small
+            h5 h5 極小見出し
+                small small
+            p
+                | This sentence is marked &lt;p&gt;.
+                | この文章はpタグです。
+
+    .page-header
+        h1 Container
+
+    .panel.panel-default
+        .panel-body
+            .panel-body-sub Panel(default)
+
+            .panel.panel-default
+                .panel-heading
+                    .panel-title Panel Header
+                .panel-body
+                    .panel-body-sub
+                        | Sub Text
+                    p Panal Body
+                .panel-footer
+                    p Panal Footer
+
+    .panel.panel-default
+        .panel-body
+            .panel-body-sub Panel(primary)
+
+            .panel.panel-primary
+                .panel-heading
+                    .panel-title Panel Header
+                .panel-body
+                    .panel-body-sub
+                        | Sub Text
+                    p Panal Body
+                .panel-footer
+                    p Panal Footer
+
+
+    .panel.panel-default
+        .panel-body
+            .panel-body-sub Well
+            .well
+                p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, optio.
+
+    .page-header
+        h1 Brand Colors
+
+    table.table.table-bordered
+        thead
+            tr.text-center
+                th Type
+                th Button
+                th Alert
+        tbody
+            tr
+                th.bg-primary.text-center
+                    | Primary
+                td
+                    button.btn.btn-primary(tooltip="no primary alert") Primary
+                td
+                    | n/a
+            tr
+                th.bg-success.text-center
+                    | Success
+                td
+                    button.btn.btn-success(tooltip="click to alert", ng-click="alert('success')") Success
+                td
+                    .alert.alert-success Success
+            tr
+                th.bg-info.text-center
+                    | Info
+                td
+                    button.btn.btn-info(tooltip="click to alert", ng-click="alert('info')") Info
+                td
+                    .alert.alert-info Info
+            tr
+                th.bg-warning.text-center
+                    | Warning
+                td
+                    button.btn.btn-warning(tooltip="click to alert", ng-click="alert('warning')") Warning
+                td
+                    .alert.alert-warning Warning
+            tr
+                th.bg-danger.text-center
+                    | Danger
+                td
+                    button.btn.btn-danger(tooltip="click to alert", ng-click="alert('danger')") Danger
+                td
+                    .alert.alert-danger Danger
+
+    .page-header
+        h1 Parts
+
+    h2 Animated Icon
+    .panel.panel-default
+        .panel-body
+            .bar-icon.bar-icon-default(ng-class="barClass()")
+                .bar
+                .bar
+                .bar
+        .panel-footer
+            ul.list-inline
+                li
+                    .button.btn.btn-default(ng-click="barIconToBars()") to bars
+                li
+                   .button.btn.btn-default(ng-click="barIconToTimes()") to times
+                li
+                    .button.btn.btn-default(ng-click="barIconToCircle()") to circle
+
+

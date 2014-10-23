@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module @appName
+angular.module appName
 .config ($stateProvider) ->
     $stateProvider
     .state 'admin',
@@ -18,12 +18,6 @@ angular.module @appName
                 role: 'admin'
                 error: '/admin 以降へのアクセスは管理者権限が必要です。'
 
-    .state 'admin.subject',
-        url: '/subject',
-        views:
-            'main@admin':
-                templateUrl: '/app/admin/subject.html'
-                controller: 'AdminSubjectCtrl'
 
 .controller 'AdminCtrl',
     ($scope, Auth, $state) ->

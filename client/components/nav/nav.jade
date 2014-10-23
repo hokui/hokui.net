@@ -2,10 +2,10 @@
     .container
         .navbar-header
             button.navbar-toggle(type='button', ng-click='isCollapsed = !isCollapsed', ng-blur="isCollapsed = true")
-                span.sr-only Toggle navigation
-                span.icon-bar
-                span.icon-bar
-                span.icon-bar
+                .bar-icon.bar-icon-on-navbar(ng-class="{'bar-icon-times': !isCollapsed, 'bar-icon-bars': isCollapsed}")
+                    .bar
+                    .bar
+                    .bar
             .visible-xs-block
                 a.navbar-brand(ui-sref='main') Hokui.net
 

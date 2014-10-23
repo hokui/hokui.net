@@ -1,0 +1,21 @@
+a(ui-sref=".detail.edit({id: ''})") 新規作成
+
+table.table.table-bordered.table-condensed.table-hover
+    thead
+        tr
+            th ID
+            th 名前
+            th 名前(英語)
+            th.hidden-xs 作成
+            th.hidden-xs 更新
+    tbody
+        tr(ng-repeat="subject in subjects")
+            td {{subject.id}}
+            td
+                a(ui-sref="admin.subject.detail({id:subject.id})")
+                    | {{subject.title_ja}}
+            td
+                | {{subject.title_en}}
+
+            td.hidden-xs {{subject.created_at | date:'yyyy年MM月dd日HH時mm分'}}
+            td.hidden-xs {{subject.updated_at | date:'yyyy年MM月dd日HH時mm分'}}

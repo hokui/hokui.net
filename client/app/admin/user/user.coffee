@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module @appName
+angular.module appName
 .config ($stateProvider) ->
     $stateProvider
 
@@ -37,7 +37,7 @@ angular.module @appName
             user.activation_state is 'active' and user.approval_state is 'waiting'
 
         $scope.getYear = (user)->
-            $scope.years.get(user.class_year_id).year
+            $scope.years.retrieve(user.class_year_id).year
 
         $scope.doApproveUser = (user)->
             if not $scope.approvable(user)
@@ -107,7 +107,7 @@ angular.module @appName
         user_id = $stateParams.id
 
         $scope.deleting = false
-        $scope.user = $scope.users.get user_id
+        $scope.user = $scope.users.retrieve user_id
 
         $scope.deleteBtnLabel = ()->
             if $scope.deleting

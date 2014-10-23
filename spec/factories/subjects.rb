@@ -11,7 +11,7 @@
 
 FactoryGirl.define do
   factory :subject do
-    title_ja "生理学Ⅰ"
-    title_en "physiology_1"
+    title_ja "生理学"
+    title_en "physiology"
   end
 end

@@ -7,7 +7,7 @@
                 th 名前
                 th ハンドルネーム
                 th 管理者
-                th メールアドレス
+                th.hidden-xs メールアドレス
                 th 状態
         tbody
             tr(ng-repeat="user in users")
@@ -21,7 +21,7 @@
                     div(ng-if="user.admin")
                         .text-center
                             i.fa.fa-heart.heart-pink
-                td {{user.email}}
+                td.hidden-xs {{user.email}}
                 td
                     .text-center(ng-include="status(user)")
 

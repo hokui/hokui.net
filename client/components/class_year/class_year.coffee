@@ -1,9 +1,9 @@
 'use strict'
 
-angular.module @serviceName
+angular.module serviceName
 
 .factory 'ClassYear',
-    ($resource, IDRetrieve) ->
+    ($resource) ->
         $resource "/api/class_years/:id", {id: '@id'},
             get:
                 method: 'GET'
@@ -15,13 +15,9 @@ angular.module @serviceName
 
             update:
                 method: 'PATCH'
-                transformRequest: (data)->
-                    angular.toJson class_year: data
 
             save:
                 method: 'POST'
-                transformRequest: (data)->
-                    angular.toJson class_year: data
 
 
 

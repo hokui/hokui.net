@@ -1,8 +1,8 @@
 'use strict'
 
-angular.module @serviceName
+angular.module serviceName
 
-.factory 'IDRetrieve',
+.factory 'Retriever',
     () ->
         (list, pk, pk_field)->
             if not pk_field?
@@ -10,21 +10,25 @@ angular.module @serviceName
             for obj in list
                 if ''+obj[pk_field] is ''+pk
                     return obj
-            return null
+            null
 
 .factory 'ResourceStore',
-    (IDRetrieve)->
+    (Retriever)->
         (base)->
             angular.extend base,
-                get: (id)->
-                    IDRetrieve this, id, 'id'
+                retrieve: (id)->
+                    Retriever this, id, 'id'
 
-                set: (id, obj)->
-                    _obj = @get id
-                    angular.extend _obj, obj
+                set: (obj)->
+                    if obj.id?
+                        _obj = @retrieve obj.id
+                    else
+                        throw new Error 'Tried to set object which does not have id field.'
 
-                add: (obj)->
-                    this.push obj
+                    if _obj?
+                        angular.extend _obj, obj
+                    else
+                        this.push obj
 
                 del: (obj)->
                     i = this.indexOf obj

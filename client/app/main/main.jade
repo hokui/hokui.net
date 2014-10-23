@@ -20,18 +20,14 @@
         .panel.panel-default
             .panel-heading
                 h3 {{status}}
-            .panel-body
-                p {{message}}
-                div(ng-if="!!Token.get()")
-                    h3 Your token
-                    dl.dl-horizontal
-                        dt token
-                        dd {{Token.get()}}
-                div(ng-if="Auth.active()")
-                    h3 Your profile
-                    dl.dl-horizontal
-                        dt(ng-repeat-start="(k, v) in Auth.user()") {{k}}
-                        dd(ng-repeat-end) {{v}}
-
+            .table-responsive
+                table.table.table-horizontal
+                    tr
+                        th token
+                        td
+                            .bread-word {{Token.get()}}
+                    tr(ng-repeat="(k, v) in Auth.user()")
+                        th {{k}}
+                        td {{v}}
 
 
