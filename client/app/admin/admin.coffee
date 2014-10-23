@@ -35,11 +35,14 @@ angular.module appName
                 title: 'ユーザー'
                 state: 'admin.user'
             ,
-                title: '期/学期'
+                title: '学年'
                 state: 'admin.year'
             ,
                 title: '教科'
                 state: 'admin.subject'
+            ,
+                title: '学期'
+                state: 'admin.semester'
         ]
 
 

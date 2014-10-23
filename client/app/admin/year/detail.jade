@@ -7,6 +7,7 @@ div(ng-if="!!year.id")
         a(ui-sref="admin.year.detail({id: year.id})")
             | {{year.year}}
     a(ui-sref=".edit") 編集
+
     table.table.table-bordered.table-horizontal
         tr
             th ID
@@ -14,6 +15,10 @@ div(ng-if="!!year.id")
         tr
             th 期
             td {{year.year}}期
+        tr
+            th 教科
+            td
+                a(ui-sref="admin.semester({year:year.year})") {{year.year}}期の教科
         tr
             th 作成
             td {{year.created_at | date:'yyyy年MM月dd日HH時mm分'}}

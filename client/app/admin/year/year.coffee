@@ -61,9 +61,10 @@ angular.module appName
 
         $scope.deleting = false
 
-        $scope.new_year = new ClassYear()
         if $scope.editing
-            angular.extend $scope.new_year, $scope.year
+            $scope.new_year = angular.copy $scope.year
+        else
+            $scope.new_year = new ClassYear()
 
         $scope.doSaveYear = ()->
             if $scope.editing

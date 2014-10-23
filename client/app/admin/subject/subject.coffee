@@ -60,9 +60,10 @@ angular.module appName
 
         $scope.deleting = false
 
-        $scope.new_subject = new Subject()
         if $scope.editing
-            angular.extend $scope.new_subject, $scope.subject
+            $scope.new_subject = angular.copy $scope.subject
+        else
+            $scope.new_subject = new Subject()
 
         $scope.doSaveSubject = ()->
             if $scope.editing

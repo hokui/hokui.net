@@ -1,0 +1,35 @@
+a(ui-sref="admin.semester") 一覧に戻る
+
+div(ng-if="!!semester.id")
+    h3
+        a(ui-sref="admin.semester.detail({id: semester.id})")
+            | {{semester.year}}
+    a(ui-sref=".edit") 編集
+    table.table.table-bordered.table-horizontal
+        tr
+            th ID
+            td {{semester.id}}
+        tr
+            th 識別子
+            td {{semester.identifier}}
+        tr
+            th 学年
+            td
+                a(ui-sref="admin.year.detail({id:semester.class_year_id})")
+                    | {{class_years.retrieve(semester.class_year_id).year}}期
+        tr
+            th 学年
+            td
+                ul
+                    li(ng-repeat="subject_id in semester.subject_ids")
+                        a(ui-sref="admin.subject.detail({id:subject_id})")
+                            | {{subjects.retrieve(subject_id).title_ja}}
+        tr
+            th 作成
+            td {{semester.created_at | date:'yyyy年MM月dd日HH時mm分'}}
+        tr
+            th 更新
+            td {{semester.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
+
+div.admin-year-edit-view(ui-view="edit")
+
