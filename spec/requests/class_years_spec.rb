@@ -18,16 +18,10 @@ RSpec.describe "ClassYears", :type => :request do
       create(:class_year)
     end
 
-    it "returns class year", autodoc: true do
-      guest = create_guest_with_token
-      get_with_token(guest, "/api/class_years/1")
+    it "returns a class year, if ever client is unauthorized", autodoc: true do
+      get("/api/class_years/1")
       expect(response.status).to eq(200)
       expect(json["year"]).to eq(93)
-    end
-
-    it "returns 401 to an unauthorized client" do
-      get("/api/class_years/1")
-      expect(response.status).to eq(401)
     end
   end
 
