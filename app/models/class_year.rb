@@ -10,6 +10,7 @@
 
 class ClassYear < ActiveRecord::Base
   has_many :users
+  has_many :semesters
 
   validates(:year) { presence; uniqueness; numericality(greater_than: 90, less_than: 150) }
 end

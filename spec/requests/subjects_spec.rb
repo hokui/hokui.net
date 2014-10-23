@@ -10,7 +10,7 @@ RSpec.describe "Subjects", :type => :request do
       guest = create_guest_with_token
       get_with_token(guest, "/api/subjects")
       expect(response.status).to eq(200)
-      expect(json[0]["title_ja"]).to eq("生理学")
+      expect(json[0]["title_ja"]).to match(/生理学_\d/)
     end
 
     it "returns 401 to an unauthorized client" do
@@ -28,7 +28,7 @@ RSpec.describe "Subjects", :type => :request do
       guest = create_guest_with_token
       get_with_token(guest, "/api/subjects/1")
       expect(response.status).to eq(200)
-      expect(json["title_ja"]).to eq("生理学")
+      expect(json["title_ja"]).to match(/生理学_\d/)
     end
 
     it "returns 401 to an unauthorized client" do
@@ -54,7 +54,7 @@ RSpec.describe "Subjects", :type => :request do
     end
 
     it "returns 401 to an unauthorized client" do
-      post("/api/subjects", { title_ja: "生理学Ⅰ", title_en: "physiology_1" }.to_json)
+      post("/api/subjects", { title_ja: "生理学", title_en: "physiology" }.to_json)
       expect(response.status).to eq(401)
     end
   end
