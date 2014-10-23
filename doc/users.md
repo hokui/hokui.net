@@ -1,3 +1,375 @@
+## DELETE /api/users/1
+Returns 403 to a guest.
+
+### Example
+
+#### Request
+```
+DELETE /api/users/2 HTTP/1.1
+Accept: application/json
+Access-Token: b1338eaa1a9e2f3e2119a4b955160975e085162dc6499634d77fcabbc597f5d3
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 403
+Cache-Control: no-cache
+Content-Length: 1
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 8bc45649-2cbc-4c3f-b30f-69019f7278e2
+X-Runtime: 0.009175
+X-XSS-Protection: 1; mode=block
+```
+
+## DELETE /api/users/1
+Successes.
+
+### Example
+
+#### Request
+```
+DELETE /api/users/2 HTTP/1.1
+Accept: application/json
+Access-Token: c75397a62af33d97dad7358c3f668d8bd7c86338db71f4aa2d64cb878500dfe6
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 1
+Content-Type: application/json
+ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 6924dbc4-7990-4932-a37c-d2f0698536c8
+X-Runtime: 0.003134
+X-XSS-Protection: 1; mode=block
+```
+
+## GET /api/users/profile
+Returns self profile to an user.
+
+### Example
+
+#### Request
+```
+GET /api/users/profile HTTP/1.1
+Accept: application/json
+Access-Token: 19b2dceba00995edee0ca5a019106999a9542d89004bbc7bfd7629e5f1a5ecb9
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 392
+Content-Type: application/json; charset=utf-8
+ETag: "878f950cd0aa88f4b9a6777ed0842148"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 439fbc04-5baa-4fed-b283-29e1b4f85a63
+X-Runtime: 0.003354
+X-XSS-Protection: 1; mode=block
+
+{
+  "id": 1,
+  "email": "guest@ec.hokudai.ac.jp",
+  "activation_state": "pending",
+  "approval_state": "waiting",
+  "last_login_at": null,
+  "last_logout_at": null,
+  "last_activity_at": null,
+  "last_login_from_ip_address": null,
+  "family_name": "guest",
+  "given_name": "guest",
+  "full_name": "guest guest",
+  "handle_name": "guest",
+  "birthday": "1990-01-01",
+  "email_mobile": "guest@example.com",
+  "admin": false,
+  "class_year_id": 1,
+  "errors": {
+  }
+}
+```
+
+## GET /api/users/1
+Returns user profile to a guest if the client requests profile of oneself.
+
+### Example
+
+#### Request
+```
+GET /api/users/1 HTTP/1.1
+Accept: application/json
+Access-Token: 492302e0c760933047d1e182ddf9bf763a1143bf624093378f8c9074718f971b
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 392
+Content-Type: application/json; charset=utf-8
+ETag: "878f950cd0aa88f4b9a6777ed0842148"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 7966695c-8dee-4d88-a9c0-75ec2dff58d0
+X-Runtime: 0.002448
+X-XSS-Protection: 1; mode=block
+
+{
+  "id": 1,
+  "email": "guest@ec.hokudai.ac.jp",
+  "activation_state": "pending",
+  "approval_state": "waiting",
+  "last_login_at": null,
+  "last_logout_at": null,
+  "last_activity_at": null,
+  "last_login_from_ip_address": null,
+  "family_name": "guest",
+  "given_name": "guest",
+  "full_name": "guest guest",
+  "handle_name": "guest",
+  "birthday": "1990-01-01",
+  "email_mobile": "guest@example.com",
+  "admin": false,
+  "class_year_id": 1,
+  "errors": {
+  }
+}
+```
+
+## GET /api/users/1
+Returns 403 to a guest if the client requests profile of another user.
+
+### Example
+
+#### Request
+```
+GET /api/users/1 HTTP/1.1
+Accept: application/json
+Access-Token: dbd37bc20836aa5003b224b1337b73506cc999f2e1f0a596a0248f2b0b2d32ed
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 403
+Cache-Control: no-cache
+Content-Length: 1
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: e4049209-aae0-4cc2-9ae8-ed17eeca8532
+X-Runtime: 0.002076
+X-XSS-Protection: 1; mode=block
+```
+
+## GET /api/users/1
+Returns user profile to an admin.
+
+### Example
+
+#### Request
+```
+GET /api/users/2 HTTP/1.1
+Accept: application/json
+Access-Token: 3ea3aa5b49ad731af6dd47582d259946b465491deaae7efd809676af6bf82059
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 392
+Content-Type: application/json; charset=utf-8
+ETag: "567562deb703f27dbc0fdfd16910de29"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 7805d408-7816-46be-bc46-a712bc18c803
+X-Runtime: 0.002399
+X-XSS-Protection: 1; mode=block
+
+{
+  "id": 2,
+  "email": "guest@ec.hokudai.ac.jp",
+  "activation_state": "pending",
+  "approval_state": "waiting",
+  "last_login_at": null,
+  "last_logout_at": null,
+  "last_activity_at": null,
+  "last_login_from_ip_address": null,
+  "family_name": "guest",
+  "given_name": "guest",
+  "full_name": "guest guest",
+  "handle_name": "guest",
+  "birthday": "1990-01-01",
+  "email_mobile": "guest@example.com",
+  "admin": false,
+  "class_year_id": 1,
+  "errors": {
+  }
+}
+```
+
+## POST /api/users/1/approve
+Returns 403 to a guest.
+
+### Example
+
+#### Request
+```
+POST /api/users/2/approve HTTP/1.1
+Accept: application/json
+Access-Token: a80cf4a16e007b61f87f29917e9b8ae130137d8b912f0d2f851784d7459cfd92
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 403
+Cache-Control: no-cache
+Content-Length: 1
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 5955c7aa-08d3-47de-9027-c2f8d9afaa13
+X-Runtime: 0.002100
+X-XSS-Protection: 1; mode=block
+```
+
+## POST /api/users/1/approve
+Successes when an admin approves a guest.
+
+### Example
+
+#### Request
+```
+POST /api/users/2/approve HTTP/1.1
+Accept: application/json
+Access-Token: 7d57d2265331e37c7fa1382176906a73f1cabd90111fdba3d4f028b9e4b27a56
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 1
+Content-Type: application/json
+ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 521c1cff-b00c-4275-8e11-dc5b158dd828
+X-Runtime: 0.003394
+X-XSS-Protection: 1; mode=block
+```
+
+## GET /api/users
+Returns 403 to a guest.
+
+### Example
+
+#### Request
+```
+GET /api/users HTTP/1.1
+Accept: application/json
+Access-Token: 5514e6865b20f6c9ca7d6f10427a12c604744a6df2eadb7565355a58de0b673a
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 403
+Cache-Control: no-cache
+Content-Length: 1
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: b135ec13-f3a1-4b21-af83-3c1d69128d58
+X-Runtime: 0.001798
+X-XSS-Protection: 1; mode=block
+```
+
+## GET /api/users
+Returns a list of users to an admin.
+
+### Example
+
+#### Request
+```
+GET /api/users HTTP/1.1
+Accept: application/json
+Access-Token: 3e1ec4710e2defd2637990a3ff8462f0a96c844a8cfd2b5a5867efb1b90c8df0
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 393
+Content-Type: application/json; charset=utf-8
+ETag: "00e51d11d470caab017d906dc8a349a1"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: b6540cc4-2d87-4c33-9228-175a7667c2c6
+X-Runtime: 0.002310
+X-XSS-Protection: 1; mode=block
+
+[
+  {
+    "id": 1,
+    "email": "admin@ec.hokudai.ac.jp",
+    "activation_state": "pending",
+    "approval_state": "waiting",
+    "last_login_at": null,
+    "last_logout_at": null,
+    "last_activity_at": null,
+    "last_login_from_ip_address": null,
+    "family_name": "admin",
+    "given_name": "admin",
+    "full_name": "admin admin",
+    "handle_name": "admin",
+    "birthday": "1990-01-01",
+    "email_mobile": "admin@example.com",
+    "admin": true,
+    "class_year_id": 1,
+    "errors": {
+    }
+  }
+]
+```
+
 ## POST /api/users
 Creates new user.
 
@@ -7,82 +379,46 @@ Creates new user.
 ```
 POST /api/users HTTP/1.1
 Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-Content-Length: 202
+Content-Length: 193
 Content-Type: application/x-www-form-urlencoded
 Host: www.example.com
 
-{"user":{"email":"guest@ec.hokudai.ac.jp","password":"guest","family_name":"guest","given_name":"guest","handle_name":"guest","birthday":"1990-01-01","email_mobile":"guest@example.com","class_year":93}}
+{"email":"guest@ec.hokudai.ac.jp","password":"guest","family_name":"guest","given_name":"guest","handle_name":"guest","birthday":"1990-01-01","email_mobile":"guest@example.com","class_year":93}
 ```
 
 #### Response
 ```
 HTTP/1.1 201
 Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 736
+Content-Length: 392
 Content-Type: application/json; charset=utf-8
-ETag: "5a0c955e484f212c9bcb4321fd67017c"
+ETag: "878f950cd0aa88f4b9a6777ed0842148"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 24620ad6-4d61-4857-b0b2-8ccc67e6c6f9
-X-Runtime: 0.207417
+X-Request-Id: dcbc6612-9eeb-45d4-8628-8faad4b043c8
+X-Runtime: 0.141246
 X-XSS-Protection: 1; mode=block
 
 {
   "id": 1,
   "email": "guest@ec.hokudai.ac.jp",
-  "crypted_password": "$2a$10$NKR6Oy0JwLmL.NjxlxOnau3kmepb6UekmBxWs7UVG9fSvozU2TgTa",
-  "salt": "Fs9dqth2sas6q8vk9MtH",
-  "created_at": "2014-09-23T22:46:26.781+09:00",
-  "updated_at": "2014-09-23T22:46:26.781+09:00",
   "activation_state": "pending",
-  "activation_token": "H9M64zs8a8wTpCa8rvrQ",
-  "activation_token_expires_at": null,
   "approval_state": "waiting",
-  "reset_password_token": null,
-  "reset_password_token_expires_at": null,
-  "reset_password_email_sent_at": null,
   "last_login_at": null,
   "last_logout_at": null,
   "last_activity_at": null,
   "last_login_from_ip_address": null,
   "family_name": "guest",
   "given_name": "guest",
+  "full_name": "guest guest",
   "handle_name": "guest",
   "birthday": "1990-01-01",
   "email_mobile": "guest@example.com",
   "admin": false,
-  "class_year_id": 1
+  "class_year_id": 1,
+  "errors": {
+  }
 }
-```
-
-## POST /api/users/activate
-Successes if the guest is previously unactivated.
-
-### Example
-
-#### Request
-```
-POST /api/users/activate HTTP/1.1
-Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-Content-Length: 65
-Content-Type: application/x-www-form-urlencoded
-Host: www.example.com
-
-{"email_local":"guest","activation_token":"yWSsi2FiQTAyL8j8wnhT"}
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 1
-Content-Type: text/html
-ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 497aea6a-db9a-4f1e-8611-5a54a67714a9
-X-Runtime: 0.003979
-X-XSS-Protection: 1; mode=block
 ```
 
 ## POST /api/users/activate
@@ -98,7 +434,7 @@ Content-Length: 65
 Content-Type: application/x-www-form-urlencoded
 Host: www.example.com
 
-{"email_local":"guest","activation_token":"RS1rBGosGvZWY1gccxzV"}
+{"email_local":"guest","activation_token":"Ykm9kmd92BzsuxDp14qJ"}
 ```
 
 #### Response
@@ -109,24 +445,25 @@ Content-Length: 1
 Content-Type: text/html
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 7a4fd8c0-b815-4332-a9ce-98f5aa7aa734
-X-Runtime: 0.002755
+X-Request-Id: db371679-92d6-4d10-a823-158d25c97db4
+X-Runtime: 0.001439
 X-XSS-Protection: 1; mode=block
 ```
 
-## DELETE /api/users/1
-Successes.
+## POST /api/users/activate
+Successes if the guest is previously unactivated.
 
 ### Example
 
 #### Request
 ```
-DELETE /api/users/2 HTTP/1.1
-Accept: application/json
-Access-Token: a3b1d1c2cd8bfb58b77b03ed79f011018b1454940b815318d7955e8de8a5f932
-Content-Length: 0
-Content-Type: application/json
+POST /api/users/activate HTTP/1.1
+Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Content-Length: 65
+Content-Type: application/x-www-form-urlencoded
 Host: www.example.com
+
+{"email_local":"guest","activation_token":"sqzrwYwzAYpGfwnHsmdP"}
 ```
 
 #### Response
@@ -134,378 +471,11 @@ Host: www.example.com
 HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 1
-Content-Type: application/json
+Content-Type: text/html
 ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 1566236d-f043-48be-bda5-1f00aca2a633
-X-Runtime: 0.005516
-X-XSS-Protection: 1; mode=block
-```
-
-## DELETE /api/users/1
-Returns 403 to a guest.
-
-### Example
-
-#### Request
-```
-DELETE /api/users/2 HTTP/1.1
-Accept: application/json
-Access-Token: 40161bdca69884f9e1708cbc1f3e339cf064ef829e57dcf9c78b12a52758b93e
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 403
-Cache-Control: no-cache
-Content-Length: 1
-Content-Type: application/json
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 835cdd6d-26ad-4216-ab70-1a04bcbfb008
-X-Runtime: 0.003090
-X-XSS-Protection: 1; mode=block
-```
-
-## GET /api/users/1
-Returns 403 to a guest if the client requests profile of another user.
-
-### Example
-
-#### Request
-```
-GET /api/users/1 HTTP/1.1
-Accept: application/json
-Access-Token: a42ea4730b3bb05fd4a9ee70ff57ac52ddcfb3499b9f90e9c698026c594f9036
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 403
-Cache-Control: no-cache
-Content-Length: 1
-Content-Type: application/json
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: cdc3e92a-516e-4420-a157-96dc33967e57
-X-Runtime: 0.003689
-X-XSS-Protection: 1; mode=block
-```
-
-## GET /api/users/1
-Returns user profile to an admin.
-
-### Example
-
-#### Request
-```
-GET /api/users/2 HTTP/1.1
-Accept: application/json
-Access-Token: ab3340b008024dac7bb4e5225a35189dac124e8893e76db16a1fa6a7b59e5561
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 736
-Content-Type: application/json; charset=utf-8
-ETag: "e54b220d9616fb3725a7a571b5f8013e"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: c264717e-8999-4575-a495-4189253bf2eb
-X-Runtime: 0.003920
-X-XSS-Protection: 1; mode=block
-
-{
-  "id": 2,
-  "email": "guest@ec.hokudai.ac.jp",
-  "crypted_password": "$2a$10$S4AZLywmpbmEWETZ8WwBxOOii71.L9EoHaQ84DC5VfzD3AJxe3ew6",
-  "salt": "xAH6wkriTDc9yCNFcNrn",
-  "created_at": "2014-09-23T22:46:29.108+09:00",
-  "updated_at": "2014-09-23T22:46:29.108+09:00",
-  "activation_state": "pending",
-  "activation_token": "eUiHsw8fkqAnr9QP5n6e",
-  "activation_token_expires_at": null,
-  "approval_state": "waiting",
-  "reset_password_token": null,
-  "reset_password_token_expires_at": null,
-  "reset_password_email_sent_at": null,
-  "last_login_at": null,
-  "last_logout_at": null,
-  "last_activity_at": null,
-  "last_login_from_ip_address": null,
-  "family_name": "guest",
-  "given_name": "guest",
-  "handle_name": "guest",
-  "birthday": "1990-01-01",
-  "email_mobile": "guest@example.com",
-  "admin": false,
-  "class_year_id": 1
-}
-```
-
-## GET /api/users/1
-Returns user profile to a guest if the client requests profile of oneself.
-
-### Example
-
-#### Request
-```
-GET /api/users/1 HTTP/1.1
-Accept: application/json
-Access-Token: a0b6f62aed09d7c1ec91aa28208c7ea25b5daa547beaec6139cc69d9fa4d879d
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 736
-Content-Type: application/json; charset=utf-8
-ETag: "b0a52bbf80de9002e7495e99ee9e1474"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 402bb6ab-ca43-4a8a-9699-a98645e6faa2
-X-Runtime: 0.003870
-X-XSS-Protection: 1; mode=block
-
-{
-  "id": 1,
-  "email": "guest@ec.hokudai.ac.jp",
-  "crypted_password": "$2a$10$93Sj8jHlUsSB18J6r/S/he8rFiBM1kZdJDlgESTVept2h1kwQzf/O",
-  "salt": "bHB3m6XczqBXugyxWozy",
-  "created_at": "2014-09-23T22:46:29.322+09:00",
-  "updated_at": "2014-09-23T22:46:29.322+09:00",
-  "activation_state": "pending",
-  "activation_token": "VKNDGYgKLx3RFvyHJ7My",
-  "activation_token_expires_at": null,
-  "approval_state": "waiting",
-  "reset_password_token": null,
-  "reset_password_token_expires_at": null,
-  "reset_password_email_sent_at": null,
-  "last_login_at": null,
-  "last_logout_at": null,
-  "last_activity_at": null,
-  "last_login_from_ip_address": null,
-  "family_name": "guest",
-  "given_name": "guest",
-  "handle_name": "guest",
-  "birthday": "1990-01-01",
-  "email_mobile": "guest@example.com",
-  "admin": false,
-  "class_year_id": 1
-}
-```
-
-## GET /api/users
-Returns a list of users to an admin.
-
-### Example
-
-#### Request
-```
-GET /api/users HTTP/1.1
-Accept: application/json
-Access-Token: 8ad114dcdbb947166e0f0c8a1cd6d3ad4de1390c04c50fb0b63efdfd326718dd
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 737
-Content-Type: application/json; charset=utf-8
-ETag: "c85e0ed51fc690916c5f666af48f88a1"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 1f341cee-03cb-4814-8c0c-17c13387b51e
-X-Runtime: 0.004687
-X-XSS-Protection: 1; mode=block
-
-[
-  {
-    "id": 1,
-    "email": "admin@ec.hokudai.ac.jp",
-    "crypted_password": "$2a$10$AKkd52C13Akb8Ji1TtL57O0E3gykdZb3taJS9H5HgJSgOoW091rmu",
-    "salt": "9RiL9Sybxo4BcqXfAqex",
-    "created_at": "2014-09-23T22:46:29.541+09:00",
-    "updated_at": "2014-09-23T22:46:29.541+09:00",
-    "activation_state": "pending",
-    "activation_token": "naeeszCPwsqCbqSTuzQv",
-    "activation_token_expires_at": null,
-    "approval_state": "waiting",
-    "reset_password_token": null,
-    "reset_password_token_expires_at": null,
-    "reset_password_email_sent_at": null,
-    "last_login_at": null,
-    "last_logout_at": null,
-    "last_activity_at": null,
-    "last_login_from_ip_address": null,
-    "family_name": "admin",
-    "given_name": "admin",
-    "handle_name": "admin",
-    "birthday": "1990-01-01",
-    "email_mobile": "admin@example.com",
-    "admin": true,
-    "class_year_id": 1
-  }
-]
-```
-
-## GET /api/users
-Returns 403 to a guest.
-
-### Example
-
-#### Request
-```
-GET /api/users HTTP/1.1
-Accept: application/json
-Access-Token: 8dddb8d6c07f602dfd2979f781d9701a165eb198838f535e7e3f5599225fdecc
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 403
-Cache-Control: no-cache
-Content-Length: 1
-Content-Type: application/json
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: a28a553c-99d1-496a-a9f8-c89e3beb334c
-X-Runtime: 0.003267
-X-XSS-Protection: 1; mode=block
-```
-
-## GET /api/users/profile
-Returns self profile to an user.
-
-### Example
-
-#### Request
-```
-GET /api/users/profile HTTP/1.1
-Accept: application/json
-Access-Token: df917811774758169c1dbaf2d8104a30fc835842aba558f1b8a76c1bc28914fb
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 736
-Content-Type: application/json; charset=utf-8
-ETag: "d54dc2ec8b9099764011cbcc61cf5f63"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 9211455a-0b20-4f43-9678-ae25d4ca54ea
-X-Runtime: 0.005119
-X-XSS-Protection: 1; mode=block
-
-{
-  "id": 1,
-  "email": "guest@ec.hokudai.ac.jp",
-  "crypted_password": "$2a$10$g8ujLmuC7PGUVqRagUNb6u5oCOevJleGJ7ug7OMinTeCVBnw3BN7a",
-  "salt": "dgTqVWMqgX2xqwRjpWtd",
-  "created_at": "2014-09-23T22:46:29.987+09:00",
-  "updated_at": "2014-09-23T22:46:29.987+09:00",
-  "activation_state": "pending",
-  "activation_token": "SYbed8jiWxGAzzwjFjMp",
-  "activation_token_expires_at": null,
-  "approval_state": "waiting",
-  "reset_password_token": null,
-  "reset_password_token_expires_at": null,
-  "reset_password_email_sent_at": null,
-  "last_login_at": null,
-  "last_logout_at": null,
-  "last_activity_at": null,
-  "last_login_from_ip_address": null,
-  "family_name": "guest",
-  "given_name": "guest",
-  "handle_name": "guest",
-  "birthday": "1990-01-01",
-  "email_mobile": "guest@example.com",
-  "admin": false,
-  "class_year_id": 1
-}
-```
-
-## POST /api/users/1/approve
-Successes when an admin approves a guest.
-
-### Example
-
-#### Request
-```
-POST /api/users/2/approve HTTP/1.1
-Accept: application/json
-Access-Token: 441ee692eaff6f38221363bf7d6d260f428b375b8cfea0b6e29f1128c41e1e47
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 1
-Content-Type: application/json
-ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 8482e434-1441-4283-93f9-ef3eca069bb6
-X-Runtime: 0.004556
-X-XSS-Protection: 1; mode=block
-```
-
-## POST /api/users/1/approve
-Returns 403 to a guest.
-
-### Example
-
-#### Request
-```
-POST /api/users/2/approve HTTP/1.1
-Accept: application/json
-Access-Token: 3fa0b47729e1dc6c4d25346bc3478266f3358e1d381ff830a8ce2d5324a7c98e
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 403
-Cache-Control: no-cache
-Content-Length: 1
-Content-Type: application/json
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: f201c1fa-8b72-4bdb-ba6d-ea30c51921a3
-X-Runtime: 0.002992
+X-Request-Id: cefc993f-55d8-461d-9cc1-ed2932ee96ba
+X-Runtime: 0.002277
 X-XSS-Protection: 1; mode=block
 ```
