@@ -47,7 +47,7 @@ class Api::SemestersController < Api::ApplicationController
     permit(
       :class_year_id,
       :identifier,
-      :subject_ids
+      :subject_ids => []
     )
   end
 end
