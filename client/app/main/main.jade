@@ -17,9 +17,9 @@
 
     .container-fluid
 
-        .panel.panel-default
+        .panel.panel-default(ng-if="Auth.active()")
             .panel-heading
-                h3 {{status}}
+                h3 you are active as {{Auth.user().handle_name}}
             .table-responsive
                 table.table.table-horizontal
                     tr
@@ -29,5 +29,6 @@
                     tr(ng-repeat="(k, v) in Auth.user()")
                         th {{k}}
                         td {{v}}
-
+        div(ng-if="!Auth.active()")
+            p you are inactive
 
