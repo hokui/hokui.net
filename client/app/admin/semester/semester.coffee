@@ -73,7 +73,7 @@ angular.module appName
             $scope.indexOfSubject.push
                 index: i
                 filter:
-                    subject_ids: [subject.id]
+                    subject_ids: subject.id
                 text: subject.title_ja
                 slug: subject.title_en
             i = i + 1
@@ -81,13 +81,9 @@ angular.module appName
 
         $scope.selectIndexOfClassYear = (i)->
             $scope.currentIndexOfClassYear = $scope.indexOfClassYear[i]
-            # $scope.currentIndexOfSubject = $scope.indexOfSubject[0]
-
 
         $scope.selectIndexOfSubject = (i)->
             $scope.currentIndexOfSubject = $scope.indexOfSubject[i]
-            # $scope.currentIndexOfClassYear = $scope.indexOfSubject[0]
-
 
         if $stateParams.year?
             r = $scope.indexOfClassYear.filter (item, index)->
@@ -108,15 +104,13 @@ angular.module appName
 
 
         $scope.searchUrlForSubject = (i)->
-            param = {}
-            if $scope.indexOfSubject[i].slug?
-                param.subject = $scope.indexOfSubject[i].slug
+            param =
+                subject: $scope.indexOfSubject[i].slug
             $state.href '.', param, inherit: false
 
         $scope.searchUrlForClassYear = (i)->
-            param = {}
-            if $scope.indexOfClassYear[i].slug?
-                param.year = $scope.indexOfClassYear[i].slug
+            param =
+                year: $scope.indexOfClassYear[i].slug
             $state.href '.', param, inherit: false
 
 .controller 'AdminSemesterDetailCtrl',
