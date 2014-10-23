@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     resources :class_years, only: [:index, :show, :create, :update, :destroy]
 
     resources :subjects,    only: [:index, :show, :create, :update, :destroy]
+
+    resources :semesters,   only: [:index, :show, :create, :update, :destroy]
   end
 
   match "*path" => "application#index", via: [:get, :post]
