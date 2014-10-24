@@ -136,7 +136,7 @@ g.task 'build:css', ['css'], (cb)->
     # 2. app/app.css: app style
 
     target = [
-        "#{conf.dest}/vendor/vender.css"
+        "#{conf.dest}/vendor/**/*.css"
         "#{conf.dest}/app/app.css"
     ]
 
@@ -228,7 +228,7 @@ g.task 'clean:cache', ['build:css', 'build:js', 'build:html'], (cb)->
     del [
         "#{conf.dest}/app"
         "#{conf.dest}/vendor"
-    ], force: true, cb
+    ], cb
 
 
 g.task 'index', ['build:js', 'build:css', 'build:html', 'clean:cache'], ->
@@ -236,8 +236,8 @@ g.task 'index', ['build:js', 'build:css', 'build:html', 'clean:cache'], ->
     target = ''
     if conf.prod
         target = [
-            "#{conf.dest}/**/*.js"
-            "#{conf.dest}/**/*.css"
+            "#{conf.dest}/*.js"
+            "#{conf.dest}/*.css"
         ]
     else
         # inject app.css last to override bootstrap styles and
@@ -297,6 +297,7 @@ g.task 'build', [
     'build:html'
     'build:js'
     'build:css'
+    'clean:cache'
     'index'
 ]
 
