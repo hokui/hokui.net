@@ -41,7 +41,7 @@ angular.module appName, [
     TokenProvider.tokenPrefix ''
 
 
-.run ($rootScope, PageRestriction, $state, Auth, Notify)->
+.run ($rootScope, Restriction, $state, Auth, Notify)->
 
     hooking_first_change = true
     unregister = $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
@@ -57,7 +57,7 @@ angular.module appName, [
     $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
         if hooking_first_change
             return
-        result = PageRestriction(toState)
+        result = Restriction(toState)
         first_visit = fromState.name is ''
         if not result.can
             ev.preventDefault()
