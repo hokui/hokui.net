@@ -14,9 +14,9 @@ form.form-horizontal(role="form", ng-submit="doSaveSubject()")
         .panel-footer.clearfix
             .pull-left
                 div(ng-if="editing")
-                    a.btn.btn-default(ui-sref="admin.subject.detail({id: subject.id})") 戻る
+                    a.btn.btn-default(ui-sref="admin.subject.detail({id: subject.id})" tabindex="-1") 戻る
                 div(ng-if="!editing")
-                    a.btn.btn-default(ui-sref="admin.subject") 戻る
+                    a.btn.btn-default(ui-sref="admin.subject" tabindex="-1") 戻る
             .pull-right
                 button.btn.btn-primary(type="submit") 保存
                 button.btn.btn-danger(type="button", ng-if="editing", ng-click="deleteSubject()") {{deleteBtnLabel()}}

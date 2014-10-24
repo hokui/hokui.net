@@ -44,6 +44,15 @@ angular.module appName
         $scope.class_years = ResourceStore class_years
         $scope.subjects = ResourceStore subjects
 
+        map_ab =
+            a: '前期'
+            b: '後期'
+        $scope.semesterIdentifierMap = {}
+        for grade in [1..6]
+            for label in ['a','b']
+                $scope.semesterIdentifierMap["#{grade}#{label}"] = "#{grade}年#{map_ab[label]}"
+
+
 
 .controller 'AdminSemesterListCtrl',
     ($scope, $state, $stateParams, Retriever) ->
@@ -181,6 +190,12 @@ angular.module appName
                 $scope.new_semester.subject_ids.splice idx, 1
             else
                 $scope.new_semester.subject_ids.push subject.id
+
+        $scope.subjectIndetifierList = []
+        for k, v of $scope.semesterIdentifierMap
+            $scope.subjectIndetifierList.push
+                identifier: k
+                label: v
 
 
 

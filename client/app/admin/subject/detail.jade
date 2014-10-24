@@ -1,9 +1,7 @@
 a(ui-sref="admin.subject") 一覧に戻る
 
 div(ng-if="!!subject.id")
-    h3
-        a(ui-sref="admin.subject.detail({id: subject.id})")
-            | {{subject.year}}
+    h3 {{subject.title_ja}} - {{subject.title_en}}
     a(ui-sref=".edit") 編集
     table.table.table-bordered.table-horizontal
         tr

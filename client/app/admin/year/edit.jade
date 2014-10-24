@@ -10,9 +10,9 @@ form.form-horizontal(role="form", ng-submit="doSaveYear()")
         .panel-footer.clearfix
             .pull-left
                 div(ng-if="editing")
-                    a.btn.btn-default(ui-sref="admin.year.detail({id: year.id})") 戻る
+                    a.btn.btn-default(ui-sref="admin.year.detail({id: year.id})" tabindex="-1") 戻る
                 div(ng-if="!editing")
-                    a.btn.btn-default(ui-sref="admin.year") 戻る
+                    a.btn.btn-default(ui-sref="admin.year" tabindex="-1") 戻る
             .pull-right
                 button.btn.btn-primary(type="submit") 保存
                 button.btn.btn-danger(type="button", ng-if="editing", ng-click="deleteYear()") {{deleteBtnLabel()}}

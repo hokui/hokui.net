@@ -17,7 +17,7 @@ table.table.table-bordered.table-condensed.table-hover
     thead
         tr
             th ID
-            th 識別子
+            th 学期
             th 学年
             th 教科
             th.hidden-xs 作成
@@ -27,7 +27,7 @@ table.table.table-bordered.table-condensed.table-hover
             td {{semester.id}}
             td
                 a(ui-sref="admin.semester.detail({id:semester.id})")
-                    | {{semester.identifier}}
+                    | {{semesterIdentifierMap[semester.identifier]}}
             td
                 a(ui-sref=".({year:class_years.retrieve(semester.class_year_id).year})" ui-sref-opts="{inherit: false}")
                     | {{class_years.retrieve(semester.class_year_id).year}}期
