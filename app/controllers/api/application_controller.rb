@@ -2,6 +2,7 @@ class Api::ApplicationController < ActionController::API
   include Pundit
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  include Sorcery::Controller
   before_action :require_login_with_token
 
   def default_serializer_options
