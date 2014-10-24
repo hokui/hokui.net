@@ -6,8 +6,3 @@ angular.module appName
     ($scope, Notification) ->
         $scope.Notification = Notification
 
-.factory 'Notify',
-    (Notification) ->
-        (message, options)->
-            Notification.show(message, options)
-

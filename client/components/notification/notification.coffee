@@ -79,6 +79,12 @@ angular.module serviceName
             _cancel_closeing()
             _visible = false
 
+.factory 'Notify',
+    (Notification) ->
+        (message, options)->
+            Notification.show(message, options)
+
+
 
 .run ($rootScope, Notification)->
 
