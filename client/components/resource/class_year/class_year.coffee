@@ -19,6 +19,8 @@ angular.module serviceName
             save:
                 method: 'POST'
 
+            remove:
+                method: 'DELETE'
 
 
 

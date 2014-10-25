@@ -5,6 +5,7 @@ table.table.table-bordered.table-condensed.table-hover
         tr
             th ID
             th 期
+            th カリキュラム
             th.hidden-xs 作成
             th.hidden-xs 更新
     tbody
@@ -12,6 +13,8 @@ table.table.table-bordered.table-condensed.table-hover
             td {{year.id}}
             td
                 a(ui-sref="admin.year.detail({id:year.id})")
-                    | {{year.year}}
+                    | {{year.year}}期
+            td
+                a(ui-sref="admin.semester({year:year.year})") {{year.year}}期のカリキュラム
             td.hidden-xs {{year.created_at | date:'yyyy年MM月dd日HH時mm分'}}
             td.hidden-xs {{year.updated_at | date:'yyyy年MM月dd日HH時mm分'}}

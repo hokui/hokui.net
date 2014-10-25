@@ -2,9 +2,9 @@
 
 angular.module serviceName
 
-.factory 'User',
-    ($resource, Token) ->
-        $resource "/api/users/:id", {id: '@id'},
+.factory 'Semester',
+    ($resource) ->
+        $resource "/api/semesters/:id", {id: '@id'},
             get:
                 method: 'GET'
                 isArray: false
@@ -13,6 +13,15 @@ angular.module serviceName
                 method: 'GET'
                 isArray: true
 
+            update:
+                method: 'PATCH'
+
             save:
                 method: 'POST'
+
+            remove:
+                method: 'DELETE'
+
+
+
 

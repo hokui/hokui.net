@@ -2,11 +2,6 @@
 
 angular.module serviceName
 
-.controller 'NotifyCtrl',
-    ($scope, Notification) ->
-        $scope.Notification = Notification
-
-
 .factory 'Notification',
     ($timeout, $q) ->
         _types = ['info', 'success', 'warning', 'danger']
@@ -84,11 +79,11 @@ angular.module serviceName
             _cancel_closeing()
             _visible = false
 
-
 .factory 'Notify',
     (Notification) ->
         (message, options)->
             Notification.show(message, options)
+
 
 
 .run ($rootScope, Notification)->

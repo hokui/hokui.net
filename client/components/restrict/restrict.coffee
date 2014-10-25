@@ -2,7 +2,7 @@
 
 angular.module serviceName
 
-.factory 'PageRestriction',
+.factory 'Restriction',
     (Auth)->
         (state)->
             _default =

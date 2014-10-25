@@ -1,11 +1,7 @@
 a(ui-sref="admin.subject") 一覧に戻る
-alert(ng-if="!!error", type="warning") {{error}}
-
 
 div(ng-if="!!subject.id")
-    h3
-        a(ui-sref="admin.subject.detail({id: subject.id})")
-            | {{subject.year}}
+    h3 {{subject.title_ja}} - {{subject.title_en}}
     a(ui-sref=".edit") 編集
     table.table.table-bordered.table-horizontal
         tr
@@ -17,6 +13,10 @@ div(ng-if="!!subject.id")
         tr
             th 名前(英語)
             td {{subject.title_en}}
+        tr
+            th 開講期
+            td
+                a(ui-sref="admin.semester({subject:subject.title_en})") {{subject.title_ja}}の開講期
         tr
             th 作成
             td {{subject.created_at | date:'yyyy年MM月dd日HH時mm分'}}

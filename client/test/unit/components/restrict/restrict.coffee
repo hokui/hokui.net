@@ -2,7 +2,7 @@
 
 describe 'auth service', ->
 
-    Auth = $httpBackend = PageRestriction = $state = null
+    Auth = $httpBackend = Restriction = $state = null
 
     loginAdmin = loginUser = null
 
@@ -41,7 +41,7 @@ describe 'auth service', ->
         inject ($injector)->
             $state = $injector.get '$state'
             $httpBackend = $injector.get '$httpBackend'
-            PageRestriction = $injector.get 'PageRestriction'
+            Restriction = $injector.get 'Restriction'
             Auth = $injector.get 'Auth'
             mockupAPI $httpBackend
 
@@ -61,41 +61,41 @@ describe 'auth service', ->
     it 'not restrict', ->
         expect($state.get('not_restricted').url).toBe '/not_restricted'
 
-        result = PageRestriction $state.get('not_restricted')
+        result = Restriction $state.get('not_restricted')
         expect(result.can).toBe true
-        result = PageRestriction $state.get('user_page')
+        result = Restriction $state.get('user_page')
         expect(result.can).toBe false
         expect(result.next).toBe 'login_page'
-        result = PageRestriction $state.get('user_page.nested')
+        result = Restriction $state.get('user_page.nested')
         expect(result.can).toBe false
         expect(result.next).toBe 'login_page'
-        result = PageRestriction $state.get('admin_page')
+        result = Restriction $state.get('admin_page')
         expect(result.can).toBe false
         expect(result.error).toBe 'admin only'
 
     it 'needs user level', ->
         loginUser(Auth)
 
-        result = PageRestriction $state.get('not_restricted')
+        result = Restriction $state.get('not_restricted')
         expect(result.can).toBe true
-        result = PageRestriction $state.get('user_page')
+        result = Restriction $state.get('user_page')
         expect(result.can).toBe true
-        result = PageRestriction $state.get('user_page.nested')
+        result = Restriction $state.get('user_page.nested')
         expect(result.can).toBe true
-        result = PageRestriction $state.get('admin_page')
+        result = Restriction $state.get('admin_page')
         expect(result.can).toBe false
 
 
     it 'needs admin level', ->
         loginAdmin(Auth)
 
-        result = PageRestriction $state.get('not_restricted')
+        result = Restriction $state.get('not_restricted')
         expect(result.can).toBe true
-        result = PageRestriction $state.get('user_page')
+        result = Restriction $state.get('user_page')
         expect(result.can).toBe true
-        result = PageRestriction $state.get('user_page.nested')
+        result = Restriction $state.get('user_page.nested')
         expect(result.can).toBe true
-        result = PageRestriction $state.get('admin_page')
+        result = Restriction $state.get('admin_page')
         expect(result.can).toBe true
 
 
