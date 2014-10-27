@@ -40,6 +40,7 @@ class Conf
         ]
         @ngAppName = 'hokuiApp'
         @watching = false
+        @minify = true
         @setProd(isProd)
 
 
@@ -141,9 +142,11 @@ g.task 'build:css', ['css'], (cb)->
     ]
 
     t = g.src target
-    .pipe $.concat 'app.min.css'
-    .pipe $.minifyCss()
-    .pipe g.dest "#{conf.dest}"
+    .pipe $.concat 'app.css'
+    if conf.minify
+        t = t
+        .pipe $.minifyCss()
+    t.pipe g.dest "#{conf.dest}"
 
 
 
@@ -217,9 +220,11 @@ g.task 'build:js', ['js', 'build:html', 'bower'], (cb)->
     ]
 
     t = g.src target
-    .pipe $.concat 'app.min.js'
-    .pipe $.uglify mangle: false
-    .pipe g.dest "#{conf.dest}"
+    .pipe $.concat 'app.js'
+    if conf.minify
+        t = t
+        .pipe $.uglify mangle: false
+    t.pipe g.dest "#{conf.dest}"
 
 g.task 'clean:cache', ['build:css', 'build:js', 'build:html'], (cb)->
     if not conf.prod
@@ -266,15 +271,23 @@ g.task 'index', ['build:js', 'build:css', 'build:html', 'clean:cache'], ->
                 ignorePath: ignorePath
                 name: 'bower'
         )
+    else
+        if conf.minify
+            t = t
+            .pipe $.minifyHtml
+                spare: true
+                empty: true
+                conditionals: true
+                quotes: true
 
     t.pipe g.dest "#{conf.dest}/"
 
     t
 
-
 ###*
 watch tasks
 ###
+
 g.task 'watch:index', ['index'], ->
     $.livereload.changed()
 g.task 'watch:html', ['html'], ->
@@ -311,11 +324,10 @@ g.task 'watch', ['build'], ->
     g.watch "#{conf.src}/**/*.coffee", ['watch:js']
 
 
-g.task 'prod', (cb)->
-    conf.setProd(true)
-    cb()
+g.task 'prod', ()->
+    conf.setProd true
 
-g.task 'default', ['watch']
+g.task 'skipmin', ()->
+    conf.minify = false
 
-
-
+g.task 'default', ['build', 'watch']

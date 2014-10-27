@@ -4,7 +4,7 @@ hokui.net
 [![Code Climate](https://codeclimate.com/github/hokui/hokui.net/badges/gpa.svg)](https://codeclimate.com/github/hokui/hokui.net)
 [![Test Coverage](https://codeclimate.com/github/hokui/hokui.net/badges/coverage.svg)](https://codeclimate.com/github/hokui/hokui.net)
 
-開発環境
+バックエンド
 --------
 最初だけ
 ```
@@ -23,8 +23,39 @@ bundle install
 bundle exec rake db:dev
 ```
 
-フロントのビルド
+フロントエンド
 --------
+### ビルド
+#### development, watchなし
+```
+gulp build
+```
+
+#### development, watchあり
+```
+gulp
+```
+だけ
+
+#### production
+```
+gulp prod build
+```
+
+#### production, skip minify
+```
+gulp prod skipmin build
+```
+minifyは時間かかるので飛ばしたいとき
+
+### 一発構築
 ```
 npm start
 ```
+`npm install`と`bower install`と`gulp build`が走る。フロントのコミット後は何も考えずこれでOK。
+
+### test
+```
+npm test
+```
+
