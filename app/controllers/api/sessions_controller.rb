@@ -6,24 +6,29 @@ class Api::SessionsController < Api::ApplicationController
     email    = json_hash["email"]
     password = json_hash["password"]
 
-    user = User.authenticate(email, password)
-    if user
-      access_token = AccessToken.create(user: user)
+    @current_user = User.authenticate(email, password)
+    if @current_user
+      access_token = AccessToken.create(user: @current_user)
+      after_login!(@current_user)
       render json: {
         token: access_token.token,
-        user: UserSerializer.new(user)
+        user: UserSerializer.new(@current_user)
       },
       status: 201,
       root: false
     else
+      after_failed_login!([])
       head 422
     end
   end
 
   def destroy
     token = request.headers["Access-Token"]
-    access_token = AccessToken.find_token(token)
-    access_token.destroy if access_token
+    if access_token = AccessToken.find_token(token)
+      before_logout!(access_token.user)
+      access_token.destroy!
+      after_logout!
+    end
     head 200
   end
 end
