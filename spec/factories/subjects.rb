@@ -10,11 +10,9 @@
 #
 
 FactoryGirl.define do
-  sequence(:title_ja) { |n| "生理学_#{n}" }
-  sequence(:title_en) { |n| "physiology_#{n}" }
-
   factory :subject do
-    title_ja
-    title_en
+    sequence(:id)       { |n| n }
+    sequence(:title_ja) { |n| "生理学_#{n}" }
+    sequence(:title_en) { |n| "physiology_#{n}" }
   end
 end

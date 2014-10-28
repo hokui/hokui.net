@@ -13,6 +13,7 @@
 
 FactoryGirl.define do
   factory :semester do
+    id 1
     class_year_id 1
     identifier "2a"
   end

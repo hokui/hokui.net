@@ -19,14 +19,15 @@ config.include Helpers
 
   config.use_transactional_fixtures = true
   config.include FactoryGirl::Syntax::Methods
-  config.before :all do
-    FactoryGirl.reload
-  end
   config.before :suite do
     DatabaseRewinder.clean_all
     FactoryGirl.lint
   end
-  config.before :each do
+  config.before :all do
+    DatabaseRewinder.clean_all
+    FactoryGirl.reload
+  end
+  config.after :each do
     DatabaseRewinder.clean
   end
 end

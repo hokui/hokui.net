@@ -15,12 +15,19 @@ class Api::ApplicationController < ActionController::API
     token = request.headers["Access-Token"]
     @access_token = AccessToken.find_token(token)
 
-    if @access_token
-      unless defined?(@current_user)
-        @current_user = @access_token.user
-      end
+    unless @access_token
+      head 401
+      return
+    end
+
+    unless defined?(@current_user)
+      @current_user = @access_token.user
+    end
+
+    if @current_user.active? && @current_user.approved?
       @current_user
     else
+      @access_token.destroy!
       head 401
     end
   end

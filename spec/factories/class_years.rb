@@ -12,6 +12,7 @@
 
 FactoryGirl.define do
   factory :class_year do
+    id   1
     year 93
   end
 end
