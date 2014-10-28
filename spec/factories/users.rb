@@ -32,6 +32,7 @@
 
 FactoryGirl.define do
   factory :admin, class: User do
+    id            1
     email         "admin@ec.hokudai.ac.jp"
     password      "admin"
     family_name   "admin"
@@ -44,6 +45,7 @@ FactoryGirl.define do
   end
 
   factory :guest, class: User do
+    id            2
     email         "guest@ec.hokudai.ac.jp"
     password      "guest"
     family_name   "guest"

@@ -1,18 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "Semesters", :type => :request do
-  before do
+  before(:all) do
     create(:class_year)
     3.times { create(:subject) }
+    s = create(:semester)
+    s.subject_ids = [1, 2]
+    s.save!
   end
 
   describe "GET /api/semesters" do
-    before do
-      s = create(:semester)
-      s.subject_ids = [1, 2]
-      s.save!
-    end
-
     it "returns a list of semesters", autodoc: true do
       guest = create_guest_with_token
       get_with_token(guest, "/api/semesters")
@@ -28,12 +25,6 @@ RSpec.describe "Semesters", :type => :request do
   end
 
   describe "GET /api/semesters/1" do
-    before do
-      s = create(:semester)
-      s.subject_ids = [1, 2]
-      s.save!
-    end
-
     it "returns semester", autodoc: true do
       guest = create_guest_with_token
       get_with_token(guest, "/api/semesters/1")
@@ -72,10 +63,6 @@ RSpec.describe "Semesters", :type => :request do
   end
 
   describe "PATCH /api/semesters/1" do
-    before do
-      create(:semester)
-    end
-
     it "updates semester", autodoc: true do
       admin = create_admin_with_token
       patch_with_token(admin, "/api/semesters/1", { class_year_id: 1, identifier: "3a", subject_ids: [2, 3] }.to_json)
@@ -97,10 +84,6 @@ RSpec.describe "Semesters", :type => :request do
   end
 
   describe "DELETE /api/semesters/1" do
-    before do
-      create(:semester)
-    end
-
     it "destroys specified record", autodoc: true do
       admin = create_admin_with_token
       old_size = Semester.count
