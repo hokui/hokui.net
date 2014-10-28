@@ -4,8 +4,6 @@ RSpec.describe "Sessions" do
   describe "POST /api/session" do
     before do
       @guest = create(:guest)
-      @guest.activate!
-      @guest.approve!
     end
 
     it "returns new access token and user profile", autodoc: true do

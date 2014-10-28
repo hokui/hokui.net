@@ -68,6 +68,9 @@ RSpec.describe "Users" do
       expect(response.status).to eq(201)
       expect(json["full_name"]).to eq("guest guest")
       expect(json["crypted_password"]).to be_nil
+      expect(json["admin"]).to be_falsey
+      expect(json["activation_state"]).to eq("pending")
+      expect(json["approval_state"]).to eq("waiting")
       expect(User.count).to eq(old_size + 1)
     end
 
@@ -97,7 +100,7 @@ RSpec.describe "Users" do
 
   describe "POST /api/users/activate" do
     before do
-      @guest = create(:guest)
+      @guest = create(:guest, activate: false)
       @params = { email_local: @guest.email_local, activation_token: @guest.activation_token }
     end
 

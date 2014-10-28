@@ -60,4 +60,12 @@ class User < ActiveRecord::Base
   def send_activation_needed_email!
     UserMailer.email_confirmation_on_create(self).deliver
   end
+
+  def active?
+    activation_state == "active"
+  end
+
+  def approved?
+    approval_state == "approved"
+  end
 end

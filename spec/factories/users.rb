@@ -32,6 +32,11 @@
 
 FactoryGirl.define do
   factory :admin, class: User do
+    transient do
+      activate true
+      approve  true
+    end
+
     id            1
     email         "admin@ec.hokudai.ac.jp"
     password      "admin"
@@ -42,9 +47,19 @@ FactoryGirl.define do
     email_mobile  "admin@example.com"
     class_year_id 1
     admin         true
+
+    after(:create) do |user, evaluator|
+      user.activate! if evaluator.activate
+      user.approve!  if evaluator.approve
+    end
   end
 
   factory :guest, class: User do
+    transient do
+      activate true
+      approve  true
+    end
+
     id            2
     email         "guest@ec.hokudai.ac.jp"
     password      "guest"
@@ -55,5 +70,10 @@ FactoryGirl.define do
     email_mobile  "guest@example.com"
     class_year_id 1
     admin         false
+
+    after(:create) do |user, evaluator|
+      user.activate! if evaluator.activate
+      user.approve!  if evaluator.approve
+    end
   end
 end
