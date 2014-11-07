@@ -60,6 +60,13 @@ RSpec.describe "Semesters", :type => :request do
       post("/api/semesters", { class_year_id: 1, identifier: "2b", subject_ids: [1, 2] }.to_json)
       expect(response.status).to eq(401)
     end
+
+    it "returns 422 when model validation fails" do
+      admin = create_admin_with_token
+      post_with_token(admin, "/api/semesters", {}.to_json)
+      expect(response.status).to eq(422)
+      expect(json["errors"]["identifier"]).to include("can't be blank")
+    end
   end
 
   describe "PATCH /api/semesters/1" do
@@ -80,6 +87,15 @@ RSpec.describe "Semesters", :type => :request do
     it "returns 401 to an unauthorized client" do
       patch("/api/semesters/1", { class_year_id: 1, identifier: "3a", subject_ids: [2, 3] }.to_json)
       expect(response.status).to eq(401)
+    end
+
+    it "returns 422 when model validation fails" do
+      s = Semester.create!(class_year_id: 1, identifier: "2b")
+
+      admin = create_admin_with_token
+      patch_with_token(admin, "/api/semesters/#{s.id}", { identifier: "2a" }.to_json)
+      expect(response.status).to eq(422)
+      expect(json["errors"]["identifier"]).to include("has already been taken")
     end
   end
 

@@ -23,7 +23,7 @@ class Api::SubjectsController < Api::ApplicationController
 
   def update
     authorize @subject
-    if @subject.update(subject_params)
+    if @subject.update_attributes(subject_params)
       render json: @subject, status: 200
     else
       render json: @subject, status: 422
