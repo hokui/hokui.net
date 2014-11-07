@@ -11,7 +11,17 @@ module Helpers
     guest
   end
 
-  for method in ['get', 'post', 'put', 'patch', 'delete'] do
+  for method in ['post', 'put', 'patch'] do
+    module_eval %{
+      def raw_#{method}(path, body, headers_or_env = {})
+        response = #{method}(path, {}, { "RAW_#{method.upcase}_DATA" => body }.merge(headers_or_env))
+        @request.env.delete("RAW_#{method.upcase}_DATA")
+        response
+      end
+    }
+  end
+
+  for method in ['get', 'post', 'put', 'patch', 'delete', 'raw_post', 'raw_put', 'raw_patch'] do
     module_eval %{
       def #{method}_with_token(user, path, parameters = nil, headers_or_env = {})
         #{method}(path, parameters, { "CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json", "Access-Token" => user.access_tokens.first.token }.merge(headers_or_env))

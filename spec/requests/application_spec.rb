@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Application', :type => :request do
   before(:each) do
+    @admin = create_admin_with_token
     @guest = create_guest_with_token
   end
 
@@ -17,5 +18,10 @@ RSpec.describe 'Application', :type => :request do
     @guest.save
     get_with_token(@guest, "api/users/#{@guest.id}")
     expect(response.status).to eq(401)
+  end
+
+  it "returns 400 to a request with malformed json" do
+    raw_post_with_token(@admin, "/api/class_years", "{\"class_year\":94")
+    expect(response.status).to eq(400)
   end
 end
