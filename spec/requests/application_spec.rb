@@ -21,7 +21,7 @@ RSpec.describe 'Application', :type => :request do
   end
 
   it "returns 400 to a request with malformed json" do
-    raw_post_with_token(@admin, "/api/class_years", "{\"class_year\":94")
+    raw_post_with_token(@admin, "/api/class_years", "{\"year\":94")
     expect(response.status).to eq(400)
   end
 end
