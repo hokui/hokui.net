@@ -41,6 +41,13 @@ RSpec.describe "ClassYears", :type => :request do
       post("/api/class_years", { year: 94 }.to_json)
       expect(response.status).to eq(401)
     end
+
+    it "returns 422 when model validation fails" do
+      admin = create_admin_with_token
+      post_with_token(admin, "/api/class_years", {}.to_json)
+      expect(response.status).to eq(422)
+      expect(json["errors"]["year"]).to include("can't be blank")
+    end
   end
 
   describe "PATCH /api/class_years/1" do
@@ -60,6 +67,15 @@ RSpec.describe "ClassYears", :type => :request do
     it "returns 401 to an unauthorized client" do
       patch("/api/class_years/1", { year: 94 }.to_json)
       expect(response.status).to eq(401)
+    end
+
+    it "returns 422 when model validation fails" do
+      cy = ClassYear.create!(year: 94)
+
+      admin = create_admin_with_token
+      patch_with_token(admin, "/api/class_years/#{cy.id}", { year: 93 }.to_json)
+      expect(response.status).to eq(422)
+      expect(json["errors"]["year"]).to include("has already been taken")
     end
   end
 

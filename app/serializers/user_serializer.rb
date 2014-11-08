@@ -15,13 +15,7 @@ class UserSerializer < ActiveModel::Serializer
              :email_mobile,
              :admin,
              :class_year_id,
+             :created_at,
+             :updated_at,
              :errors
-
-  def full_name
-    object.full_name
-  end
-
-  def errors
-    object.errors
-  end
 end

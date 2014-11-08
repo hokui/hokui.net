@@ -23,7 +23,7 @@ class Api::SemestersController < Api::ApplicationController
 
   def update
     authorize @semester
-    if @semester.update(semester_params)
+    if @semester.update_attributes(semester_params)
       render json: @semester, status: 200
     else
       render json: @semester, status: 422

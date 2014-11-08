@@ -53,6 +53,13 @@ RSpec.describe "Subjects", :type => :request do
       post("/api/subjects", { title_ja: "生理学", title_en: "physiology" }.to_json)
       expect(response.status).to eq(401)
     end
+
+    it "returns 422 when model validation fails" do
+      admin = create_admin_with_token
+      post_with_token(admin, "/api/subjects", {}.to_json)
+      expect(response.status).to eq(422)
+      expect(json["errors"]["title_ja"]).to include("can't be blank")
+    end
   end
 
   describe "PATCH /api/subjects/1" do
@@ -72,6 +79,16 @@ RSpec.describe "Subjects", :type => :request do
     it "returns 401 to an unauthorized client" do
       patch("/api/subjects/1", { title_ja: "生化学", title_en: "biochemistry" }.to_json)
       expect(response.status).to eq(401)
+    end
+
+    it "returns 422 when model validation fails" do
+      s1 = Subject.first
+      s2 = Subject.create!(title_ja: "hoge", title_en: "fuga")
+
+      admin = create_admin_with_token
+      patch_with_token(admin, "/api/subjects/#{s2.id}", { title_ja: s1.title_ja }.to_json)
+      expect(response.status).to eq(422)
+      expect(json["errors"]["title_ja"]).to include("has already been taken")
     end
   end
 

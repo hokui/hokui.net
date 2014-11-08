@@ -4,5 +4,6 @@ class SemesterSerializer < ActiveModel::Serializer
              :identifier,
              :subject_ids,
              :created_at,
-             :updated_at
+             :updated_at,
+             :errors
 end

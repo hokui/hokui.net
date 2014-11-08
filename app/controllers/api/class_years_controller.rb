@@ -24,7 +24,7 @@ class Api::ClassYearsController < Api::ApplicationController
 
   def update
     authorize @class_year
-    if @class_year.update(class_year_params)
+    if @class_year.update_attributes(class_year_params)
       render json: @class_year, status: 200
     else
       render json: @class_year, status: 422
