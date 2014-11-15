@@ -1,0 +1,257 @@
+//************
+// color
+//************
+
+$gray-darker: #222
+$gray-dark: #333
+$gray: #555
+$gray-light: #777
+$gray-lighter: #c9c9c9
+$gray-more-lighter: #f5f5f5
+
+$border-color-base: $gray-lighter
+
+$shaded-bg-base: $gray-more-lighter
+
+$brand-primary: #57D180
+$brand-secondary: #FFAE6B
+$brand-accent: #EC638E
+
+$brand-primary-darker: #1BAB4C
+$brand-secondary-darker: #E97E25
+$brand-accent-darker: #CF2158
+
+$brand-primary-dark: #38BD65
+$brand-secondary-dark: #FF9D4C
+$brand-accent-dark: #E34477
+
+$brand-primary-light: #7FE3A1
+$brand-secondary-light: #FFC18F
+$brand-accent-light: #F388AA
+
+$brand-primary-lighter: #B1F3C7
+$brand-secondary-lighter: #FFD9BA
+$brand-accent-lighter: #FAB6CC
+
+
+
+//************
+// basic
+//************
+
+$text-muted: $gray-light
+$body-bg: #fff
+$text-color: $gray-dark
+$link-color: $brand-primary
+$link-hover-color: $brand-primary-dark
+
+$border-radius-base: 2px
+
+$cursor-disabled: not-allowed
+
+
+
+//************
+// typography
+//************
+
+$font-family-sans-serif: "Open Sans", "Hiragino Kaku Gothic ProN", "游ゴシック", YuGothic, Meiryo sans-serif !default
+$font-family-serif: Georgia, "Times New Roman", Times, "Hiragino Mincho ProN", "游明朝", YuMincho, Meiryo, serif !default
+
+$font-family-monospace: Menlo, Monaco, Consolas, "Courier New", monospace
+$font-family-base: $font-family-sans-serif
+
+$font-size-base: 16px
+$font-size-large: ceil(($font-size-base * 1.25))
+$font-size-small: ceil(($font-size-base * 0.85))
+
+$font-size-h1: floor(($font-size-base * 2.4))
+$font-size-h2: floor(($font-size-base * 2.0))
+$font-size-h3: ceil(($font-size-base * 1.5))
+$font-size-h4: ceil(($font-size-base * 1.2))
+$font-size-h5: $font-size-base
+$font-size-h6: ceil(($font-size-base * 0.85))
+
+
+$line-height-base: 1.428571429
+$line-height-computed: floor(($font-size-base * $line-height-base))
+
+
+$headings-font-family: inherit
+$headings-font-weight: 500
+$headings-line-height: 1.1
+$headings-color: inherit
+$headings-small-color: $gray-light
+
+
+
+
+
+//************
+// responsive
+//************
+
+$screen-xs: 480px
+$screen-xs-min: $screen-xs
+
+$screen-sm: 764px
+$screen-sm-min: $screen-sm
+
+$screen-md: 960px
+$screen-md-min: $screen-md
+
+$screen-lg: 1200px
+$screen-lg-min: $screen-lg
+
+
+$screen-xs-max: $screen-sm-min - 1
+$screen-sm-max: $screen-md-min - 1
+$screen-md-max: $screen-lg-min - 1
+
+$grid-breakpoint: $screen-sm
+
+$grid-columns: 12
+$grid-gutter-width: 30px
+
+$container-padding-horizontal: 16px
+
+
+
+//************
+// panel
+//************
+
+$panel-border-color: $border-color-base
+$panel-border-radius: $border-radius-base
+$panel-shasow: 0
+$panel-body-padding: 16px
+$panel-head-bg: $body-bg
+$panel-head-padding: 12px 16px
+$panel-head-bg: $shaded-bg-base
+$panel-foot-padding: 12px 16px
+$panel-foot-bg: $shaded-bg-base
+
+
+
+//************
+// table
+//************
+
+$table-cell-padding: 8px
+$table-condensed-cell-padding: 5px
+$table-bg: transparent
+$table-head-bg: $shaded-bg-base
+$table-border-color: $border-color-base
+$table-border-radius: $border-radius-base
+
+
+
+//************
+// alert
+//************
+
+$alert-padding: 16px
+$alert-border-radius: $border-radius-base
+
+$alert-primary-bg: $brand-primary-lighter
+$alert-primary-color: $brand-primary-darker
+$alert-primary-border: $brand-primary
+
+$alert-secondary-bg: $brand-secondary-lighter
+$alert-secondary-color: $brand-secondary-darker
+$alert-secondary-border: $brand-secondary
+
+$alert-accent-bg: $brand-accent-lighter
+$alert-accent-color: $brand-accent-darker
+$alert-accent-border: $brand-accent
+
+
+
+
+
+//************
+// tooltip
+//************
+$tooltip-padding: 4px 8px
+$tooltip-z: 100
+
+$tooltip-arrow-size: 6px
+$tooltip-bg: $gray-darker
+$tooltip-color: $body-bg
+$tooltip-font-size: 12px
+$tooltip-border-radius: $border-radius-base
+$tooltip-min-width: 80px
+$tooltip-max-width: 200px
+$tooltip-color: #fff
+$tooltip-bg: #000
+$tooltip-opacity: .9
+
+
+//************
+// button
+//************
+
+$btn-font-weight: normal
+$btn-padding-vertical: 6px
+$btn-padding-horizontal: 12px
+
+$btn-default-color: #333
+$btn-default-bg: #fff
+$btn-default-border: #ccc
+$btn-primary-color: #fff
+$btn-primary-bg: $brand-primary-dark
+$btn-primary-border: darken($btn-primary-bg, 5%)
+$btn-secondary-color: #fff
+$btn-secondary-bg: $brand-secondary-dark
+$btn-secondary-border: darken($btn-secondary-bg, 5%)
+$btn-accent-color: #fff
+$btn-accent-bg: $brand-accent-dark
+$btn-accent-border: darken($btn-accent-bg, 5%)
+
+$btn-ghost-default-color: $gray
+$btn-ghost-primary-color: $brand-primary
+$btn-ghost-secondary-color: $brand-secondary
+$btn-ghost-accent-color: $brand-accent
+
+$btn-link-disabled-color: $gray-light
+
+
+//************
+// form
+//************
+
+$form-group-margin-bottom: 20px
+$form-group-padding: 0
+$form-label-padding: 6px 0
+$form-control-padding: 6px 0
+
+$form-label-color: $gray
+$form-control-border-color: $gray-lighter
+$form-control-color: $gray
+
+$form-control-font-size: 16px
+$form-focus-bg: #fcfcfc
+
+//************
+// well
+//************
+$well-bg: $gray-more-lighter
+$well-padding: 12px 16px
+$well-border: 0
+$well-border-radius: $border-radius-base
+
+
+
+//************
+// code
+//************
+
+$code-color: $brand-secondary-darker
+$code-bg: transparent
+
+$pre-bg: $shaded-bg-base
+$pre-color: $gray-dark
+$pre-border-color: transparent
+$pre-scrollable-max-height: 340px
+
+
