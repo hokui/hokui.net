@@ -17,8 +17,12 @@ Rails.application.routes.draw do
     resources :subjects,    only: [:index, :show, :create, :update, :destroy]
 
     resources :semesters,   only: [:index, :show, :create, :update, :destroy]
+
+    match "*path" => "application#not_found", via: :all
   end
 
-  match "*path" => "application#index", via: [:get, :post]
-  root :to => "application#index", via: [:get, :post]
+  if Rails.env.development?
+    get "*path" => "application#index"
+    root :to => "application#index"
+  end
 end
