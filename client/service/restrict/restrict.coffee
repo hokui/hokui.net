@@ -2,13 +2,22 @@
 
 angular.module serviceName
 
-.factory 'Restriction',
-    (Auth)->
-        (state)->
-            _default =
-                error: '権限がありません。'
-                next: 'main'
+.provider 'Restrict', ->
+    _default =
+        error: 'You have no permission to access the page you try to view.'
 
+    setError: (error)->
+        _default.error = error
+
+    setNext: (next)->
+        _default.next = next
+
+    $get: (Auth)->
+        if not _default.next?
+            throw new Error('Need to set default state to be redirect to')
+
+
+        (state)->
             _result =
                 can: true
 

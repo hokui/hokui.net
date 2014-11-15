@@ -7,7 +7,6 @@ angular.module serviceName, [
     'ngResource'
     'ngSanitize'
     'ui.router'
-    'ui.bootstrap'
     'angularLocalStorage'
 ]
 

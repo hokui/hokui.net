@@ -39,8 +39,8 @@ describe 'auth service', ->
 
         Auth.silentLogout()
 
-        expect(Auth.active()).toBe(false)
-        expect(Auth.user()).toEqual({})
+        expect(Auth.active()).toBe false
+        expect(Auth.user()).toEqual null
         expect(Token.get()).toBe('')
 
 
@@ -51,8 +51,8 @@ describe 'auth service', ->
             email: 'not_authorized@hokudai.ac.jp'
             password: 'not_authorized'
         $httpBackend.flush()
-        expect(Auth.active()).toBe(false)
-        expect(Auth.user()).toEqual({})
+        expect(Auth.active()).toBe false
+        expect(Auth.user()).toEqual null
 
 
     it 'admin login', ->
@@ -129,14 +129,14 @@ describe 'auth service', ->
         $httpBackend.flush()
 
         expect(Auth.active()).toBe(false)
-        expect(Auth.user()).toEqual({})
+        expect(Auth.user()).toEqual(null)
         expect(Token.get()).toBe('')
 
         # if token is empty, Auth doesnt call API
         Auth.logout()
 
         expect(Auth.active()).toBe(false)
-        expect(Auth.user()).toEqual({})
+        expect(Auth.user()).toEqual(null)
         expect(Token.get()).toBe('')
 
 
@@ -159,7 +159,7 @@ describe 'auth service', ->
         $httpBackend.flush()
 
         expect(Auth.active()).toBe false
-        expect(Auth.user()).toEqual {}
+        expect(Auth.user()).toEqual null
 
 
         ###*
@@ -177,7 +177,7 @@ describe 'auth service', ->
         $httpBackend.flush()
 
         expect(Auth.active()).toBe false
-        expect(Auth.user()).toEqual {}
+        expect(Auth.user()).toEqual null
 
 
     it 'check admin', ->

@@ -2,22 +2,28 @@
 
 angular.module serviceName
 
-.factory 'Auth', ($http, $q, Token) ->
+.provider 'Auth', ->
+    _conf =
+        events:
+           userUpdated: 'AUTH:USER_UPDATED'
+
+    $get: ($http, $q, $rootScope,Token) ->
         _current =
-            active: false
-            user : {}
+            user : null
 
         _levels =
             admin: 2
             user: 1
             guest: 0
 
+        broadcastUserUpdated = ->
+            $rootScope.$broadcast _conf.events.userUpdated, _current.user
+
         level: ->
-            if _current.active and _current.user?.admin?
-                if _current.user.admin
-                    return _levels.admin
-                else
-                    return _levels.user
+            if @admin()
+                return _levels.admin
+            if @active()
+                return _levels.user
             else
                 return _levels.guest
 
@@ -35,10 +41,13 @@ angular.module serviceName
 
 
         active: ->
-            _current.active
+            _current.user isnt null
 
         user: ->
             _current.user
+
+        admin: ->
+            _current.user?.admin? and _current.user.admin
 
         login: (user)->
             deferred = $q.defer()
@@ -47,35 +56,35 @@ angular.module serviceName
                 password: user.password
             .success (data)=>
                 Token.set(data.token)
-                _current.active = true
                 _current.user = data.user
                 deferred.resolve _current
-            .error (err) ->
+                broadcastUserUpdated()
+            .error (err)=>
+                @silentLogout()
                 deferred.reject err
+                broadcastUserUpdated()
 
             deferred.promise
 
         logout: (callback)->
             deferred = $q.defer()
             t = Token.get()
-            if t? and t isnt ''
-                $http.delete '/api/session', {}
-                .success (data)=>
-                    @silentLogout()
-                    deferred.resolve()
-                .error (err)=>
-                    @silentLogout()
-                    deferred.resolve()
-            else
+            _finally = (data)=>
                 @silentLogout()
                 deferred.resolve()
+                broadcastUserUpdated()
+            if t? and t isnt ''
+                $http.delete '/api/session', {}
+                .success _finally
+                .error _finally
+            else
+                _finally()
 
             deferred.promise
 
         silentLogout: ()->
             Token.clear()
-            _current.active = false
-            _current.user = {}
+            _current.user = null
 
 
         check: (callback)->
@@ -84,15 +93,18 @@ angular.module serviceName
             if t? and t isnt ''
                 $http.get '/api/users/profile', {}
                 .success (data)=>
-                    _current.active = true
                     _current.user = data
                     deferred.resolve _current
+                    broadcastUserUpdated()
                 .error (err)=>
                     @silentLogout()
                     deferred.reject _current
+                    broadcastUserUpdated()
             else
                 @silentLogout()
                 deferred.reject _current
-
+                broadcastUserUpdated()
             deferred.promise
+
+
 

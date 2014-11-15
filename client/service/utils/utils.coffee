@@ -34,3 +34,12 @@ angular.module serviceName
                     i = this.indexOf obj
                     if i > -1
                         this.splice i, 1
+
+
+.directive 'textbox', ($compile)->
+    restrict: 'E'
+    link: (scope, element, attrs)->
+        element.attr 'contenteditable', true
+
+
+

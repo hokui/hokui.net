@@ -4,7 +4,12 @@ angular.module serviceName
 
 .factory 'Notification',
     ($timeout, $q) ->
-        _types = ['info', 'success', 'warning', 'danger']
+        _types = ['ok', 'warn', 'danger']
+        _type_class_map =
+            ok: 'primary'
+            warn: 'secondary'
+            danger: 'accent'
+
         _default =
             type: _types[0]
             period: 4000
@@ -32,7 +37,7 @@ angular.module serviceName
         ###
 
         alertClass: ->
-            "alert-#{_current.type}"
+            "alert--#{_type_class_map[_current.type]}"
 
         current: ->
             _current
