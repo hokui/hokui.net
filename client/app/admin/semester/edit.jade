@@ -1,39 +1,45 @@
-form.form-horizontal(role="form" ng-submit="doSaveSemester()")
-    .panel.panel-default
-        .panel-heading
+form.form(role="form" ng-submit="doSaveSemester()")
+    .panel
+        .panel__head
             h3 {{title}}
-        .panel-body
-            .form-group
-                label.control-label.col-md-2(for="semesterInputIdentifier") 学年
+        .panel__body.clearfix
+            .form__group
+                .col-md-2
+                    label.form__label(for="semesterInputIdentifier") 学期
                 .col-md-10
-                    select.form-control(ng-model="new_semester.identifier"
-                                        id="semesterInputIdentifier"
-                                        ng-options="i.identifier as i.label for i in subjectIndetifierList")
+                    select.form__control(
+                        ng-model="new_semester.identifier"
+                        id="semesterInputIdentifier"
+                        ng-options="i.identifier as i.label for i in subjectIndetifierList")
 
-            .form-group
-                label.control-label.col-md-2(for="semesterInputClassYear") 学年
+            .form__group
+                .col-md-2
+                    label.form__label(for="semesterInputClassYear") 学年
                 .col-md-10
-                    select.form-control(ng-model="new_semester.class_year_id"
-                                        id="semesterInputClassYear"
-                                        ng-options="class_year.id as class_year.year for class_year in class_years")
+                    select.form__control(
+                        ng-model="new_semester.class_year_id"
+                        id="semesterInputClassYear"
+                        ng-options="class_year.id as class_year.year for class_year in class_years")
 
-            .form-group
-                label.control-label.col-md-2 教科
+            .form__group
+                .col-md-2
+                    label.form__label 教科
                 .col-md-10.checkbox
                     div(ng-repeat="subject in subjects | filter: subjectFilter")
-                        label
+                        label.form__control
                             input(type="checkbox"
                                   ng-checked="new_semester.subject_ids.indexOf(subject.id) > -1"
                                   ng-click="subjectCheckboxChange(subject)")
-                            | {{subject.title_ja}} - {{subject.title_en}}
+                            span {{subject.title_ja}} - {{subject.title_en}}
 
-        .panel-footer.clearfix
-            .pull-left
-                div(ng-if="editing")
-                    a.btn.btn-default(ui-sref="admin.semester.detail({id: semester.id})" tabindex="-1") 戻る
-                div(ng-if="!editing")
-                    a.btn.btn-default(ui-sref="admin.semester" tabindex="-1") 戻る
-            .pull-right
-                button.btn.btn-primary(type="submit") 保存
-                button.btn.btn-danger(type="button" ng-if="editing" ng-click="deleteSemester()") {{deleteBtnLabel()}}
-                button.btn.btn-sm.btn-default(type="button" ng-if="deleting" ng-click="stopDeleting()") やっぱりやめる
+        .panel__foot
+            .clearfix
+                .pull-left
+                    div(ng-if="editing")
+                        a.btn(ui-sref="admin.semester.detail({id: semester.id})" tabindex="-1") 戻る
+                    div(ng-if="!editing")
+                        a.btn(ui-sref="admin.semester" tabindex="-1") 戻る
+                .pull-right
+                    button.btn.btn--primary(type="submit") 保存
+                    button.btn.btn--accent(type="button" ng-if="editing" ng-click="deleteSemester()") {{deleteBtnLabel()}}
+                    button.btn(type="button" ng-if="deleting" ng-click="stopDeleting()") やっぱりやめる

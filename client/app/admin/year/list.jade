@@ -1,14 +1,12 @@
 a(ui-sref="admin.year.detail.edit({id: ''})") 新規作成
 
-table.table.table-bordered.table-condensed.table-hover
-    thead
+table.table
+    thead.table__head
         tr
             th ID
             th 期
             th カリキュラム
-            th.hidden-xs 作成
-            th.hidden-xs 更新
-    tbody
+    tbody.table__body
         tr(ng-repeat="year in years")
             td {{year.id}}
             td
@@ -16,5 +14,3 @@ table.table.table-bordered.table-condensed.table-hover
                     | {{year.year}}期
             td
                 a(ui-sref="admin.semester({year:year.year})") {{year.year}}期のカリキュラム
-            td.hidden-xs {{year.created_at | date:'yyyy年MM月dd日HH時mm分'}}
-            td.hidden-xs {{year.updated_at | date:'yyyy年MM月dd日HH時mm分'}}

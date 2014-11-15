@@ -1,6 +1,6 @@
-.topfix.admin.container
-    ul.nav.nav-tabs(role="tablist")
-        li(ng-repeat="item in items", ng-class="{active: isActive(item.state)}")
+.topfix.container
+    ul
+        li(ng-repeat="item in items")
             a(ui-sref="{{item.state}}") {{item.title}}
 
 
