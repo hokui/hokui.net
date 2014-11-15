@@ -59,3 +59,11 @@ npm start
 npm test
 ```
 
+Run hokui.net on nginx
+--------
+1. Place project or its symbolic link to `/var/www/hokui.net`
+2. Boot Rails Server: `bundle exec rails -e production`
+3. Build client codes: `gulp prod build`
+4. Then, boot Nginx: `sudo nginx -c /var/www/hokui.net/hokui.conf`
+
+
