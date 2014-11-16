@@ -21,8 +21,8 @@ angular.module appName
         $scope.performLogin = ()->
             Auth.login $scope.credencials
             .then ->
-                $state.go 'main'
-                Notify 'ログインしました。', type: 'success'
+                $state.go 'home'
+                Notify 'ログインしました。', type: 'ok'
             , ->
                 $scope.message = 'invalid email or password'
 

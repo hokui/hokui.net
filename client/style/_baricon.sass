@@ -1,0 +1,52 @@
+.baricon
+    position: relative
+    .baricon__bar
+        display: block
+        position: absolute
+        width: 100%
+        height: 100%
+        opacity: 1
+        border-radius: 0
+        transition: all .2s ease-in-out 0
+
+
+.baricon.baricon--bars
+    .baricon__bar
+        &:nth-child(1)
+            transform: translate(0, -36%) scale(1.0, 0.16)
+        &:nth-child(2)
+            transform: translate(0, 0%) scale(1.0, 0.16)
+        &:nth-child(3)
+            transform: translate(0, 36%) scale(1.0, 0.16)
+
+.baricon.baricon--times
+    .baricon__bar
+        &:nth-child(1)
+            transform: rotate(45deg) scale(1.0, 0.16)
+        &:nth-child(2)
+            transform: scale(1.0, 0.12)
+            opacity: 0
+        &:nth-child(3)
+            transform: rotate(135deg) scale(1.0, 0.16)
+
+.baricon.baricon--circle
+    .baricon__bar
+        &:nth-child(1)
+            transform: translate(0, -25%) scale(1.0, 0.12)
+            opacity: 0
+        &:nth-child(2)
+            transform: rotate(0) scale(1.0, 1.0)
+            border-radius: 50%
+            background-color: transparent
+            border: 0.15em solid #ccc
+        &:nth-child(3)
+            transform: translate(0, 25%) scale(1.0, 0.12)
+            opacity: 0
+
+
+
+.baricon.baricon--default
+    +baricon-variant(100px, #ccc)
+
+
+

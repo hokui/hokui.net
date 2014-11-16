@@ -8,7 +8,6 @@ angular.module appName, [
     'ngSanitize'
     'ngAnimate'
     'ui.router'
-    'ui.bootstrap'
     serviceName
 ]
 
@@ -40,8 +39,10 @@ angular.module appName, [
     TokenProvider.storageKey 'token'
     TokenProvider.tokenPrefix ''
 
+.config (RestrictProvider)->
+    RestrictProvider.setNext 'home'
 
-.run ($rootScope, Restriction, $state, Auth, Notify)->
+.run ($rootScope, Restrict, $state, Auth, Notify)->
 
     hooking_first_change = true
     unregister = $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
@@ -57,11 +58,11 @@ angular.module appName, [
     $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
         if hooking_first_change
             return
-        result = Restriction(toState)
+        result = Restrict toState
         first_visit = fromState.name is ''
         if not result.can
             ev.preventDefault()
-            Notify result.error, type: 'warning', delay: if first_visit then 500 else 0
+            Notify result.error, type: 'warn', delay: if first_visit then 500 else 0
             $state.go result.next
 
 

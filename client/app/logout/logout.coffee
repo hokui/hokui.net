@@ -15,9 +15,8 @@ angular.module appName
         $scope.performLogout = ()->
             Auth.logout()
             .then ->
-                console.log 'logout'
-                $state.go 'main'
-                Notify 'ログアウトしました。', type: 'info'
+                $state.go 'home'
+                Notify 'ログアウトしました。', type: 'ok'
 
         if Auth.active()
             $scope.message = "you are active as #{Auth.user().handle_name}."

@@ -3,26 +3,24 @@ div
 
 p
     .btn-group
-        a.link.btn.btn-default(ng-repeat="year in indexOfClassYear",
-                               ng-class="{'btn-primary': $index == currentIndexOfClassYear.index}",
+        a.btn(ng-repeat="year in indexOfClassYear",
+                               ng-class="{'btn--primary': $index == currentIndexOfClassYear.index}",
                                ng-href="{{searchUrlForClassYear($index)}}") {{year.text}}
 p
     .btn-group
-        a.link.btn.btn-default(ng-repeat="subject in indexOfSubject",
-                               ng-class="{'btn-primary': $index == currentIndexOfSubject.index}",
+        a.btn(ng-repeat="subject in indexOfSubject",
+                               ng-class="{'btn--primary': $index == currentIndexOfSubject.index}",
                                ng-href="{{searchUrlForSubject($index)}}") {{subject.text}}
 
 
-table.table.table-bordered.table-condensed.table-hover
-    thead
+table.table
+    thead.table__head
         tr
             th ID
             th 学期
             th 学年
             th 教科
-            th.hidden-xs 作成
-            th.hidden-xs 更新
-    tbody
+    tbody.table__body
         tr(ng-repeat="semester in semesters | filter:currentIndexOfClassYear.filter | filter:currentIndexOfSubject.filter")
             td {{semester.id}}
             td
@@ -33,11 +31,8 @@ table.table.table-bordered.table-condensed.table-hover
                     | {{class_years.retrieve(semester.class_year_id).year}}期
 
             td
-                ul
-                    li(ng-repeat="subject_id in semester.subject_ids")
-                        a(ui-sref=".({subject:subjects.retrieve(subject_id).title_en})" ui-sref-opts="{inherit: false}")
-                            | {{subjects.retrieve(subject_id).title_ja}}
-
-            td.hidden-xs {{semester.created_at | date:'yyyy年MM月dd日HH時mm分'}}
-            td.hidden-xs {{semester.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
+                span(ng-repeat="subject_id in semester.subject_ids")
+                    a(ui-sref=".({subject:subjects.retrieve(subject_id).title_en})" ui-sref-opts="{inherit: false}")
+                        | {{subjects.retrieve(subject_id).title_ja}}
+                    span(ng-if="!$last") 、&nbsp;
 

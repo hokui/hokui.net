@@ -2,8 +2,8 @@ module.exports = (config) ->
     bowerFiles = require 'main-bower-files'
 
     files = [
-        'client/components/service.coffee'
-        'client/components/**/*.coffee'
+        'client/service/service.coffee'
+        'client/service/**/*.coffee'
         'client/app/app.coffee'
         'client/app/**/*.coffee'
         'client/test/unit/helper_*.coffee'
@@ -24,7 +24,7 @@ module.exports = (config) ->
         exclude: []
 
         preprocessors:
-            'client/{app,components}/**/*.coffee': ['coverage']
+            'client/{app,service}/**/*.coffee': ['coverage']
             'client/test/unit/**/*.coffee': ['coffee']
 
         reporters: ['progress', 'coverage']
