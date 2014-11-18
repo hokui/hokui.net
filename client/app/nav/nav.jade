@@ -12,9 +12,4 @@
 
     .navbar__items(ng-class="{'navbar__items--collapsed': collapsed}")
         .navbar__items__item(ng-repeat="item in items", ng-class="navClass(item)", ng-if="isVisible(item)")
-            a(ng-href="{{getHref(item)}}", ng-click="navEvent(item)()") {{item.label()}}
-
-    //- .navbar__auth
-    //-     a.btn-ghost.navbar__auth__button(
-    //-         ng-class="{'btn-ghost--secondary': !Auth.active()}"
-    //-         ng-href="{{getHref(itemAuth())}}") {{itemAuth().label}}
+            a(ng-href="{{getHref(item)}}", ng-click="navEvent(item)") {{item.label()}}

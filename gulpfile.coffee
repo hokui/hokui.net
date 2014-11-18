@@ -9,6 +9,8 @@ del = require 'del'
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
 
+require 'date-utils'
+
 
 p = console.log
 
@@ -30,9 +32,13 @@ class Conf
         @ngAppName = 'hokuiApp'
         @watching = false
         @minify = true
+        @static = 'static'
         @setProd(isProd)
+        @hash = (new Date()).toFormat("YYYYMMDDHH24MISS")
+
 
 conf = new Conf(false)
+
 
 
 ###*
@@ -56,7 +62,7 @@ g.task 'copy:fonts', ['clean'], ->
 
 
 g.task 'copy:static', ['clean'], ->
-    g.src "#{conf.src}/static/**/*"
+    g.src "#{conf.static}/**/*"
     .pipe g.dest "#{conf.dest}"
 
 
@@ -138,7 +144,7 @@ g.task 'css:build', ['css'], (cb)->
     ]
 
     t = g.src target
-    .pipe $.concat 'app.css'
+    .pipe $.concat "app-#{conf.hash}.css"
     if conf.minify
         t = t
         .pipe $.minifyCss()
@@ -219,7 +225,7 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
     ]
 
     t = g.src target
-    .pipe $.concat 'app.js'
+    .pipe $.concat "app-#{conf.hash}.js"
     if conf.minify
         t = t
         .pipe $.uglify mangle: false
