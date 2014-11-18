@@ -50,7 +50,8 @@ angular.module appName
             if item isnt '' then $state.href item.state() else ''
 
         $scope.navEvent = (item)->
-            if item.event? then item.event() else ''
+            if item.event?
+                item.event()
 
         $scope.navClass = (item)->
             'navbar__items__item--active': $state.includes(item.state())
