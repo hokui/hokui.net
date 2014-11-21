@@ -1,24 +1,26 @@
 .notify
-    z-index: 100
+    z-index: $navbar-z + 1
     position: fixed
     top: auto
     bottom: 0
     left: 50%
     transform: translate(-50%, 0px)
     @media (min-width: $screen-sm-min)
-        width: 700px
+        width: $screen-sm-min - $grid-gutter-width
     width: 80%
 
     & > .alert-container
+        // hidden
+        transform: translateY(0)
+
+
         position: absolute
         top: 0
         transition: transform .4s ease-out
-        transform: translateY(0)
         width: 100%
-        .alert
-            margin: 0 0 20px
 
 
-    &.notify-shown
+    &.notify--shown
         & > .alert-container
+            // shown
             transform: translateY(-100%)

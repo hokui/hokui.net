@@ -1,0 +1,36 @@
+.panel
+    border-radius: $panel-border-radius
+    border: solid 1px $panel-border-color
+    box-shadow: $panel-shasow
+    margin-bottom: $line-height-computed
+    & > .panel
+        border-radius: 0
+        border: 0
+        box-shadow: 0
+
+        border-top: solid 1px $panel-border-color
+        border-bottom: solid 1px $panel-border-color
+
+.panel__body
+    padding: $panel-body-padding
+    & + .panel__body
+        border-top: solid 1px $panel-border-color
+
+
+
+.panel__head
+    padding: $panel-head-padding
+    background-color: $panel-head-bg
+
+.panel__foot
+    padding: $panel-foot-padding
+    background-color: $panel-foot-bg
+
+.panel__head__title
+    margin-top: 0
+    margin-bottom: 0
+    font-size: ceil(($font-size-base * 1.125))
+    color: inherit
+
+    & > a
+        color: inherit

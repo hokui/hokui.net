@@ -1,20 +1,22 @@
-form.form-horizontal(role="form", ng-submit="doSaveYear()")
-    .panel.panel-default
-        .panel-heading
-            h3 {{title}}
-        .panel-body
-            .form-group
-                label.control-label.col-md-2(for="yearInputYear") 期
+form.form(role="form", ng-submit="doSaveYear()")
+    .panel
+        .panel__head
+            h3.panel__head__title {{title}}
+        .panel__body
+            .form__group
+                .col-md-2
+                    label.form__label(for="yearInputYear") 期
                 .col-md-10
-                    input.form-control(type="number", placeholder="期", id="yearInputYear", ng-model="new_year.year")
-        .panel-footer.clearfix
-            .pull-left
-                div(ng-if="editing")
-                    a.btn.btn-default(ui-sref="admin.year.detail({id: year.id})" tabindex="-1") 戻る
-                div(ng-if="!editing")
-                    a.btn.btn-default(ui-sref="admin.year" tabindex="-1") 戻る
-            .pull-right
-                button.btn.btn-primary(type="submit") 保存
-                button.btn.btn-danger(type="button", ng-if="editing", ng-click="deleteYear()") {{deleteBtnLabel()}}
-                button.btn.btn-sm.btn-default(type="button", ng-if="deleting", ng-click="stopDeleting()") やっぱりやめる
+                    input.form__control(type="number", placeholder="期", id="yearInputYear", ng-model="new_year.year")
+        .panel__foot
+            .clearfix
+                .pull-left
+                    div(ng-if="editing")
+                        a.btn.btn-default(ui-sref="admin.year.detail({id: year.id})" tabindex="-1") 戻る
+                    div(ng-if="!editing")
+                        a.btn.btn-default(ui-sref="admin.year" tabindex="-1") 戻る
+                .pull-right
+                    button.btn.btn--primary(type="submit") 保存
+                    button.btn.btn--accent(type="button", ng-if="editing", ng-click="deleteYear()") {{deleteBtnLabel()}}
+                    button.btn(type="button", ng-if="deleting", ng-click="stopDeleting()") やっぱりやめる
 

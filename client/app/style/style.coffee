@@ -10,8 +10,8 @@ angular.module appName
 
 .controller 'StyleCtrl',
     ($scope, $animate, Notify) ->
-        $scope.alert = (t)->
-            Notify "Alert Type: #{t}", type: t
+        $scope.notify = (type)->
+            Notify 'アラート', type: type
 
         $scope.barIconType = 'bars'
 
@@ -24,7 +24,7 @@ angular.module appName
 
         $scope.barClass = ->
             t =
-                bars: 'bar-icon-bars'
-                circle: 'bar-icon-circle'
-                times: 'bar-icon-times'
+                bars: 'baricon--bars'
+                circle: 'baricon--circle'
+                times: 'baricon--times'
             t[$scope.barIconType]

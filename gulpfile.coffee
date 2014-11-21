@@ -1,19 +1,16 @@
+###*
+preparalations
+###
 g = require 'gulp'
 $ = do require 'gulp-load-plugins'
 
 fs = require 'fs'
 del = require 'del'
-
-
-###*
-manual inclusions
-###
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
 
-###*
-preparalations
-###
+require 'date-utils'
+
 
 p = console.log
 
@@ -32,16 +29,12 @@ class Conf
         catch error
             'bower_components'
         )
-        @sassPath = [
-            "#{@bowerDir}"
-            "#{@src}/app"
-            "#{@src}/components"
-            "#{@src}/vendor"
-        ]
         @ngAppName = 'hokuiApp'
         @watching = false
         @minify = true
+        @static = 'static'
         @setProd(isProd)
+        @hash = (new Date()).toFormat("YYYYMMDDHH24MISS")
 
 
 conf = new Conf(false)
@@ -69,7 +62,7 @@ g.task 'copy:fonts', ['clean'], ->
 
 
 g.task 'copy:static', ['clean'], ->
-    g.src "#{conf.src}/static/**/*"
+    g.src "#{conf.static}/**/*"
     .pipe g.dest "#{conf.dest}"
 
 
@@ -77,11 +70,11 @@ g.task 'copy', ['copy:fonts', 'copy:static']
 
 
 g.task 'css:vendor', ['clean'], ->
-
+    # include bower directory
     t = g.src "#{conf.src}/vendor/**/*.{sass,scss}"
     .pipe $.plumber()
     .pipe $.sass
-        includePaths: conf.sassPath
+        includePaths: [conf.bowerDir]
         sourceComments: 'normal'
 
     .pipe $.autoprefixer()
@@ -93,9 +86,19 @@ g.task 'css:vendor', ['clean'], ->
     t.pipe g.dest "#{conf.dest}/vendor"
 
 
+
+g.task 'css:common', ['clean'], ->
+    g.src "#{conf.src}/style/**/*.sass"
+    .pipe $.plumber()
+    .pipe $.sass
+        sourceComments: 'normal'
+    .pipe $.autoprefixer()
+    .pipe g.dest "#{conf.dest}/style"
+
+
 g.task 'css:app:inject', ['clean'], ->
     target = [
-        "#{conf.src}/{app,components}/**/*.{sass,scss}"
+        "#{conf.src}/app/**/*.{sass,scss}"
         "!#{conf.src}/app/app.sass"
     ]
 
@@ -106,8 +109,6 @@ g.task 'css:app:inject', ['clean'], ->
             endtag: '// endinject'
             transform: (filePath, file, i, length)->
                 filePath = filePath.replace('client/app/', '')
-                filePath = filePath.replace('client/components/', '')
-                filePath = filePath.replace('client/vendor/', '')
                 return "@import \"#{filePath}\""
             addRootSlash: false
     )
@@ -120,29 +121,30 @@ g.task 'css:app', ['clean', 'css:app:inject'], ->
     .pipe $.plumber()
     .pipe g.dest "#{conf.src}/app/"
     .pipe $.sass
-        includePaths: conf.sassPath
         sourceComments: 'normal'
     .pipe $.autoprefixer()
     .pipe g.dest "#{conf.dest}/app"
 
 
-g.task 'css', ['css:app', 'css:vendor']
+g.task 'css', ['css:vendor', 'css:common', 'css:app']
 
 
-g.task 'build:css', ['css'], (cb)->
+g.task 'css:build', ['css'], (cb)->
     if not conf.prod
         return cb()
     # concat order
-    # 1. vendor/vendor.css: font-awesome and bootstrap
-    # 2. app/app.css: app style
+    # 1. vendor/vendor.css: vendor style
+    # 2. style/common.css: common style
+    # 3. app/app.css: app style
 
     target = [
         "#{conf.dest}/vendor/**/*.css"
-        "#{conf.dest}/app/app.css"
+        "#{conf.dest}/style/**/*.css"
+        "#{conf.dest}/app/**/*.css"
     ]
 
     t = g.src target
-    .pipe $.concat 'app.css'
+    .pipe $.concat "app-#{conf.hash}.css"
     if conf.minify
         t = t
         .pipe $.minifyCss()
@@ -152,9 +154,12 @@ g.task 'build:css', ['css'], (cb)->
 
 g.task 'js', ['clean'], ->
     t = g.src [
-        "#{conf.src}/{components,app}/**/*.coffee",
+        "#{conf.src}/service/service.coffee"
+        "#{conf.src}/service/**/*.coffee"
+        "#{conf.src}/app/app.coffee"
+        "#{conf.src}/app/**/*.coffee"
         "!#{conf.bowerDir}/**/*.coffee"
-    ]
+    ], base: "#{conf.src}/"
     .pipe $.plumber()
     .pipe $.sourcemaps.init()
     .pipe $.coffee
@@ -185,7 +190,7 @@ g.task 'bower', ['clean'], (cb)->
 
 
 g.task 'html', ['clean'], ->
-    t = g.src ["#{conf.src}/{app,components}/**/*.jade"]
+    t = g.src ["#{conf.src}/{app,service}/**/*.jade"]
     .pipe $.plumber()
     .pipe $.jade pretty: not conf.prod
 
@@ -200,11 +205,11 @@ g.task 'html', ['clean'], ->
         .pipe g.dest "#{conf.dest}/"
     t
 
-g.task 'build:html', ['html'], (cb)->
+g.task 'html:build', ['html'], (cb)->
     cb()
 
 
-g.task 'build:js', ['js', 'build:html', 'bower'], (cb)->
+g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
     if not conf.prod
         return cb()
 
@@ -220,23 +225,24 @@ g.task 'build:js', ['js', 'build:html', 'bower'], (cb)->
     ]
 
     t = g.src target
-    .pipe $.concat 'app.js'
+    .pipe $.concat "app-#{conf.hash}.js"
     if conf.minify
         t = t
         .pipe $.uglify mangle: false
     t.pipe g.dest "#{conf.dest}"
 
-g.task 'clean:cache', ['build:css', 'build:js', 'build:html'], (cb)->
+g.task 'clean:cache', ['css:build', 'js:build', 'html:build'], (cb)->
     if not conf.prod
         return cb()
 
     del [
+        "#{conf.dest}/style"
         "#{conf.dest}/app"
         "#{conf.dest}/vendor"
     ], cb
 
 
-g.task 'index', ['build:js', 'build:css', 'build:html', 'clean:cache'], ->
+g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
     ignorePath = ["#{conf.src}/", "#{conf.dest}/"]
     target = ''
     if conf.prod
@@ -249,9 +255,11 @@ g.task 'index', ['build:js', 'build:css', 'build:html', 'clean:cache'], ->
         # app.js first to init angular correctly
         target = [
             "#{conf.dest}/vendor/**/*.css"
-            "#{conf.dest}/app/app.css"
-            "#{conf.dest}/components/service.js"
-            "#{conf.dest}/components/**/*.js"
+            "#{conf.dest}/style/**/*.css"
+            "#{conf.dest}/app/**/*.css"
+
+            "#{conf.dest}/service/service.js"
+            "#{conf.dest}/service/**/*.js"
             "#{conf.dest}/app/app.js"
             "#{conf.dest}/app/**/*.js"
         ]
@@ -288,15 +296,20 @@ g.task 'index', ['build:js', 'build:css', 'build:html', 'clean:cache'], ->
 watch tasks
 ###
 
-g.task 'watch:index', ['index'], ->
+g.task 'watch:css:vendor', ['css:vendor'], ->
     $.livereload.changed()
-g.task 'watch:html', ['html'], ->
+g.task 'watch:css:common', ['css:common'], ->
     $.livereload.changed()
 g.task 'watch:css:app', ['css:app'], ->
     $.livereload.changed()
-g.task 'watch:css:vendor', ['css:vendor'], ->
-    $.livereload.changed()
+
 g.task 'watch:js', ['js'], ->
+    $.livereload.changed()
+
+g.task 'watch:html', ['html'], ->
+    $.livereload.changed()
+
+g.task 'watch:index', ['index'], ->
     $.livereload.changed()
 
 
@@ -304,12 +317,11 @@ g.task 'watch:js', ['js'], ->
 integrated tasks
 ###
 
-
 g.task 'build', [
     'copy'
-    'build:html'
-    'build:js'
-    'build:css'
+    'html:build'
+    'js:build'
+    'css:build'
     'clean:cache'
     'index'
 ]
@@ -317,12 +329,15 @@ g.task 'build', [
 g.task 'watch', ['build'], ->
     conf.watching = true
     $.livereload.listen()
-    g.watch "#{conf.src}/index.jade", ['watch:index']
-    g.watch "#{conf.src}/{app,components}/**/*.jade", ['watch:html']
-    g.watch "#{conf.src}/{app,components}/**/*.{sass,scss}", ['watch:css:app']
     g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor']
+    g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common']
+    g.watch "#{conf.src}/{app,service}/**/*.{sass,scss}", ['watch:css:app']
+
     g.watch "#{conf.src}/**/*.coffee", ['watch:js']
 
+    g.watch "#{conf.src}/{app,service}/**/*.jade", ['watch:html']
+
+    g.watch "#{conf.src}/index.jade", ['watch:index']
 
 g.task 'prod', ()->
     conf.setProd true

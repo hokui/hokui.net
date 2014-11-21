@@ -1,0 +1,131 @@
+//************
+// util
+//************
+
+=tab-focus
+    outline: thin dotted
+    outline: 5px auto -webkit-focus-ring-color
+    outline-offset: -2px
+
+=clearfix
+    &:before, &:after
+        content: " "
+        display: table
+    &:after
+        clear: both
+
+=center-block
+    display: block
+    margin-left: auto
+    margin-right: auto
+
+=text-hide
+    font: #{0/0} a
+    color: transparent
+    text-shadow: none
+    background-color: transparent
+    border: 0
+
+=fill
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+
+=anchor-non-decoration($color: $link-color)
+    text-decoration: none
+
+    &:link, &:visited, &:hover
+        text-decoration: none
+
+=button-non-decoration
+    border: 0
+    padding: 0px
+    background-color: transparent
+
+
+//************
+// responsive
+//************
+
+@import "mixin/responsive"
+
+//************
+// button
+//************
+
+=button-variant($color, $background, $border)
+    color: $color
+    background-color: $background
+    border-color: $border
+
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle
+        color: $color
+        background-color: darken($background, 10%)
+        border-color: darken($border, 12%)
+
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle
+        background-image: none
+
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] &
+        &,
+        &:hover,
+        &:focus,
+        &.focus,
+        &:active,
+        &.active
+            background-color: $background
+            border-color: $border
+
+
+=button-ghost-variant($color)
+    color: $color
+    background-color: transparent
+    border-color: $color
+
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle
+        color: $body-bg
+        background-color: $color
+        // border-color: darken($border, 12%)
+
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle
+        background-image: none
+
+
+//************
+// alert
+//************
+
+=alert-variant($background, $color, $border)
+    background-color: $background
+    color: $color
+    border: solid 1px $border
+
+
+//************
+// baricon
+//************
+
+=baricon-variant($size, $color)
+    width: $size
+    height: $size
+    font-size: $size
+    .baricon__bar
+        background-color: $color
+        border-color: $color

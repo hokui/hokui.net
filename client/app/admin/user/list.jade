@@ -1,6 +1,6 @@
 .table-responsive
-    table.table.table-bordered.table-condensed.table-hover
-        thead
+    table.table
+        thead.table__head
             tr
                 th ID
                 th 期
@@ -9,7 +9,7 @@
                 th 管理者
                 th.hidden-xs メールアドレス
                 th 状態
-        tbody
+        tbody.tabale__body
             tr(ng-repeat="user in users")
                 td {{user.id}}
                 td {{getYear(user)}}
@@ -20,23 +20,28 @@
                 td
                     div(ng-if="user.admin")
                         .text-center
-                            i.fa.fa-heart.heart-pink
+                            i.fa.fa-heart.accent-text
                 td.hidden-xs {{user.email}}
                 td
                     .text-center(ng-include="status(user)")
 
 
 script(type="text/ng-template", id="admin.user.list.status.active.html")
-    i.fa.fa-heart.heart-pink(tooltip="active!",  tooltip-placement="right")
+    span.tooltip.tooltip--left.accent-text(tooltip="active!")
+        i.fa.fa-heart
 
 script(type="text/ng-template", id="admin.user.list.status.pending.html")
-    i.fa.fa-times(tooltip="メール認証待ち",  tooltip-placement="right")
+    span.tooltip.tooltip--left(tooltip="メール認証待ち")
+        i.fa.fa-times
 
 script(type="text/ng-template", id="admin.user.list.status.waiting.html")
-    i.fa.fa-frown-o(tooltip="管理人承認待ち",  tooltip-placement="right", ng-click="approveUser(user)")
+    a.tooltip.tooltip--left(tooltip="管理人承認待ち" ng-click="approveUser(user)")
+        i.fa.fa-frown-o
 
 script(type="text/ng-template", id="admin.user.list.status.approve_processing.html")
-    i.fa.fa-heart-o.link.heart-pink(tooltip="click to approve",  tooltip-placement="right", ng-click="approveUser(user)")
+    a.tooltip.tooltip--left.accent-text(tooltip="click to approve" ng-click="approveUser(user)")
+        i.fa.fa-heart-o
 
 script(type="text/ng-template", id="admin.user.list.status.annon.html")
-    i.fa.fa-question(tooltip="不明な状態",  tooltip-placement="right")
+    span.tooltip.tooltip--left(tooltip="不明な状態")
+        i.fa.fa-question
