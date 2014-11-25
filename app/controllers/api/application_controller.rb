@@ -5,6 +5,10 @@ class Api::ApplicationController < ActionController::API
   include Sorcery::Controller
   before_action :require_login_with_token
 
+  def not_found
+    head 404
+  end
+
   def default_serializer_options
     { root: false }
   end
