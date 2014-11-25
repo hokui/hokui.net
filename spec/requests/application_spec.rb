@@ -24,4 +24,9 @@ RSpec.describe 'Application', :type => :request do
     raw_post_with_token(@admin, "/api/class_years", "{\"year\":94")
     expect(response.status).to eq(400)
   end
+
+  it "returns 404 to a request for nonexistent url, even if the client is unauthenticated" do
+    get("/api/hogefuga")
+    expect(response.status).to eq(404)
+  end
 end
