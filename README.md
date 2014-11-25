@@ -26,6 +26,8 @@ bundle exec rake db:dev
 フロントエンド
 --------
 ### ビルド
+**NOTE**: Need to install `Gulp` globally or run Gulp with `npm run gulp ...`.
+
 #### development, watchなし
 ```
 gulp build
