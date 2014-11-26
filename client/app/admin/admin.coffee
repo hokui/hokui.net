@@ -21,12 +21,11 @@ angular.module appName
 
 .controller 'AdminCtrl',
     ($scope, Auth, $state) ->
-
-
-        $scope.isActive = (state)->
+        $scope.isActive = (item)->
+            state = item.state
             if state is 'admin'
-                return $state.is(state)
-            $state.includes(state)
+                return $state.is state
+            $state.includes state
 
         $scope.items = [
                 title: '管理TOP'
