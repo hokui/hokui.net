@@ -8,23 +8,18 @@ $navbar-box-shadow: 0 0 2px rgba(#000, .1)
 
 
 $navbar-height: 64px
-$navbar-height-sm: 44px
+$navbar-height-sm: 56px
 $navbar-height-xs: 44px
+
+// navbar items collapse when xs
+$navbar-item-height: $navbar-height
+$navbar-item-height-sm: $navbar-height-sm
+$navbar-item-height-xs: 36px
+
+$navbar-collapse-button-size: 28px
+
 $navbar-z: 99
 
-
-$navbar-collapsed-item-height: 20
-
-
-=adjust-height
-    height: $navbar-height
-    line-height: $navbar-height
-    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
-        height: $navbar-height-sm
-        line-height: $navbar-height-sm
-    @media (max-width: $screen-xs-max)
-        height: $navbar-height-xs
-        line-height: $navbar-height-xs
 
 .navbar
     position: fixed
@@ -36,23 +31,28 @@ $navbar-collapsed-item-height: 20
     background-color: $navbar-bg
 
 
-    padding-left: 16px
-    padding-right: 16px
+    @media (min-width: $screen-md-min)
+        height: $navbar-height
+        line-height: $navbar-height
+        padding-left: 16px
+        padding-right: 16px
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+        height: $navbar-height-sm
+        line-height: $navbar-height-sm
         padding-left: 8px
         padding-right: 8px
     @media (max-width: $screen-xs-max)
+        height: $navbar-height-xs
+        line-height: $navbar-height-xs
         padding-left: 16px
         padding-right: 16px
 
-    +adjust-height
-
-=topfix($gutter: 8px)
-    padding-top: $navbar-height + $gutter
+=topfix
+    padding-top: $navbar-height
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
-        padding-top: $navbar-height-sm + $gutter
+        padding-top: $navbar-height-sm
     @media (max-width: $screen-xs-max)
-        padding-top: $navbar-height-xs + $gutter
+        padding-top: $navbar-height-xs
 
 .topfix
     +topfix
@@ -60,27 +60,33 @@ $navbar-collapsed-item-height: 20
 
 .navbar__brand
     float: left
-
-    margin-left: 32px
-    font-size: 40px
     color: $gray-dark
     &:hover,&:active,&:focus
         color: $gray-dark
     +anchor-non-decoration($gray-dark)
-    +adjust-height
 
+    @media (min-width: $screen-md-min)
+        margin-left: 32px
+        height: $navbar-height
+        line-height: $navbar-height
+        font-size: 40px
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
-        font-size: 22px
+        margin-left: 32px
+        height: $navbar-height-sm
+        line-height: $navbar-height-sm
+        font-size: 32px
     @media (max-width: $screen-xs-max)
+        height: $navbar-height-xs
+        line-height: $navbar-height-xs
         font-size: 22px
         margin-left: 0
 
 .navbar__items
     padding-left: 0
-    height: $navbar-height
     margin: 0
     float: right
-
+    @media (min-width: $screen-md-min)
+        height: $navbar-height
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
         height: $navbar-height-sm
     @media (max-width: $screen-xs-max)
@@ -91,8 +97,6 @@ $navbar-collapsed-item-height: 20
         left: 0px
         right: 0px
         top: $navbar-height-xs
-
-        // border-top: 1px solid #ccc
         box-shadow: $navbar-box-shadow
 
 .navbar__items.navbar__items--collapsed
@@ -105,45 +109,34 @@ $navbar-collapsed-item-height: 20
 
 
 
-=navbar-item-a-after-active
-    &:after
-        height: 3px
-        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
-            height: 2px
-
-    @media (max-width: $screen-xs-max)
-        color: $body-bg
-        background-color: $brand-primary
-
-
 
 .navbar__items__item
     float: left
-    font-size: 18px
-    height: $navbar-height
-    line-height: $navbar-height
+    // height: $navbar-height
+    // line-height: $navbar-height
+    @media (min-width: $screen-md-min)
+        height: $navbar-item-height
+        line-height: $navbar-item-height
+        font-size: 18px
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+        height: $navbar-item-height-sm
+        line-height: $navbar-item-height-sm
         font-size: 16px
-        height: $navbar-height-sm
-        line-height: $navbar-height-sm
     @media (max-width: $screen-xs-max)
-        height: $navbar-collapsed-item-height
-        line-height: $navbar-collapsed-item-height
+        height: $navbar-item-height-xs
+        line-height: $navbar-item-height-xs
+        font-size: 14px
         float: none
         background-color: $navbar-bg
-        font-size: 16px
         overflow: hidden
 
         transition: height ease-in-out .3s
 
-
-    +adjust-height
-
-
     & > a
         position: relative
         display: block
-        padding: 0 16px
+        @media (min-width: $screen-md-min)
+            padding: 0 16px
         @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
             padding: 0 12px
         @media (max-width: $screen-xs-max)
@@ -153,7 +146,6 @@ $navbar-collapsed-item-height: 20
         border-bottom-style: solid
         border-bottom-width: 2px
         border-bottom-color: transparent
-
 
         +anchor-non-decoration
 
@@ -172,10 +164,23 @@ $navbar-collapsed-item-height: 20
 
 
 .navbar__items__item--active>a, .navbar__items__item>a:hover
-    +navbar-item-a-after-active
+    &:after
+        @media (min-width: $screen-md-min)
+            height: 3px
+        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+            height: 2px
+        @media (max-width: $screen-xs-max)
+            height: 0
 
+.navbar__items__item--active>a
+    @media (max-width: $screen-xs-max)
+        color: $body-bg
+        background-color: $brand-primary
 
-$navbar-collapse-button-size: 28px
+.navbar__items__item>a:hover
+    @media (max-width: $screen-xs-max)
+        color: $body-bg
+        background-color: $brand-primary
 
 
 .navbar__collapse-button

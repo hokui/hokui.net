@@ -76,7 +76,6 @@ $font-size-h6: ceil(($font-size-base * 0.85))
 $line-height-base: 1.428571429
 $line-height-computed: floor(($font-size-base * $line-height-base))
 
-
 $headings-font-family: inherit
 $headings-font-weight: 500
 $headings-line-height: 1.1
@@ -85,6 +84,102 @@ $headings-small-color: $gray-light
 
 
 
+//************
+// alert
+//************
+
+$alert-padding: 16px
+$alert-border-radius: $border-radius-base
+
+$alert-primary-bg: $brand-primary-lighter
+$alert-primary-color: $brand-primary-darker
+$alert-primary-border: $brand-primary
+
+$alert-secondary-bg: $brand-secondary-lighter
+$alert-secondary-color: $brand-secondary-darker
+$alert-secondary-border: $brand-secondary
+
+$alert-accent-bg: $brand-accent-lighter
+$alert-accent-color: $brand-accent-darker
+$alert-accent-border: $brand-accent
+
+
+
+//************
+// button
+//************
+
+$btn-font-weight: normal
+$btn-padding-vertical: 6px
+$btn-padding-horizontal: 12px
+
+$btn-default-color: #333
+$btn-default-bg: #fff
+$btn-default-border: #ccc
+$btn-primary-color: #fff
+$btn-primary-bg: $brand-primary-dark
+$btn-primary-border: darken($btn-primary-bg, 5%)
+$btn-secondary-color: #fff
+$btn-secondary-bg: $brand-secondary-dark
+$btn-secondary-border: darken($btn-secondary-bg, 5%)
+$btn-accent-color: #fff
+$btn-accent-bg: $brand-accent-dark
+$btn-accent-border: darken($btn-accent-bg, 5%)
+
+$btn-ghost-default-color: $gray
+$btn-ghost-primary-color: $brand-primary
+$btn-ghost-secondary-color: $brand-secondary
+$btn-ghost-accent-color: $brand-accent
+
+$btn-link-disabled-color: $gray-light
+
+
+
+//************
+// code
+//************
+
+$code-color: $brand-secondary-darker
+$code-bg: transparent
+
+$pre-bg: $shaded-bg-base
+$pre-color: $gray-dark
+$pre-border-color: transparent
+$pre-scrollable-max-height: 340px
+
+
+
+//************
+// form
+//************
+
+$form-group-margin-bottom: 20px
+$form-group-padding: 0
+$form-label-padding: 6px 0
+$form-control-padding: 6px 0
+
+$form-label-color: $gray
+$form-control-border-color: $gray-lighter
+$form-control-color: $gray
+
+$form-control-font-size: 16px
+$form-focus-bg: #fcfcfc
+
+
+
+//************
+// panel
+//************
+
+$panel-border-color: $border-color-base
+$panel-border-radius: $border-radius-base
+$panel-shasow: 0
+$panel-body-padding: 16px
+$panel-head-bg: $body-bg
+$panel-head-padding: 12px 16px
+$panel-head-bg: $shaded-bg-base
+$panel-foot-padding: 12px 16px
+$panel-foot-bg: $shaded-bg-base
 
 
 //************
@@ -118,18 +213,24 @@ $container-padding-horizontal: 16px
 
 
 //************
-// panel
+// tab
 //************
 
-$panel-border-color: $border-color-base
-$panel-border-radius: $border-radius-base
-$panel-shasow: 0
-$panel-body-padding: 16px
-$panel-head-bg: $body-bg
-$panel-head-padding: 12px 16px
-$panel-head-bg: $shaded-bg-base
-$panel-foot-padding: 12px 16px
-$panel-foot-bg: $shaded-bg-base
+$tab-padding: 8px 16px
+$tab-border-color: $gray-lighter
+
+$tab-height: 42px
+$tab-height-xs: 32px
+
+$tab-spacing: 2px
+
+$tab-link-height: $tab-height - ($tab-spacing * 2)
+$tab-link-height-xs: $tab-height-xs - ($tab-spacing * 2)
+
+$tab-link-arrow-size: 10px
+
+$tab-fontsize: 16px
+$tab-fontsize-xs: 14px
 
 
 
@@ -143,29 +244,6 @@ $table-bg: transparent
 $table-head-bg: $shaded-bg-base
 $table-border-color: $border-color-base
 $table-border-radius: $border-radius-base
-
-
-
-//************
-// alert
-//************
-
-$alert-padding: 16px
-$alert-border-radius: $border-radius-base
-
-$alert-primary-bg: $brand-primary-lighter
-$alert-primary-color: $brand-primary-darker
-$alert-primary-border: $brand-primary
-
-$alert-secondary-bg: $brand-secondary-lighter
-$alert-secondary-color: $brand-secondary-darker
-$alert-secondary-border: $brand-secondary
-
-$alert-accent-bg: $brand-accent-lighter
-$alert-accent-color: $brand-accent-darker
-$alert-accent-border: $brand-accent
-
-
 
 
 
@@ -187,50 +265,6 @@ $tooltip-bg: #000
 $tooltip-opacity: .9
 
 
-//************
-// button
-//************
-
-$btn-font-weight: normal
-$btn-padding-vertical: 6px
-$btn-padding-horizontal: 12px
-
-$btn-default-color: #333
-$btn-default-bg: #fff
-$btn-default-border: #ccc
-$btn-primary-color: #fff
-$btn-primary-bg: $brand-primary-dark
-$btn-primary-border: darken($btn-primary-bg, 5%)
-$btn-secondary-color: #fff
-$btn-secondary-bg: $brand-secondary-dark
-$btn-secondary-border: darken($btn-secondary-bg, 5%)
-$btn-accent-color: #fff
-$btn-accent-bg: $brand-accent-dark
-$btn-accent-border: darken($btn-accent-bg, 5%)
-
-$btn-ghost-default-color: $gray
-$btn-ghost-primary-color: $brand-primary
-$btn-ghost-secondary-color: $brand-secondary
-$btn-ghost-accent-color: $brand-accent
-
-$btn-link-disabled-color: $gray-light
-
-
-//************
-// form
-//************
-
-$form-group-margin-bottom: 20px
-$form-group-padding: 0
-$form-label-padding: 6px 0
-$form-control-padding: 6px 0
-
-$form-label-color: $gray
-$form-control-border-color: $gray-lighter
-$form-control-color: $gray
-
-$form-control-font-size: 16px
-$form-focus-bg: #fcfcfc
 
 //************
 // well
@@ -239,19 +273,5 @@ $well-bg: $gray-more-lighter
 $well-padding: 12px 16px
 $well-border: 0
 $well-border-radius: $border-radius-base
-
-
-
-//************
-// code
-//************
-
-$code-color: $brand-secondary-darker
-$code-bg: transparent
-
-$pre-bg: $shaded-bg-base
-$pre-color: $gray-dark
-$pre-border-color: transparent
-$pre-scrollable-max-height: 340px
 
 
