@@ -2,7 +2,11 @@
 .container
     .col-sm-10.col-sm-offset-1
         h2 ログイン
-        p(ng-if="!!message") {{message}}
+        div(ng-switch="Auth.active()")
+            p(ng-switch-when="true")
+                a(ui-sref="profile") {{Auth.user().handle_name}}
+                | としてすでにログインしています。
+            p(ng-switch-when="false") ログインします。
 
         form.form(role="form", ng-submit="performLogin()")
             .panel
@@ -20,5 +24,6 @@
                 .panel__foot
                     .form__group
                         .col-sm-10.col-sm-offset-2
+                            p.small.text-muted ログイン状態は常に保存されます。共用のPCなどをお使いの場合は必ず作業の最後にログアウトしてください。
                             button.btn.btn--primary(type="submit") Login
 
