@@ -4,80 +4,73 @@ angular.module serviceName
 
 .provider 'Token', class
 
+    header_key = 'Authorization'
+    storage_key = 'token'
+    token_prefix = 'token'
+
     constructor: () ->
         # init
-    token_key = 'Authorization'
-    storage_key = 'token'
-    token_prefix = ''
 
-    tokenKey: (tk)->
-        if tk?
-            if tk isnt ''
-                token_key = tk
-            else
-                throw new Error('tokenKey mustnt be empty')
-        token_key
+    getHeaderKey: ->
+        header_key
 
-    storageKey: (sk)->
-        if sk?
-            if sk isnt ''
-                storage_key = sk
-            else
-                throw new Error('storageKey mustnt be empty')
+    setHeaderKey: (v)->
+        if angular.isString(v) and v isnt ''
+            header_key = v
+        else
+            throw new Error 'token prefix is to be non-empty string'
+
+    getStorageKey: ->
         storage_key
 
-    tokenPrefix: (tp)->
-        if tp?
-            token_prefix = tp
+    setStorageKey: (v)->
+        if angular.isString(v) and v isnt ''
+            storage_key = v
+        else
+            throw new Error 'token prefix is to be non-empty string'
 
+    getTokenPrefix: ->
         token_prefix
 
-    $get: ($log, $http, storage)->
+    setTokenPrefix: (v)->
+        if angular.isString(v)
+            token_prefix = v
+        else
+            throw new Error 'token prefix is to be string'
 
-        token = storage.get(storage_key)
-
+    $get: ($log, $http, store)->
         obj =
-            storageKey: ->
-                storage_key
+            getStorageKey: -> storage_key
 
-            tokenKey: ->
-                token_key
+            getHeaderKey: -> header_key
 
-            tokenPrefix: ->
-                token_prefix
+            getTokenPrefix: -> token_prefix
 
-            setToStorage: ->
-                storage.set(storage_key, token)
-
-            tokenHeader: ->
-                if token isnt ''
+            getTokenHeader: ->
+                t = @get()
+                if t isnt ''
                     if token_prefix is ''
-                        return token
+                        return t
                     else
-                        return "#{token_prefix} #{token}"
+                        return "#{token_prefix} #{t}"
                 else
                     return ''
 
-            set: (t, useStorage)->
-                if (t?)and(t isnt '')
-                    if not useStorage?
-                        useStorage = true
-                    token = '' + t
-                    if useStorage
-                        @setToStorage()
-                    $http.defaults.headers.common[token_key] = @tokenHeader()
+            set: (v)->
+                if angular.isString(v) and v isnt ''
+                    store.set storage_key, v
+                    $http.defaults.headers.common[header_key] = @getTokenHeader()
                 else
                     @clear()
 
             get: ()->
-                token
+                t = store.get storage_key
+                if t? then t else ''
 
             clear: ()->
-                token = ''
-                storage.remove(storage_key)
-                delete $http.defaults.headers.common[token_key]
+                delete $http.defaults.headers.common[header_key]
+                store.remove storage_key
 
-        obj.set token
+        obj.set obj.get()
 
         obj
-

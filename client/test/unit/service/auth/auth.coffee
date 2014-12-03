@@ -8,9 +8,9 @@ describe 'auth service', ->
 
         angular.module 'AuthTestModule', (->)
         .config (TokenProvider)->
-            TokenProvider.storageKey 'token'
-            TokenProvider.tokenKey 'Access-Token'
-            TokenProvider.tokenPrefix ''
+            TokenProvider.setStorageKey 'token'
+            TokenProvider.setHeaderKey 'Access-Token'
+            TokenProvider.setTokenPrefix ''
 
         module serviceName, 'AuthTestModule'
 
