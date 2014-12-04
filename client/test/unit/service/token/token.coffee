@@ -1,52 +1,49 @@
 'use strict'
 
-describe 'token provider configuration', ->
+describe 'TokenProvider', ->
 
-    _TokeProvider = null
+    _TokenProvider = null
 
     beforeEach ->
         angular.module 'TokenProviderTestModule', (->)
         .config (TokenProvider)->
-            _TokeProvider = TokenProvider
+            _TokenProvider = TokenProvider
 
         module serviceName, 'TokenProviderTestModule'
 
         inject ->
 
-    it 'tokenKey', ->
-        _TokeProvider.tokenKey('tk')
-        expect(_TokeProvider.tokenKey()).toBe('tk')
+    it 'header_key', ->
+        _TokenProvider.setHeaderKey 'tk'
+        expect(_TokenProvider.getHeaderKey()).toBe 'tk'
 
-    it 'tokenKey exception', ->
         try
-            _TokeProvider.tokenKey ''
+            _TokenProvider.setHeaderKey ''
             expect(false).toBeTruthy()
         catch e
             expect(true).toBeTruthy()
 
 
-    it 'storageKey', ->
-        _TokeProvider.storageKey('sk')
-        expect(_TokeProvider.storageKey()).toBe('sk')
+    it 'storage_key', ->
+        _TokenProvider.setStorageKey 'sk'
+        expect(_TokenProvider.getStorageKey()).toBe 'sk'
 
-    it 'storageKey exception', ->
         try
-            _TokeProvider.storageKey ''
+            _TokenProvider.storageKey ''
             expect(false).toBeTruthy()
         catch e
             expect(true).toBeTruthy()
 
 
     it 'prefix', ->
-        _TokeProvider.tokenPrefix 'prefix'
-        expect(_TokeProvider.tokenPrefix()).toBe 'prefix'
+        _TokenProvider.setTokenPrefix 'prefix'
+        expect(_TokenProvider.getTokenPrefix()).toBe 'prefix'
 
-        _TokeProvider.tokenPrefix ''
-        expect(_TokeProvider.tokenPrefix()).toBe ''
+        _TokenProvider.setTokenPrefix ''
+        expect(_TokenProvider.getTokenPrefix()).toBe ''
 
 
-describe 'token service with prefix', ->
-
+describe 'TokenService', ->
     token_key = 'TEST_TOKEN_KEY'
     storage_key = 'STORAGE_KEY'
     token_prefix = 'TEST_TOKEN_PREFIX'
@@ -56,74 +53,56 @@ describe 'token service with prefix', ->
     beforeEach ->
         angular.module 'TokenServiceTestModule', (->)
         .config (TokenProvider)->
-            TokenProvider.tokenKey token_key
-            TokenProvider.storageKey storage_key
-            TokenProvider.tokenPrefix token_prefix
+            TokenProvider.setHeaderKey token_key
+            TokenProvider.setStorageKey storage_key
+            TokenProvider.setTokenPrefix token_prefix
 
         module serviceName, 'TokenServiceTestModule'
 
-
-    it 'configuration', inject (Token, storage, $http)->
-        expect(Token.tokenKey()).toBe token_key
-        expect(Token.storageKey()).toBe storage_key
-        expect(Token.tokenPrefix()).toBe token_prefix
+        inject ($injector)->
+            Token = $injector.get 'Token'
+            Token.clear()
 
 
-    it 'basic', inject (Token, storage, $http)->
+    it 'config', inject (Token)->
+        expect(Token.getHeaderKey()).toBe token_key
+        expect(Token.getStorageKey()).toBe storage_key
+        expect(Token.getTokenPrefix()).toBe token_prefix
 
-        # SET TOKEN
+
+    it 'basic', inject (Token, $http, store)->
         Token.set test_token
 
         expect(Token.get()).toBe test_token
-        expect(storage.get(storage_key)).toBe test_token
+        expect(store.get(storage_key)).toBe test_token
+        expect($http.defaults.headers.common[token_key]).toBe "#{token_prefix} #{test_token}"
 
-        expect($http.defaults.headers.common[token_key]).toBe token_prefix + ' ' + test_token
-
-        # CLEAR TOKEN
-        Token.clear()
-
+    it 'clear', inject (Token, $http)->
         expect(Token.get()).toBe ''
-        expect(Token.tokenHeader()).toBe ''
-        expect(storage.get(storage_key)?).toBe false
-
+        expect(Token.getTokenHeader()).toBe ''
         expect($http.defaults.headers.common[token_key]?).toBe false
 
 
-    it 'not use storage', inject (Token, storage, $http)->
-
-        # SET TOKEN NOT SAVING TO STORAGE
-        Token.set test_token, false
-
-        expect(storage.get(storage_key)?).toBe false
-
-        expect($http.defaults.headers.common[token_key]).toBe token_prefix + ' ' + test_token
-
-
-describe 'token service without prefix', ->
-
+describe 'TokenService(Without Prefix)', ->
     token_key = 'TEST_TOKEN_KEY'
     storage_key = 'STORAGE_KEY'
 
     test_token = 'TEST_TOKEN'
 
-
     beforeEach ->
-        angular.module 'fakeModule', (->)
+        angular.module 'TokenServiceTestModule', (->)
         .config (TokenProvider)->
-            TokenProvider.tokenKey token_key
-            TokenProvider.storageKey storage_key
-            TokenProvider.tokenPrefix ''
+            TokenProvider.setHeaderKey token_key
+            TokenProvider.setStorageKey storage_key
+            TokenProvider.setTokenPrefix ''
 
-        module serviceName, 'fakeModule'
+        module serviceName, 'TokenServiceTestModule'
 
+        inject ($injector)->
+            Token = $injector.get 'Token'
+            Token.clear()
 
-    it 'Configuration', inject (Token, storage, $http)->
-        expect(Token.tokenPrefix()).toBe ''
-
+    it 'basic', inject (Token, $http)->
         Token.set test_token
-
-        expect(Token.tokenHeader()).toBe test_token
-
         expect($http.defaults.headers.common[token_key]).toBe test_token
-
 

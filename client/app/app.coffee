@@ -3,7 +3,6 @@
 window.appName = 'hokuiApp'
 
 angular.module appName, [
-    'ngCookies'
     'ngResource'
     'ngSanitize'
     'ngAnimate'
@@ -35,9 +34,9 @@ angular.module appName, [
 
 
 .config (TokenProvider)->
-    TokenProvider.tokenKey 'Access-Token'
-    TokenProvider.storageKey 'token'
-    TokenProvider.tokenPrefix ''
+    TokenProvider.setHeaderKey 'Access-Token'
+    TokenProvider.setStorageKey 'token'
+    TokenProvider.setTokenPrefix ''
 
 .config (RestrictProvider)->
     RestrictProvider.setNext 'home'
