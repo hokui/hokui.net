@@ -5,7 +5,7 @@ gem 'rails', '4.2.0.rc1'
 gem 'rails-api'
 gem 'sqlite3'
 
-gem 'active_model_serializers', '~>0.8.0'
+gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 
 gem 'thin'
 

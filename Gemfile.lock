@@ -17,6 +17,13 @@ GIT
       oauth (~> 0.4, >= 0.4.4)
       oauth2 (>= 0.8.0, < 1.0.0)
 
+GIT
+  remote: https://github.com/rails-api/active_model_serializers.git
+  revision: 8bbf6b8c8b873f4884ba37b35424e6d75e859c5b
+  specs:
+    active_model_serializers (0.10.0.pre)
+      activemodel (>= 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -39,8 +46,6 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.1)
-    active_model_serializers (0.8.2)
-      activemodel (>= 3.0)
     activejob (4.2.0.rc1)
       activesupport (= 4.2.0.rc1)
       globalid (>= 0.3.0)
@@ -228,7 +233,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers (~> 0.8.0)
+  active_model_serializers!
   annotate
   autodoc!
   better_errors
