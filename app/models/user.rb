@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   end
 
   def send_activation_needed_email!
-    UserMailer.email_confirmation_on_create(self).deliver
+    UserMailer.email_confirmation_on_create(self).deliver_now
   end
 
   def active?
