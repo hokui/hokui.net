@@ -12,10 +12,11 @@ class Api::SessionsController < Api::ApplicationController
       after_login!(@current_user)
       render json: {
         token: access_token.token,
-        user: UserSerializer.new(@current_user)
+        # NOTE: UserSerializer.new(...).as_json does not work properly.
+        # There may be cool methods to do this, but this does work.
+        user: UserSerializer.new(@current_user, root: false).attributes.as_json
       },
-      status: 201,
-      root: false
+      status: 201
     else
       after_failed_login!([])
       head 422
