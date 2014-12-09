@@ -1,24 +1,27 @@
-form.form-horizontal(role="form", ng-submit="doSaveSubject()")
-    .panel.panel-default
-        .panel-heading
-            h3 {{title}}
-        .panel-body
-            .form-group
-                label.control-label.col-md-2(for="subjectInputTitleJa") 名前
-                .col-md-10
-                    input.form-control(type="text", placeholder="名前(日本語)", id="subjectInputTitleJa", ng-model="new_subject.title_ja")
-            .form-group
-                label.control-label.col-md-2(for="subjectInputTitleEn") 名前(英語)
-                .col-md-10
-                    input.form-control(type="text", placeholder="/^[0-9a-zA-Z_]+$/", id="subjectInputTitleEn", ng-model="new_subject.title_en")
-        .panel-footer.clearfix
-            .pull-left
-                div(ng-if="editing")
-                    a.btn.btn-default(ui-sref="admin.subject.detail({id: subject.id})" tabindex="-1") 戻る
-                div(ng-if="!editing")
-                    a.btn.btn-default(ui-sref="admin.subject" tabindex="-1") 戻る
-            .pull-right
-                button.btn.btn-primary(type="submit") 保存
-                button.btn.btn-danger(type="button", ng-if="editing", ng-click="deleteSubject()") {{deleteBtnLabel()}}
-                button.btn.btn-sm.btn-default(type="button", ng-if="deleting", ng-click="stopDeleting()") やっぱりやめる
+form.form(role="form", ng-submit="doSaveSubject()")
+    .panel
+        .panel__head
+            h3.panel__head__title {{title}}
+        .panel__body
+            .form__group
+                .col-sm-2
+                    label.form__label(for="subjectInputTitleJa") 名前
+                .col-sm-10
+                    input.form__control(type="text", placeholder="名前(日本語)", id="subjectInputTitleJa", ng-model="new_subject.title_ja")
+            .form__group
+                .col-sm-2
+                    label.form__label(for="subjectInputTitleEn") 名前(英語)
+                .col-sm-10
+                    input.form__control(type="text", placeholder="/^[0-9a-zA-Z_]+$/", id="subjectInputTitleEn", ng-model="new_subject.title_en")
+        .panel__foot
+            .clearfix
+                .pull-left
+                    div(ng-if="editing")
+                        a.btn.btn-default(ui-sref="admin.subject.detail({id: subject.id})" tabindex="-1") 戻る
+                    div(ng-if="!editing")
+                        a.btn.btn-default(ui-sref="admin.subject" tabindex="-1") 戻る
+                .pull-right
+                    button.btn.btn--primary(type="submit") 保存
+                    button.btn.btn--accent(type="button", ng-if="editing", ng-click="deleteSubject()") {{deleteBtnLabel()}}
+                    button.btn(type="button", ng-if="deleting", ng-click="stopDeleting()") やっぱりやめる
 

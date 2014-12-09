@@ -11,18 +11,14 @@ angular.module appName
 .controller 'LoginCtrl',
     ($scope, $state, Auth, Notify) ->
 
+        $scope.Auth = Auth
         $scope.credencials = {}
-
-        if Auth.active()
-            $scope.message = "You are active as #{Auth.user().handle_name}."
-        else
-            $scope.message = "You are inactive. Why not login?"
 
         $scope.performLogin = ()->
             Auth.login $scope.credencials
             .then ->
-                $state.go 'main'
-                Notify 'ログインしました。', type: 'success'
+                $state.go 'home'
+                Notify 'ログインしました。', type: 'ok'
             , ->
                 $scope.message = 'invalid email or password'
 

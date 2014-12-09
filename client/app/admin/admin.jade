@@ -1,8 +1,11 @@
-.topfix.admin.container
-    ul.nav.nav-tabs(role="tablist")
-        li(ng-repeat="item in items", ng-class="{active: isActive(item.state)}")
+.topfix
+
+
+.tab
+    .tab__items
+        .tab__items__item(ng-repeat="item in items", ng-class="{'tab__items__item--active': isActive(item)}")
             a(ui-sref="{{item.state}}") {{item.title}}
 
-
-    div.admin-view(ui-view="main")
+.container
+    .admin-view(ui-view="main")
 

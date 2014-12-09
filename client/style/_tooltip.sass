@@ -1,0 +1,109 @@
+//== NOTE: .tooltip makes element 'position: relative'
+
+
+.tooltip[tooltip]
+    z-index: $tooltip-z
+    position: relative
+
+    &:before, &:after
+        position: absolute
+        display: block
+
+    &:before
+        content: ''
+        background-color: transparent
+        width: 0
+        height: 0
+
+    &:after
+        color: $tooltip-color
+        background-color: $tooltip-bg
+        font-size: $tooltip-font-size
+        border-radius: $tooltip-border-radius
+        word-break: keep-all
+        word-wrap: normal
+        // set these when shown
+        min-width: $tooltip-min-width
+        max-width: $tooltip-max-width
+        content: ''
+        padding: 0
+
+.tooltip:not(.tooltip--toggle):hover, .tooltip.tooltip--shown
+
+    &:after
+        padding: $tooltip-padding
+        content: attr(tooltip)
+
+
+.tooltip--bottom:not(.tooltip--hidden)
+    &:not(.tooltip--toggle):hover, &.tooltip--shown
+        &:before
+            border: solid $tooltip-arrow-size transparent
+            border-bottom-color: $tooltip-bg
+            left: 50%
+            margin-left: - $tooltip-arrow-size / 2
+            top: 100%
+            margin-top: - $tooltip-arrow-size
+
+
+        &:after
+            left: 50%
+            transform: translateX(-50%)
+            top: 100%
+            margin-top: $tooltip-arrow-size
+
+
+.tooltip--top
+    &:not(.tooltip--toggle):hover, &.tooltip--shown
+        &:before
+            border: solid $tooltip-arrow-size transparent
+            border-top-color: $tooltip-bg
+            left: 50%
+            margin-left: - $tooltip-arrow-size / 2
+            top: 0
+            margin-top: - $tooltip-arrow-size
+
+
+        &:after
+            left: 50%
+            top: -$tooltip-arrow-size
+            transform: translate(-50%, -100%)
+
+
+.tooltip--left
+    &:not(.tooltip--toggle):hover, &.tooltip--shown
+        &:before
+            border: solid $tooltip-arrow-size transparent
+            border-left-color: $tooltip-bg
+            left: 0
+            margin-left: - $tooltip-arrow-size
+            top: 50%
+            margin-top: - $tooltip-arrow-size
+
+
+        &:after
+            left: - $tooltip-arrow-size
+            top: 50%
+            transform: translate(-100%, -50%)
+
+
+
+.tooltip--right
+    &:not(.tooltip--toggle):hover, &.tooltip--shown
+        &:before
+            border: solid $tooltip-arrow-size transparent
+            border-right-color: $tooltip-bg
+            right: 0
+            margin-right: - $tooltip-arrow-size
+            top: 50%
+            margin-top: - $tooltip-arrow-size
+
+
+        &:after
+            left: 100%
+            top: 50%
+            margin-left: $tooltip-arrow-size
+            transform: translate(0%, -50%)
+
+
+

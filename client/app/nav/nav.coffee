@@ -3,50 +3,62 @@
 angular.module appName
 
 .controller 'NavCtrl',
-    ($scope, $state, Auth) ->
+    ($scope, $state, Auth, Notify) ->
         $scope.Auth = Auth
+
+        performLogout = ()->
+            Auth.logout()
+            .then ->
+                $state.go 'home'
+                Notify 'ログアウトしました。', type: 'warn'
+
         $scope.items = [
-            title: 'Home'
-            state: 'main'
+            label: -> 'HOME'
+            state: -> 'home'
         ,
-            title: 'Help'
-            state: 'help'
+            label: -> 'STUDY'
+            state: -> 'study'
+            visible: -> Auth.active()
         ,
-            title: 'Style'
-            state: 'style'
+            label: -> 'MAILLIST'
+            state: -> 'ml'
+            visible: -> Auth.active()
         ,
-            title: 'Admin'
-            state: 'admin'
-            visible: -> Auth.can 'admin'
+            label: -> 'ADMIN'
+            state: -> 'admin'
+            visible: -> Auth.admin()
+        ,
+            label: -> 'PROFILE'
+            state: -> 'profile'
+            visible: -> Auth.active()
+        ,
+            label: -> if Auth.active() then 'LOGOUT' else 'LOGIN'
+            state: -> if Auth.active() then '' else 'login'
+            event: ->
+                if Auth.active()
+                    performLogout()
+                else
+                    $state.go 'login'
         ]
 
-        authItems =
-            login:
-                state: 'login'
-                title: 'Login'
-            logout:
-                state: 'logout'
-                title: 'Logout'
 
-        $scope.signup =
-            state: 'signup'
-            title: 'Signup'
-            visible: -> not Auth.active()
-
-        $scope.toHref = (state)->
-            $state.href(state)
-
-        $scope.authItem = ->
-            if Auth.active() then authItems.logout else authItems.login
 
         $scope.isVisible = (item)->
             if item.visible? then item.visible() else true
 
-        $scope.navClass = (item)->
-            active: $state.includes(item.state)
-            disabled : if item.disable? then item.disable() else false
+        $scope.getHref = (item)->
+            if item isnt '' then $state.href item.state() else ''
 
-        $scope.isCollapsed = true
+        $scope.navEvent = (item)->
+            if item.event?
+                item.event()
+
+        $scope.navClass = (item)->
+            'navbar__items__item--active': $state.includes(item.state())
+            'navbar__items__item--disabled' : if item.disable? then item.disable() else false
+
+        $scope.collapsed = true
+
 
 
 

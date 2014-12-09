@@ -1,0 +1,50 @@
+
+=container-base
+    +center-block
+    +clearfix
+    padding-left: $container-padding-horizontal
+    padding-right: $container-padding-horizontal
+
+=make-container
+    +container-base
+    @media (min-width: $screen-sm-min)
+        width: $screen-sm
+
+    @media (min-width: $screen-md-min)
+        width: $screen-md
+
+    @media (min-width: $screen-lg-min)
+        width: $screen-lg
+
+=make-container-fluid
+    +container-base
+    padding-left: $container-padding-horizontal
+    padding-right: $container-padding-horizontal
+
+
+.container
+    +make-container
+
+.container-fluid
+    +make-container-fluid
+
+
+
+
+.row
+    +clearfix
+
+
+@include make-grid-columns()
+
+@include make-grid(xs)
+
+@media (min-width: $screen-sm-min)
+    +make-grid(sm)
+
+@media (min-width: $screen-md-min)
+    +make-grid(md)
+
+@media (min-width: $screen-lg-min)
+    +make-grid(lg)
+

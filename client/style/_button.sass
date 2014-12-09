@@ -1,0 +1,72 @@
+.btn, .btn-ghost
+    display: inline-block
+    margin-bottom: 0
+    font-weight: $btn-font-weight
+    text-align: center
+    vertical-align: middle
+    touch-action: manipulation
+    cursor: pointer
+    background-image: none
+    border: 1px solid transparent
+    white-space: nowrap
+    user-select: none
+
+    padding: $btn-padding-vertical $btn-padding-horizontal
+    font-size: $font-size-base
+    line-height: $line-height-base
+    border-radius: $border-radius-base
+
+    &,
+    &:active,
+    &.active
+        &:focus,
+        &.focus
+            +tab-focus
+
+    &:hover,
+    &:focus,
+    &.focus
+        color: $btn-default-color
+        text-decoration: none
+
+
+
+.btn[disabled], .btn--disabled
+    cursor: $cursor-disabled
+    pointer-events: none
+    opacity: .65
+    box-shadow: none
+
+.btn
+    +button-variant($btn-default-color, $btn-default-bg, $btn-default-border)
+
+.btn.btn--primary
+    +button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border)
+
+.btn.btn--secondary
+    +button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border)
+
+.btn.btn--accent
+    +button-variant($btn-accent-color, $btn-accent-bg, $btn-accent-border)
+
+
+
+
+.btn[disabled], .btn-ghost--disabled
+    cursor: $cursor-disabled
+    pointer-events: none
+    opacity: .65
+    box-shadow: none
+
+.btn-ghost
+    +button-ghost-variant($btn-ghost-default-color)
+
+.btn-ghost.btn-ghost--primary
+    +button-ghost-variant($btn-ghost-primary-color)
+
+.btn-ghost.btn-ghost--secondary
+    +button-ghost-variant($btn-ghost-secondary-color)
+
+.btn-ghost.btn-ghost--accent
+    +button-ghost-variant($btn-ghost-accent-color)
+

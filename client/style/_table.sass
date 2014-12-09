@@ -1,0 +1,30 @@
+.table
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse
+    margin-bottom: $line-height-computed;
+
+    th
+        background-color: $table-head-bg
+        text-align: center
+
+    td, th
+        padding: $table-cell-padding
+
+    tr
+        border-bottom: solid 1px $table-border-color
+
+
+.table.table--condensed
+    td, th
+        padding: $table-condensed-cell-padding
+
+.table.table--bordered
+    border-radius: $table-border-radius
+    border: solid 1px $table-border-color
+    td, th
+        border: solid 1px $table-border-color
+
+.table
+    .table__head
+        border-bottom: 2px solid $brand-accent

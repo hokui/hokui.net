@@ -1,41 +1,10 @@
-@import "bootstrap/variables"
-@import "bootstrap/mixins"
-
-=fill
-    left: 0
-    top: 0
-    right: 0
-    bottom: 0
-
-
-=topfix($gutter: 16px)
-    padding-top: $navbar-height + $gutter
-
-
-=clearfix()
-    &:after
-        content: "."
-        display: block
-        height: 0
-        clear: both
-        visibility: hidden
-
-
-=bar-icon-conf($size, $color)
-    width: $size
-    height: $size
-    font-size: $size
-    .bar
-        background-color: $color
-        border-color: $color
+@import "../style/variable"
+@import "../style/mixin"
 
 // inject:sass
-@import "_app.sass"
-@import "_fonts.sass"
 @import "admin/_admin.sass"
-@import "main/_main.sass"
+@import "home/_home.sass"
 @import "nav/_nav.sass"
 @import "notify/_notify.sass"
+@import "style/_style.sass"
 // endinject
-
-

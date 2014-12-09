@@ -1,8 +1,6 @@
-.notify(ng-controller='NotifyCtrl', ng-class="{ 'notify-shown': Notification.isVisible() }")
+.notify(ng-controller='NotifyCtrl', ng-class="{ 'notify--shown': Notification.isVisible() }")
     .alert-container
-        .alert.alert-dismissible(ng-class="Notification.alertClass()")
-            button(type="button", class="close", data-dismiss="alert", ng-click="Notification.hide()")
-                span(aria-hidden="true") &times;
-                span.sr-only Close
+        .alert(ng-class="Notification.alertClass()")
             | {{Notification.getMessage()}}
-
+            button.alert__close(ng-click="Notification.hide()")
+                i.fa.fa-times

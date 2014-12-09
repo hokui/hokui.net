@@ -1,22 +1,198 @@
-.navbar.navbar-default
-    box-shadow: 0 0 2px rgba(#000, .1)
-    .nav.navbar-nav
-        li.active>a
-            @media (min-width: $screen-xs-max)
-                border-bottom: solid 2px $brand-primary
-                box-sizing: border-box
-                background-color: transparent
-        li>a
-            @media (min-width: $screen-xs-max)
-                border-bottom: solid 2px transparent
-                transition: border-bottom-color .2s ease-in-out
 
-    .navbar-header
-        button.navbar-toggle
-            padding: 0
+$navbar-bg: rgba($body-bg, .9)
+$navbar-color: $link-color
+$navbar-active-bg: rgba(240, 240, 240, .9)
+$navbar-active-color: $link-color
+
+$navbar-box-shadow: 0 0 2px rgba(#000, .1)
+
+
+$navbar-height: 64px
+$navbar-height-sm: 56px
+$navbar-height-xs: 44px
+
+// navbar items collapse when xs
+$navbar-item-height: $navbar-height
+$navbar-item-height-sm: $navbar-height-sm
+$navbar-item-height-xs: 36px
+
+$navbar-collapse-button-size: 28px
+
+$navbar-z: 99
+
+
+.navbar
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    z-index: $navbar-z
+    box-shadow: $navbar-box-shadow
+    background-color: $navbar-bg
+
+
+    @media (min-width: $screen-md-min)
+        height: $navbar-height
+        line-height: $navbar-height
+        padding-left: 16px
+        padding-right: 16px
+    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+        height: $navbar-height-sm
+        line-height: $navbar-height-sm
+        padding-left: 8px
+        padding-right: 8px
     @media (max-width: $screen-xs-max)
-        border-bottom: solid 2px $brand-primary
+        height: $navbar-height-xs
+        line-height: $navbar-height-xs
+        padding-left: 16px
+        padding-right: 16px
+
+=topfix
+    padding-top: $navbar-height
+    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+        padding-top: $navbar-height-sm
+    @media (max-width: $screen-xs-max)
+        padding-top: $navbar-height-xs
+
+.topfix
+    +topfix
 
 
-.bar-icon.bar-icon-on-navbar
-    +bar-icon-conf(36px, #c9c9c9)
+.navbar__brand
+    float: left
+    color: $gray-dark
+    &:hover,&:active,&:focus
+        color: $gray-dark
+    +anchor-non-decoration($gray-dark)
+
+    @media (min-width: $screen-md-min)
+        margin-left: 32px
+        height: $navbar-height
+        line-height: $navbar-height
+        font-size: 40px
+    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+        margin-left: 32px
+        height: $navbar-height-sm
+        line-height: $navbar-height-sm
+        font-size: 32px
+    @media (max-width: $screen-xs-max)
+        height: $navbar-height-xs
+        line-height: $navbar-height-xs
+        font-size: 22px
+        margin-left: 0
+
+.navbar__items
+    padding-left: 0
+    margin: 0
+    float: right
+    @media (min-width: $screen-md-min)
+        height: $navbar-height
+    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+        height: $navbar-height-sm
+    @media (max-width: $screen-xs-max)
+        height: auto
+        margin: 0
+        position: absolute
+        float: none
+        left: 0px
+        right: 0px
+        top: $navbar-height-xs
+        box-shadow: $navbar-box-shadow
+
+.navbar__items.navbar__items--collapsed
+    border: 0
+    box-shadow: 0
+    height: 0px
+    .navbar__items__item
+        @media (max-width: $screen-xs-max)
+            height: 0px
+
+
+
+
+.navbar__items__item
+    float: left
+    // height: $navbar-height
+    // line-height: $navbar-height
+    @media (min-width: $screen-md-min)
+        height: $navbar-item-height
+        line-height: $navbar-item-height
+        font-size: 18px
+    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+        height: $navbar-item-height-sm
+        line-height: $navbar-item-height-sm
+        font-size: 16px
+    @media (max-width: $screen-xs-max)
+        height: $navbar-item-height-xs
+        line-height: $navbar-item-height-xs
+        font-size: 14px
+        float: none
+        background-color: $navbar-bg
+        overflow: hidden
+
+        transition: height ease-in-out .3s
+
+    & > a
+        position: relative
+        display: block
+        @media (min-width: $screen-md-min)
+            padding: 0 16px
+        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+            padding: 0 12px
+        @media (max-width: $screen-xs-max)
+            padding: 0 8px
+            transition: background-color ease-in-out .1s, color ease-in-out .1s
+        color: $navbar-color
+        border-bottom-style: solid
+        border-bottom-width: 2px
+        border-bottom-color: transparent
+
+        +anchor-non-decoration
+
+        @media (min-width: $screen-sm-min)
+            &:after
+                position: absolute
+                content: ''
+                height: 0
+                background-color: $brand-primary
+                top: auto
+                left: 0
+                right: 0
+                bottom: 8px
+
+                transition: height ease-in-out .2s
+
+
+.navbar__items__item--active>a, .navbar__items__item>a:hover
+    &:after
+        @media (min-width: $screen-md-min)
+            height: 3px
+        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+            height: 2px
+        @media (max-width: $screen-xs-max)
+            height: 0
+
+.navbar__items__item--active>a
+    @media (max-width: $screen-xs-max)
+        color: $body-bg
+        background-color: $brand-primary
+
+.navbar__items__item>a:hover
+    @media (max-width: $screen-xs-max)
+        color: $body-bg
+        background-color: $brand-primary
+
+
+.navbar__collapse-button
+    +button-non-decoration
+    outline: 0
+    float: right
+    height: $navbar-collapse-button-size
+    margin-top: ($navbar-height-xs - $navbar-collapse-button-size) / 2
+
+    @media (min-width: $screen-sm-min)
+        display: none
+
+.baricon--navbar
+    +baricon-variant($navbar-collapse-button-size, #ccc)
+

@@ -1,23 +1,15 @@
-.navbar.navbar-default.navbar-fixed-top(ng-controller='NavCtrl')
-    .container
-        .navbar-header
-            button.navbar-toggle(type='button', ng-click='isCollapsed = !isCollapsed', ng-blur="isCollapsed = true")
-                .bar-icon.bar-icon-on-navbar(ng-class="{'bar-icon-times': !isCollapsed, 'bar-icon-bars': isCollapsed}")
-                    .bar
-                    .bar
-                    .bar
-            .visible-xs-block
-                a.navbar-brand(ui-sref='main') Hokui.net
+.navbar(ng-controller="NavCtrl")
+    a.navbar__brand(ui-sref="home")
+        | H
+        span.accent-text O
+        | KUI.NET
 
-        .navbar-collapse.collapse(collapse='isCollapsed')
-            ul.nav.navbar-nav
-                li(ng-repeat='item in items', ng-class="navClass(item)", ng-if="isVisible(item)")
-                    a(ui-sref='{{item.state}}') {{item.title}}
+    button.navbar__collapse-button(ng-click="collapsed = !collapsed", ng-blur="collapsed = true")
+        .baricon.baricon--navbar(ng-class="{'baricon--bars': collapsed, 'baricon--times': !collapsed}")
+            .baricon__bar
+            .baricon__bar
+            .baricon__bar
 
-            ul.nav.navbar-nav.navbar-right
-                li(ng-if="isVisible(signup)", ng-class="navClass(signup)")
-                    a(ui-sref="{{signup.state}}") {{signup.title}}
-
-                li(ng-class="navClass(authItem())")
-                    a(ng-href="{{toHref(authItem().state)}}") {{authItem().title}}
-
+    .navbar__items(ng-class="{'navbar__items--collapsed': collapsed}")
+        .navbar__items__item(ng-repeat="item in items", ng-class="navClass(item)", ng-if="isVisible(item)")
+            a(ng-href="{{getHref(item)}}", ng-click="navEvent(item)") {{item.label()}}
