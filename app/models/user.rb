@@ -48,13 +48,9 @@ class User < ActiveRecord::Base
     "#{family_name} #{given_name}"
   end
 
-  def email_local
-    email.split("@").first
-  end
-
   def activation_url
     host = Rails.application.routes.default_url_options[:host]
-    "http://#{host}/activate/?email_local=#{email_local}&activation_token=#{activation_token}"
+    "http://#{host}/activate/?activation_token=#{activation_token}"
   end
 
   def send_activation_needed_email!

@@ -102,7 +102,7 @@ RSpec.describe "Users" do
   describe "POST /api/users/activate" do
     before do
       @guest = create(:guest, activate: false)
-      @params = { email_local: @guest.email_local, activation_token: @guest.activation_token }
+      @params = { activation_token: @guest.activation_token }
     end
 
     it "successes if the guest is previously unactivated", autodoc: true do
