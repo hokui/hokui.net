@@ -48,18 +48,6 @@ class User < ActiveRecord::Base
     "#{family_name} #{given_name}"
   end
 
-  def activation_url
-    if activation_token.blank?
-      raise "activation_token is not generated"
-    else
-      "http://#{host}/activate/?activation_token=#{activation_token}"
-    end
-  end
-
-  def send_activation_needed_email!
-    UserMailer.email_confirmation_on_create(self).deliver
-  end
-
   def active?
     activation_state == "active"
   end
@@ -68,12 +56,24 @@ class User < ActiveRecord::Base
     approval_state == "approved"
   end
 
+  def activation_url
+    if activation_token.blank?
+      raise "activation_token is not generated"
+    else
+      "http://#{host}/activate/?activation_token=#{activation_token}"
+    end
+  end
+
   def reset_password_url
     if reset_password_token.blank?
       raise "reset_password_token is not generated"
     else
       "http://#{host}/reset_password/?reset_password_token=#{reset_password_token}"
     end
+  end
+
+  def send_activation_needed_email!
+    UserMailer.email_confirmation_on_create(self).deliver
   end
 
   def send_reset_password_instructions!
