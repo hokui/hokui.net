@@ -102,11 +102,11 @@ window.mockupAPI = ($httpBackend)->
 getLoginAdminProc = ($httpBackend, Auth)->
     ->
         $httpBackend.expectPOST('/api/session')
-        Auth.login mocks.admin_credencials
+        Auth.login mocks.admin_credencials, false
         $httpBackend.flush()
 
 getLoginUserProc = ($httpBackend, Auth)->
     ->
         $httpBackend.expectPOST('/api/session')
-        Auth.login mocks.user_credencials
+        Auth.login mocks.user_credencials, false
         $httpBackend.flush()
