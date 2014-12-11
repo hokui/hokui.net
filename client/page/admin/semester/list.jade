@@ -1,0 +1,38 @@
+div
+    a(ui-sref=".detail.edit({id: ''})") 新規作成
+
+p
+    .btn-group
+        a.btn(ng-repeat="year in indexOfClassYear",
+                               ng-class="{'btn--primary': $index == currentIndexOfClassYear.index}",
+                               ng-href="{{searchUrlForClassYear($index)}}") {{year.text}}
+p
+    .btn-group
+        a.btn(ng-repeat="subject in indexOfSubject",
+                               ng-class="{'btn--primary': $index == currentIndexOfSubject.index}",
+                               ng-href="{{searchUrlForSubject($index)}}") {{subject.text}}
+
+
+table.table
+    thead.table__head
+        tr
+            th ID
+            th 学期
+            th 学年
+            th 教科
+    tbody.table__body
+        tr(ng-repeat="semester in semesters | filter:currentIndexOfClassYear.filter | filter:currentIndexOfSubject.filter")
+            td {{semester.id}}
+            td
+                a(ui-sref="admin.semester.detail({id:semester.id})")
+                    | {{semesterIdentifierMap[semester.identifier]}}
+            td
+                a(ui-sref=".({year:class_years.retrieve(semester.class_year_id).year})" ui-sref-opts="{inherit: false}")
+                    | {{class_years.retrieve(semester.class_year_id).year}}期
+
+            td
+                span(ng-repeat="subject_id in semester.subject_ids")
+                    a(ui-sref=".({subject:subjects.retrieve(subject_id).title_en})" ui-sref-opts="{inherit: false}")
+                        | {{subjects.retrieve(subject_id).title_ja}}
+                    span(ng-if="!$last") 、&nbsp;
+

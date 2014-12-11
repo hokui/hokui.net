@@ -1,0 +1,27 @@
+a(ui-sref="admin.subject") 一覧に戻る
+
+div(ng-if="!!subject.id")
+    h3 {{subject.title_ja}} - {{subject.title_en}}
+    a(ui-sref=".edit") 編集
+    table.table.table-bordered.table-horizontal
+        tr
+            th ID
+            td {{subject.id}}
+        tr
+            th 名前
+            td {{subject.title_ja}}
+        tr
+            th 名前(英語)
+            td {{subject.title_en}}
+        tr
+            th 開講期
+            td
+                a(ui-sref="admin.semester({subject:subject.title_en})") {{subject.title_ja}}の開講期
+        tr
+            th 作成
+            td {{subject.created_at | date:'yyyy年MM月dd日HH時mm分'}}
+        tr
+            th 更新
+            td {{subject.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
+
+div.admin-year-edit-view(ui-view="edit")
