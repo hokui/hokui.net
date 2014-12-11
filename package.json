@@ -6,9 +6,10 @@
     "test": "./node_modules/karma/bin/karma start",
     "start": "npm install && bower install && gulp build",
     "gulp": "gulp",
-    "nginx": "sudo nginx -c /var/www/hokui.net/hokui.nginx.conf",
-    "nginx-reload": "sudo nginx -c /var/www/hokui.net/hokui.nginx.conf -s reload",
-    "nginx-stop": "sudo nginx -c /var/www/hokui.net/hokui.nginx.conf -s stop"
+    "nginx": "sudo nginx -c /var/www/hokui.net/nginx/nginx.conf",
+    "nginx-reload": "sudo nginx -c /var/www/hokui.net/nginx/nginx.conf -s reload",
+    "nginx-stop": "sudo nginx -c /var/www/hokui.net/nginx/nginx.conf -s stop",
+    "nginx-test": "sudo nginx -c /var/www/hokui.net/nginx/nginx.conf -t"
   },
   "repository": {
     "type": "git",
