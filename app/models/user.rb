@@ -49,7 +49,6 @@ class User < ActiveRecord::Base
   end
 
   def activation_url
-    host = Rails.application.routes.default_url_options[:host]
     "http://#{host}/activate/?activation_token=#{activation_token}"
   end
 
@@ -63,5 +62,19 @@ class User < ActiveRecord::Base
 
   def approved?
     approval_state == "approved"
+  end
+
+  def reset_password_url
+    "http://#{host}/reset_password/?reset_password_token=#{reset_password_token}"
+  end
+
+  def send_reset_password_instructions!
+    UserMailer.reset_password_instructions(self).deliver
+  end
+
+  private
+
+  def host
+    Rails.application.routes.default_url_options[:host]
   end
 end
