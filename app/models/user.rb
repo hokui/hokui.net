@@ -49,7 +49,11 @@ class User < ActiveRecord::Base
   end
 
   def activation_url
-    "http://#{host}/activate/?activation_token=#{activation_token}"
+    if activation_token.blank?
+      raise "activation_token is not generated"
+    else
+      "http://#{host}/activate/?activation_token=#{activation_token}"
+    end
   end
 
   def send_activation_needed_email!
@@ -65,7 +69,11 @@ class User < ActiveRecord::Base
   end
 
   def reset_password_url
-    "http://#{host}/reset_password/?reset_password_token=#{reset_password_token}"
+    if reset_password_token.blank?
+      raise "reset_password_token is not generated"
+    else
+      "http://#{host}/reset_password/?reset_password_token=#{reset_password_token}"
+    end
   end
 
   def send_reset_password_instructions!
