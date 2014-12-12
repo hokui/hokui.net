@@ -7,11 +7,11 @@ angular.module moduleConfig, [
     'angular-google-analytics'
 ]
 
-.config ($urlRouterProvider, $locationProvider)->
-    $urlRouterProvider.otherwise '/'
+.config ($locationProvider)->
     $locationProvider.html5Mode true
     $locationProvider.hashPrefix '!'
 
+.config ($urlRouterProvider)->
     $urlRouterProvider.rule ($injector, $location)->
         path = $location.url()
         replaced = false
@@ -28,6 +28,9 @@ angular.module moduleConfig, [
             return path
         else
             return false
+
+    $urlRouterProvider.otherwise ($injector)->
+        $injector.get('$state').go '404', url: $injector.get('$location').absUrl()
 
 
 .config (TokenProvider)->
