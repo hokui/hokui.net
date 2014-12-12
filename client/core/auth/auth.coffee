@@ -109,5 +109,46 @@ angular.module moduleCore
                 broadcastUserUpdated()
             deferred.promise
 
+.provider 'AutoAuthCheck', ->
+    _enabled = false
+    _defaultAltStateChangeStart = '$stateChangeStartAuthChecked'
+    _altStateChangeStart = _defaultAltStateChangeStart
+
+    use: (u)->
+        _enabled = u
+
+    defaultAltStateChangeStart: ()-> _defaultStateChangeStart
+
+    setAltStateChangeStart: (s)->
+        if angular.isString s
+            _altStateChangeStart = s
+        else
+            throw new Error "Needs to be String. You provided #{s}"
+
+    $get: ($rootScope, $state, Auth)->
+        status =
+            resolved: false
+            altStateChangeStart: _altStateChangeStart
+
+        if _enabled
+            unregister = $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
+                go = ->
+                    status.resolved = true
+                    $state.transitionTo toState, toParams
+
+                Auth.check().then go, go
+                ev.preventDefault()
+                unregister()
+        else
+            status.resolved = true
+
+        $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
+            if not status.resolved
+                return
+            $rootScope.$broadcast _altStateChangeStart, ev, toState, toParams, fromState, fromParams
+
+        status
+
+
 
 
