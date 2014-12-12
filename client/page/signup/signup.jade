@@ -40,9 +40,10 @@
 
                     .form__group
                         .col-sm-4
-                            label.form__label(for="signupInputYear") 期を選択
+                            label.form__label 期を選択
                         .col-sm-8
-                            select.form__control(ng-model="user.class_year_id" ng-options="year.id as year.year + '期' for year in years")
+                            input.form__control(type="radio", ng-model="user.class_year_id", id="signupInputYear{{year.id}}", value="{{year.id}}", name="radio", ng-repeat-start="year in years")
+                            label.form__label(for="signupInputYear{{year.id}}", ng-repeat-end) {{year.year}}期
 
                     .form__group
                         .col-sm-4
