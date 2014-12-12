@@ -8,9 +8,22 @@ fs = require 'fs'
 del = require 'del'
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
-
 require 'date-utils'
+play = (try
+    require 'play'
+catch error
+    null)
 
+sounds =
+    error: 'misc/error.mp3'
+
+useSounds = do ->
+    if not play?
+        return false
+    for f in sounds
+        if not fs.existsSync v
+            return false
+    true
 
 p = console.log
 
@@ -38,7 +51,12 @@ class Conf
 
 conf = new Conf(false)
 
-
+onError = (arg)->
+    if useSounds
+        play.sound 'misc/error.mp3'
+    console.warn "plugin: #{arg.plugin}"
+    console.warn "error: #{arg.message}"
+    process.exit 1
 ###*
 tasks
 ###
@@ -72,11 +90,11 @@ g.task 'copy', ['copy:fonts', 'copy:static']
 g.task 'css:vendor', ['clean'], ->
     # include bower directory
     t = g.src "#{conf.src}/vendor/**/*.{sass,scss}"
-    .pipe $.plumber()
     .pipe $.sass
         includePaths: [conf.bowerDir]
         sourceComments: 'normal'
 
+    .on 'error', onError
     .pipe $.autoprefixer()
 
     if conf.prod
@@ -88,9 +106,9 @@ g.task 'css:vendor', ['clean'], ->
 
 g.task 'css:common', ['clean'], ->
     g.src "#{conf.src}/style/**/*.sass"
-    .pipe $.plumber()
     .pipe $.sass
         sourceComments: 'normal'
+    .on 'error', onError
     .pipe $.autoprefixer()
     .pipe g.dest "#{conf.dest}/style"
 
@@ -110,15 +128,16 @@ g.task 'css:app:inject', ['clean'], ->
                 return "@import \"#{filePath}\""
             addRootSlash: false
     )
+    .on 'error', onError
     .pipe sort (a, b)-> a < b
     .pipe g.dest "#{conf.src}/"
 
 
 g.task 'css:app', ['clean', 'css:app:inject'], ->
     g.src "#{conf.src}/app.sass"
-    .pipe $.plumber()
     .pipe $.sass
         sourceComments: 'normal'
+    .on 'error', onError
     .pipe $.autoprefixer()
     .pipe g.dest "#{conf.dest}"
 
@@ -168,11 +187,11 @@ g.task 'js', ['clean'], ->
         target.push "!#{conf.src}/config/production/*.coffee"
 
     t = g.src target, base: "#{conf.src}/"
-    .pipe $.plumber()
     .pipe $.sourcemaps.init()
     .pipe $.coffee
         bare: true
         sourceRoot: ''
+    .on 'error', onError
 
     if conf.prod
         t = t
@@ -201,8 +220,8 @@ g.task 'html', ['clean'], ->
     ]
 
     t = g.src target
-    .pipe $.plumber()
     .pipe $.jade pretty: not conf.prod
+    .on 'error', onError
 
     if conf.prod
         t = t
@@ -285,8 +304,8 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
 
 
     t = g.src "#{conf.src}/index.jade"
-    .pipe $.plumber()
     .pipe $.jade pretty: not conf.prod
+    .on 'error', onError
     .pipe $.inject g.src(target), ignorePath: ignorePath
 
     if not conf.prod
