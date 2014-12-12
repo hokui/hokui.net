@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module moduleConfig
+angular.module moduleCore
 
 .provider 'Env', ->
     _dev = false
