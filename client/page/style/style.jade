@@ -1,0 +1,358 @@
+.topfix
+.container
+    h1 資料
+    p
+        | Bootstrapをベースにスタイルを全部書き直し(半分くらいコピーだけど)。命名規則に
+        a(href="http://bem.info/" target="_blank") BEM
+        | を採用。
+
+    h2 Typography
+    table.table.table--bordered
+        thead
+            tr
+                th
+                th 和文
+                th 欧文
+        tbody
+            tr
+                th default
+                td ヒラギノ角ゴProN → 游ゴシック → メイリオ
+                td Open Sans
+            tr
+                th serif
+                td ヒラギノ明朝ProN → 游明朝 → メイリオ
+                td Georgia → Times New Roman → Times
+            tr
+                th 等幅
+                td n/a
+                td Menlo → Monaco → Consolas → Courier New
+
+    .panel
+        .panel__head
+            h2.panel__head__title 和文(default)
+        .panel__body
+            p.
+                これ立てたの絶対忍者だろ･･汚いなさすが忍者きたない
+                俺はこれで忍者きらいになったなあもりにもひきょう過ぎるでしょう？
+
+    .panel
+        .panel__head
+            h2.panel__head__title 欧文(default)
+        .panel__body
+            p.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione fugit sint at, quisquam ex ad tempora!
+    .panel
+        .panel__head
+            h2.panel__head__title 和文(serif)
+        .panel__body
+            p.serif.
+                これ立てたの絶対忍者だろ･･汚いなさすが忍者きたない
+                俺はこれで忍者きらいになったなあもりにもひきょう過ぎるでしょう？
+
+    .panel
+        .panel__head
+            h2.panel__head__title 欧文(serif)
+        .panel__body
+            p.serif.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae vero laudantium voluptates ab, velit reprehenderit modi.
+    .panel
+        .panel__head
+            h2.panel__head__title 欧文(monospace)
+        .panel__body
+            p.mono.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat vel sed eligendi beatae veritatis deleniti porro.
+
+    h2 Base Color
+    p グレースケールを制するものは、デザインを制す。
+    ul.list-unstyled
+        li.gray-more-lighter gray more lighter(base shaded color)
+        li.gray-lighter gray lighter(base border color)
+        li.gray-light gray light
+        li.gray gray
+        li.gray-dark gray dark
+        li.gray-darker gray darker(base text color)
+
+    h2 Text
+
+    p
+        | インラインテキスト装飾
+    table.table
+        tr
+            th .text-muted
+            td
+                span.text-muted グレー(gray light)
+                | にします。
+        tr
+            th &lt;strong&gt;
+            td
+                strong 太字
+                | にします。
+        tr
+            th .small
+            td
+                span.small 小さく
+                | します。
+        tr
+            th .lead
+            td
+                span.lead リード表示
+                | にします。
+
+    h2 Heading
+
+    .panel
+        .panel__body
+            h1 h1 大見出し
+                small small
+            h2 h2 中見出し
+                small small
+            h3 h3 小見出し
+                small small
+            h4 h4 小小見出し
+                small small
+            h5 h5 極小見出し
+                small small
+            p
+                | This sentence is marked &lt;p&gt;.
+                | この文章はpタグです。
+
+
+    h2 Panel
+
+    .panel
+        .panel__head
+            h2.panel__head__title panal A
+        .panel__body
+
+            p panel A body
+
+            .panel
+                .panel__head
+                    h2.panel__head__title panel B
+                .panel__body
+                    p panel B body
+                    .panel
+                        .panel__body
+                            | panel C body
+                .panel
+                    .panel__body
+                        p panel D body. This panel joins B
+
+    h2 Well
+    .well well
+
+    h2 Brand Color
+    p.
+        スタイルの名前には見た目以上の意味を持たせない。
+        ブランドカラーはprimary, seconday, accentを定義します。
+
+    table.table
+        tr
+            th darker
+            th dark
+            th normal
+            th light
+            th lighter
+        tr
+            td.primary-bg-darker
+                | darker
+            td.primary-bg-dark
+                | dark
+            td.primary-bg
+                | primary
+            td.primary-bg-light
+                | light
+            td.primary-bg-lighter
+                | lighter
+        tr
+            td.secondary-bg-darker
+                | darker
+            td.secondary-bg-dark
+                | dark
+            td.secondary-bg
+                | secondary
+            td.secondary-bg-light
+                | light
+            td.secondary-bg-lighter
+                | lighter
+        tr
+            td.accent-bg-darker
+                | darker
+            td.accent-bg-dark
+                | dark
+            td.accent-bg
+                | accent
+            td.accent-bg-light
+                | light
+            td.accent-bg-lighter
+                | lighter
+
+
+    h2 Alert
+    p
+        strong show notification
+        | で通知を表示します。下に置いたアラートの「
+        i.fa.fa-times
+        | 」をクリックしても消えないのは仕様です。
+    .alert.alert--primary
+        | Primary Alert
+        a(ng-click="notify('ok')")  show notification
+        button.alert__close
+            i.fa.fa-times
+    .alert.alert--secondary
+        | Secondary Alert
+        a(ng-click="notify('warn')")  show notification
+        button.alert__close
+            i.fa.fa-times
+    .alert.alert--accent
+        | Accent Alert
+        a(ng-click="notify('danger')")  show notification
+        button.alert__close
+            i.fa.fa-times
+
+    h2 Button
+    h3 Basic Button
+    table.table
+        tr
+            td
+                a.btn default
+            td
+                a.btn.btn--primary primary
+            td
+                a.btn.btn--secondary secondary
+            td
+                a.btn.btn--accent accent
+        tr
+            td
+                a.btn.btn--disabled default
+            td
+                a.btn.btn--disabled.btn--primary primary
+            td
+                a.btn.btn--disabled.btn--secondary secondary
+            td
+                a.btn.btn--disabled.btn--accent accent
+
+    h3 Ghost Button
+    table.table
+        tr
+            td
+                a.btn-ghost default
+            td
+                a.btn-ghost.btn-ghost--primary primary
+            td
+                a.btn-ghost.btn-ghost--secondary secondary
+            td
+                a.btn-ghost.btn-ghost--accent accent
+        tr
+            td
+                a.btn-ghost.btn-ghost--disabled default
+            td
+                a.btn-ghost.btn-ghost--disabled.btn-ghost--primary primary
+            td
+                a.btn-ghost.btn-ghost--disabled.btn-ghost--secondary secondary
+            td
+                a.btn-ghost.btn-ghost--disabled.btn-ghost--accent accent
+
+
+
+    h2 Tooltip
+    .panel
+        .panel__body
+            p.
+                デフォルトではホバー時でpopします。CSSのみで表示してます。
+            ul.list-inline
+                li
+                    button.btn.tooltip.tooltip--left(tooltip="FUCK YES!!!!") left
+                li
+                    button.btn.tooltip.tooltip--top(tooltip="FUCK YES!!!!") top
+                li
+                    button.btn.tooltip.tooltip--bottom(tooltip="FUCK YES!!!!") bottom
+                li
+                    button.btn.tooltip.tooltip--right(tooltip="FUCK YES!!!!") right
+
+        .panel__body
+            p.
+                toggleしたり、常に表示する状態にしたりできます
+
+            button.btn.tooltip.tooltip--toggle.tooltip--bottom(
+                tooltip="need to click to pop"
+                ng-class="{'tooltip--shown': tooltipShown}"
+                ng-click="tooltipShown = !tooltipShown"
+                ng-init="tooltipShown = false"
+            ) click to pop
+
+            button.btn.tooltip.tooltip--right.tooltip--shown(tooltip="not need to hover")
+                | always shown
+
+    h2 Code
+
+    p 複数行にまたがる場合はpreブロック直下にcodeを置く。
+    pre
+        code.
+            procedure Hello(arg: string);
+            begin
+              WriteLn('Hello', arg)
+            end;
+    p 以下はインラインでの例。
+    .panel
+        .panel__body
+            p
+                | インラインでコードを埋め込む場合は
+                code &lt;p&gt;The code is bellow: &lt;code&gt;print("Hello");&lt;codde&gt; It print "Hello" to console.&lt;p&gt;
+                | のようにマークアップするとよいでしょう。
+
+    p.small.text-muted
+        | 正直、
+        code &lt;code&gt;
+        | の不要感は否めない。
+
+
+    h2 Form
+    .panel
+        .panel__head
+            h3.panel__head__title  basic
+        .panel__body
+            .form
+                .form__group
+                    label.form__label text
+                    input.form__control(type="text")
+                .form__group
+                    label.form__label number
+                    input.form__control(type="number")
+                .form__group
+                    label.form__label date
+                    input.form__control(type="date")
+                .form__group
+                    label.form__label textbox
+                    textbox.form__control
+                        | textareaじゃなくてcontenteditable="true"な
+                        br
+                        | ただのブロック。
+        .panel__body
+            .form
+                .form__group
+                    label.form__label accent color
+                    input.form__control.form__control--accent(type="text", placeholder="text")
+                .form__group
+                    label.form__label secondary color
+                    input.form__control.form__control--secondary(type="text", placeholder="text")
+
+
+    h2 Bar Icon
+    p baricon、縮めて「バリコン」と呼んでます。
+    .panel
+        .panel__body
+            .baricon.baricon--default(ng-class="barClass()")
+                .baricon__bar
+                .baricon__bar
+                .baricon__bar
+        .panel__foot
+            ul.list-inline
+                li
+                    button.btn(ng-click="barIconToBars()") to bars
+                li
+                    button.btn(ng-click="barIconToTimes()") to times
+                li
+                    button.btn(ng-click="barIconToCircle()") to circle
+
+
