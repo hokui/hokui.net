@@ -328,6 +328,19 @@
                         | textareaじゃなくてcontenteditable="true"な
                         br
                         | ただのブロック。
+                .form__group
+                    input.form__control(type="checkbox", id="check1")
+                    label.form__label(for="check1") checkbox
+
+                .form__group
+                    input.form__control(type="radio", id="radio1", name="radio")
+                    label.form__label(for="radio1") radio1
+                    input.form__control(type="radio", id="radio2", name="radio")
+                    label.form__label(for="radio2") radio2
+                    input.form__control(type="radio", id="radio3", name="radio")
+                    label.form__label(for="radio3") radio3
+
+
         .panel__body
             .form
                 .form__group
