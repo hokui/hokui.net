@@ -5,4 +5,9 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail to: user.email, subject: '北医ネットへようこそ！'
   end
+
+  def reset_password_instructions(user)
+    @user = user
+    mail to: user.email, subject: '[北医ネット] パスワード再設定URLをお知らせします'
+  end
 end

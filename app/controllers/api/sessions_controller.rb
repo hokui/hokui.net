@@ -18,7 +18,7 @@ class Api::SessionsController < Api::ApplicationController
       root: false
     else
       after_failed_login!([])
-      head 422
+      head 401
     end
   end
 

@@ -48,24 +48,41 @@ class User < ActiveRecord::Base
     "#{family_name} #{given_name}"
   end
 
-  def email_local
-    email.split("@").first
-  end
-
-  def activation_url
-    host = Rails.application.routes.default_url_options[:host]
-    "http://#{host}/activate/?email_local=#{email_local}&activation_token=#{activation_token}"
-  end
-
-  def send_activation_needed_email!
-    UserMailer.email_confirmation_on_create(self).deliver
-  end
-
   def active?
     activation_state == "active"
   end
 
   def approved?
     approval_state == "approved"
+  end
+
+  def activation_url
+    if activation_token.blank?
+      raise "activation_token is not generated"
+    else
+      "http://#{host}/activate/?activation_token=#{activation_token}"
+    end
+  end
+
+  def reset_password_url
+    if reset_password_token.blank?
+      raise "reset_password_token is not generated"
+    else
+      "http://#{host}/reset_password/?reset_password_token=#{reset_password_token}"
+    end
+  end
+
+  def send_activation_needed_email!
+    UserMailer.email_confirmation_on_create(self).deliver
+  end
+
+  def send_reset_password_instructions!
+    UserMailer.reset_password_instructions(self).deliver
+  end
+
+  private
+
+  def host
+    Rails.application.routes.default_url_options[:host]
   end
 end
