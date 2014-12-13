@@ -15,4 +15,36 @@ RSpec.describe "Profiles", :type => :request do
       expect(response.status).to eq(401)
     end
   end
+
+  describe "PATCH /api/profile" do
+    before do
+      @params = {
+        handle_name: "hoge",
+        email_mobile: "hoge@example.com",
+        class_year_id: 2
+      }
+    end
+
+    it "updates profile", autodoc: true do
+      guest = create_guest_with_token
+      patch_with_token(guest, "/api/profile", @params.to_json)
+      expect(response.status).to eq(200)
+      expect(json["handle_name"]).to eq("hoge")
+      expect(json["class_year_id"]).to eq(2)
+    end
+
+    it "returns 422 to a request with invalid params" do
+      create(:admin)
+      guest = create_guest_with_token
+      @params[:handle_name] = "admin"
+      patch_with_token(guest, "/api/profile", @params.to_json)
+      expect(response.status).to eq(422)
+      expect(json["errors"]["handle_name"]).to include("has already been taken")
+    end
+
+    it "returns 401 to an unauthorized client" do
+      patch("/api/profile", @params.to_json)
+      expect(response.status).to eq(401)
+    end
+  end
 end

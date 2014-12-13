@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
     resource  :password_reset, only: [               :create, :update          ]
 
-    resource  :profile,        only: [        :show                            ]
+    resource  :profile,        only: [        :show,          :update          ]
 
     resources :users,          only: [:index, :show, :create,          :destroy] do
       collection do
