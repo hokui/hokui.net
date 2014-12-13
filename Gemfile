@@ -16,10 +16,7 @@ gem 'pundit'
 
 gem 'kawaii_validation'
 
-group :development do
-  gem 'better_errors'
-  gem 'binding_of_caller'
-
+group :development, :test do
   gem 'annotate'
   gem 'bullet'
   gem 'hirb'
@@ -28,9 +25,7 @@ group :development do
   gem 'pry-rails'
   gem 'pry-stack_explorer'
   gem 'pry-byebug'
-end
 
-group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'database_rewinder'
