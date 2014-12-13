@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/iTakeshi/autodoc.git
-  revision: 35941e68b7853863856b65ce6cbaab1e0b26e1d6
-  specs:
-    autodoc (0.3.6)
-      actionpack
-      activesupport (>= 3.0.0)
-      rspec
-
-GIT
   remote: https://github.com/iTakeshi/sorcery.git
   revision: 6035b8f3d5b532b84683126f50f663ecef05ae28
   branch: user_approval
@@ -66,6 +57,10 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     arel (6.0.0)
+    autodoc (0.4.0)
+      actionpack
+      activesupport (>= 3.0.0)
+      rspec
     bcrypt (3.1.9)
     better_errors (2.0.0)
       coderay (>= 1.0.0)
@@ -235,7 +230,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers!
   annotate
-  autodoc!
+  autodoc
   better_errors
   binding_of_caller
   bullet

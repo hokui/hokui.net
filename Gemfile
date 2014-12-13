@@ -34,6 +34,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'database_rewinder'
-  gem 'autodoc', github: 'iTakeshi/autodoc'
+  gem 'autodoc'
   gem 'codeclimate-test-reporter', require: nil
 end

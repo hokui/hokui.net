@@ -1,41 +1,4 @@
-## GET /api/subjects/1
-Returns subject.
-
-### Example
-
-#### Request
-```
-GET /api/subjects/1 HTTP/1.1
-Accept: application/json
-Access-Token: 71f54f3f13694e8132d89799da19071fe1f885ec0a2be064074006c2f9d8d266
-Content-Length: 0
-Content-Type: application/json
-Host: www.example.com
-```
-
-#### Response
-```
-HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 149
-Content-Type: application/json; charset=utf-8
-ETag: "12b2c59450be13cb745e8b89e17e6fc8"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 80fb53b3-9763-43f6-a4e3-b6a141f734e8
-X-Runtime: 0.004495
-X-XSS-Protection: 1; mode=block
-
-{
-  "id": 1,
-  "title_ja": "生理学_2",
-  "title_en": "physiology_2",
-  "created_at": "2014-10-23T13:04:58.720+09:00",
-  "updated_at": "2014-10-23T13:04:58.720+09:00"
-}
-```
-
-## PATCH 
+## PATCH /api/subjects/1
 Updates subject.
 
 ### Example
@@ -44,7 +7,7 @@ Updates subject.
 ```
 PATCH /api/subjects/1 HTTP/1.1
 Accept: application/json
-Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
+Access-Token: bcf1cb81051c7172ab2c54c4a27fb5586b4ef8b985b53c7a664dab532a3beb63
 Content-Length: 50
 Content-Type: application/json
 Host: www.example.com
@@ -59,34 +22,36 @@ Host: www.example.com
 ```
 HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 147
+Content-Length: 159
 Content-Type: application/json; charset=utf-8
-ETag: "7b10ef361e4a119d800676ad978924ff"
+ETag: W/"45314ed34ed2425dc6a866689b3273ac"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 551b9649-bafc-4996-bbbd-5b58e5251f68
-X-Runtime: 0.004380
+X-Request-Id: f943b94a-d3a7-445d-b0c0-4165f1cef7ab
+X-Runtime: 0.005139
 X-XSS-Protection: 1; mode=block
 
 {
   "id": 1,
   "title_ja": "生化学",
   "title_en": "biochemistry",
-  "created_at": "2014-10-23T13:04:59.024+09:00",
-  "updated_at": "2014-10-23T13:04:59.172+09:00"
+  "created_at": "2014-12-13T21:52:55.641+09:00",
+  "updated_at": "2014-12-13T21:52:55.930+09:00",
+  "errors": {
+  }
 }
 ```
 
-## GET /api/subjects
-Returns a list of subjects.
+## DELETE /api/subjects/1
+Destroys specified record.
 
 ### Example
 
 #### Request
 ```
-GET /api/subjects HTTP/1.1
+DELETE /api/subjects/1 HTTP/1.1
 Accept: application/json
-Access-Token: 5c5a05f6496dc5da0c6a457dbb0e326c6a32103315ce02375c2ba9d40e4f90e4
+Access-Token: 5fa67da3ee82a28d1b0c96ff4392f6717545b3962a89230bcfcc21ae3fb92e24
 Content-Length: 0
 Content-Type: application/json
 Host: www.example.com
@@ -96,24 +61,14 @@ Host: www.example.com
 ```
 HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 151
-Content-Type: application/json; charset=utf-8
-ETag: "196de0d934eb117c5a590eb6efbe8632"
+Content-Length: 1
+Content-Type: application/json
+ETag: W/"7215ee9c7d9dc229d2921a40e899ec5f"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 767ba203-ae4f-4ff9-b76a-4066fdcf18b5
-X-Runtime: 0.002539
+X-Request-Id: 4fab3437-3ee5-4fc2-9ead-cf70cc59ce1e
+X-Runtime: 0.004858
 X-XSS-Protection: 1; mode=block
-
-[
-  {
-    "id": 1,
-    "title_ja": "生理学_7",
-    "title_en": "physiology_7",
-    "created_at": "2014-10-23T13:04:59.180+09:00",
-    "updated_at": "2014-10-23T13:04:59.180+09:00"
-  }
-]
 ```
 
 ## POST /api/subjects
@@ -125,7 +80,7 @@ Creates new subject.
 ```
 POST /api/subjects HTTP/1.1
 Accept: application/json
-Access-Token: 55df79d6933fa7565bdefe0f55d6adf44f4a8cbe6af3cd904d8c4882d1bf3c41
+Access-Token: 77175c321e8cb34388737c707955281818371a696a40ad90e7ef8518cb66954b
 Content-Length: 48
 Content-Type: application/json
 Host: www.example.com
@@ -140,34 +95,36 @@ Host: www.example.com
 ```
 HTTP/1.1 201
 Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 145
+Content-Length: 157
 Content-Type: application/json; charset=utf-8
-ETag: "4fcbb964c6bac020fcc78014c3e35f91"
+ETag: W/"6008f0329ab85b79c500e2d5f74e88b7"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: da070bc8-27c6-45e6-b2f7-6fdb27fbbe33
-X-Runtime: 0.003843
+X-Request-Id: 689edb06-c26a-4c0b-9427-5124b7a86edd
+X-Runtime: 0.004736
 X-XSS-Protection: 1; mode=block
 
 {
-  "id": 1,
+  "id": 4,
   "title_ja": "生理学",
   "title_en": "physiology",
-  "created_at": "2014-10-23T13:04:59.618+09:00",
-  "updated_at": "2014-10-23T13:04:59.618+09:00"
+  "created_at": "2014-12-13T21:52:56.573+09:00",
+  "updated_at": "2014-12-13T21:52:56.573+09:00",
+  "errors": {
+  }
 }
 ```
 
-## DELETE /api/subjects/1
-Destroys specified record.
+## GET /api/subjects
+Returns a list of subjects.
 
 ### Example
 
 #### Request
 ```
-DELETE /api/subjects/1 HTTP/1.1
+GET /api/subjects HTTP/1.1
 Accept: application/json
-Access-Token: 70cdd880c2bbdd897a934de7ff301575ff234abe95ca97912538bbf0c73a19eb
+Access-Token: b58798c2823b82c1636810e7c0b7b7ee0ec7e4777079a50a9319191e74b8869e
 Content-Length: 0
 Content-Type: application/json
 Host: www.example.com
@@ -177,12 +134,63 @@ Host: www.example.com
 ```
 HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 1
-Content-Type: application/json
-ETag: "7215ee9c7d9dc229d2921a40e899ec5f"
+Content-Length: 163
+Content-Type: application/json; charset=utf-8
+ETag: W/"b1a6c565c1b718bb0ad2abfdf2abd85f"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 2463621a-63c3-417e-8b6a-16643fb4306c
-X-Runtime: 0.004208
+X-Request-Id: 4af4d08f-66fe-4755-a163-ecda489c8c45
+X-Runtime: 0.003169
 X-XSS-Protection: 1; mode=block
+
+[
+  {
+    "id": 1,
+    "title_ja": "生理学_1",
+    "title_en": "physiology_1",
+    "created_at": "2014-12-13T21:52:55.641+09:00",
+    "updated_at": "2014-12-13T21:52:55.641+09:00",
+    "errors": {
+    }
+  }
+]
+```
+
+## GET /api/subjects/1
+Returns subject.
+
+### Example
+
+#### Request
+```
+GET /api/subjects/1 HTTP/1.1
+Accept: application/json
+Access-Token: 59e830dafed3819917f3a0a30ffdfae8f8f9093f799127888d9d5f4e18c6da43
+Content-Length: 0
+Content-Type: application/json
+Host: www.example.com
+```
+
+#### Response
+```
+HTTP/1.1 200
+Cache-Control: max-age=0, private, must-revalidate
+Content-Length: 161
+Content-Type: application/json; charset=utf-8
+ETag: W/"b552bb5c20d0b820de4019e915200012"
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Request-Id: 549f1340-7aca-4677-9529-a21bf455e645
+X-Runtime: 0.003238
+X-XSS-Protection: 1; mode=block
+
+{
+  "id": 1,
+  "title_ja": "生理学_1",
+  "title_en": "physiology_1",
+  "created_at": "2014-12-13T21:52:55.641+09:00",
+  "updated_at": "2014-12-13T21:52:55.641+09:00",
+  "errors": {
+  }
+}
 ```
