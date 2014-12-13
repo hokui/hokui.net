@@ -18,7 +18,7 @@ angular.module modulePage
 
         $scope.performSignup = ()->
             $scope.user.$save {}, (data)->
-                $state.go 'main'
+                $state.go 'home'
             , (err)->
                 console.log err
 
