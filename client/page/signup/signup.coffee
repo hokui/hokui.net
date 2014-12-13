@@ -18,13 +18,13 @@ angular.module modulePage
 
         $scope.performSignup = ()->
             $scope.user.$save {}, (data)->
-                $state.go 'main'
+                $state.go 'home'
             , (err)->
                 console.log err
 
         seed = Env.seed 'signup'
         if seed?
-            $scope.user = seed
+            angular.extend $scope.user, seed
             $scope.reenteredPassword = $scope.user.password
         else
             $scope.user.class_year_id = years[0].id

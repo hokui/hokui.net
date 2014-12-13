@@ -94,7 +94,7 @@ angular.module moduleCore
             deferred = $q.defer()
             t = Token.get()
             if t? and t isnt ''
-                $http.get '/api/users/profile', {}
+                $http.get '/api/profile', {}
                 .success (data)=>
                     _current.user = data
                     deferred.resolve _current
@@ -108,6 +108,47 @@ angular.module moduleCore
                 deferred.reject _current
                 broadcastUserUpdated()
             deferred.promise
+
+.provider 'AutoAuthCheck', ->
+    _enabled = false
+    _defaultAltStateChangeStart = '$stateChangeStartAuthChecked'
+    _altStateChangeStart = _defaultAltStateChangeStart
+
+    use: (u)->
+        _enabled = u
+
+    defaultAltStateChangeStart: ()-> _defaultStateChangeStart
+
+    setAltStateChangeStart: (s)->
+        if angular.isString s
+            _altStateChangeStart = s
+        else
+            throw new Error "Needs to be String. You provided #{s}"
+
+    $get: ($rootScope, $state, Auth)->
+        status =
+            resolved: false
+            altStateChangeStart: _altStateChangeStart
+
+        if _enabled
+            unregister = $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
+                go = ->
+                    status.resolved = true
+                    $state.transitionTo toState, toParams
+
+                Auth.check().then go, go
+                ev.preventDefault()
+                unregister()
+        else
+            status.resolved = true
+
+        $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
+            if not status.resolved
+                return
+            $rootScope.$broadcast _altStateChangeStart, ev, toState, toParams, fromState, fromParams
+
+        status
+
 
 
 

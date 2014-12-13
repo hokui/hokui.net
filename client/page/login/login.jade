@@ -23,9 +23,8 @@
                             input.form__control(type="password", id="loginInputPassword", placeholder="Password", ng-model="credencials.password")
                     .form__group
                         .col-sm-10.col-sm-offset-2
-                            label.form__control
-                                input(type="checkbox", ng-model="keepLoging")
-                                span ログイン状態を保存する
+                            input.form__control(type="checkbox", ng-model="keepLoging", id="loginInputKeeologin")
+                            label.form__label(for="loginInputKeeologin") ログイン状態を保存する
                 .panel__foot
                     .form__group
                         .col-sm-10.col-sm-offset-2

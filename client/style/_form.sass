@@ -1,5 +1,5 @@
 .form__group
-    padding: $form-group-padding
+    padding: 0
     margin-bottom: $form-group-margin-bottom
     +clearfix
 
@@ -13,7 +13,7 @@
     text-align: right
 
 .form__control
-    padding: $form-control-padding
+    padding: $form-control-padding-v 0
     font-size: $form-control-font-size
     line-height: $line-height-base
     display: block
@@ -26,7 +26,6 @@ textarea.form__control
     height: auto
 
 
-$form-control-base-animation: border-color ease-in-out .2s, background-color ease-in-out .2s
 
 input[type="text"],
 input[type="number"],
@@ -40,50 +39,39 @@ textbox
         -webkit-appearance: none
         -moz-appearance: none
 
-        background-color: $body-bg
+        background-color: $form-control-bg
         border-radius: 0
         border-bottom: solid 2px $form-control-border-color
         color: $form-control-color
-        transition: $form-control-base-animation
+        transition: border-color ease-in-out .2s, background-color ease-in-out .2s
+
         &:focus
             outline: 0
             border-color: $brand-primary
-            background-color: $form-focus-bg
-
-    &.form__control.form__control--accent
-        border-color: $brand-accent
-        &:focus
-            background-color: rgba($brand-accent-lighter, .3)
+            background-color: $form-control-default-focus-bg
 
     &.form__control.form__control--secondary
         border-color: $brand-secondary
         &:focus
-            background-color: rgba($brand-secondary-lighter, .3)
+            background-color: $form-control-secondary-focus-bg
+
+    &.form__control.form__control--accent
+        border-color: $brand-accent
+        &:focus
+            background-color: $form-control-accent-focus-bg
 
 
-textbox.form__control
-    transition: $form-control-base-animation, padding ease-in-out .2s
-    &:focus
-        padding-top: floor($line-height-base * $form-control-font-size) / 2
-        padding-bottom: floor($line-height-base * $form-control-font-size) / 2
 
-
-$form-checkbox-size: $form-control-font-size
-$form-checkbox-label-margin: 6px
-
-label.form__control
-    & > input[type="checkbox"]
-        appearance: none
-        -webkit-appearance: none
-        -moz-appearance: none
-
+input[type="radio"].form__control,
+input[type="checkbox"].form__control
+    appearance: none
+    -webkit-appearance: none
+    -moz-appearance: none
     position: relative
-
-    // not checked
-    span
+    & + label.form__label
         user-select: none
-        position: absolute
-        left: $form-checkbox-size + $form-checkbox-label-margin
+        position: relative
+        padding-left: $form-control-toggle-box-size + $form-control-toggle-label-margin
         &:before, &:after
             content: ""
             display: block
@@ -91,28 +79,47 @@ label.form__control
 
         &:before
             top: 50%
-            margin-top: -$form-checkbox-size/2
-            left: -$form-checkbox-size - $form-checkbox-label-margin
-            width: $form-checkbox-size
-            height: $form-checkbox-size
-            // border: 2px solid $form-control-border-color
-            background-color: $form-control-border-color
+            left: 0
+            margin-top: - $form-control-toggle-box-size / 2
+            width: $form-control-toggle-box-size
+            height: $form-control-toggle-box-size
+            border: 2px solid $form-control-border-color
+            background-color: $body-bg
         &:after
             top: 50%
-            margin-top: -$form-checkbox-size/2
-            left: -$form-checkbox-size - $form-checkbox-label-margin
-            width: $form-checkbox-size
-            height: $form-checkbox-size
+            left: 0
+            margin-top: - $form-control-toggle-inner-size / 2
+            margin-left: ($form-control-toggle-box-size - $form-control-toggle-inner-size) / 2
+            width: $form-control-toggle-inner-size
+            height: $form-control-toggle-inner-size
 
-            border-bottom: solid 6px $brand-primary
-            border-left: solid 3px $brand-primary
-            transform: rotateZ(-45deg) scaleY(.5)
+            background-color: $brand-primary
 
             opacity: 0
+            transition: opacity ease-in-out .2s
 
-    // checked
-    & > input[type="checkbox"]:checked + span
+
+    &:focus + label.form__label
+        &:after
+            opacity: .1
+
+    &:hover + label.form__label
+        &:after
+            opacity: .4
+
+    &:checked + label.form__label
         &:after
             opacity: 1
 
+    &:checked:hover + label.form__label
+        &:after
+            opacity: .8
 
+
+
+input[type="radio"].form__control
+    & + label.form__label
+        &:before
+            border-radius: $form-control-toggle-box-size / 2
+        &:after
+            border-radius: $form-control-toggle-inner-size / 2

@@ -85,18 +85,18 @@ window.mockupAPI = ($httpBackend)->
     API MOCK: PROFILE
     ###
     $httpBackend
-    .whenGET '/api/users/profile', (headers)->
+    .whenGET '/api/profile', (headers)->
         return headers['Access-Token'] is mocks.admin_token
     .respond 200, mocks.admin_user
 
 
     $httpBackend
-    .whenGET '/api/users/profile', (headers)->
+    .whenGET '/api/profile', (headers)->
         return headers['Access-Token'] is mocks.user_token
     .respond 200, mocks.user_user
 
     $httpBackend
-    .whenGET '/api/users/profile'
+    .whenGET '/api/profile'
     .respond 401, ''
 
 getLoginAdminProc = ($httpBackend, Auth)->
