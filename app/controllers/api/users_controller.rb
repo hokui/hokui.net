@@ -53,21 +53,16 @@ class Api::UsersController < Api::ApplicationController
   end
 
   def user_params
-    json_params = ActionController::Parameters.new(
-      JSON.parse(request.body.read)
-    )
-    class_year =
-      ClassYear.find_by(year: json_params[:class_year])
-    json_params.
-      permit(
+    ActionController::Parameters.new(JSON.parse(request.body.read))
+      .permit(
         :email,
         :password,
         :family_name,
         :given_name,
         :handle_name,
         :birthday,
-        :email_mobile
-      ).
-      merge(class_year: class_year)
+        :email_mobile,
+        :class_year_id
+      )
   end
 end
