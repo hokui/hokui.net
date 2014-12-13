@@ -29,10 +29,6 @@ class Api::UsersController < Api::ApplicationController
     head 200
   end
 
-  def profile
-    render json: @current_user
-  end
-
   def activate
     params = ActionController::Parameters.new(JSON.parse(request.body.read))
     user = User.load_from_activation_token(params[:activation_token])

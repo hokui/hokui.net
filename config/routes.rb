@@ -4,9 +4,10 @@ Rails.application.routes.draw do
 
     resource  :password_reset, only: [               :create, :update          ]
 
+    resource  :profile,        only: [        :show                            ]
+
     resources :users,          only: [:index, :show, :create,          :destroy] do
       collection do
-        get  :profile
         post :activate
       end
       member do
