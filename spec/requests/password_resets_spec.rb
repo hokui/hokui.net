@@ -28,14 +28,20 @@ RSpec.describe "PasswordResets", :type => :request do
     end
 
     it "changes user's password" do
-      patch("/api/password_reset", { reset_password_token: @guest.reset_password_token, new_password: "abcde" }.to_json)
+      patch("/api/password_reset", { reset_password_token: @guest.reset_password_token, password: "abcde" }.to_json)
       expect(response.status).to eq(200)
       expect(User.authenticate(@guest.email, "abcde")).to eq(@guest)
     end
 
+    it "returns 422 if new password is blank" do
+      patch("/api/password_reset", { reset_password_token: @guest.reset_password_token, password: "" }.to_json)
+      expect(response.status).to eq(422)
+      expect(User.authenticate(@guest.email, "")).to be_nil
+    end
+
     it "returns 404 if token is not found" do
       expect_any_instance_of(User).not_to receive(:change_password!)
-      patch("/api/password_reset", { reset_password_token: "hogefuga", new_password: "abcde" }.to_json)
+      patch("/api/password_reset", { reset_password_token: "hogefuga", password: "abcde" }.to_json)
       expect(response.status).to eq(404)
     end
   end
