@@ -57,8 +57,6 @@ RSpec.describe "Users" do
     before do
       create(:class_year)
       @params = FactoryGirl.attributes_for(:guest)
-      @params[:class_year] = 93
-      @params.delete(:class_year_id)
       @params.delete(:admin)
     end
 
@@ -71,6 +69,7 @@ RSpec.describe "Users" do
       expect(json["admin"]).to be_falsey
       expect(json["activation_state"]).to eq("pending")
       expect(json["approval_state"]).to eq("waiting")
+      expect(json["class_year_id"]).to eq(1)
       expect(User.count).to eq(old_size + 1)
     end
 
