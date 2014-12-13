@@ -4,15 +4,14 @@ angular.module modulePage
 .config ($stateProvider) ->
     $stateProvider
     .state 'activate',
-        url: '/activate?email_local&activation_token'
+        url: '/activate?activation_token'
         templateUrl: '/page/activate/activate.html'
         controller: 'ActivateCtrl'
 
 .controller 'ActivateCtrl',
     ($scope, User, $stateParams, $timeout, $http, $state) ->
-        email = $stateParams.email_local
         token = $stateParams.activation_token
-        if (not email?) or (not token?)
+        if not token?
             $state.go 'main'
 
         $scope.status = '処理中..'
@@ -20,7 +19,6 @@ angular.module modulePage
         admin = 'hokui.net@gmail.com'
 
         $http.post '/api/users/activate',
-            email_local: email
             activation_token: token
         .success (data)->
             sec = 5
