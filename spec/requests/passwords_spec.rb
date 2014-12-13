@@ -6,6 +6,7 @@ RSpec.describe "Passwords", :type => :request do
       guest = create_guest_with_token
       patch_with_token(guest, "/api/profile/password", { password: "hogefuga" }.to_json)
       expect(response.status).to eq(200)
+      expect(User.authenticate(guest.email, "hogefuga")).to eq(guest)
     end
 
     it "returns 422 if new password is blank" do
