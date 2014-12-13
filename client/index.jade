@@ -2,11 +2,12 @@ doctype html
 html(ng-app="hokuiApp")
     meta(charset="utf-8")
     title 北医ネット
+    base(href="/")
     <!-- inject:css -->
     <!-- endinject -->
     body
-        div(ng-include="'/app/nav/nav.html'")
-        div(ng-include="'/app/notify/notify.html'")
+        div(ng-include="'/component/nav/nav.html'")
+        div(ng-include="'/component/notify/notify.html'")
         div(ui-view)
         <!-- bower:js -->
         <!-- endinject -->

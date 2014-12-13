@@ -8,9 +8,22 @@ fs = require 'fs'
 del = require 'del'
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
-
 require 'date-utils'
+play = (try
+    require 'play'
+catch error
+    null)
 
+sounds =
+    error: 'misc/error.mp3'
+
+useSounds = do ->
+    if not play?
+        return false
+    for f in sounds
+        if not fs.existsSync v
+            return false
+    true
 
 p = console.log
 
@@ -36,11 +49,14 @@ class Conf
         @setProd(isProd)
         @hash = (new Date()).toFormat("YYYYMMDDHH24MISS")
 
-
 conf = new Conf(false)
 
-
-
+onError = (arg)->
+    if useSounds
+        play.sound 'misc/error.mp3'
+    console.warn "plugin: #{arg.plugin}"
+    console.warn "error: #{arg.message}"
+    process.exit 1
 ###*
 tasks
 ###
@@ -56,6 +72,7 @@ g.task 'clean', (cb)->
     ], cb
 
 
+
 g.task 'copy:fonts', ['clean'], ->
     g.src "#{conf.bowerDir}/font-awesome/fonts/**/*"
     .pipe g.dest "#{conf.dest}/fonts/"
@@ -69,14 +86,15 @@ g.task 'copy:static', ['clean'], ->
 g.task 'copy', ['copy:fonts', 'copy:static']
 
 
+
 g.task 'css:vendor', ['clean'], ->
     # include bower directory
     t = g.src "#{conf.src}/vendor/**/*.{sass,scss}"
-    .pipe $.plumber()
     .pipe $.sass
         includePaths: [conf.bowerDir]
         sourceComments: 'normal'
 
+    .on 'error', onError
     .pipe $.autoprefixer()
 
     if conf.prod
@@ -86,44 +104,42 @@ g.task 'css:vendor', ['clean'], ->
     t.pipe g.dest "#{conf.dest}/vendor"
 
 
-
 g.task 'css:common', ['clean'], ->
     g.src "#{conf.src}/style/**/*.sass"
-    .pipe $.plumber()
     .pipe $.sass
         sourceComments: 'normal'
+    .on 'error', onError
     .pipe $.autoprefixer()
     .pipe g.dest "#{conf.dest}/style"
 
 
 g.task 'css:app:inject', ['clean'], ->
     target = [
-        "#{conf.src}/app/**/*.{sass,scss}"
-        "!#{conf.src}/app/app.sass"
+        "#{conf.src}/{page,component}/**/*.{sass,scss}"
     ]
 
-    g.src "#{conf.src}/app/app.sass"
+    g.src "#{conf.src}/app.sass"
     .pipe $.inject(
         g.src(target, read: false),
             starttag: '// inject:sass'
             endtag: '// endinject'
             transform: (filePath, file, i, length)->
-                filePath = filePath.replace('client/app/', '')
+                filePath = filePath.replace "#{conf.src}/", ''
                 return "@import \"#{filePath}\""
             addRootSlash: false
     )
+    .on 'error', onError
     .pipe sort (a, b)-> a < b
-    .pipe g.dest "#{conf.src}/app/"
+    .pipe g.dest "#{conf.src}/"
 
 
 g.task 'css:app', ['clean', 'css:app:inject'], ->
-    g.src "#{conf.src}/app/app.sass"
-    .pipe $.plumber()
-    .pipe g.dest "#{conf.src}/app/"
+    g.src "#{conf.src}/app.sass"
     .pipe $.sass
         sourceComments: 'normal'
+    .on 'error', onError
     .pipe $.autoprefixer()
-    .pipe g.dest "#{conf.dest}/app"
+    .pipe g.dest "#{conf.dest}"
 
 
 g.task 'css', ['css:vendor', 'css:common', 'css:app']
@@ -135,12 +151,12 @@ g.task 'css:build', ['css'], (cb)->
     # concat order
     # 1. vendor/vendor.css: vendor style
     # 2. style/common.css: common style
-    # 3. app/app.css: app style
+    # 3. app.css: app style
 
     target = [
-        "#{conf.dest}/vendor/**/*.css"
-        "#{conf.dest}/style/**/*.css"
-        "#{conf.dest}/app/**/*.css"
+        "#{conf.dest}/vendor/vendor.css"
+        "#{conf.dest}/style/common.css"
+        "#{conf.dest}/app.css"
     ]
 
     t = g.src target
@@ -153,31 +169,39 @@ g.task 'css:build', ['css'], (cb)->
 
 
 g.task 'js', ['clean'], ->
-    t = g.src [
-        "#{conf.src}/service/service.coffee"
-        "#{conf.src}/service/**/*.coffee"
-        "#{conf.src}/app/app.coffee"
-        "#{conf.src}/app/**/*.coffee"
+    target = [
+        "#{conf.src}/core/*.coffee"
+        "#{conf.src}/core/**/*.coffee"
+        "#{conf.src}/component/*.coffee"
+        "#{conf.src}/component/**/*.coffee"
+        "#{conf.src}/page/*.coffee"
+        "#{conf.src}/page/**/*.coffee"
+        "#{conf.src}/config/*.coffee"
+        "#{conf.src}/config/**/*.coffee"
+        "#{conf.src}/*.coffee"
         "!#{conf.bowerDir}/**/*.coffee"
-    ], base: "#{conf.src}/"
-    .pipe $.plumber()
+    ]
+    if conf.prod
+        target.push "!#{conf.src}/config/development/*.coffee"
+    else
+        target.push "!#{conf.src}/config/production/*.coffee"
+
+    t = g.src target, base: "#{conf.src}/"
     .pipe $.sourcemaps.init()
     .pipe $.coffee
         bare: true
         sourceRoot: ''
+    .on 'error', onError
 
     if conf.prod
         t = t
         .pipe $.ngAnnotate()
-        .pipe $.concat 'app/app.js'
+        .pipe $.concat 'app.js'
     else
         t = t
         .pipe $.sourcemaps.write()
 
-
-
     t.pipe g.dest "#{conf.dest}/"
-    t
 
 
 g.task 'bower', ['clean'], (cb)->
@@ -190,16 +214,21 @@ g.task 'bower', ['clean'], (cb)->
 
 
 g.task 'html', ['clean'], ->
-    t = g.src ["#{conf.src}/{app,service}/**/*.jade"]
-    .pipe $.plumber()
+    target = [
+        "#{conf.src}/**/*.jade"
+        "!#{conf.src}/index.jade"
+    ]
+
+    t = g.src target
     .pipe $.jade pretty: not conf.prod
+    .on 'error', onError
 
     if conf.prod
         t = t
         .pipe $.angularTemplatecache 'templates.js',
             module: conf.ngAppName
             root: '/'
-        .pipe g.dest "#{conf.dest}/app/"
+        .pipe g.dest "#{conf.dest}/"
     else
         t = t
         .pipe g.dest "#{conf.dest}/"
@@ -215,13 +244,13 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
 
     # concat order
     # 1. vendor/vendor.js: bower js
-    # 2. app/app.js: app script
-    # 3. app/templates.js: templates
+    # 2. app.js: app script
+    # 3. templates.js: templates
 
     target = [
         "#{conf.dest}/vendor/vendor.js"
-        "#{conf.dest}/app/app.js"
-        "#{conf.dest}/app/templates.js"
+        "#{conf.dest}/app.js"
+        "#{conf.dest}/templates.js"
     ]
 
     t = g.src target
@@ -231,6 +260,8 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
         .pipe $.uglify mangle: false
     t.pipe g.dest "#{conf.dest}"
 
+
+
 g.task 'clean:cache', ['css:build', 'js:build', 'html:build'], (cb)->
     if not conf.prod
         return cb()
@@ -239,7 +270,11 @@ g.task 'clean:cache', ['css:build', 'js:build', 'html:build'], (cb)->
         "#{conf.dest}/style"
         "#{conf.dest}/app"
         "#{conf.dest}/vendor"
+        "#{conf.dest}/templates.js"
+        "#{conf.dest}/app.js"
+        "#{conf.dest}/app.css"
     ], cb
+
 
 
 g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
@@ -251,23 +286,26 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
             "#{conf.dest}/*.css"
         ]
     else
-        # inject app.css last to override bootstrap styles and
-        # app.js first to init angular correctly
         target = [
             "#{conf.dest}/vendor/**/*.css"
             "#{conf.dest}/style/**/*.css"
-            "#{conf.dest}/app/**/*.css"
+            "#{conf.dest}/app.css"
 
-            "#{conf.dest}/service/service.js"
-            "#{conf.dest}/service/**/*.js"
-            "#{conf.dest}/app/app.js"
-            "#{conf.dest}/app/**/*.js"
+            "#{conf.dest}/core/*.js"
+            "#{conf.dest}/core/**/*.js"
+            "#{conf.dest}/component/*.js"
+            "#{conf.dest}/component/**/*.js"
+            "#{conf.dest}/page/*.js"
+            "#{conf.dest}/page/**/*.js"
+            "#{conf.dest}/config/*.js"
+            "#{conf.dest}/config/**/*.js"
+            "#{conf.dest}/app.js"
         ]
 
 
     t = g.src "#{conf.src}/index.jade"
-    .pipe $.plumber()
     .pipe $.jade pretty: not conf.prod
+    .on 'error', onError
     .pipe $.inject g.src(target), ignorePath: ignorePath
 
     if not conf.prod
@@ -290,7 +328,6 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
 
     t.pipe g.dest "#{conf.dest}/"
 
-    t
 
 ###*
 watch tasks
@@ -331,11 +368,11 @@ g.task 'watch', ['build'], ->
     $.livereload.listen()
     g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor']
     g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common']
-    g.watch "#{conf.src}/{app,service}/**/*.{sass,scss}", ['watch:css:app']
+    g.watch "#{conf.src}/{page,core,component}/**/*.{sass,scss}", ['watch:css:app']
 
     g.watch "#{conf.src}/**/*.coffee", ['watch:js']
 
-    g.watch "#{conf.src}/{app,service}/**/*.jade", ['watch:html']
+    g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html']
 
     g.watch "#{conf.src}/index.jade", ['watch:index']
 

@@ -66,6 +66,6 @@ Run hokui.net on nginx
 1. Place the project or its symbolic link to `/var/www/hokui.net`
 2. Boot Rails Server: `bundle exec rails s -e production`
 3. Build client codes: `gulp prod build`
-4. Then, boot Nginx: `sudo nginx -c /var/www/hokui.net/hokui.nginx.conf`
+4. Then, boot Nginx: `sudo nginx -c /var/www/hokui.net/nginx/nginx.conf`
 
 

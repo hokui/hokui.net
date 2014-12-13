@@ -57,8 +57,6 @@ RSpec.describe "Users" do
     before do
       create(:class_year)
       @params = FactoryGirl.attributes_for(:guest)
-      @params[:class_year] = 93
-      @params.delete(:class_year_id)
       @params.delete(:admin)
     end
 
@@ -71,6 +69,7 @@ RSpec.describe "Users" do
       expect(json["admin"]).to be_falsey
       expect(json["activation_state"]).to eq("pending")
       expect(json["approval_state"]).to eq("waiting")
+      expect(json["class_year_id"]).to eq(1)
       expect(User.count).to eq(old_size + 1)
     end
 
@@ -84,25 +83,10 @@ RSpec.describe "Users" do
     end
   end
 
-  describe "GET /api/users/profile" do
-    it "returns self profile to an user", autodoc: true do
-      guest = create_guest_with_token
-      get_with_token(guest, "/api/users/profile")
-      expect(response.status).to eq(200)
-      expect(json["full_name"]).to eq("guest guest")
-      expect(json["crypted_password"]).to be_nil
-    end
-
-    it "returns 401 to an unauthorized client" do
-      get("/api/users/profile")
-      expect(response.status).to eq(401)
-    end
-  end
-
   describe "POST /api/users/activate" do
     before do
       @guest = create(:guest, activate: false)
-      @params = { email_local: @guest.email_local, activation_token: @guest.activation_token }
+      @params = { activation_token: @guest.activation_token }
     end
 
     it "successes if the guest is previously unactivated", autodoc: true do

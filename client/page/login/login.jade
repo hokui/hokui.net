@@ -1,0 +1,32 @@
+.topfix
+.container
+    .col-sm-10.col-sm-offset-1
+        h2 ログイン
+        div(ng-switch="Auth.active()")
+            p(ng-switch-when="true")
+                a(ui-sref="profile") {{Auth.user().handle_name}}
+                | としてすでにログインしています。
+            p(ng-switch-when="false") ログインします。
+
+        form.form(role="form", ng-submit="performLogin()")
+            .panel
+                .panel__body
+                    .form__group
+                        .col-sm-2
+                            label.form__label(for="loginInputEmail") Email
+                        .col-sm-10
+                            input.form__control(type="email", placeholder="Enter email", id="loginInputEmail", ng-model="credencials.email")
+                    .form__group
+                        .col-sm-2
+                            label.form__label(for="loginInputPassword") Password
+                        .col-sm-10
+                            input.form__control(type="password", id="loginInputPassword", placeholder="Password", ng-model="credencials.password")
+                    .form__group
+                        .col-sm-10.col-sm-offset-2
+                            input.form__control(type="checkbox", ng-model="keepLoging", id="loginInputKeeologin")
+                            label.form__label(for="loginInputKeeologin") ログイン状態を保存する
+                .panel__foot
+                    .form__group
+                        .col-sm-10.col-sm-offset-2
+                            button.btn.btn--primary(type="submit") Login
+

@@ -19,7 +19,7 @@ class Api::SessionsController < Api::ApplicationController
       status: 201
     else
       after_failed_login!([])
-      head 422
+      head 401
     end
   end
 

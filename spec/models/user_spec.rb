@@ -37,9 +37,7 @@ RSpec.describe User, :type => :model do
     end
 
     describe "activation_url" do
-      it "includes local part of email and activation token" do
-        expect(@user.activation_url).to     include(@user.email_local)
-        expect(@user.activation_url).not_to include("hokudai.ac.jp")
+      it "includes activation token" do
         expect(@user.activation_url).to     include(@user.activation_token)
       end
     end

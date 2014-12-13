@@ -1,0 +1,15 @@
+.topfix
+.container
+    .col-sm-10.col-sm-offset-1
+        h2 ログアウト
+        div(ng-switch="Auth.active()")
+            p(ng-switch-when="true")
+                a(ui-sref="profile") {{Auth.user().handle_name}}
+                | としてすでにログインしています。
+            p(ng-switch-when="false") ログインしていません。
+        form(role="form", ng-submit="performLogout()")
+            .form-group
+                .col-md-10.col-md-offset-2
+                    button.btn.btn-primary(type="submit", ng-disabled="!Auth.active()") Logout
+
+
