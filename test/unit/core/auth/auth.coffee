@@ -155,7 +155,7 @@ describe 'Auth', ->
         # Need to set fake token cuz Auth.check() doesnt call API if token is empty
         Token.set 'ThisIsUnauthorizedTestToken', StorageType.memory
 
-        $httpBackend.expectGET('/api/users/profile')
+        $httpBackend.expectGET('/api/profile')
         Auth.check()
         $httpBackend.flush()
 
@@ -171,7 +171,7 @@ describe 'Auth', ->
 
         Token.set 'ThisIsUnauthorizedTestToken', StorageType.memory
 
-        $httpBackend.expectGET('/api/users/profile')
+        $httpBackend.expectGET('/api/profile')
         Auth.check()
         $httpBackend.flush()
 
@@ -183,7 +183,7 @@ describe 'Auth', ->
         # WITH ADMIN TOKEN
         Token.set mocks.admin_token, StorageType.memory
 
-        $httpBackend.expectGET('/api/users/profile')
+        $httpBackend.expectGET('/api/profile')
         Auth.check()
         $httpBackend.flush()
 
@@ -194,7 +194,7 @@ describe 'Auth', ->
         # WITH USER TOKEN
         Token.set mocks.user_token, StorageType.memory
 
-        $httpBackend.expectGET('/api/users/profile')
+        $httpBackend.expectGET('/api/profile')
         Auth.check()
         $httpBackend.flush()
 

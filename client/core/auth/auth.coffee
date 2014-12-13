@@ -94,7 +94,7 @@ angular.module moduleCore
             deferred = $q.defer()
             t = Token.get()
             if t? and t isnt ''
-                $http.get '/api/users/profile', {}
+                $http.get '/api/profile', {}
                 .success (data)=>
                     _current.user = data
                     deferred.resolve _current
