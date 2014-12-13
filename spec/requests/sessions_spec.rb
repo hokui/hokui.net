@@ -22,7 +22,7 @@ RSpec.describe "Sessions" do
       expect(AccessToken.count).to eq(old_size + 1)
     end
 
-    it "returns 422 if password is wrong", autodoc: true do
+    it "returns 401 if password is wrong", autodoc: true do
       email = "guest@ec.hokudai.ac.jp"
       password = "admin"
       params = { email: email, password: password }
@@ -30,7 +30,7 @@ RSpec.describe "Sessions" do
       old_size = AccessToken.count
 
       post("/api/session", params.to_json)
-      expect(response.status).to eq(422)
+      expect(response.status).to eq(401)
       expect(AccessToken.count).to eq(old_size)
     end
   end
