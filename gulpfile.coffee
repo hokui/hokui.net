@@ -9,21 +9,10 @@ del = require 'del'
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
 require 'date-utils'
-play = (try
-    require 'play'
-catch error
-    null)
+play = require 'play'
 
 sounds =
     error: 'misc/error.mp3'
-
-useSounds = do ->
-    if not play?
-        return false
-    for f in sounds
-        if not fs.existsSync v
-            return false
-    true
 
 p = console.log
 
@@ -48,15 +37,18 @@ class Conf
         @static = 'static'
         @setProd(isProd)
         @hash = (new Date()).toFormat("YYYYMMDDHH24MISS")
+        @useSounds = true
 
 conf = new Conf(false)
 
 onError = (arg)->
-    if useSounds
-        play.sound 'misc/error.mp3'
+    if conf.useSounds
+        play.sound sounds.error
     console.warn "plugin: #{arg.plugin}"
     console.warn "error: #{arg.message}"
     process.exit 1
+
+
 ###*
 tasks
 ###
@@ -88,7 +80,6 @@ g.task 'copy', ['copy:fonts', 'copy:static']
 
 
 g.task 'css:vendor', ['clean'], ->
-    # include bower directory
     t = g.src "#{conf.src}/vendor/**/*.{sass,scss}"
     .pipe $.sass
         includePaths: [conf.bowerDir]
@@ -381,5 +372,8 @@ g.task 'prod', ()->
 
 g.task 'skipmin', ()->
     conf.minify = false
+
+g.task 'silent', ()->
+    conf.useSounds = false
 
 g.task 'default', ['build', 'watch']
