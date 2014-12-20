@@ -6,7 +6,7 @@ Returns a list of users to an admin.
 #### Request
 ```
 GET /api/users HTTP/1.1
-Access-Token: 29f61ad0c50ddd461d34b861d794e0fa3ce4b100e2be396de046d5665b6509cb
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -48,7 +48,7 @@ Returns 403 to a guest.
 #### Request
 ```
 GET /api/users HTTP/1.1
-Access-Token: 5be9484cf7aa35007f908237e43651d6b79d347c05949b0b1f7ad3da9908cf52
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -65,7 +65,7 @@ Returns user profile to an admin.
 #### Request
 ```
 GET /api/users/2 HTTP/1.1
-Access-Token: 3e67aba0b83ac1781853006446c1cda99aa1c80bb07f06b2ef786e78a3f4ea4e
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -105,7 +105,7 @@ Returns user profile to a guest if the client requests profile of oneself.
 #### Request
 ```
 GET /api/users/2 HTTP/1.1
-Access-Token: c77495d838c6452098a2e220ab78986ff352fca904c5bab16ccf7abd9b8a5bf4
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -145,7 +145,7 @@ Returns 403 to a guest if the client requests profile of another user.
 #### Request
 ```
 GET /api/users/1 HTTP/1.1
-Access-Token: b423dfa0cf927fc8576edfce0dee5957983ae74806bd3ce6cc48120b283af5ef
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -206,7 +206,7 @@ Successes if the guest is previously unactivated.
 POST /api/users/activate HTTP/1.1
 
 
-{"activation_token":"Vsm84stwioKYcTzsTHjF"}
+{"activation_token":"r2tsr5ZysbqPgvhBpDxD"}
 ```
 
 #### Response
@@ -225,7 +225,7 @@ Fails if the guest is already activated.
 POST /api/users/activate HTTP/1.1
 
 
-{"activation_token":"rJxV6jWwnP9UsY4uPGNy"}
+{"activation_token":"rpEWuT6DTGDfstmpt6Pi"}
 ```
 
 #### Response
@@ -242,7 +242,7 @@ Successes when an admin approves a guest.
 #### Request
 ```
 POST /api/users/2/approve HTTP/1.1
-Access-Token: 35946276ff90be671a1d16e5d624a77be78b1dedb7c83eeb341961cca3680fc5
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -259,7 +259,7 @@ Returns 403 to a guest.
 #### Request
 ```
 POST /api/users/2/approve HTTP/1.1
-Access-Token: 6f7f506679423c2d98e406074b84e1bfc2dd0e6b0c31b7b2636f55d081a1d583
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -276,7 +276,7 @@ Successes.
 #### Request
 ```
 DELETE /api/users/2 HTTP/1.1
-Access-Token: 7b7ac5ca50fcc304af6a0f49c26b4f48c445dda409e7bea4b5cf401265bcd075
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -293,7 +293,7 @@ Returns 403 to a guest.
 #### Request
 ```
 DELETE /api/users/1 HTTP/1.1
-Access-Token: d92f362fec72038a053871afc1da0b2f32baca46af4c88e7e40236678abcefe9
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response

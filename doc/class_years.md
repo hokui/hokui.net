@@ -60,7 +60,7 @@ Creates new class year.
 #### Request
 ```
 POST /api/class_years HTTP/1.1
-Access-Token: 13059127b881760028e1a6aafa11a59de652b6910bde44c2f3c86564bdd36357
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 
 {
   "year": 94
@@ -90,7 +90,7 @@ Updates class year.
 #### Request
 ```
 PATCH /api/class_years/1 HTTP/1.1
-Access-Token: b0a042ff6a311ffbf4084feb9b4f4f0c686b0749988fa7529491cfe50bf6c16d
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 
 {
   "year": 94
@@ -120,7 +120,7 @@ Destroys specified record.
 #### Request
 ```
 DELETE /api/class_years/1 HTTP/1.1
-Access-Token: 675be01adc0353fb9ab58263a81161815c060616b886d1562ae6814f67b2bd2f
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response

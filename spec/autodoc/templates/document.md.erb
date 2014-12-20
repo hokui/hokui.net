@@ -6,7 +6,7 @@
 #### Request
 ```
 <%= method %> <%= request.path %><%= request_query %> <%= request_http_version %>
-<%= request_header.gsub(/Access-Token: .*\n/, "Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a") if request_header %><%= request_body_section %>
+<%= request_header.gsub(/Access-Token: .*/, "Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a") if request_header %><%= request_body_section %>
 ```
 
 #### Response

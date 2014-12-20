@@ -17,7 +17,7 @@ HTTP/1.1 201
 Content-Type: application/json; charset=utf-8
 
 {
-  "token": "a4449e62eb1aa7f8c3ee5cc485ce97d71c6f38f75eceb60ceea5461ad2eae435",
+  "token": "213680a6d0053321bebb8efbe906b730e0a90fa56310256f3c3383688a305fd7",
   "user": {
     "id": 2,
     "email": "guest@ec.hokudai.ac.jp",
@@ -70,7 +70,7 @@ Destroys existing access token.
 #### Request
 ```
 DELETE /api/session HTTP/1.1
-Access-Token: a2340a40156daa62cbbd3b8344dda77506d51e5721c095b2f80785d28ef10e71
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response

@@ -6,7 +6,7 @@ Returns a list of subjects.
 #### Request
 ```
 GET /api/subjects HTTP/1.1
-Access-Token: 2fab4e9335e30cf0736d0cce495886aac7086f766d55793aea1feb76eebb38d2
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -35,7 +35,7 @@ Returns subject.
 #### Request
 ```
 GET /api/subjects/1 HTTP/1.1
-Access-Token: e6780a60e18fc6b63d8b028bb331793ecc7f04df328ba7361addf9ba2408cf4d
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -62,7 +62,7 @@ Creates new subject.
 #### Request
 ```
 POST /api/subjects HTTP/1.1
-Access-Token: 402a6279b03a642e5fdd1c4fb423826c04ef6f59f94d076f6710fb7e7aad3711
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 
 {
   "title_ja": "生理学",
@@ -94,7 +94,7 @@ Updates subject.
 #### Request
 ```
 PATCH /api/subjects/1 HTTP/1.1
-Access-Token: c9184b76b28e7831415a2b44fb50fa7ff77bf45b0199223b565498c3c6433139
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 
 {
   "title_ja": "生化学",
@@ -126,7 +126,7 @@ Destroys specified record.
 #### Request
 ```
 DELETE /api/subjects/1 HTTP/1.1
-Access-Token: d7a71148e060374974ba964cf642f3390945572b199a8357ce03e3144586e580
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response

@@ -6,7 +6,7 @@ Returns self profile to an user.
 #### Request
 ```
 GET /api/profile HTTP/1.1
-Access-Token: b216d69ad67cbf7be9769d3eaa9a1bb5cee8ad09b2592bae46dcb24af492e02e
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -46,7 +46,7 @@ Updates profile.
 #### Request
 ```
 PATCH /api/profile HTTP/1.1
-Access-Token: 0bbbeb1874ea83dd455699b864156730dd1afbec09ce93db78d46eef86ea34a4
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 
 {
   "handle_name": "hoge",

@@ -6,7 +6,7 @@ Updates password.
 #### Request
 ```
 PATCH /api/profile/password HTTP/1.1
-Access-Token: a8dad16e75bfb068a32229efd16cc0b4823a624a66e32b3fbd1b4f3e65136e5f
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 
 {
   "current_password": "guest",

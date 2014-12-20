@@ -6,7 +6,7 @@ Returns a list of semesters.
 #### Request
 ```
 GET /api/semesters HTTP/1.1
-Access-Token: 93d69586e00e7f7d8db030b287e3ab349d897218214f92035c7db2cd0a615836
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -39,7 +39,7 @@ Returns semester.
 #### Request
 ```
 GET /api/semesters/1 HTTP/1.1
-Access-Token: fa71872492ea6ce452a3f52a0f38cfb2c3f8fe01f1de3ffbc866a89343d1656e
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
@@ -70,7 +70,7 @@ Creates new semester.
 #### Request
 ```
 POST /api/semesters HTTP/1.1
-Access-Token: 741da5ca33dfd1447b5461619a6de81cacd81fa84584fc79de66c01dc12c02e8
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 
 {
   "class_year_id": 1,
@@ -110,7 +110,7 @@ Updates semester.
 #### Request
 ```
 PATCH /api/semesters/1 HTTP/1.1
-Access-Token: 9a99d07b59a9eec7efa434ab0ad962afb070e3c174018f5387e1ecf94942a483
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 
 {
   "class_year_id": 1,
@@ -150,7 +150,7 @@ Destroys specified record.
 #### Request
 ```
 DELETE /api/semesters/1 HTTP/1.1
-Access-Token: 885094fd5c91666173db22848075afdd8715df9af5d66a395afcb6cb9afdbb89
+Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a
 ```
 
 #### Response
