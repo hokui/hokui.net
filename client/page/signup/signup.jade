@@ -24,7 +24,7 @@
                     .form__group
                         .col-sm-4
                             label.form__label(for="signupInputBirthday") 生年月日
-                        .col-sm-8.no-gutter(date="user.birthday", date-changed="bd_changed($current)")
+                        .col-sm-8.no-gutter(bind-date="user.birthday", date-changed="bd_changed($current)")
                             .col-xs-4
                                 select.form__control(ng-model="$year" ng-options="year as  year+'年' for year in [] | range:1900:2014")
                             .col-xs-4
