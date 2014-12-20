@@ -20,21 +20,21 @@ HTTP/1.1 201
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 600
 Content-Type: application/json; charset=utf-8
-ETag: W/"71bb7d35fb9ed5a709d178fb515846c8"
+ETag: W/"60b7b5b6f5293df71828483b5a2df572"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 1c8bcf81-9ef9-4f9e-aa9a-8cd2189f3371
-X-Runtime: 0.118209
+X-Request-Id: 547548fc-1b88-4ac1-9e9c-7e140f6cd8f2
+X-Runtime: 0.119855
 X-XSS-Protection: 1; mode=block
 
 {
-  "token": "231fb2309244936d8c75f4f38ed325f2a9d05d4f156c0418199524527b424498",
+  "token": "83e2aabf55182e8c15913ef6e4d7db4976f3eb5b3f483355448db44f45a65e37",
   "user": {
     "id": 2,
     "email": "guest@ec.hokudai.ac.jp",
     "activation_state": "active",
     "approval_state": "approved",
-    "last_login_at": "2014-12-13T21:52:57.275+09:00",
+    "last_login_at": "2014-12-20T12:15:05.286+09:00",
     "last_logout_at": null,
     "last_activity_at": null,
     "last_login_from_ip_address": "127.0.0.1",
@@ -46,8 +46,8 @@ X-XSS-Protection: 1; mode=block
     "email_mobile": "guest@example.com",
     "admin": false,
     "class_year_id": 1,
-    "created_at": "2014-12-13T21:52:57.150+09:00",
-    "updated_at": "2014-12-13T21:52:57.157+09:00",
+    "created_at": "2014-12-20T12:15:05.161+09:00",
+    "updated_at": "2014-12-20T12:15:05.166+09:00",
     "errors": {
     }
   }
@@ -78,8 +78,8 @@ Content-Length: 1
 Content-Type: text/html
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 27cf95b8-c665-468e-9915-c10934f474bc
-X-Runtime: 0.108945
+X-Request-Id: 2150ce17-7d6e-49b2-a89e-b804c8aac299
+X-Runtime: 0.110531
 X-XSS-Protection: 1; mode=block
 ```
 
@@ -92,7 +92,7 @@ Destroys existing access token.
 ```
 DELETE /api/session HTTP/1.1
 Accept: application/json
-Access-Token: 1f77128379281e02c57403699eac0bf5ad47ef162ee78888e8df21419a04cac5
+Access-Token: 4794c36c91c119e98aaf23acd2ccc2d9254cee67c7c34fa36387b9bc6f5d95fd
 Content-Length: 0
 Content-Type: application/json
 Host: www.example.com
@@ -107,7 +107,7 @@ Content-Type: application/json
 ETag: W/"7215ee9c7d9dc229d2921a40e899ec5f"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 25228a3e-fab1-4a82-9c0d-98aa732881f9
-X-Runtime: 0.003545
+X-Request-Id: 5be76b54-86e7-4dc6-9a48-286d3cffda19
+X-Runtime: 0.003313
 X-XSS-Protection: 1; mode=block
 ```

@@ -7,7 +7,7 @@ Returns self profile to an user.
 ```
 GET /api/profile HTTP/1.1
 Accept: application/json
-Access-Token: 937f113f8dc5de9da81c97f5867329783fc0e8fe55f62d084735c6c26b03a15e
+Access-Token: 856d0875e4b4500c2ea032762fd11b758af81f338a61554b8dd71648e8127718
 Content-Length: 0
 Content-Type: application/json
 Host: www.example.com
@@ -19,11 +19,11 @@ HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 482
 Content-Type: application/json; charset=utf-8
-ETag: W/"19ef18776a04570112fbe2cc9631f6e1"
+ETag: W/"8205d8197945ee08f2c5a6119810f488"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: a52a3ec9-3f5e-456a-99d8-0e273aeb467a
-X-Runtime: 0.004618
+X-Request-Id: 68595f8d-80ca-43b8-bae7-1b50cb3aee5d
+X-Runtime: 0.004669
 X-XSS-Protection: 1; mode=block
 
 {
@@ -43,8 +43,8 @@ X-XSS-Protection: 1; mode=block
   "email_mobile": "guest@example.com",
   "admin": false,
   "class_year_id": 1,
-  "created_at": "2014-12-13T21:52:57.814+09:00",
-  "updated_at": "2014-12-13T21:52:57.820+09:00",
+  "created_at": "2014-12-20T12:15:03.083+09:00",
+  "updated_at": "2014-12-20T12:15:03.088+09:00",
   "errors": {
   }
 }
@@ -59,7 +59,7 @@ Updates profile.
 ```
 PATCH /api/profile HTTP/1.1
 Accept: application/json
-Access-Token: fbd64c354ef41bd2200db97be9744084fd1860176c3feedba7b4d3cd29247aae
+Access-Token: 6327a5f1e53130153287703b3a357daa0f5fc789c0a1ee0e11e1231d600aaee3
 Content-Length: 74
 Content-Type: application/json
 Host: www.example.com
@@ -77,11 +77,11 @@ HTTP/1.1 200
 Cache-Control: max-age=0, private, must-revalidate
 Content-Length: 480
 Content-Type: application/json; charset=utf-8
-ETag: W/"f13956afc040ce80267e5b6d22f5467d"
+ETag: W/"e1113f795340edd027bc9d4b8e222c1c"
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Request-Id: 21283ac5-1c14-46d9-a819-6fb812ea7976
-X-Runtime: 0.006430
+X-Request-Id: 492fd8bd-f2c9-4a0c-a823-c3c15ab6809d
+X-Runtime: 0.005351
 X-XSS-Protection: 1; mode=block
 
 {
@@ -101,8 +101,8 @@ X-XSS-Protection: 1; mode=block
   "email_mobile": "hoge@example.com",
   "admin": false,
   "class_year_id": 2,
-  "created_at": "2014-12-13T21:52:57.951+09:00",
-  "updated_at": "2014-12-13T21:52:57.966+09:00",
+  "created_at": "2014-12-20T12:15:03.216+09:00",
+  "updated_at": "2014-12-20T12:15:03.230+09:00",
   "errors": {
   }
 }
