@@ -24,8 +24,13 @@
                     .form__group
                         .col-sm-4
                             label.form__label(for="signupInputBirthday") 生年月日
-                        .col-sm-8
-                            input.form__control(type="date", ng-model="user.birthday", id="signupInputBirthday")
+                        .col-sm-8.no-gutter(date="user.birthday", date-changed="bd_changed($current)")
+                            .col-xs-4
+                                select.form__control(ng-model="$year" ng-options="year as  year+'年' for year in [] | range:1900:2014")
+                            .col-xs-4
+                                select.form__control(ng-model="$month" ng-options="month as  month+'月' for month in [] | range:1:12")
+                            .col-xs-4
+                                select.form__control(ng-model="$date" ng-options="date as  date+'日' for date in [] | range:1:$lastDate")
                     .form__group
                         .col-sm-4
                             label.form__label(for="signupInputEmail") ELSMメール
