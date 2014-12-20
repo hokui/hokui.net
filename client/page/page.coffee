@@ -5,5 +5,6 @@ window.modulePage = 'hokuiPage'
 angular.module modulePage, [
     moduleCore
     moduleComponent
+    'angularDateExpander'
 ]
 
