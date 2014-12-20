@@ -2,106 +2,86 @@
 
 angular.module moduleCore
 
-.provider 'Token', class
+.provider 'Token', ->
 
-    header_key = 'Authorization'
-    storage_key = 'token'
-    token_prefix = 'token'
-
-    constructor: () ->
-        # init
+    _header_key = 'Authorization'
+    _storage_key = 'token'
+    _token_prefix = 'token'
 
     getHeaderKey: ->
-        header_key
+        _header_key
 
     setHeaderKey: (v)->
         if angular.isString(v) and v isnt ''
-            header_key = v
+            _header_key = v
         else
             throw new Error 'token prefix is to be non-empty string'
         this
 
     getStorageKey: ->
-        storage_key
+        _storage_key
 
     setStorageKey: (v)->
         if angular.isString(v) and v isnt ''
-            storage_key = v
+            _storage_key = v
         else
             throw new Error 'token prefix is to be non-empty string'
         this
 
     getTokenPrefix: ->
-        token_prefix
+        _token_prefix
 
     setTokenPrefix: (v)->
         if angular.isString(v)
-            token_prefix = v
+            _token_prefix = v
         else
             throw new Error 'token prefix is to be string'
         this
 
-    $get: ($log, $http, webStorage, StorageType)->
-        _storage_type = null
-        if webStorage.local.isSupported and webStorage.session.isSupported
-            if (webStorage.session.get storage_key)?
-                _storage_type = StorageType.session
-            else
-                _storage_type = StorageType.local
-        else
-            _storage_type =  StorageType.memory
-
-        get_storage = (type)->
-            type = StorageType.auto type
-            switch type
-                when StorageType.session
+    $get: ($log, $http, webStorage)->
+        _storage = do ->
+            if webStorage.local.isSupported and webStorage.session.isSupported
+                if (webStorage.session.get _storage_key)?
                     return webStorage.session
-                when StorageType.local
+                else
                     return webStorage.local
-                when StorageType.memory
-                    return webStorage.memory
-                else
-                    return get_storage StorageType.local
-
-        clear_token = (type)->
-            get_storage(type).remove storage_key
-
-        gen_header_value = (token)->
-            if token isnt ''
-                if token_prefix is ''
-                    return token
-                else
-                    return "#{token_prefix} #{token}"
             else
-                return ''
+                return StorageType.memory
 
         add_header = (token)->
-            if h = gen_header_value token
-                $http.defaults.headers.common[header_key] = h
-
-        remove_header = ->
-            delete $http.defaults.headers.common[header_key]
+            if not token
+                return
+            $http.defaults.headers.common[_header_key] =
+                if _token_prefix is '' then token else "#{_token_prefix} #{token}"
 
         Token =
-            set: (token, type)->
+            set: (token, keep)->
                 if angular.isString(token) and token isnt ''
-                    _storage_type = StorageType.auto type
-                    get_storage(_storage_type).add storage_key, token
+                    _storage = do ->
+                        if not keep?
+                            return webStorage.memory
+                        if webStorage.local.isSupported and keep
+                            return webStorage.local
+                        if webStorage.session.isSupported
+                            return webStorage.session
+                        else
+                            return webStorage.memory
+                    _storage.add _storage_key, token
                     add_header token
                 else
                     @clear()
 
             get: ->
-                t = get_storage(_storage_type).get storage_key
+                t = _storage.get _storage_key
                 if t? then t else ''
 
-            empty: ->
+            exists: ->
                 @get() isnt ''
 
             clear: ()->
-                remove_header()
-                for t in StorageType.all()
-                    get_storage(t).remove storage_key
+                delete $http.defaults.headers.common[_header_key]
+                for storage in [webStorage.session, webStorage.local, webStorage.memory]
+                    storage.remove _storage_key
 
         add_header Token.get()
 
