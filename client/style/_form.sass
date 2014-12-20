@@ -3,17 +3,21 @@
     margin-bottom: $form-group-margin-bottom
     +clearfix
 
+
 .form__label
     display: block
-    padding: $form-label-padding
+    padding: $form-label-padding-v $form-label-padding-h
     font-size: 14px
     color: $form-label-color
 
+
 .form__label--right
     text-align: right
+    padding-right: 12px
+
 
 .form__control
-    padding: $form-control-padding-v 0
+    padding: $form-control-padding-v $form-control-padding-h
     font-size: $form-control-font-size
     line-height: $line-height-base
     display: block
@@ -22,7 +26,7 @@
 
 
 
-textarea.form__control
+textbox.form__control
     height: auto
 
 
@@ -32,7 +36,6 @@ input[type="number"],
 input[type="date"],
 input[type="email"],
 input[type="password"],
-select,
 textbox
     &.form__control
         appearance: none
@@ -61,17 +64,17 @@ textbox
             background-color: $form-control-accent-focus-bg
 
 
-
 input[type="radio"].form__control,
 input[type="checkbox"].form__control
     appearance: none
     -webkit-appearance: none
     -moz-appearance: none
-    position: relative
+    opacity: 0
     & + label.form__label
         user-select: none
         position: relative
         padding-left: $form-control-toggle-box-size + $form-control-toggle-label-margin
+        cursor: pointer
         &:before, &:after
             content: ""
             display: block
@@ -100,8 +103,8 @@ input[type="checkbox"].form__control
 
 
     &:focus + label.form__label
-        &:after
-            opacity: .1
+        background-color: $form-control-default-focus-bg
+
 
     &:hover + label.form__label
         &:after
@@ -113,7 +116,7 @@ input[type="checkbox"].form__control
 
     &:checked:hover + label.form__label
         &:after
-            opacity: .8
+            opacity: .9
 
 
 
@@ -123,3 +126,24 @@ input[type="radio"].form__control
             border-radius: $form-control-toggle-box-size / 2
         &:after
             border-radius: $form-control-toggle-inner-size / 2
+
+
+
+select.form__control
+    font-size: $form-control-font-size - 2px
+    background-color: $body-bg
+    border: solid 2px $form-control-border-color
+    border-radius: 0
+    appearance: none
+    -webkit-appearance: none
+    -moz-appearance: none
+
+    background-color: $form-control-bg
+    background-image: url(/img/arrow.svg)
+    background-repeat: no-repeat
+    background-position: 90% center
+    background-size: 16px
+
+    overflow: hidden
+    & > select
+        width: 130%
