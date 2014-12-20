@@ -13,14 +13,11 @@ angular.module moduleCore
                 method: 'GET'
                 isArray: true
 
-            update:
-                method: 'PATCH'
-
             save:
                 method: 'POST'
 
+            update:
+                method: 'PATCH'
+
             remove:
                 method: 'DELETE'
-
-
-
