@@ -6,11 +6,7 @@ Updates password.
 #### Request
 ```
 PATCH /api/profile/password HTTP/1.1
-Accept: application/json
-Access-Token: 1f3c755ac04d6af669f1419b43c08925bac2a25a67c0f18200afdfdc7e04a66e
-Content-Length: 50
-Content-Type: application/json
-Host: www.example.com
+Access-Token: a8dad16e75bfb068a32229efd16cc0b4823a624a66e32b3fbd1b4f3e65136e5f
 
 {
   "current_password": "guest",
@@ -21,15 +17,7 @@ Host: www.example.com
 #### Response
 ```
 HTTP/1.1 200
-Cache-Control: max-age=0, private, must-revalidate
-Content-Length: 482
 Content-Type: application/json; charset=utf-8
-ETag: W/"b8b505aa273c2336f0f5b04cabddc86a"
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Request-Id: 11680280-3a9e-4e4c-b56f-d58b819d025e
-X-Runtime: 0.226293
-X-XSS-Protection: 1; mode=block
 
 {
   "id": 2,
@@ -48,8 +36,8 @@ X-XSS-Protection: 1; mode=block
   "email_mobile": "guest@example.com",
   "admin": false,
   "class_year_id": 1,
-  "created_at": "2014-12-20T12:15:01.850+09:00",
-  "updated_at": "2014-12-20T12:15:02.085+09:00",
+  "created_at": "2014-01-01T00:00:00.000+09:00",
+  "updated_at": "2014-01-01T00:00:00.000+09:00",
   "errors": {
   }
 }
