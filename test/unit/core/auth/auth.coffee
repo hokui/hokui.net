@@ -2,10 +2,7 @@
 
 describe 'Auth', ->
 
-    Auth = $httpBackend = $http = Token = StorageType = null
-
     beforeEach ->
-
         angular.module 'AuthTestModule', (->)
         .config (TokenProvider)->
             TokenProvider.setStorageKey 'token'
@@ -14,29 +11,18 @@ describe 'Auth', ->
 
         module moduleCore, 'AuthTestModule'
 
-        inject ($injector)->
-            $httpBackend = $injector.get '$httpBackend'
-            $http = $injector.get '$http'
-            Auth = $injector.get 'Auth'
-            Token = $injector.get 'Token'
-            StorageType = $injector.get 'StorageType'
-
+        inject ($httpBackend, Auth)->
             mockupAPI $httpBackend
-
-        # CLEAR CREDENCIALS
-        Auth.silentLogout()
-
+            Auth.silentLogout()
 
     afterEach ->
-        $httpBackend.verifyNoOutstandingExpectation()
-        $httpBackend.verifyNoOutstandingRequest()
-        # CLEAR CREDENCIALS
-        Auth.silentLogout()
+        inject ($httpBackend, Auth)->
+            $httpBackend.verifyNoOutstandingExpectation()
+            $httpBackend.verifyNoOutstandingRequest()
+            Auth.silentLogout()
 
-
-
-    it 'silent logout', ->
-        Token.set 'ThisIsDummyToken', StorageType.memory
+    it 'silent logout', inject ($httpBackend, Token, Auth)->
+        Token.set 'ThisIsDummyToken', false
 
         Auth.silentLogout()
 
@@ -45,7 +31,7 @@ describe 'Auth', ->
         expect(Token.get()).toBe ''
 
 
-    it 'login fail', ->
+    it 'login fail', inject ($httpBackend, Token, Auth)->
         $httpBackend.expectPOST('/api/session')
 
         Auth.login
@@ -57,7 +43,7 @@ describe 'Auth', ->
         expect(Auth.user()).toEqual null
 
 
-    it 'admin login', ->
+    it 'admin login', inject ($httpBackend, Token, Auth)->
         $httpBackend.expectPOST('/api/session')
 
         Auth.login mocks.admin_credencials, false
@@ -79,7 +65,7 @@ describe 'Auth', ->
         expect(Auth.can()).toBe true
 
 
-    it 'user login', ->
+    it 'user login', inject ($httpBackend, Token, Auth)->
         $httpBackend.expectPOST('/api/session')
         Auth.login mocks.admin_credencials, false
         $httpBackend.flush()
@@ -105,7 +91,7 @@ describe 'Auth', ->
 
 
     # HELPER SPEC
-    it 'admin login helper', ->
+    it 'admin login helper', inject ($httpBackend, Token, Auth)->
         getLoginAdminProc($httpBackend, Auth)()
         expect(Auth.active()).toBe(true)
         expect(Auth.user()).toEqual(mocks.admin_user)
@@ -113,18 +99,17 @@ describe 'Auth', ->
 
 
     # HELPER SPEC
-    it 'user login helper', ->
+    it 'user login helper', inject ($httpBackend, Token, Auth)->
         getLoginUserProc($httpBackend, Auth)()
         expect(Auth.active()).toBe(true)
         expect(Auth.user()).toEqual(mocks.user_user)
         expect(Token.get()).toBe(mocks.user_token)
 
 
-    it 'logout', ->
+    it 'logout', inject ($httpBackend, Token, Auth)->
         $httpBackend.expectPOST('/api/session')
         Auth.login mocks.admin_credencials, false
         $httpBackend.flush()
-
 
         $httpBackend.expectDELETE('/api/session')
         Auth.logout()
@@ -134,7 +119,7 @@ describe 'Auth', ->
         expect(Auth.user()).toEqual(null)
         expect(Token.get()).toBe('')
 
-    it 'logout when token is unset', ->
+    it 'logout when token is unset', inject ($httpBackend, Token, Auth)->
         # if token is empty, Auth doesnt call API
         Auth.logout()
 
@@ -151,9 +136,9 @@ describe 'Auth', ->
 
         expect(Auth.can()).toBe false
 
-    it 'check fail', ->
-        # Need to set fake token cuz Auth.check() doesnt call API if token is empty
-        Token.set 'ThisIsUnauthorizedTestToken', StorageType.memory
+    it 'check fail', inject ($httpBackend, Token, Auth)->
+        # Need to set fake token because Auth.check() doesnt call API if token is empty
+        Token.set 'ThisIsUnauthorizedTestToken', false
 
         $httpBackend.expectGET('/api/profile')
         Auth.check()
@@ -163,13 +148,13 @@ describe 'Auth', ->
         expect(Auth.user()).toEqual null
 
 
-    it 'check fail after token is changed', ->
+    it 'check fail after token is changed', inject ($httpBackend, Token, Auth)->
         # token is invalid somehow after login
         $httpBackend.expectPOST('/api/session')
         Auth.login mocks.admin_credencials, false
         $httpBackend.flush()
 
-        Token.set 'ThisIsUnauthorizedTestToken', StorageType.memory
+        Token.set 'ThisIsUnauthorizedTestToken', false
 
         $httpBackend.expectGET('/api/profile')
         Auth.check()
@@ -179,9 +164,8 @@ describe 'Auth', ->
         expect(Auth.user()).toEqual null
 
 
-    it 'check admin', ->
-        # WITH ADMIN TOKEN
-        Token.set mocks.admin_token, StorageType.memory
+    it 'check admin', inject ($httpBackend, Token, Auth)->
+        Token.set mocks.admin_token, false
 
         $httpBackend.expectGET('/api/profile')
         Auth.check()
@@ -190,9 +174,8 @@ describe 'Auth', ->
         expect(Auth.active()).toBe true
         expect(Auth.user()).toEqual mocks.admin_user
 
-    it 'check user', ->
-        # WITH USER TOKEN
-        Token.set mocks.user_token, StorageType.memory
+    it 'check user', inject ($httpBackend, Token, Auth)->
+        Token.set mocks.user_token, false
 
         $httpBackend.expectGET('/api/profile')
         Auth.check()

@@ -2,15 +2,11 @@
 
 describe 'ResourceStore', ->
 
-    ResourceStore = resources = objects = obj1 = obj2 = obj3 = null
+
+    resources = objects = obj1 = obj2 = obj3 = null
 
     beforeEach ->
-
-
         module moduleCore
-
-        inject ($injector)->
-            ResourceStore = $injector.get 'ResourceStore'
 
         obj1 =
             id: '1'
@@ -23,9 +19,8 @@ describe 'ResourceStore', ->
             text: 'obj3'
         objects = [obj1, obj2]
 
-        resources = ResourceStore objects
-
-
+        inject (ResourceStore)->
+            resources = ResourceStore objects
 
     it 'retrieve', ->
         expect(resources.retrieve 1).toEqual obj1
