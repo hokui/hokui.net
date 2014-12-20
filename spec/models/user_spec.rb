@@ -45,7 +45,7 @@ RSpec.describe User, :type => :model do
     describe "send_activation_needed_email!" do
       it "sends a mail" do
         expect(UserMailer).to receive(:email_confirmation_on_create)
-                              .and_return(double("UserMailer", deliver: true))
+                              .and_return(double("UserMailer", deliver_now: true))
                               .with(an_instance_of(User))
         @user.send_activation_needed_email!
       end

@@ -8,7 +8,11 @@ RSpec.configure do |config|
 
   config.profile_examples = 10
 
-  config.order = :random
+  if ENV["AUTODOC"].to_i == 1
+    config.order = :defined
+  else
+    config.order = :random
+  end
 
   Kernel.srand config.seed
 
