@@ -72,7 +72,7 @@ g.task 'copy:fonts', ['clean'], ->
 
 g.task 'copy:static', ['clean'], ->
     g.src "#{conf.static}/**/*"
-    .pipe g.dest "#{conf.dest}"
+    .pipe g.dest "#{conf.dest}/"
 
 
 g.task 'copy', ['copy:fonts', 'copy:static']
@@ -84,7 +84,6 @@ g.task 'css:vendor', ['clean'], ->
     .pipe $.sass
         includePaths: [conf.bowerDir]
         sourceComments: 'normal'
-
     .on 'error', onError
     .pipe $.autoprefixer()
 
@@ -92,7 +91,7 @@ g.task 'css:vendor', ['clean'], ->
         t = t
         .pipe $.concat 'vendor.css'
 
-    t.pipe g.dest "#{conf.dest}/vendor"
+    t.pipe g.dest "#{conf.dest}/vendor/"
 
 
 g.task 'css:common', ['clean'], ->
@@ -101,7 +100,7 @@ g.task 'css:common', ['clean'], ->
         sourceComments: 'normal'
     .on 'error', onError
     .pipe $.autoprefixer()
-    .pipe g.dest "#{conf.dest}/style"
+    .pipe g.dest "#{conf.dest}/style/"
 
 
 g.task 'css:app:inject', ['clean'], ->
@@ -130,7 +129,7 @@ g.task 'css:app', ['clean', 'css:app:inject'], ->
         sourceComments: 'normal'
     .on 'error', onError
     .pipe $.autoprefixer()
-    .pipe g.dest "#{conf.dest}"
+    .pipe g.dest "#{conf.dest}/"
 
 
 g.task 'css', ['css:vendor', 'css:common', 'css:app']
@@ -155,7 +154,7 @@ g.task 'css:build', ['css'], (cb)->
     if conf.minify
         t = t
         .pipe $.minifyCss()
-    t.pipe g.dest "#{conf.dest}"
+    t.pipe g.dest "#{conf.dest}/"
 
 
 
@@ -201,7 +200,7 @@ g.task 'bower', ['clean'], (cb)->
 
     g.src bowerFiles()
     .pipe $.concat 'vendor.js'
-    .pipe g.dest "#{conf.dest}/vendor"
+    .pipe g.dest "#{conf.dest}/vendor/"
 
 
 g.task 'html', ['clean'], ->
@@ -219,11 +218,7 @@ g.task 'html', ['clean'], ->
         .pipe $.angularTemplatecache 'templates.js',
             module: conf.ngAppName
             root: '/'
-        .pipe g.dest "#{conf.dest}/"
-    else
-        t = t
-        .pipe g.dest "#{conf.dest}/"
-    t
+    t.pipe g.dest "#{conf.dest}/"
 
 g.task 'html:build', ['html'], (cb)->
     cb()
@@ -249,7 +244,7 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
     if conf.minify
         t = t
         .pipe $.uglify mangle: false
-    t.pipe g.dest "#{conf.dest}"
+    t.pipe g.dest "#{conf.dest}/"
 
 
 
@@ -320,6 +315,7 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
     t.pipe g.dest "#{conf.dest}/"
 
 
+
 ###*
 watch tasks
 ###
@@ -367,13 +363,25 @@ g.task 'watch', ['build'], ->
 
     g.watch "#{conf.src}/index.jade", ['watch:index']
 
-g.task 'prod', ()->
+
+g.task 'serve', ['build', 'watch'], ->
+    g.src 'public/'
+    .pipe $.webserver
+        port: 9000
+        fallback: 'index.html'
+        livereload: true
+        proxies:[
+            source: '/api'
+            target: 'http://localhost:3000/api'
+        ]
+
+g.task 'prod', ->
     conf.setProd true
 
-g.task 'skipmin', ()->
+g.task 'skipmin', ->
     conf.minify = false
 
-g.task 'silent', ()->
+g.task 'silent', ->
     conf.useSounds = false
 
-g.task 'default', ['build', 'watch']
+g.task 'default', ['build', 'watch', 'serve']
