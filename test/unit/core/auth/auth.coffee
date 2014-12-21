@@ -9,6 +9,9 @@ describe 'Auth', ->
             TokenProvider.setHeaderKey 'Access-Token'
             TokenProvider.setTokenPrefix ''
 
+        .config (EnvProvider)->
+            EnvProvider.setApiPath '/api'
+
         module moduleCore, 'AuthTestModule'
 
         inject ($httpBackend, Auth)->
