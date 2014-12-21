@@ -4,7 +4,7 @@
   "description": "http://hokui.net",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start",
-    "start": "npm install && bower install && gulp build",
+    "start": "npm install && bower install && gulp silent serve",
     "gulp": "gulp",
     "nginx": "sudo nginx -c /var/www/hokui.net/nginx/nginx.conf",
     "nginx-reload": "sudo nginx -c /var/www/hokui.net/nginx/nginx.conf -s reload",
@@ -40,6 +40,7 @@
     "gulp-sourcemaps": "^1.2.8",
     "gulp-uglify": "^1.0.1",
     "gulp-util": "^3.0.1",
+    "gulp-webserver": "^0.9.0",
     "karma": "^0.12.23",
     "karma-chrome-launcher": "^0.1.4",
     "karma-coffee-preprocessor": "^0.2.1",
