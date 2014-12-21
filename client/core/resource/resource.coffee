@@ -3,11 +3,14 @@
 angular.module moduleCore
 
 .factory 'ResourceStore',
-    (Retriever)->
+    ->
         (base)->
             angular.extend base,
                 retrieve: (id)->
-                    Retriever this, id, 'id'
+                    for obj in this
+                        if ''+obj.id is ''+id
+                            return obj
+                    null
 
                 set: (obj)->
                     if obj.id?

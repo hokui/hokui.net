@@ -3,11 +3,7 @@
 angular.module moduleCore
 
 .provider 'Auth', ->
-    _conf =
-        events:
-           userUpdated: 'AUTH:USER_UPDATED'
-
-    $get: ($http, $q, $rootScope, Token, StorageType) ->
+    $get: ($http, $q, Token) ->
         _current =
             user : null
 
@@ -15,9 +11,6 @@ angular.module moduleCore
             admin: 2
             user: 1
             guest: 0
-
-        broadcastUserUpdated = ->
-            $rootScope.$broadcast _conf.events.userUpdated, _current.user
 
         level: ->
             if @admin()
@@ -41,42 +34,36 @@ angular.module moduleCore
 
 
         active: ->
-            !!Token.get() and _current.user isnt null
+            Token.exists() and _current.user?
 
         user: ->
             _current.user
 
         admin: ->
-            Token.get() and _current.user?.admin? and _current.user.admin
+            @active() and !!_current.user.admin and _current.user.admin
 
-        login: (user, keepLoging)->
+        login: (credencials, keepLogin)->
             deferred = $q.defer()
             $http.post '/api/session',
-                email: user.email
-                password: user.password
+                email: credencials.email
+                password: credencials.password
             .success (data)=>
-                if not keepLoging?
-                    throw new Error 'Need to set param:keepLoging'
-                Token.set data.token, if keepLoging then StorageType.local else StorageType.session
+                Token.set data.token, keepLogin? and keepLogin
                 _current.user = data.user
                 deferred.resolve _current
-                broadcastUserUpdated()
             .error (err)=>
                 @silentLogout()
                 deferred.reject err
-                broadcastUserUpdated()
 
             deferred.promise
 
-        logout: (callback)->
+        logout: ->
             deferred = $q.defer()
-            t = Token.get()
             _finally = (data)=>
                 @silentLogout()
                 deferred.resolve()
-                broadcastUserUpdated()
 
-            if t? and t isnt ''
+            if Token.exists()
                 $http.delete '/api/session', {}
                 .success _finally
                 .error _finally
@@ -90,23 +77,19 @@ angular.module moduleCore
             _current.user = null
 
 
-        check: (callback)->
+        check: ->
             deferred = $q.defer()
-            t = Token.get()
-            if t? and t isnt ''
+            if Token.exists()
                 $http.get '/api/profile', {}
                 .success (data)=>
                     _current.user = data
                     deferred.resolve _current
-                    broadcastUserUpdated()
                 .error (err)=>
                     @silentLogout()
                     deferred.reject _current
-                    broadcastUserUpdated()
             else
                 @silentLogout()
                 deferred.reject _current
-                broadcastUserUpdated()
             deferred.promise
 
 .provider 'AutoAuthCheck', ->

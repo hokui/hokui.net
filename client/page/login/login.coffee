@@ -10,13 +10,12 @@ angular.module modulePage
 
 .controller 'LoginCtrl',
     ($scope, $state, Auth, Notify, Env) ->
-
         $scope.Auth = Auth
         $scope.credencials = {}
-        $scope.keepLoging = false
+        $scope.keepLogin = false
 
         $scope.performLogin = ()->
-            Auth.login $scope.credencials, $scope.keepLoging
+            Auth.login $scope.credencials, $scope.keepLogin
             .then ->
                 $state.go 'home'
                 Notify 'ログインしました。', type: 'ok'
@@ -25,4 +24,5 @@ angular.module modulePage
 
         seed = Env.seed 'login'
         if seed?
-            $scope.credencials = seed
+            angular.extend $scope.credencials, seed.credencials
+            $scope.keepLogin = seed.keepLogin

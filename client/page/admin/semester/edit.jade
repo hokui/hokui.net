@@ -24,13 +24,14 @@ form.form(role="form" ng-submit="doSaveSemester()")
             .form__group
                 .col-md-2
                     label.form__label 教科
-                .col-md-10.checkbox
+                .col-md-10
                     div(ng-repeat="subject in subjects | filter: subjectFilter")
-                        label.form__control
-                            input(type="checkbox"
-                                  ng-checked="new_semester.subject_ids.indexOf(subject.id) > -1"
-                                  ng-click="subjectCheckboxChange(subject)")
-                            span {{subject.title_ja}} - {{subject.title_en}}
+                        input.form__control(
+                            type="checkbox",
+                            id="semesterInputSubject{{subject.id}}"
+                            ng-checked="new_semester.subject_ids.indexOf(subject.id) > -1",
+                            ng-click="subjectCheckboxChange(subject)")
+                        label.form__label(for="semesterInputSubject{{subject.id}}") {{subject.title_ja}} - {{subject.title_en}}
 
         .panel__foot
             .clearfix

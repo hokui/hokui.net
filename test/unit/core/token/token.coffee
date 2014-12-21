@@ -43,58 +43,105 @@ describe 'TokenProvider', ->
         expect(_TokenProvider.getTokenPrefix()).toBe ''
 
 
-describe 'Token', ->
-    token_key = 'TEST_TOKEN_KEY'
+describe 'TokenService(With Prefix)', ->
+    header_key = 'TEST_TOKEN_KEY'
     storage_key = 'STORAGE_KEY'
     token_prefix = 'TEST_TOKEN_PREFIX'
-
     test_token = 'TEST_TOKEN'
 
     beforeEach ->
         angular.module 'TokenServiceTestModule', (->)
         .config (TokenProvider)->
-            TokenProvider.setHeaderKey token_key
+            TokenProvider.setHeaderKey header_key
             TokenProvider.setStorageKey storage_key
             TokenProvider.setTokenPrefix token_prefix
 
         module moduleCore, 'TokenServiceTestModule'
 
-        inject ($injector)->
-            Token = $injector.get 'Token'
+        inject (Token)->
             Token.clear()
 
-
-    it 'basic', inject (Token, $http, StorageType)->
-        Token.set test_token, StorageType.memory
+    it 'basic', inject (Token, $http)->
+        Token.set test_token
 
         expect(Token.get()).toBe test_token
-        expect($http.defaults.headers.common[token_key]).toBe "#{token_prefix} #{test_token}"
+        expect($http.defaults.headers.common[header_key]).toBe "#{token_prefix} #{test_token}"
 
     it 'clear', inject (Token, $http)->
         expect(Token.get()).toBe ''
-        expect($http.defaults.headers.common[token_key]?).toBe false
+        expect($http.defaults.headers.common[header_key]?).toBe false
 
 
 describe 'TokenService(Without Prefix)', ->
-    token_key = 'TEST_TOKEN_KEY'
+    header_key = 'TEST_TOKEN_KEY'
     storage_key = 'STORAGE_KEY'
-
     test_token = 'TEST_TOKEN'
 
     beforeEach ->
         angular.module 'TokenServiceTestModule', (->)
         .config (TokenProvider)->
-            TokenProvider.setHeaderKey token_key
+            TokenProvider.setHeaderKey header_key
             TokenProvider.setStorageKey storage_key
             TokenProvider.setTokenPrefix ''
 
         module moduleCore, 'TokenServiceTestModule'
 
-        inject ($injector)->
-            Token = $injector.get 'Token'
+        inject (Token)->
             Token.clear()
 
-    it 'basic', inject (Token, $http, StorageType)->
-        Token.set test_token, StorageType.memory
-        expect($http.defaults.headers.common[token_key]).toBe test_token
+    it 'basic', inject (Token, $http)->
+        Token.set test_token
+        expect($http.defaults.headers.common[header_key]).toBe test_token
+
+
+describe 'TokenService(Store Token)', ->
+    header_key = 'TEST_TOKEN_KEY'
+    storage_key = 'STORAGE_KEY'
+    test_token_session = 'TEST_TOKEN_SESSION'
+    test_token_local = 'TEST_TOKEN_LOCAL'
+
+    beforeEach ->
+        angular.module 'TokenServiceTestModule', (->)
+        .config (TokenProvider)->
+            TokenProvider.setHeaderKey header_key
+            TokenProvider.setStorageKey storage_key
+            TokenProvider.setTokenPrefix ''
+
+        module moduleCore, 'TokenServiceTestModule'
+
+    describe 'Token is in sessionStorage', ->
+        beforeEach ->
+            inject (webStorage)->
+                webStorage.session.add storage_key, test_token_session
+                webStorage.memory.clear()
+                webStorage.local.clear()
+
+        it 'store from session', inject (Token, $http)->
+            expect(Token.get()).toBe test_token_session
+            expect($http.defaults.headers.common[header_key]).toBe test_token_session
+
+    describe 'Token is in localStorage', ->
+        beforeEach ->
+            inject (webStorage)->
+                webStorage.session.clear()
+                webStorage.memory.clear()
+                webStorage.local.add storage_key, test_token_local
+
+        it 'store from local', inject (Token, $http)->
+            expect(Token.get()).toBe test_token_local
+            expect($http.defaults.headers.common[header_key]).toBe test_token_local
+
+
+
+    describe 'Token is in both sessionStorage and localStorage', ->
+        beforeEach ->
+            inject (webStorage)->
+                webStorage.session.add storage_key, test_token_session
+                webStorage.memory.clear()
+                webStorage.local.add storage_key, test_token_local
+
+        it 'store from session', inject (Token, $http)->
+            expect(Token.get()).toBe test_token_session
+            expect($http.defaults.headers.common[header_key]).toBe test_token_session
+
 

@@ -154,8 +154,10 @@ $pre-scrollable-max-height: 340px
 //************
 
 $form-group-margin-bottom: 20px
-$form-label-padding: 6px 0
+$form-label-padding-v: 6px
+$form-label-padding-h: 4px
 $form-control-padding-v: 6px
+$form-control-padding-h: 4px
 
 $form-label-color: $gray
 $form-control-border-color: $gray-lighter
@@ -173,6 +175,32 @@ $form-control-toggle-inner-size: $form-control-font-size - 6px
 
 
 
+//************
+// panel
+//************
+
+$navbar-bg: rgba($body-bg, .9)
+$navbar-color: $link-color
+$navbar-active-bg: rgba(255, 255, 255, .9)
+$navbar-active-color: $link-color
+
+$navbar-box-shadow: 0 0 2px rgba(#000, .1)
+
+
+$navbar-height: 64px
+$navbar-height-sm: 56px
+$navbar-height-xs: 44px
+
+// navbar items collapse when xs
+$navbar-item-height: $navbar-height
+$navbar-item-height-sm: $navbar-height-sm
+$navbar-item-height-xs: 36px
+
+$navbar-collapse-button-size: 28px
+
+$navbar-z: 200
+
+
 
 //************
 // panel
@@ -187,6 +215,7 @@ $panel-head-padding: 12px 16px
 $panel-head-bg: $shaded-bg-base
 $panel-foot-padding: 12px 16px
 $panel-foot-bg: $shaded-bg-base
+
 
 
 //************
@@ -213,7 +242,7 @@ $screen-md-max: $screen-lg-min - 1
 $grid-breakpoint: $screen-sm
 
 $grid-columns: 12
-$grid-gutter-width: 30px
+$grid-gutter: 30px
 
 $container-padding-horizontal: 16px
 

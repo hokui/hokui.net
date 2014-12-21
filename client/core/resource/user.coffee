@@ -3,7 +3,7 @@
 angular.module moduleCore
 
 .factory 'User',
-    ($resource, Token) ->
+    ($resource) ->
         $resource "/api/users/:id", {id: '@id'},
             get:
                 method: 'GET'
@@ -15,6 +15,9 @@ angular.module moduleCore
 
             save:
                 method: 'POST'
+
+            update:
+                method: 'PATCH'
 
             remove:
                 method: 'DELETE'

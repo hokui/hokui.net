@@ -325,9 +325,9 @@
                 .form__group
                     label.form__label textbox
                     textbox.form__control
-                        | textareaじゃなくてcontenteditable="true"な
+                        | &lt;textbox/&gt;という独自要素。
                         br
-                        | ただのブロック。
+                        | Angularのdirectiveからcontenteditable="true"を付与しただけのただの&lt;div/&gt;
                 .form__group
                     input.form__control(type="checkbox", id="check1")
                     label.form__label(for="check1") checkbox

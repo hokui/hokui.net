@@ -14,8 +14,7 @@ angular.module moduleCore
 
     $get: (Auth)->
         if not _default.next?
-            throw new Error('Need to set default state to be redirect to')
-
+            throw new Error 'Need to set default state to be redirect to'
 
         (state)->
             _result =

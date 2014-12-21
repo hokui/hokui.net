@@ -9,7 +9,7 @@ angular.module modulePage
         controller: 'HomeCtrl'
 
 .controller 'HomeCtrl',
-    ($scope, Token, Auth, $state, Notify, Env) ->
+    ($scope, Token, Auth, $state, Notify, Env, $http) ->
         $scope.Auth = Auth
         $scope.Token = Token
 

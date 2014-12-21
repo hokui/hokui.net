@@ -25,30 +25,33 @@ bundle exec rake db:dev
 
 フロントエンド
 --------
-### ビルド
 **NOTE**: Need to install `Gulp` globally or run Gulp with `npm run gulp ...`.
 
-#### development, watchなし
-```
-gulp build
-```
+### 開発版ビルド
+`public/`に、`client/`以降の構造をほぼ保ったまま展開する。
+`client/config/development/development.coffee`がビルドに含まれ、`client/config/production/production.coffee`はスルーされる。
 
-#### development, watchあり
+### プロダクションビルド
+`dist/`に展開。`index.jade`以外のマークアップはすべてテンプレートとして`$templateChache`を使ってスクリプトに埋め込み、他のスクリプトも合わせて結合/Minifyして一つのファイルで出力。スタイルシートも同様にして一つのファイルで出力。  
+開発版と逆で、`client/config/production/production.coffee`がビルドに含まれ、`client/config/development/development.coffee`はスルーされる。
+
+### Gulpのビルドについて
+
+#### watchあり
 ```
 gulp
 ```
-だけ
+だけ。開発版ビルドを行ったのちライブリロードが有効になる。フロントの開発時のメイン。
 
-#### production
-```
-gulp prod build
-```
 
-#### production, skip minify
+#### watchなし
 ```
-gulp prod skipmin build
+gulp [prod, skipmin, silent] build
 ```
-minifyは時間かかるので飛ばしたいとき
+* `prod` ... プロダクションビルドになる。これがなければ開発版ビルドになる
+* `skipmin` ... プロダクションビルド時にMinifyを省略
+* `silent` ... ビルドでコケてもうるさくない
+
 
 ### 一発構築
 ```
@@ -60,12 +63,14 @@ npm start
 ```
 npm test
 ```
+現状`client/core/`以下のKarmaを使ったユニットテストのみ。
+
 
 Run hokui.net on nginx
 --------
 1. Place the project or its symbolic link to `/var/www/hokui.net`
 2. Boot Rails Server: `bundle exec rails s -e production`
 3. Build client codes: `gulp prod build`
-4. Then, boot Nginx: `sudo nginx -c /var/www/hokui.net/nginx/nginx.conf`
+4. Then, boot Nginx: `sudo nginx -c /var/www/hokui.net/nginx/nginx.conf` or `npm run nginx`
 
 

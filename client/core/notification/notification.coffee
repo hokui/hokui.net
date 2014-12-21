@@ -60,11 +60,15 @@ angular.module moduleCore
                     p = parseInt options.period
                     if not isNaN p
                         _current.period = if p > 0 then p else -1
+                    else
+                        throw new Error "period needs to be Int or propperly parsed to Int. You provided #{options.period}"
 
                 if options.delay?
                     d = parseInt options.delay
                     if not isNaN p
                         _current.delay = if d > 0 then d else 0
+                    else
+                        throw new Error "delay needs to be Int or propperly parsed to Int. You provided #{options.period}"
 
             _message = message
 
