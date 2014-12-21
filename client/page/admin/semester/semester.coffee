@@ -55,7 +55,7 @@ angular.module modulePage
 
 
 .controller 'AdminSemesterListCtrl',
-    ($scope, $state, $stateParams, Retriever) ->
+    ($scope, $state, $stateParams) ->
         $scope.indexOfClassYear = [
             index: 0
             text: 'すべて表示'
