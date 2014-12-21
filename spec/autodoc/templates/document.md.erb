@@ -1,0 +1,16 @@
+## <%= title %>
+<%= description %>
+<%= parameters_section %>
+### Example
+
+#### Request
+```
+<%= method %> <%= request.path %><%= request_query %> <%= request_http_version %>
+<%= request_header.gsub(/Access-Token: .*/, "Access-Token: 0dcdeb801d73c2fae082efdcb355dfd199a5693ba0d400af3889a4b3ace9ea6a") if request_header %><%= request_body_section %>
+```
+
+#### Response
+```
+<%= response_http_version %> <%= response.status %>
+<%= response_header %><%= response_body_section.gsub(/"201\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\d\+09:00"/, "\"2014-01-01T00:00:00.000+09:00\"") if response_body_section %>
+```

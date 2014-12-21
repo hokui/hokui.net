@@ -13,7 +13,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-config.include Helpers
+  config.include Helpers
 
   config.infer_spec_type_from_file_location!
 
@@ -31,3 +31,11 @@ config.include Helpers
     DatabaseRewinder.clean
   end
 end
+
+Autodoc.configuration.suppressed_request_header =
+  ["Accept", "Content-Length", "Content-Type", "Host"]
+Autodoc.configuration.suppressed_response_header =
+  ["Cache-Control", "Content-Length", "ETag", "X-Content-Type-Options",
+   "X-Frame-Options", "X-Request-Id", "X-Runtime", "X-XSS-Protection"]
+Autodoc.configuration.template =
+  File.read(File.expand_path("../autodoc/templates/document.md.erb", __FILE__))

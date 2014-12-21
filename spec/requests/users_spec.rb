@@ -26,7 +26,7 @@ RSpec.describe "Users" do
     it "returns user profile to an admin", autodoc: true do
       admin = create_admin_with_token
       guest = create_guest_with_token
-      get_with_token(admin, "api/users/#{guest.id}")
+      get_with_token(admin, "/api/users/#{guest.id}")
       expect(response.status).to eq(200)
       expect(json["full_name"]).to eq("guest guest")
       expect(json["crypted_password"]).to be_nil
@@ -34,7 +34,7 @@ RSpec.describe "Users" do
 
     it "returns user profile to a guest if the client requests profile of oneself", autodoc: true do
       guest = create_guest_with_token
-      get_with_token(guest, "api/users/#{guest.id}")
+      get_with_token(guest, "/api/users/#{guest.id}")
       expect(response.status).to eq(200)
       expect(json["full_name"]).to eq("guest guest")
       expect(json["crypted_password"]).to be_nil
@@ -43,7 +43,7 @@ RSpec.describe "Users" do
     it "returns 403 to a guest if the client requests profile of another user", autodoc: true do
       admin = create_admin_with_token
       guest = create_guest_with_token
-      get_with_token(guest, "api/users/#{admin.id}")
+      get_with_token(guest, "/api/users/#{admin.id}")
       expect(response.status).to eq(403)
     end
 
