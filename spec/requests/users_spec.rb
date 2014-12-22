@@ -78,7 +78,7 @@ RSpec.describe "Users" do
       old_size = User.count
       post("/api/users", @params.to_json)
       expect(response.status).to eq(422)
-      expect(json["errors"]["crypted_password"]).to include("can't be blank")
+      expect(json["errors"]["crypted_password"]).to include("を入力してください。")
       expect(User.count).to eq(old_size)
     end
   end

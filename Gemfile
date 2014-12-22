@@ -16,6 +16,8 @@ gem 'pundit'
 
 gem 'kawaii_validation'
 
+gem 'i18n_generators'
+
 group :development, :test do
   gem 'annotate'
   gem 'bullet'
