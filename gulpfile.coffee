@@ -350,7 +350,9 @@ g.task 'build', [
     'index'
 ]
 
-g.task 'watch', ['build'], ->
+g.task 'watch', ['build'], (cb)->
+    if conf.prod
+        return cb()
     conf.watching = true
     $.livereload.listen()
     g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor']
@@ -364,12 +366,12 @@ g.task 'watch', ['build'], ->
     g.watch "#{conf.src}/index.jade", ['watch:index']
 
 
-g.task 'serve', ['build', 'watch'], ->
-    g.src 'public/'
+g.task 'serve', ['build'], ->
+    g.src "#{conf.dest}/"
     .pipe $.webserver
         port: 9000
         fallback: 'index.html'
-        livereload: true
+        livereload: not conf.prod
         proxies:[
             source: '/api'
             target: 'http://localhost:3000/api'
