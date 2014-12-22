@@ -25,5 +25,4 @@ Rails.application.routes.draw do
 
     match "*path" => "application#not_found", via: :all
   end
-
 end
