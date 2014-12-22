@@ -37,27 +37,16 @@ bundle exec rake db:dev
 
 ### Gulpのビルドについて
 
-#### watchあり
-```
-gulp
-```
-だけ。開発版ビルドを行ったのちライブリロードが有効になる。フロントの開発時のメイン。
-
-
-#### watchなし
-```
-gulp [prod, skipmin, silent] build
-```
-* `prod` ... プロダクションビルドになる。これがなければ開発版ビルドになる
-* `skipmin` ... プロダクションビルド時にMinifyを省略
-* `silent` ... ビルドでコケてもうるさくない
-
+- `gulp` ... 開発版ビルドを行ったのちライブリロードが有効な状態で開発サーバー(http://localhost:9000)が立ち上がる
+- `gulp silent serve` ... 上のうるさくない版
+- `gulp prod [skipmin, slient] build` ... プロダクションビルドのみ。`skipmin`でMinify省略。`sileint`を付けるとビルドに失敗してもうるさくない
+- `gulp prod [skipmin, silent] serve` ... プロダクションビルドして`dist/`で開発サーバー起動(（)ライブリロードなし)
 
 ### 一発構築
 ```
 npm start
 ```
-`npm install`と`bower install`と`gulp build`が走る。フロントのコミット後は何も考えずこれでOK。
+`npm install`と`bower install`と`gulp silent serve`が走る。フロントのコミット後は何も考えずこれでOK。
 
 ### test
 ```
