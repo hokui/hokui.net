@@ -2,7 +2,6 @@
 
 describe 'ResourceStore', ->
 
-
     resources = objects = obj1 = obj2 = obj3 = null
 
     beforeEach ->

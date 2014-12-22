@@ -29,8 +29,3 @@ angular.module moduleCore
                     _result.next = restrict.next or _default.next
 
             _result
-
-
-
-
-

@@ -9,7 +9,7 @@ angular.module modulePage
         controller: 'ActivateCtrl'
 
 .controller 'ActivateCtrl',
-    ($scope, User, $stateParams, $timeout, $http, $state) ->
+    ($scope, User, $stateParams, $timeout, $http, $state, Env) ->
         token = $stateParams.activation_token
         if not token?
             $state.go 'main'
@@ -18,7 +18,7 @@ angular.module modulePage
 
         admin = 'hokui.net@gmail.com'
 
-        $http.post '/api/users/activate',
+        $http.post "#{api.apiRoot()}/users/activate",
             activation_token: token
         .success (data)->
             sec = 5
@@ -31,7 +31,7 @@ angular.module modulePage
                 sec = sec - 1
                 if sec < 0
                     if not left
-                        $state.go 'main'
+                        $state.go 'home'
                 else
                     $timeout countDown, 1000
             countDown()

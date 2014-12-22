@@ -26,8 +26,4 @@ Rails.application.routes.draw do
     match "*path" => "application#not_found", via: :all
   end
 
-  if Rails.env.development?
-    get "*path" => "application#index"
-    root :to => "application#index"
-  end
 end

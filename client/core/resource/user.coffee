@@ -3,8 +3,8 @@
 angular.module moduleCore
 
 .factory 'User',
-    ($resource) ->
-        $resource "/api/users/:id", {id: '@id'},
+    ($resource, Env) ->
+        $resource "#{Env.apiRoot()}/users/:id", {id: '@id'},
             get:
                 method: 'GET'
                 isArray: false

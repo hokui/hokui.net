@@ -8,8 +8,9 @@ angular.module moduleConfig, [
 ]
 
 .config ($locationProvider)->
-    $locationProvider.html5Mode true
-    $locationProvider.hashPrefix '!'
+    $locationProvider
+    .html5Mode true
+    .hashPrefix '!'
 
 .config ($urlRouterProvider)->
     $urlRouterProvider.rule ($injector, $location)->

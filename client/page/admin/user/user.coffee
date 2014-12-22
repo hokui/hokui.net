@@ -29,7 +29,7 @@ angular.module modulePage
 
 
 .controller 'AdminUserCtrl',
-    ($scope, $http, $state, Notify, ResourceStore, users, years) ->
+    ($scope, $http, $state, Notify, ResourceStore, Env, users, years) ->
         $scope.users = ResourceStore users
         $scope.years = ResourceStore years
 
@@ -43,7 +43,7 @@ angular.module modulePage
             if not $scope.approvable(user)
                 console.log 'cant approve'
 
-            $http.post "/api/users/#{user.id}/approve",
+            $http.post "#{api.apiRoot()}/users/#{user.id}/approve",
                 {}
             .success (data)->
                 user.approval_state = 'approved'

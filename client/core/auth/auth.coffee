@@ -3,7 +3,9 @@
 angular.module moduleCore
 
 .provider 'Auth', ->
-    $get: ($http, $q, Token) ->
+    $get: ($http, $q, Token, Env) ->
+        api = Env.apiRoot()
+
         _current =
             user : null
 
@@ -44,7 +46,7 @@ angular.module moduleCore
 
         login: (credencials, keepLogin)->
             deferred = $q.defer()
-            $http.post '/api/session',
+            $http.post "#{api}/session",
                 email: credencials.email
                 password: credencials.password
             .success (data)=>
@@ -64,7 +66,7 @@ angular.module moduleCore
                 deferred.resolve()
 
             if Token.exists()
-                $http.delete '/api/session', {}
+                $http.delete "#{api}/session", {}
                 .success _finally
                 .error _finally
             else
@@ -80,7 +82,7 @@ angular.module moduleCore
         check: ->
             deferred = $q.defer()
             if Token.exists()
-                $http.get '/api/profile', {}
+                $http.get "#{api}/profile", {}
                 .success (data)=>
                     _current.user = data
                     deferred.resolve _current
