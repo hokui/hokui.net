@@ -4,7 +4,7 @@ angular.module moduleCore
 
 .provider 'Auth', ->
     $get: ($http, $q, Token, Env) ->
-        api = Env.apiPath()
+        api = Env.apiRoot()
 
         _current =
             user : null

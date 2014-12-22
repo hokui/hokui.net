@@ -10,7 +10,7 @@ describe 'Auth', ->
             TokenProvider.setTokenPrefix ''
 
         .config (EnvProvider)->
-            EnvProvider.setApiPath '/api'
+            EnvProvider.setApiRoot '/api'
 
         module moduleCore, 'AuthTestModule'
 

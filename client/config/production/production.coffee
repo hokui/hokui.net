@@ -4,7 +4,7 @@ angular.module moduleConfig
 
 .config (EnvProvider)->
     EnvProvider
-    .setApiPath '/api'
+    .setApiRoot '/api'
     .setDev false
 
 .config (AnalyticsProvider)->

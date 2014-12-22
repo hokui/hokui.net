@@ -5,14 +5,14 @@ angular.module moduleCore
 .provider 'Env', ->
     _dev = false
     _seed = {}
-    _api_path = ''
+    _api_root = ''
 
     setDev: (d)->
         _dev = !!d
         this
 
-    setApiPath: (api)->
-        _api_path = api
+    setApiRoot: (api)->
+        _api_root = api
         this
 
     setSeed: (key, value)->
@@ -23,14 +23,14 @@ angular.module moduleCore
         this
 
     $get: ($injector)->
-        if not _api_path
+        if not _api_root
             throw new Error 'API path is not configured.'
 
-        _api_path = do ->
-            if angular.isFunction _api_path
-                return _api_path $injector
+        _api_root = do ->
+            if angular.isFunction _api_root
+                return _api_root $injector
             else
-                return '' + _api_path
+                return '' + _api_root
 
         dev: _dev
         seed: (key)->
@@ -38,8 +38,8 @@ angular.module moduleCore
                 return angular.copy _seed[key]
             else
                 return null
-        apiPath: ->
-            _api_path
+        apiRoot: ->
+            _api_root
 
 
 

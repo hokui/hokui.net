@@ -43,7 +43,7 @@ angular.module modulePage
             if not $scope.approvable(user)
                 console.log 'cant approve'
 
-            $http.post "#{api.apiPath()}/users/#{user.id}/approve",
+            $http.post "#{api.apiRoot()}/users/#{user.id}/approve",
                 {}
             .success (data)->
                 user.approval_state = 'approved'

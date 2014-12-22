@@ -34,7 +34,7 @@ describe 'Restrict', ->
                         error: 'admin only'
 
         .config (EnvProvider) ->
-            EnvProvider.setApiPath '/api'
+            EnvProvider.setApiRoot '/api'
 
         .config (RestrictProvider) ->
             RestrictProvider.setNext 'redirect_to'

@@ -4,7 +4,7 @@ angular.module moduleCore
 
 .factory 'ClassYear',
     ($resource, Env) ->
-        $resource "#{Env.apiPath()}/class_years/:id", {id: '@id'},
+        $resource "#{Env.apiRoot()}/class_years/:id", {id: '@id'},
             get:
                 method: 'GET'
                 isArray: false

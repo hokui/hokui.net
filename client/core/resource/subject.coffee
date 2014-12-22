@@ -4,7 +4,7 @@ angular.module moduleCore
 
 .factory 'Subject',
     ($resource, Env) ->
-        $resource "#{Env.apiPath()}/subjects/:id", {id: '@id'},
+        $resource "#{Env.apiRoot()}/subjects/:id", {id: '@id'},
             get:
                 method: 'GET'
                 isArray: false

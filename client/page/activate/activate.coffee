@@ -18,7 +18,7 @@ angular.module modulePage
 
         admin = 'hokui.net@gmail.com'
 
-        $http.post "#{api.apiPath()}/users/activate",
+        $http.post "#{api.apiRoot()}/users/activate",
             activation_token: token
         .success (data)->
             sec = 5
@@ -31,7 +31,7 @@ angular.module modulePage
                 sec = sec - 1
                 if sec < 0
                     if not left
-                        $state.go 'main'
+                        $state.go 'home'
                 else
                     $timeout countDown, 1000
             countDown()

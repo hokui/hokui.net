@@ -21,7 +21,7 @@ angular.module moduleConfig
     EnvProvider
     .setSeed 'login', login
     .setSeed 'signup', signup
-    .setApiPath '/api'
+    .setApiRoot '/api'
     .setDev true
 
 .config (AnalyticsProvider)->

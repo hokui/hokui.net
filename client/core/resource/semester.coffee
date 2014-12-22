@@ -4,7 +4,7 @@ angular.module moduleCore
 
 .factory 'Semester',
     ($resource, Env) ->
-        $resource "#{Env.apiPath()}/semesters/:id", {id: '@id'},
+        $resource "#{Env.apiRoot()}/semesters/:id", {id: '@id'},
             get:
                 method: 'GET'
                 isArray: false
