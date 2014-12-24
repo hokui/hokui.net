@@ -16,6 +16,13 @@
     padding-right: 12px
 
 
+
+.form__error
+    color: $brand-accent
+    font-size: 14px
+
+
+
 .form__control
     padding: $form-control-padding-v $form-control-padding-h
     font-size: $form-control-font-size
@@ -53,15 +60,15 @@ textbox
             border-color: $brand-primary
             background-color: $form-control-default-focus-bg
 
-    &.form__control.form__control--secondary
-        border-color: $brand-secondary
-        &:focus
-            background-color: $form-control-secondary-focus-bg
+        .form__control--secondary
+            border-color: $brand-secondary
+            &:focus
+                background-color: $form-control-secondary-focus-bg
 
-    &.form__control.form__control--accent
-        border-color: $brand-accent
-        &:focus
-            background-color: $form-control-accent-focus-bg
+        .form__control--accent, &.ng-invalid.ng-dirty
+            border-color: $brand-accent
+            &:focus
+                background-color: $form-control-accent-focus-bg
 
 
 input[type="radio"].form__control,
