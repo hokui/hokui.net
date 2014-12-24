@@ -50,6 +50,15 @@ RSpec.describe User, :type => :model do
         @user.send_activation_needed_email!
       end
     end
+
+    describe "send_reset_password_instructions!" do
+      it "send a mail" do
+        expect(UserMailer).to receive(:reset_password_instructions)
+                              .and_return(double("UserMailer", deliver_now: true))
+                              .with(an_instance_of(User))
+        @user.send_reset_password_instructions!
+      end
+    end
   end
 
   context "registration" do

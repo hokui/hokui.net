@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
   end
 
   def send_reset_password_instructions!
-    UserMailer.reset_password_instructions(self).deliver
+    UserMailer.reset_password_instructions(self).deliver_now
   end
 
   private
