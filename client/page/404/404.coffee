@@ -9,6 +9,11 @@ angular.module modulePage
         controller: '404Ctrl'
 
 .controller '404Ctrl',
-    ($scope, $state, $stateParams, $location) ->
-        if not $scope.url = $stateParams.url
-            $state.go 'home'
+    ($scope, $state, $stateParams) ->
+        $scope.url =
+        $scope.message = do ->
+            if url = $stateParams.url
+                "<code>#{url}</code>は存在しないページです。"
+            else
+                ''
+
