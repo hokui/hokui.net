@@ -12,21 +12,42 @@ angular.module modulePage
                 ClassYear.query().$promise
 
 .controller 'SignupCtrl',
-    ($scope, Auth, User, years, $state, Env) ->
+    ($scope, Auth, User, years, $state, Env, Notify) ->
         $scope.user = new User()
         $scope.years = years
+        $scope.errors = {}
 
-        $scope.performSignup = ()->
-            if $scope.reenteredPassword is $scope.user.password
+        $scope.performSignup = (valid)->
+            if valid
                 $scope.user.$save {}, (data)->
                     $state.go 'home'
+                    Notify 'ユーザー登録を受け付けました。本人確認のメールをお待ちください。', period: -1
                 , (err)->
-                    console.log err
+                    Notify '入力にエラーがあります。', type: 'warn'
+                    $scope.errors = err.data.errors
+            else
+                Notify '入力にエラーがあります。', type: 'warn'
+
 
         seed = Env.seed 'signup'
         if seed?
-            angular.extend $scope.user, seed.user
+            # angular.extend $scope.user, seed.user
             $scope.reenteredPassword = $scope.user.password
 
         $scope.user.birthday = new Date('1990/1/1')
         $scope.user.class_year_id = years[0].id
+
+
+.directive 'match', ()->
+    require: 'ngModel'
+    link: (scope, elem, attrs, ctrl)->
+        ctrl.$parsers.push (viewValue)->
+            if  not attrs.match?
+                return viewValue
+            val = scope.$eval attrs.match
+            if val isnt viewValue
+                ctrl.$setValidity 'match', false
+            else
+                ctrl.$setValidity 'match', true
+            viewValue
+
