@@ -31,23 +31,8 @@ angular.module modulePage
 
         seed = Env.seed 'signup'
         if seed?
-            # angular.extend $scope.user, seed.user
+            angular.extend $scope.user, seed.user
             $scope.reenteredPassword = $scope.user.password
 
         $scope.user.birthday = new Date('1990/1/1')
         $scope.user.class_year_id = years[0].id
-
-
-.directive 'match', ()->
-    require: 'ngModel'
-    link: (scope, elem, attrs, ctrl)->
-        ctrl.$parsers.push (viewValue)->
-            if  not attrs.match?
-                return viewValue
-            val = scope.$eval attrs.match
-            if val isnt viewValue
-                ctrl.$setValidity 'match', false
-            else
-                ctrl.$setValidity 'match', true
-            viewValue
-
