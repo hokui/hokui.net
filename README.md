@@ -39,8 +39,8 @@ bundle exec rake db:dev
 
 - `gulp` ... 開発版ビルドを行ったのちライブリロードが有効な状態で開発サーバー(http://localhost:9000)が立ち上がる
 - `gulp silent serve` ... 上のうるさくない版
-- `gulp prod [skipmin, slient] build` ... プロダクションビルドのみ。`skipmin`でMinify省略。`sileint`を付けるとビルドに失敗してもうるさくない
-- `gulp prod [skipmin, silent] serve` ... プロダクションビルドして`dist/`で開発サーバー起動(（)ライブリロードなし)
+- `gulp prod [skipmin, slient] build` ... プロダクションビルドのみ。`skipmin`でMinify省略。`silent`を付けるとビルドに失敗してもうるさくない
+- `gulp prod [skipmin, silent] serve` ... プロダクションビルドして`dist/`で開発サーバー起動(ラライブリロードなし)
 
 ### 一発構築
 ```
@@ -55,7 +55,7 @@ npm test
 現状`client/core/`以下のKarmaを使ったユニットテストのみ。
 
 
-Run hokui.net on nginx
+Run hokui.net on Nginx
 --------
 1. Place the project or its symbolic link to `/var/www/hokui.net`
 2. Boot Rails Server: `bundle exec rails s -e production`

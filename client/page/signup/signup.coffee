@@ -12,16 +12,22 @@ angular.module modulePage
                 ClassYear.query().$promise
 
 .controller 'SignupCtrl',
-    ($scope, Auth, User, years, $state, Env) ->
+    ($scope, Auth, User, years, $state, Env, Notify) ->
         $scope.user = new User()
         $scope.years = years
+        $scope.errors = {}
 
-        $scope.performSignup = ()->
-            if $scope.reenteredPassword is $scope.user.password
+        $scope.performSignup = (valid)->
+            if valid
                 $scope.user.$save {}, (data)->
                     $state.go 'home'
+                    Notify 'ユーザー登録を受け付けました。本人確認のメールをお待ちください。', period: -1
                 , (err)->
-                    console.log err
+                    Notify '入力にエラーがあります。', type: 'warn'
+                    $scope.errors = err.data.errors
+            else
+                Notify '入力にエラーがあります。', type: 'warn'
+
 
         seed = Env.seed 'signup'
         if seed?

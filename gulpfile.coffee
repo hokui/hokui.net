@@ -215,6 +215,11 @@ g.task 'html', ['clean'], ->
 
     if conf.prod
         t = t
+        .pipe $.minifyHtml
+                spare: true
+                empty: true
+                conditionals: true
+                quotes: true
         .pipe $.angularTemplatecache 'templates.js',
             module: conf.ngAppName
             root: '/'
@@ -243,7 +248,7 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
     .pipe $.concat "app-#{conf.hash}.js"
     if conf.minify
         t = t
-        .pipe $.uglify mangle: false
+        .pipe $.uglify()
     t.pipe g.dest "#{conf.dest}/"
 
 
