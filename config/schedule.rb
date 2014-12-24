@@ -7,5 +7,5 @@ every 1.day, at: "9:00 am" do
 end
 
 every :saturday, at: "3am" do
-  rake "access_token:delete_expired_tokens"
+  runner "AccessToken.delete_expired!"
 end
