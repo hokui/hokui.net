@@ -24,7 +24,7 @@ RSpec.describe AccessToken, :type => :model do
       end
     end
 
-    describe "delete_expired" do
+    describe "delete_expired!" do
       it "deletes expired token" do
         old_size = AccessToken.count
         2.times do
@@ -35,7 +35,7 @@ RSpec.describe AccessToken, :type => :model do
           access_token.last_activity_at = Time.now - 3.weeks
           access_token.save
         end
-        AccessToken.delete_expired
+        AccessToken.delete_expired!
         expect(AccessToken.count).to eq(old_size + 2)
       end
     end

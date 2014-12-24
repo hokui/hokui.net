@@ -29,7 +29,7 @@ class AccessToken < ActiveRecord::Base
     end
   end
 
-  def self.delete_expired
+  def self.delete_expired!
     self
       .where
       .not(last_activity_at: (Time.now - TERM_OF_VALIDITY)..Time.now)
