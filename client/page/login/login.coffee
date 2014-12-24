@@ -13,14 +13,18 @@ angular.module modulePage
         $scope.Auth = Auth
         $scope.credencials = {}
         $scope.keepLogin = false
+        $scope.error = false
 
-        $scope.performLogin = ()->
-            Auth.login $scope.credencials, $scope.keepLogin
-            .then ->
-                $state.go 'home'
-                Notify 'ログインしました。', type: 'ok'
-            , ->
-                $scope.message = 'invalid email or password'
+        $scope.performLogin = (valid)->
+            if valid
+                Auth.login $scope.credencials, $scope.keepLogin
+                .then ->
+                    $state.go 'home'
+                    Notify 'ログインしました。', type: 'ok'
+                , (error)->
+                    $scope.error = true
+                    Notify 'ログインに失敗しました。入力項目をご確認ください。', type: 'warn'
+            else
 
         seed = Env.seed 'login'
         if seed?
