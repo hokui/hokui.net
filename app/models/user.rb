@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
 
   after_create :send_activation_needed_email!
 
+  scope :waiting_approval,      -> { where(activation_state: "active", approval_state: "waiting") }
+  scope :active_approved_users, -> { where(activation_state: "active", approval_state: "approved") }
+  scope :admins,                -> { active_approved_users.where(admin: true) }
+
   def full_name
     "#{family_name} #{given_name}"
   end
@@ -78,6 +82,12 @@ class User < ActiveRecord::Base
 
   def send_reset_password_instructions!
     UserMailer.reset_password_instructions(self).deliver_now
+  end
+
+  class << self
+    def send_approval_request_to_admin!
+      AdminMailer.approval_request(admins, waiting_approval).deliver_now
+    end
   end
 
   private
