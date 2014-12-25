@@ -65,7 +65,7 @@ RSpec.describe "Semesters", :type => :request do
       admin = create_admin_with_token
       post_with_token(admin, "/api/semesters", {}.to_json)
       expect(response.status).to eq(422)
-      expect(json["errors"]["identifier"]).to include("can't be blank")
+      expect(json["errors"]["identifier"]).to include("入力してください。")
     end
   end
 
@@ -95,7 +95,7 @@ RSpec.describe "Semesters", :type => :request do
       admin = create_admin_with_token
       patch_with_token(admin, "/api/semesters/#{s.id}", { identifier: "2a" }.to_json)
       expect(response.status).to eq(422)
-      expect(json["errors"]["identifier"]).to include("has already been taken")
+      expect(json["errors"]["identifier"]).to include("すでに使われています。")
     end
   end
 

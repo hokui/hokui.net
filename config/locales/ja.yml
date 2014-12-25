@@ -1,0 +1,6 @@
+ja:
+  errors:
+    messages:
+      blank: 入力してください。
+      empty: 入力してください。
+      taken: すでに使われています。
