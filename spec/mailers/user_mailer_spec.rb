@@ -19,4 +19,21 @@ RSpec.describe UserMailer, :type => :mailer do
     end
   end
 
+  describe "reset_password_instructions" do
+    before do
+      @user = create(:admin) { |admin| admin.generate_reset_password_token! }
+      @mail = UserMailer.reset_password_instructions(@user)
+    end
+
+    it "renders the headers" do
+      expect(@mail.subject).to eq("[北医ネット] パスワード再設定URLをお知らせします")
+      expect(@mail.to).to eq([@user.email])
+      expect(@mail.from).to eq(["admin@hokui.net"])
+    end
+
+    it "renders the body" do
+      expect(@mail.body.encoded).to include(@user.full_name)
+      expect(@mail.body.encoded).to include(@user.reset_password_url)
+    end
+  end
 end

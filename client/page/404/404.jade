@@ -1,8 +1,6 @@
 .topfix
 .container
     h1 Page Not Found
-    p
-        code {{url}}
-        | は存在しないページです。
+    p(ng-bind-html="message")
     p
         a(ui-sref="home") サイトトップに戻る
