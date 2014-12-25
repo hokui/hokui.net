@@ -92,8 +92,6 @@ GEM
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    domain_name (0.5.23)
-      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     eventmachine (1.0.4)
     factory_girl (4.5.0)
@@ -110,12 +108,7 @@ GEM
     hirb-unicode (0.0.5)
       hirb (~> 0.5)
       unicode-display_width (~> 0.1.1)
-    http-cookie (1.0.2)
-      domain_name (~> 0.5)
     i18n (0.7.0)
-    i18n_generators (1.2.1)
-      mechanize
-      rails (>= 3.0.0)
     json (1.8.1)
     jwt (1.2.0)
     kawaii_validation (0.0.2)
@@ -125,15 +118,6 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mechanize (2.7.3)
-      domain_name (~> 0.5, >= 0.5.1)
-      http-cookie (~> 1.0)
-      mime-types (~> 2.0)
-      net-http-digest_auth (~> 1.1, >= 1.1.1)
-      net-http-persistent (~> 2.5, >= 2.5.2)
-      nokogiri (~> 1.4)
-      ntlm-http (~> 0.1, >= 0.1.1)
-      webrobots (>= 0.0.9, < 0.2)
     method_source (0.8.2)
     mime-types (2.4.3)
     mini_portile (0.6.1)
@@ -141,11 +125,8 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    net-http-digest_auth (1.4)
-    net-http-persistent (2.9.4)
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
-    ntlm-http (0.1.1)
     oauth (0.4.7)
     oauth2 (0.9.4)
       faraday (>= 0.8, < 0.10)
@@ -240,12 +221,8 @@ GEM
     tilt (1.4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.6)
     unicode-display_width (0.1.1)
     uniform_notifier (1.6.2)
-    webrobots (0.1.1)
     whenever (0.9.4)
       chronic (>= 0.6.3)
 
@@ -262,7 +239,6 @@ DEPENDENCIES
   factory_girl_rails
   hirb
   hirb-unicode
-  i18n_generators
   kawaii_validation
   pry-byebug
   pry-rails
