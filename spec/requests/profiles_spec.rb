@@ -39,7 +39,7 @@ RSpec.describe "Profiles", :type => :request do
       @params[:handle_name] = "admin"
       patch_with_token(guest, "/api/profile", @params.to_json)
       expect(response.status).to eq(422)
-      expect(json["errors"]["handle_name"]).to include("はすでに存在します。")
+      expect(json["errors"]["handle_name"]).to include("すでに使われています。")
     end
 
     it "returns 401 to an unauthorized client" do

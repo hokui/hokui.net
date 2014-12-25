@@ -58,7 +58,7 @@ RSpec.describe "Subjects", :type => :request do
       admin = create_admin_with_token
       post_with_token(admin, "/api/subjects", {}.to_json)
       expect(response.status).to eq(422)
-      expect(json["errors"]["title_ja"]).to include("を入力してください。")
+      expect(json["errors"]["title_ja"]).to include("入力してください。")
     end
   end
 
@@ -88,7 +88,7 @@ RSpec.describe "Subjects", :type => :request do
       admin = create_admin_with_token
       patch_with_token(admin, "/api/subjects/#{s2.id}", { title_ja: s1.title_ja }.to_json)
       expect(response.status).to eq(422)
-      expect(json["errors"]["title_ja"]).to include("はすでに存在します。")
+      expect(json["errors"]["title_ja"]).to include("すでに使われています。")
     end
   end
 
