@@ -8,10 +8,11 @@ RSpec.describe "News", :type => :request do
   describe "GET /api/news" do
     it "returns a list of news", autodoc: true do
       size = News.count
+      last_text = News.last.text
       guest = create_guest_with_token
       get_with_token(guest, "/api/news")
       expect(response.status).to eq(200)
-      expect(json[0]["text"]).to match(/news/)
+      expect(json[0]["text"]).to eq(last_text)
       expect(json.length).to eq(size)
     end
 
@@ -23,10 +24,11 @@ RSpec.describe "News", :type => :request do
 
   describe "GET /api/news/latest" do
     it "returns last 5 news", autodoc: true do
+      last_text = News.last.text
       guest = create_guest_with_token
       get_with_token(guest, "/api/news/latest")
       expect(response.status).to eq(200)
-      expect(json[0]["text"]).to match(/news/)
+      expect(json[0]["text"]).to eq(last_text)
       expect(json.length).to eq(5)
     end
 

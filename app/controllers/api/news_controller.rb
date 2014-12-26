@@ -3,12 +3,12 @@ class Api::NewsController < Api::ApplicationController
   after_action :verify_authorized, except: [:index, :latest, :show]
 
   def index
-    @news = News.all
+    @news = News.order(created_at: :desc).all
     render json: @news
   end
 
   def latest
-    @news = News.last(5)
+    @news = News.order(created_at: :desc).first(5)
     render json: @news
   end
 
