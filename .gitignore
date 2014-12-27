@@ -15,7 +15,8 @@
 /log/**/*.log
 /tmp
 
-
+# Ignore application configuration
+/config/application.yml
 
 # front-end part below
 
@@ -28,3 +29,4 @@ npm-debug.log
 /dist
 
 /coverage
+
