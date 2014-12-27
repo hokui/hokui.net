@@ -11,6 +11,7 @@ class DocumentSerializer < ActiveModel::Serializer
              :download_count,
              :file_name,
              :file_mime,
+             :download_token,
              :created_at,
              :updated_at,
              :errors

@@ -38,6 +38,8 @@ class Document < ActiveRecord::Base
   validates(:file_mime)      { presence }
   validates(:file_sha1)      { presence; uniqueness }
 
+  attr_reader :download_token
+
   def initialize(document_params)
     super
     self.page = (Document.where(
@@ -64,6 +66,11 @@ class Document < ActiveRecord::Base
     self.file_name = file_params.original_filename
     self.file_mime = file_params.content_type
     self.file_sha1 = Digest::SHA1.hexdigest(@tempfile.read)
+    self
+  end
+
+  def generate_download_token!
+    @download_token = self.download_tokens.create!.token
     self
   end
 
