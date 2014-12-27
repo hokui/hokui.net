@@ -36,4 +36,37 @@ class Document < ActiveRecord::Base
   validates(:file_name)      { presence }
   validates(:file_mime)      { presence }
   validates(:file_sha1)      { presence; uniqueness }
+
+  def initialize(document_params)
+    super
+    self.page = (Document.where(
+      subject_id: subject_id,
+      class_year: class_year,
+      document_type: document_type,
+      number: number
+    ).pluck(:page).max || 0)+ 1
+    self.download_count = 0
+    self
+  end
+
+  def save
+    if valid?
+      File.binwrite(file_fullpath, @tempfile.read) if @tempfile
+      super(validate: false)
+    else
+      false
+    end
+  end
+
+  def attach_file(file_params)
+    @tempfile = file_params.tempfile
+    self.file_name = file_params.original_filename
+    self.file_mime = file_params.content_type
+    self.file_sha1 = Digest::SHA1.hexdigest(@tempfile.read)
+    self
+  end
+
+  def file_fullpath
+    [Figaro.env.uploaded_files_dir, file_name].join("/")
+  end
 end

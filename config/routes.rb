@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 
     resources :semesters,      only: [:index, :show, :create, :update, :destroy]
 
+    resources :documents,      only: [               :create                   ]
+
     match "*path" => "application#not_found", via: :all
   end
 end
