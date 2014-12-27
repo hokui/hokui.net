@@ -32,6 +32,6 @@ FactoryGirl.define do
     download_count 1
     file_name "dummy.pdf"
     file_mime "application/pdf"
-    file_sha1 "89e11348d56317c282e76feb3374aeb4db09717c"
+    file_sha1 "971724c8f2664d75a600b372c15353bde841f8e8"
   end
 end
