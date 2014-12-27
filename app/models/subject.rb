@@ -11,6 +11,7 @@
 
 class Subject < ActiveRecord::Base
   has_and_belongs_to_many :semesters
+  has_many :documents
 
   validates(:title_ja) { presence; uniqueness }
   validates(:title_en) { presence; uniqueness; format(with: /\A[0-9a-z_]+\Z/) }
