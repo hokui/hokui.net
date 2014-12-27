@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141227050348) do
+ActiveRecord::Schema.define(version: 20141227144011) do
 
   create_table "access_tokens", force: :cascade do |t|
     t.integer  "user_id",          null: false
@@ -52,6 +52,16 @@ ActiveRecord::Schema.define(version: 20141227050348) do
   add_index "documents", ["file_sha1"], name: "index_documents_on_file_sha1", unique: true
   add_index "documents", ["subject_id"], name: "index_documents_on_subject_id"
   add_index "documents", ["user_id"], name: "index_documents_on_user_id"
+
+  create_table "download_tokens", force: :cascade do |t|
+    t.integer  "document_id", null: false
+    t.string   "token",       null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "download_tokens", ["document_id"], name: "index_download_tokens_on_document_id"
+  add_index "download_tokens", ["token"], name: "index_download_tokens_on_token", unique: true
 
   create_table "semesters", force: :cascade do |t|
     t.integer  "class_year_id", null: false
