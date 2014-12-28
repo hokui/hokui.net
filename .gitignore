@@ -18,6 +18,10 @@
 # Ignore application configuration
 /config/application.yml
 
+# uploaded files dir for dev/test
+/misc/uploaded
+!/misc/uploaded/dummy.pdf
+
 # front-end part below
 
 npm-debug.log
