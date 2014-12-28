@@ -53,15 +53,17 @@ class Document < ActiveRecord::Base
   end
 
   def save
-    if valid?
+    Document.transaction do
+      self.save!
       if @tempfile
         @tempfile.rewind
         File.binwrite(file_fullpath, @tempfile.read)
       end
-      super(validate: false)
-    else
-      false
     end
+    true
+  rescue => e
+    logger.error(e.inspect)
+    false
   end
 
   def attach_file(file_params)
@@ -78,6 +80,6 @@ class Document < ActiveRecord::Base
   end
 
   def file_fullpath
-    [Figaro.env.uploaded_files_dir, file_name].join("/")
+    "#{Figaro.env.uploaded_files_dir}/#{sprintf("%06d", id)}-#{file_name}"
   end
 end

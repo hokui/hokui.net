@@ -73,3 +73,18 @@ sem1.subjects << sub1
 sem1.subjects << sub2
 sem2.subjects << sub3
 sem2.subjects << sub4
+
+Document.create(
+  subject_id: 1,
+  user_id: 1,
+  class_year: 93,
+  document_type: 1,
+  number: 1,
+  page: 1,
+  with_answer: false,
+  note: "hoge",
+  download_count: 0,
+  file_name: "dummy.pdf",
+  file_mime: "application/pdf",
+  file_sha1: "971724c8f2664d75a600b372c15353bde841f8e8"
+)
