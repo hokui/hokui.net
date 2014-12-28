@@ -54,7 +54,10 @@ class Document < ActiveRecord::Base
 
   def save
     if valid?
-      File.binwrite(file_fullpath, @tempfile.read) if @tempfile
+      if @tempfile
+        @tempfile.rewind
+        File.binwrite(file_fullpath, @tempfile.read)
+      end
       super(validate: false)
     else
       false
