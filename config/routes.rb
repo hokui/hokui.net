@@ -31,4 +31,10 @@ Rails.application.routes.draw do
 
     match "*path" => "application#not_found", via: :all
   end
+
+  namespace :contents do
+    resources :documents,      only: [        :show,                           ]
+
+    # TODO 404
+  end
 end
