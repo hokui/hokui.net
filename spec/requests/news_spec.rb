@@ -8,19 +8,23 @@ RSpec.describe "News", :type => :request do
   describe "GET /api/news" do
     it "returns a list of news", autodoc: true do
       size = News.count
+      last_title = News.last.title
       last_text = News.last.text
       guest = create_guest_with_token
       get_with_token(guest, "/api/news")
       expect(response.status).to eq(200)
+      expect(json[0]["title"]).to eq(last_title)
       expect(json[0]["text"]).to eq(last_text)
       expect(json.length).to eq(size)
     end
 
     it "returns specified number of latest news" do
+      last_title = News.last.title
       last_text = News.last.text
       guest = create_guest_with_token
       get_with_token(guest, "/api/news?count=5")
       expect(response.status).to eq(200)
+      expect(json[0]["title"]).to eq(last_title)
       expect(json[0]["text"]).to eq(last_text)
       expect(json.length).to eq(5)
     end
@@ -37,6 +41,7 @@ RSpec.describe "News", :type => :request do
       guest = create_guest_with_token
       get_with_token(guest, "/api/news/#{id}")
       expect(response.status).to eq(200)
+      expect(json["title"]).to match(/news_title/)
       expect(json["text"]).to match(/news/)
     end
 
@@ -51,9 +56,10 @@ RSpec.describe "News", :type => :request do
     it "creates new news", autodoc: true do
       admin = create_admin_with_token
       old_size = News.count
-      post_with_token(admin, "/api/news", { text: "hoge" }.to_json)
+      post_with_token(admin, "/api/news", { title: "hoge", text: "fuga" }.to_json)
       expect(response.status).to eq(201)
-      expect(json["text"]).to eq("hoge")
+      expect(json["title"]).to eq("hoge")
+      expect(json["text"]).to eq("fuga")
       expect(News.count).to eq(old_size + 1)
     end
 

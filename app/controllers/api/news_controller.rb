@@ -49,7 +49,8 @@ class Api::NewsController < Api::ApplicationController
   def news_params
     ActionController::Parameters.new(JSON.parse(request.body.read)).
       permit(
+        :title,
         :text
-    )
+      )
   end
 end

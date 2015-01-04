@@ -1,5 +1,6 @@
 class NewsSerializer < ActiveModel::Serializer
-  attributes :text,
+  attributes :title,
+             :text,
              :created_at,
              :updated_at,
              :errors

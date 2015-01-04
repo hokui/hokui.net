@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141226031316) do
+ActiveRecord::Schema.define(version: 20150104124737) do
 
   create_table "access_tokens", force: :cascade do |t|
-    t.integer  "user_id",                      null: false
-    t.string   "token",            limit: 255, null: false
+    t.integer  "user_id",          null: false
+    t.string   "token",            null: false
     t.datetime "last_activity_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -32,37 +32,47 @@ ActiveRecord::Schema.define(version: 20141226031316) do
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
 
   create_table "documents", force: :cascade do |t|
-    t.integer  "subject_id"
-    t.integer  "user_id"
-    t.integer  "class_year",                                  null: false
-    t.integer  "document_type",                               null: false
-    t.integer  "number",                          default: 1, null: false
-    t.integer  "page",                            default: 1, null: false
+    t.integer  "subject_id",                 null: false
+    t.integer  "user_id",                    null: false
+    t.integer  "class_year",                 null: false
+    t.integer  "document_type",              null: false
+    t.integer  "number",         default: 1, null: false
+    t.integer  "page",           default: 1, null: false
     t.boolean  "with_answer"
-    t.string   "note",                limit: 255
-    t.integer  "download_count",                  default: 0, null: false
-    t.string   "file_name",           limit: 255,             null: false
-    t.string   "file_mime",           limit: 255,             null: false
-    t.text     "file_content_base64",                         null: false
-    t.text     "file_content_md5",                            null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "note"
+    t.integer  "download_count", default: 0, null: false
+    t.string   "file_name",                  null: false
+    t.string   "file_mime",                  null: false
+    t.string   "file_sha1",                  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "documents", ["class_year"], name: "index_documents_on_class_year"
-  add_index "documents", ["file_content_md5"], name: "index_documents_on_file_content_md5", unique: true
+  add_index "documents", ["file_sha1"], name: "index_documents_on_file_sha1", unique: true
   add_index "documents", ["subject_id"], name: "index_documents_on_subject_id"
   add_index "documents", ["user_id"], name: "index_documents_on_user_id"
+
+  create_table "download_tokens", force: :cascade do |t|
+    t.integer  "document_id", null: false
+    t.string   "token",       null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "download_tokens", ["document_id"], name: "index_download_tokens_on_document_id"
+  add_index "download_tokens", ["token"], name: "index_download_tokens_on_token", unique: true
 
   create_table "news", force: :cascade do |t|
     t.string   "text",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "title"
   end
 
   create_table "semesters", force: :cascade do |t|
-    t.integer  "class_year_id",             null: false
-    t.string   "identifier",    limit: 255, null: false
+    t.integer  "class_year_id", null: false
+    t.string   "identifier",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -78,8 +88,8 @@ ActiveRecord::Schema.define(version: 20141226031316) do
   add_index "semesters_subjects", ["semester_id", "subject_id"], name: "index_semesters_subjects_on_semester_id_and_subject_id", unique: true
 
   create_table "subjects", force: :cascade do |t|
-    t.string   "title_ja",   limit: 255, null: false
-    t.string   "title_en",   limit: 255, null: false
+    t.string   "title_ja",   null: false
+    t.string   "title_en",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -88,29 +98,29 @@ ActiveRecord::Schema.define(version: 20141226031316) do
   add_index "subjects", ["title_ja"], name: "index_subjects_on_title_ja", unique: true
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                           limit: 255,                 null: false
-    t.string   "crypted_password",                limit: 255,                 null: false
-    t.string   "salt",                            limit: 255,                 null: false
+    t.string   "email",                                           null: false
+    t.string   "crypted_password",                                null: false
+    t.string   "salt",                                            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "activation_state",                limit: 255
-    t.string   "activation_token",                limit: 255
+    t.string   "activation_state"
+    t.string   "activation_token"
     t.datetime "activation_token_expires_at"
-    t.string   "approval_state",                  limit: 255
-    t.string   "reset_password_token",            limit: 255
+    t.string   "approval_state"
+    t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
     t.datetime "last_login_at"
     t.datetime "last_logout_at"
     t.datetime "last_activity_at"
-    t.string   "last_login_from_ip_address",      limit: 255
-    t.string   "family_name",                     limit: 255, default: "",    null: false
-    t.string   "given_name",                      limit: 255, default: "",    null: false
-    t.string   "handle_name",                     limit: 255, default: "",    null: false
-    t.date     "birthday",                                                    null: false
-    t.string   "email_mobile",                    limit: 255
-    t.boolean  "admin",                                       default: false, null: false
-    t.integer  "class_year_id",                               default: 1,     null: false
+    t.string   "last_login_from_ip_address"
+    t.string   "family_name",                     default: "",    null: false
+    t.string   "given_name",                      default: "",    null: false
+    t.string   "handle_name",                     default: "",    null: false
+    t.date     "birthday",                                        null: false
+    t.string   "email_mobile"
+    t.boolean  "admin",                           default: false, null: false
+    t.integer  "class_year_id",                   default: 1,     null: false
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token"
