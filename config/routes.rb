@@ -8,11 +8,7 @@ Rails.application.routes.draw do
       resource :password,      only: [                        :update          ]
     end
 
-    resources :news,           only: [:index, :show, :create, :update, :destroy] do
-      collection do
-        get :latest
-      end
-    end
+    resources :news,           only: [:index, :show, :create, :update, :destroy]
 
     resources :users,          only: [:index, :show, :create,          :destroy] do
       collection do

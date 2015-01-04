@@ -16,17 +16,10 @@ RSpec.describe "News", :type => :request do
       expect(json.length).to eq(size)
     end
 
-    it "returns 401 to an unauthorized client" do
-      get("/api/news")
-      expect(response.status).to eq(401)
-    end
-  end
-
-  describe "GET /api/news/latest" do
-    it "returns last 5 news", autodoc: true do
+    it "returns specified number of latest news" do
       last_text = News.last.text
       guest = create_guest_with_token
-      get_with_token(guest, "/api/news/latest")
+      get_with_token(guest, "/api/news?count=5")
       expect(response.status).to eq(200)
       expect(json[0]["text"]).to eq(last_text)
       expect(json.length).to eq(5)
