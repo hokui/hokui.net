@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007001623) do
+ActiveRecord::Schema.define(version: 20150104124737) do
 
-  create_table "access_tokens", force: true do |t|
+  create_table "access_tokens", force: :cascade do |t|
     t.integer  "user_id",          null: false
     t.string   "token",            null: false
     t.datetime "last_activity_at"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20141007001623) do
 
   add_index "access_tokens", ["token"], name: "index_access_tokens_on_token", unique: true
 
-  create_table "class_years", force: true do |t|
+  create_table "class_years", force: :cascade do |t|
     t.integer  "year",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -31,7 +31,46 @@ ActiveRecord::Schema.define(version: 20141007001623) do
 
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
 
-  create_table "semesters", force: true do |t|
+  create_table "documents", force: :cascade do |t|
+    t.integer  "subject_id",                 null: false
+    t.integer  "user_id",                    null: false
+    t.integer  "class_year",                 null: false
+    t.integer  "document_type",              null: false
+    t.integer  "number",         default: 1, null: false
+    t.integer  "page",           default: 1, null: false
+    t.boolean  "with_answer"
+    t.string   "note"
+    t.integer  "download_count", default: 0, null: false
+    t.string   "file_name",                  null: false
+    t.string   "file_mime",                  null: false
+    t.string   "file_sha1",                  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "documents", ["class_year"], name: "index_documents_on_class_year"
+  add_index "documents", ["file_sha1"], name: "index_documents_on_file_sha1", unique: true
+  add_index "documents", ["subject_id"], name: "index_documents_on_subject_id"
+  add_index "documents", ["user_id"], name: "index_documents_on_user_id"
+
+  create_table "download_tokens", force: :cascade do |t|
+    t.integer  "document_id", null: false
+    t.string   "token",       null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "download_tokens", ["document_id"], name: "index_download_tokens_on_document_id"
+  add_index "download_tokens", ["token"], name: "index_download_tokens_on_token", unique: true
+
+  create_table "news", force: :cascade do |t|
+    t.string   "text",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "title"
+  end
+
+  create_table "semesters", force: :cascade do |t|
     t.integer  "class_year_id", null: false
     t.string   "identifier",    null: false
     t.datetime "created_at"
@@ -41,14 +80,14 @@ ActiveRecord::Schema.define(version: 20141007001623) do
   add_index "semesters", ["class_year_id", "identifier"], name: "index_semesters_on_class_year_id_and_identifier", unique: true
   add_index "semesters", ["class_year_id"], name: "index_semesters_on_class_year_id"
 
-  create_table "semesters_subjects", id: false, force: true do |t|
+  create_table "semesters_subjects", id: false, force: :cascade do |t|
     t.integer "semester_id", null: false
     t.integer "subject_id",  null: false
   end
 
   add_index "semesters_subjects", ["semester_id", "subject_id"], name: "index_semesters_subjects_on_semester_id_and_subject_id", unique: true
 
-  create_table "subjects", force: true do |t|
+  create_table "subjects", force: :cascade do |t|
     t.string   "title_ja",   null: false
     t.string   "title_en",   null: false
     t.datetime "created_at"
@@ -58,7 +97,7 @@ ActiveRecord::Schema.define(version: 20141007001623) do
   add_index "subjects", ["title_en"], name: "index_subjects_on_title_en", unique: true
   add_index "subjects", ["title_ja"], name: "index_subjects_on_title_ja", unique: true
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                                           null: false
     t.string   "crypted_password",                                null: false
     t.string   "salt",                                            null: false
