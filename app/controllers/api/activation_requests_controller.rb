@@ -3,11 +3,17 @@ class Api::ActivationRequestsController < Api::ApplicationController
 
   def create
     @user = User.find_by(email: params[:email])
-    if @user
+
+    unless @user
+      render json: {}, status: 400
+      return
+    end
+
+    if @user.active?
+      render json: { approval_state: @user.approval_state }, status: 400
+    else
       @user.send_activation_needed_email!
       head 200
-    else
-      head 404
     end
   end
 
