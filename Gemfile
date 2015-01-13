@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'rails', '4.2.0'
-gem 'rails-api', github: 'iTakeshi/rails-api', branch: 'rails42'
+gem 'rails-api', github: 'rails-api/rails-api'
 gem 'sqlite3'
 
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
