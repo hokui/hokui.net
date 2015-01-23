@@ -32,13 +32,11 @@ angular.module moduleComponent
             state: -> 'profile'
             visible: -> Auth.active()
         ,
-            label: -> if Auth.active() then 'LOGOUT' else 'LOGIN'
+            label: -> if Auth.active() then '<i class="fa fa-sign-out"></i>LOGOUT' else 'LOGIN'
             state: -> if Auth.active() then '' else 'login'
             event: ->
                 if Auth.active()
                     performLogout()
-                else
-                    $state.go 'login'
         ]
 
 
