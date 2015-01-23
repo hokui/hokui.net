@@ -18,7 +18,7 @@ angular.module modulePage
 
         admin = 'hokui.net@gmail.com'
 
-        $http.post "#{api.apiRoot()}/users/activate",
+        $http.post "#{Env.apiRoot()}/users/activate",
             activation_token: token
         .success (data)->
             sec = 5
