@@ -6,9 +6,11 @@ angular.module moduleCore
     ->
         (base)->
             angular.extend base,
-                retrieve: (id)->
+                retrieve: (pk, pk_name)->
+                    if not pk_name?
+                        pk_name = 'id'
                     for obj in this
-                        if ''+obj.id is ''+id
+                        if ''+obj[pk_name] is ''+pk
                             return obj
                     null
 
