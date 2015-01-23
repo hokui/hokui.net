@@ -142,7 +142,7 @@ angular.module modulePage
 
 
 .controller 'AdminUserDetailCtrl',
-    ($scope, $stateParams, Notify) ->
+    ($scope, $state, $stateParams, Notify) ->
         user_id = $stateParams.id
 
         $scope.deleting = false
