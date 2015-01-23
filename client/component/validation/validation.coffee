@@ -4,7 +4,7 @@ angular.module moduleComponent
 
 .directive 'match', ($parse)->
     require: 'ngModel'
-    link: (scope, elem, attrs, ctrl)->
+    link: (scope, element, attrs, ctrl)->
         scope.$watch ->
             target = $parse(attrs.match) scope
             v = not ctrl.$modelValue or target is ctrl.$modelValue
@@ -14,7 +14,7 @@ angular.module moduleComponent
 
 .directive 'forceInvalid', ($parse)->
     require: 'ngModel'
-    link: (scope, elem, attrs, ctrl)->
+    link: (scope, element, attrs, ctrl)->
         scope.$watch ->
             not $parse(attrs.forceInvalid) scope
         , (currentValue)->
