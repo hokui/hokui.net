@@ -214,6 +214,7 @@
     h3 Basic Button
     table.table
         tr
+            th normla
             td
                 a.btn default
             td
@@ -223,6 +224,7 @@
             td
                 a.btn.btn--accent accent
         tr
+            th disabled
             td
                 a.btn.btn--disabled default
             td
@@ -235,24 +237,60 @@
     h3 Ghost Button
     table.table
         tr
+            th normal
             td
-                a.btn-ghost default
+                a.btn.btn--ghost default
             td
-                a.btn-ghost.btn-ghost--primary primary
+                a.btn.btn--ghost.btn--primary primary
             td
-                a.btn-ghost.btn-ghost--secondary secondary
+                a.btn.btn--ghost.btn--secondary secondary
             td
-                a.btn-ghost.btn-ghost--accent accent
+                a.btn.btn--ghost.btn--accent accent
+        tr
+            th disabled
+            td
+                a.btn.btn--ghost.btn--disabled default
+            td
+                a.btn.btn--ghost.btn--disabled.btn--primary primary
+            td
+                a.btn.btn--ghost.btn--disabled.btn--secondary secondary
+            td
+                a.btn.btn--ghost.btn--disabled.btn--accent accent
+
+    h3 Button Size
+    table.table
         tr
             td
-                a.btn-ghost.btn-ghost--disabled default
+                a.btn.btn--lg large
             td
-                a.btn-ghost.btn-ghost--disabled.btn-ghost--primary primary
+                a.btn default
             td
-                a.btn-ghost.btn-ghost--disabled.btn-ghost--secondary secondary
+                a.btn.btn--sm small
             td
-                a.btn-ghost.btn-ghost--disabled.btn-ghost--accent accent
+                a.btn.btn--xs extra small
 
+    h2 Tip
+    .panel
+        .panel__body
+            .tips
+                .tip
+                    span tip
+                .tip
+                    a(ui-sref="style") has link
+                .tip.tip--active
+                    a active
+                .tip.tip--static
+                    span  not highlight on hover
+                .tip.tip--disabled
+                    span  disabled
+        .panel__body
+            .tips
+                .tip
+                    span default
+                .tip.tip--secondary
+                    span secondary
+                .tip.tip--accent
+                    span accent
 
 
     h2 Tooltip
@@ -262,14 +300,23 @@
                 デフォルトではホバー時でpopします。CSSのみで表示してます。
             ul.list-inline
                 li
-                    button.btn.tooltip.tooltip--left(tooltip="FUCK YES!!!!") left
+                    button.btn.tooltip.tooltip--left(tooltip="LEFT", ng-class="tooltipClass()") left
                 li
-                    button.btn.tooltip.tooltip--top(tooltip="FUCK YES!!!!") top
+                    button.btn.tooltip.tooltip--top(tooltip="TOP", ng-class="tooltipClass()") top
                 li
-                    button.btn.tooltip.tooltip--bottom(tooltip="FUCK YES!!!!") bottom
+                    button.btn.tooltip.tooltip--bottom(tooltip="BOTTOM", ng-class="tooltipClass()") bottom
                 li
-                    button.btn.tooltip.tooltip--right(tooltip="FUCK YES!!!!") right
+                    button.btn.tooltip.tooltip--right(tooltip="RIGHT", ng-class="tooltipClass()") right
 
+            ul.list-inline
+                li
+                    button.btn.btn--sm(ng-click="tooltipStyle = 0") default
+                li
+                    button.btn.btn--sm.btn--primary(ng-click="tooltipStyle = 1") primary
+                li
+                    button.btn.btn--sm.btn--secondary(ng-click="tooltipStyle = 2") secondary
+                li
+                    button.btn.btn--sm.btn--accent(ng-click="tooltipStyle = 3") accent
         .panel__body
             p.
                 toggleしたり、常に表示する状態にしたりできます
@@ -329,15 +376,15 @@
                         br
                         | Angularのdirectiveからcontenteditable="true"を付与しただけのただの&lt;div/&gt;
                 .form__group
-                    input.form__control(type="checkbox", id="check1")
+                    input.form__control(type="checkbox" id="check1")
                     label.form__label(for="check1") checkbox
 
                 .form__group
-                    input.form__control(type="radio", id="radio1", name="radio")
+                    input.form__control(type="radio" id="radio1" name="radio")
                     label.form__label(for="radio1") radio1
-                    input.form__control(type="radio", id="radio2", name="radio")
+                    input.form__control(type="radio" id="radio2" name="radio")
                     label.form__label(for="radio2") radio2
-                    input.form__control(type="radio", id="radio3", name="radio")
+                    input.form__control(type="radio" id="radio3" name="radio")
                     label.form__label(for="radio3") radio3
 
 
@@ -345,10 +392,10 @@
             .form
                 .form__group
                     label.form__label accent color
-                    input.form__control.form__control--accent(type="text", placeholder="text")
+                    input.form__control.form__control--accent(type="text" placeholder="text")
                 .form__group
                     label.form__label secondary color
-                    input.form__control.form__control--secondary(type="text", placeholder="text")
+                    input.form__control.form__control--secondary(type="text" placeholder="text")
 
 
     h2 Bar Icon

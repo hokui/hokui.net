@@ -13,6 +13,13 @@ angular.module modulePage
         $scope.notify = (type)->
             Notify 'アラート', type: type
 
+        $scope.tooltipStyle = 0
+        $scope.tooltipClass = ->
+            'tooltip--primary': $scope.tooltipStyle is 1
+            'tooltip--secondary': $scope.tooltipStyle is 2
+            'tooltip--accent': $scope.tooltipStyle is 3
+
+
         $scope.barIconType = 'bars'
 
         $scope.barIconToTimes = ->
@@ -28,3 +35,4 @@ angular.module modulePage
                 circle: 'baricon--circle'
                 times: 'baricon--times'
             t[$scope.barIconType]
+
