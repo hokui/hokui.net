@@ -1,22 +1,37 @@
-form.form(role="form", ng-submit="doSaveYear()")
+form.form(role="form", ng-submit="doSaveYear(yearForm.$valid)", name="yearForm", novalidate)
     .panel
         .panel__head
             h3.panel__head__title {{title}}
         .panel__body
             .form__group
-                .col-md-2
-                    label.form__label(for="yearInputYear") 期
-                .col-md-10
-                    input.form__control(type="number", placeholder="期", id="yearInputYear", ng-model="new_year.year")
+                .col--md-2
+                    label.form__label(for="yearYear") 期
+                .col--md-10
+                    input.form__control(
+                        type="number"
+                        name="year"
+                        ng-model="new_year.year"
+                        integer
+                        min="91"
+                        max="149"
+                        required
+                        ng-change="errors.year = null"
+                        id="yearYear"
+                        placeholder="期")
+                    div(ng-show="yearForm.year.$dirty")
+                        .form__error(ng-show="yearForm.year.$error.required") 入力必須項目です
+                        .form__error(ng-show="!yearForm.year.$error.required && yearForm.year.$error.integer || yearForm.year.$error.number") 整数値を入力してください
+                        .form__error(ng-show="!yearForm.year.$error.required && !yearForm.year.$error.integer && yearForm.year.$error.min || yearForm.year.$error.max") 91以上149以下を入力してください
+                    div
+                        .form__error(ng-if="!!errors.year" ng-repeat="error in errors.year") {{error}}
+
         .panel__foot
             .clearfix
                 .pull-left
                     div(ng-if="editing")
-                        a.btn.btn-default(ui-sref="admin.year.detail({id: year.id})" tabindex="-1") 戻る
+                        a.btn.btn-default(ui-sref="admin.year.detail({id: year.id})" tabindex="-1") 編集をやめる
                     div(ng-if="!editing")
-                        a.btn.btn-default(ui-sref="admin.year" tabindex="-1") 戻る
+                        a.btn.btn-default(ui-sref="admin.year" tabindex="-1") 一覧に戻る
                 .pull-right
-                    button.btn.btn--primary(type="submit") 保存
-                    button.btn.btn--accent(type="button", ng-if="editing", ng-click="deleteYear()") {{deleteBtnLabel()}}
-                    button.btn(type="button", ng-if="deleting", ng-click="stopDeleting()") やっぱりやめる
+                    button.btn.btn--primary(type="submit" ng-disabled="year.$invalid") 保存
 

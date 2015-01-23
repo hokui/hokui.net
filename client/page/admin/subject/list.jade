@@ -1,13 +1,30 @@
-a(ui-sref=".detail.edit({id: ''})") 新規作成
-table.table
+p
+    a.btn.btn--sm.btn--primary(ui-sref=".detail.edit({id: ''})") 新規作成
+
+
+
+table.table.table--bordered.table--condensed
+    tr
+        th.text-small
+            nobr 日本語名 or 英語名
+        td
+            input.search.search--condensed(
+                ng-model="titleFilter.value"
+                placeholder="正規表現が使えます"
+                ng-model-options="{ debounce: {'default': 500, 'blur': 0} }")
+
+table.table.table--condensed
     thead.table__head
         tr
-            th ID
-            th 名前
-            th 名前(英語)
+            th
+                a(ng-click="orderBy('id')") ID
+            th
+                a(ng-click="orderBy('title_ja')") 名前
+            th
+                a(ng-click="orderBy('title_en')") 名前(英語)
             th 開講期
     tbody.table__body
-        tr(ng-repeat="subject in subjects")
+        tr(ng-repeat="subject in subjects | filter: subjectFilter.search | orderBy: predicate: reversed")
             td {{subject.id}}
             td
                 a(ui-sref="admin.subject.detail({id:subject.id})")

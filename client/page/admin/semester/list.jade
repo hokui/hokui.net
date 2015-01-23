@@ -1,38 +1,57 @@
-div
-    a(ui-sref=".detail.edit({id: ''})") 新規作成
-
-p
-    .btn-group
-        a.btn(ng-repeat="year in indexOfClassYear",
-                               ng-class="{'btn--primary': $index == currentIndexOfClassYear.index}",
-                               ng-href="{{searchUrlForClassYear($index)}}") {{year.text}}
-p
-    .btn-group
-        a.btn(ng-repeat="subject in indexOfSubject",
-                               ng-class="{'btn--primary': $index == currentIndexOfSubject.index}",
-                               ng-href="{{searchUrlForSubject($index)}}") {{subject.text}}
+ul.list-inline
+    li
+        a.btn.btn--sm.btn--primary(ui-sref=".detail.edit({id: ''})" ui-sref-opts="{inherit: false}") 新規作成
 
 
-table.table
+table.table.table--bordered.table--condensed
+    tr
+        th.text-small
+            nobr 入学期
+        td
+            ul.tips.tips--nomargin
+                li.tip(ng-class="{'tip--active': i.active}" ng-repeat="i in classYearFilter.items")
+                    a(ng-click="classYearFilter.select(i)") {{::i.label}}
+    tr
+        th.text-small
+            nobr 履修学年
+        td
+            ul.tips.tips--nomargin
+                li.tip(ng-class="{'tip--active': i.active}" ng-repeat="i in yearFilter.items")
+                    a(ng-click="yearFilter.select(i)") {{::i.label}}
+
+    tr
+        th.text-small
+            nobr 前期・後期
+        td
+            ul.tips.tips--nomargin
+                li.tip(ng-class="{'tip--active': i.active}" ng-repeat="i in abFilter.items")
+                    a(ng-click="abFilter.select(i)") {{::i.label}}
+    tr
+        th.text-small
+            nobr 教科
+        td
+            input.search.search--condensed(
+                ng-model="subjectFilter.value"
+                placeholder="正規表現が使えます"
+                ng-model-options="{ debounce: {'default': 500, 'blur': 0} }")
+
+table.table.table--condensed
     thead.table__head
         tr
             th ID
-            th 学期
-            th 学年
+            th 学年 - 学期
             th 教科
     tbody.table__body
-        tr(ng-repeat="semester in semesters | filter:currentIndexOfClassYear.filter | filter:currentIndexOfSubject.filter")
+        tr(ng-repeat="semester in semesters |filter: semesterFilter.search")
             td {{semester.id}}
             td
-                a(ui-sref="admin.semester.detail({id:semester.id})")
-                    | {{semesterIdentifierMap[semester.identifier]}}
-            td
-                a(ui-sref=".({year:class_years.retrieve(semester.class_year_id).year})" ui-sref-opts="{inherit: false}")
-                    | {{class_years.retrieve(semester.class_year_id).year}}期
+                a(ui-sref=".detail({id:semester.id})" ui-sref-opts="{inherit: false}")
+                    | {{classYears.retrieve(semester.class_year_id).year}}期
+                    | &nbsp;
+                    | {{identifierMap[semester.identifier]}}
 
             td
                 span(ng-repeat="subject_id in semester.subject_ids")
-                    a(ui-sref=".({subject:subjects.retrieve(subject_id).title_en})" ui-sref-opts="{inherit: false}")
-                        | {{subjects.retrieve(subject_id).title_ja}}
+                    | {{subjects.retrieve(subject_id).title_ja}}
                     span(ng-if="!$last") 、&nbsp;
 

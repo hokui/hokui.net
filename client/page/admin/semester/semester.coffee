@@ -5,7 +5,7 @@ angular.module modulePage
     $stateProvider
 
     .state 'admin.semester',
-        url: '/semester?year&subject',
+        url: '/semester?class_year&subject',
         views:
             'main@admin':
                 templateUrl: '/page/admin/semester/semester.html'
@@ -13,7 +13,7 @@ angular.module modulePage
                 resolve:
                     semesters: (Semester)->
                         Semester.query().$promise
-                    class_years: (ClassYear)->
+                    classYears: (ClassYear)->
                         ClassYear.query().$promise
                     subjects: (Subject)->
                         Subject.query().$promise
@@ -39,87 +39,78 @@ angular.module modulePage
 
 
 .controller 'AdminSemesterCtrl',
-    ($scope, ResourceStore, semesters, class_years, subjects) ->
+    ($scope, ResourceStore, semesters, classYears, subjects) ->
         $scope.semesters = ResourceStore semesters
-        $scope.class_years = ResourceStore class_years
+        $scope.classYears = ResourceStore classYears
         $scope.subjects = ResourceStore subjects
 
         map_ab =
             a: '前期'
             b: '後期'
-        $scope.semesterIdentifierMap = {}
-        for grade in [1..6]
+        $scope.identifierMap = {}
+        for grade in [2..6]
             for label in ['a','b']
-                $scope.semesterIdentifierMap["#{grade}#{label}"] = "#{grade}年#{map_ab[label]}"
-
-
+                $scope.identifierMap["#{grade}#{label}"] = "#{grade}年#{map_ab[label]}"
 
 .controller 'AdminSemesterListCtrl',
-    ($scope, $state, $stateParams) ->
-        $scope.indexOfClassYear = [
-            index: 0
-            text: 'すべて表示'
-            filter: ''
-        ]
-        i = 1
-        for year in $scope.class_years
-            $scope.indexOfClassYear.push
-                index: i
-                filter:
-                    class_year_id: year.id
-                text: "#{year.year}期"
-                slug: year.year
-            i = i + 1
+    ($scope, $state, $stateParams, ResourceFilterGroup, ResourceFilterItems, ResourceFilterItem) ->
 
-        $scope.indexOfSubject = [
-            index: 0
-            text: 'すべて表示'
-            filter: ''
-        ]
-        i = 1
+        $scope.classYearFilter = new ResourceFilterItems()
+        angular.forEach $scope.classYears, (cy)->
+            $scope.classYearFilter.addItem
+                label: "#{cy.year}期"
+                slug: cy.id
+                search: (model)->
+                    model.class_year_id is cy.id
+
+        $scope.yearFilter = new ResourceFilterItems()
+        angular.forEach [2..6], (year)->
+            strYear = ''+year
+            $scope.yearFilter.addItem
+                label: "#{year}年"
+                search: (model)->
+                    model.identifier[0] is strYear
+
+        $scope.abFilter = new ResourceFilterItems()
+        .addItem
+            label: '前期'
+            search: (model)->
+                model.identifier[1] is 'a'
+        .addItem
+            label: '後期'
+            search: (model)->
+                model.identifier[1] is 'b'
+
+        subjectMap = {}
         for subject in $scope.subjects
-            $scope.indexOfSubject.push
-                index: i
-                filter:
-                    subject_ids: subject.id
-                text: subject.title_ja
-                slug: subject.title_en
-            i = i + 1
+            subjectMap[subject.id] = subject
+
+        $scope.subjectFilter = new ResourceFilterItem
+            search: (model)->
+                exp = new RegExp @value
+                for id in model.subject_ids
+                    en = subjectMap[id].title_en.match exp
+                    ja = subjectMap[id].title_ja.match exp
+                    if en or ja
+                        return true
+                false
+
+        $scope.semesterFilter = new ResourceFilterGroup()
+        .add $scope.classYearFilter
+        .add $scope.yearFilter
+        .add $scope.abFilter
+        .add $scope.subjectFilter
+
+        if $stateParams.class_year
+            selectedClassYear = $scope.classYears.retrieve $stateParams.class_year, 'year'
+            $scope.classYearFilter.selectBySlug selectedClassYear.id
+
+        if $stateParams.subject
+            selectedSubject = $scope.subjects.retrieve $stateParams.subject, 'title_en'
+            $scope.subjectFilter.value = selectedSubject.title_ja
 
 
-        $scope.selectIndexOfClassYear = (i)->
-            $scope.currentIndexOfClassYear = $scope.indexOfClassYear[i]
 
-        $scope.selectIndexOfSubject = (i)->
-            $scope.currentIndexOfSubject = $scope.indexOfSubject[i]
-
-        if $stateParams.year?
-            r = $scope.indexOfClassYear.filter (item, index)->
-                ''+item.slug is ''+$stateParams.year
-            i = if r.length is 1 then r[0].index else 0
-            $scope.selectIndexOfClassYear i or 0
-        else
-            $scope.selectIndexOfClassYear 0
-
-        if $stateParams.subject?
-            r = $scope.indexOfSubject.filter (item, index)->
-                item.slug is $stateParams.subject
-            i = if r.length is 1 then r[0].index else 0
-
-            $scope.selectIndexOfSubject i or 0
-        else
-            $scope.selectIndexOfSubject 0
-
-
-        $scope.searchUrlForSubject = (i)->
-            param =
-                subject: $scope.indexOfSubject[i].slug
-            $state.href '.', param, inherit: false
-
-        $scope.searchUrlForClassYear = (i)->
-            param =
-                year: $scope.indexOfClassYear[i].slug
-            $state.href '.', param, inherit: false
 
 .controller 'AdminSemesterDetailCtrl',
     ($scope, Semester, $state, $stateParams, Notify) ->
@@ -165,7 +156,6 @@ angular.module modulePage
                 Notify '削除しました。', type: 'danger'
 
         $scope.deleteSemester = ()->
-            console.log 'del'
             if $scope.deleting
                 $scope.doDeleteSemester()
             else
@@ -189,12 +179,4 @@ angular.module modulePage
                 $scope.new_semester.subject_ids.splice idx, 1
             else
                 $scope.new_semester.subject_ids.push subject.id
-
-        $scope.subjectIndetifierList = []
-        for k, v of $scope.semesterIdentifierMap
-            $scope.subjectIndetifierList.push
-                identifier: k
-                label: v
-
-
 

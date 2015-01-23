@@ -28,7 +28,7 @@ angular.module modulePage
             $state.includes state
 
         $scope.items = [
-                title: '管理TOP'
+                title: 'TOP'
                 state: 'admin'
             ,
                 title: 'ユーザー'
