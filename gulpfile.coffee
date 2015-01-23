@@ -8,7 +8,9 @@ fs = require 'fs'
 del = require 'del'
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
-require 'date-utils'
+lazypipe = require 'lazypipe'
+dateFormat = require 'dateformat'
+
 play = require 'play'
 
 sounds =
@@ -36,7 +38,7 @@ class Conf
         @minify = true
         @static = 'static'
         @setProd(isProd)
-        @hash = (new Date()).toFormat("YYYYMMDDHH24MISS")
+        @hash = dateFormat (new Date()), 'yyyymmddhhMMss'
         @useSounds = true
 
 conf = new Conf(false)
@@ -64,34 +66,34 @@ g.task 'clean', (cb)->
     ], cb
 
 
-
 g.task 'copy:fonts', ['clean'], ->
     g.src "#{conf.bowerDir}/font-awesome/fonts/**/*"
     .pipe g.dest "#{conf.dest}/fonts/"
 
 
 g.task 'copy:static', ['clean'], ->
-    g.src "#{conf.static}/**/*"
+    g.src ["#{conf.static}/**/*", "!#{conf.static}/img/**/*"]
     .pipe g.dest "#{conf.dest}/"
-
 
 g.task 'copy', ['copy:fonts', 'copy:static']
 
+g.task 'image', ['clean'], ->
+    g.src "#{conf.static}/img/**/*"
+    .pipe $.if conf.prod, $.imagemin()
+    .pipe g.dest "#{conf.dest}/img/"
 
 
 g.task 'css:vendor', ['clean'], ->
-    t = g.src "#{conf.src}/vendor/**/*.{sass,scss}"
+    g.src "#{conf.src}/vendor/**/*.{sass,scss}"
     .pipe $.sass
         includePaths: [conf.bowerDir]
         sourceComments: 'normal'
     .on 'error', onError
     .pipe $.autoprefixer()
 
-    if conf.prod
-        t = t
-        .pipe $.concat 'vendor.css'
+    .pipe $.if conf.prod, $.concat 'vendor.css'
 
-    t.pipe g.dest "#{conf.dest}/vendor/"
+    .pipe g.dest "#{conf.dest}/vendor/"
 
 
 g.task 'css:common', ['clean'], ->
@@ -149,12 +151,10 @@ g.task 'css:build', ['css'], (cb)->
         "#{conf.dest}/app.css"
     ]
 
-    t = g.src target
+    g.src target
     .pipe $.concat "app-#{conf.hash}.css"
-    if conf.minify
-        t = t
-        .pipe $.minifyCss()
-    t.pipe g.dest "#{conf.dest}/"
+    .pipe $.if conf.minify, $.minifyCss()
+    .pipe g.dest "#{conf.dest}/"
 
 
 
@@ -176,22 +176,19 @@ g.task 'js', ['clean'], ->
     else
         target.push "!#{conf.src}/config/production/*.coffee"
 
-    t = g.src target, base: "#{conf.src}/"
+    anotateAndConcat = lazypipe()
+        .pipe $.ngAnnotate
+        .pipe $.concat, 'app.js'
+
+    g.src target, base: "#{conf.src}/"
     .pipe $.sourcemaps.init()
     .pipe $.coffee
         bare: true
         sourceRoot: ''
     .on 'error', onError
 
-    if conf.prod
-        t = t
-        .pipe $.ngAnnotate()
-        .pipe $.concat 'app.js'
-    else
-        t = t
-        .pipe $.sourcemaps.write()
-
-    t.pipe g.dest "#{conf.dest}/"
+    .pipe $.if conf.prod, anotateAndConcat(), $.sourcemaps.write()
+    .pipe g.dest "#{conf.dest}/"
 
 
 g.task 'bower', ['clean'], (cb)->
@@ -209,21 +206,21 @@ g.task 'html', ['clean'], ->
         "!#{conf.src}/index.jade"
     ]
 
-    t = g.src target
+    minifyAndTemplate = lazypipe()
+    .pipe $.minifyHtml,
+        spare: true
+        empty: true
+        conditionals: true
+        quotes: true
+    .pipe $.angularTemplatecache, 'templates.js',
+        module: conf.ngAppName
+        root: '/'
+
+    g.src target
     .pipe $.jade pretty: not conf.prod
     .on 'error', onError
-
-    if conf.prod
-        t = t
-        .pipe $.minifyHtml
-                spare: true
-                empty: true
-                conditionals: true
-                quotes: true
-        .pipe $.angularTemplatecache 'templates.js',
-            module: conf.ngAppName
-            root: '/'
-    t.pipe g.dest "#{conf.dest}/"
+    .pipe $.if conf.prod, minifyAndTemplate()
+    .pipe g.dest "#{conf.dest}/"
 
 g.task 'html:build', ['html'], (cb)->
     cb()
@@ -244,12 +241,10 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
         "#{conf.dest}/templates.js"
     ]
 
-    t = g.src target
+    g.src target
     .pipe $.concat "app-#{conf.hash}.js"
-    if conf.minify
-        t = t
-        .pipe $.uglify()
-    t.pipe g.dest "#{conf.dest}/"
+    .pipe $.if conf.prod, $.uglify()
+    .pipe g.dest "#{conf.dest}/"
 
 
 
@@ -294,30 +289,25 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
         ]
 
 
-    t = g.src "#{conf.src}/index.jade"
+    g.src "#{conf.src}/index.jade"
     .pipe $.jade pretty: not conf.prod
     .on 'error', onError
     .pipe $.inject g.src(target), ignorePath: ignorePath
-
-    if not conf.prod
-        t = t
-        .pipe $.inject(
-            g.src(bowerFiles(),
-                    base: conf.bowerDir
-                    read: false),
-                ignorePath: ignorePath
-                name: 'bower'
-        )
-    else
-        if conf.minify
-            t = t
-            .pipe $.minifyHtml
+    .pipe($.if(conf.prod,
+        $.if(conf.minify,
+            $.minifyHtml
                 spare: true
                 empty: true
                 conditionals: true
                 quotes: true
 
-    t.pipe g.dest "#{conf.dest}/"
+        ),
+        $.inject(g.src(bowerFiles(), base: conf.bowerDir, read: false ),{
+            ignorePath: ignorePath
+            name: 'bower'
+        })))
+
+    .pipe g.dest "#{conf.dest}/"
 
 
 
@@ -348,6 +338,7 @@ integrated tasks
 
 g.task 'build', [
     'copy'
+    'image'
     'html:build'
     'js:build'
     'css:build'
