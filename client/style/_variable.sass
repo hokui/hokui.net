@@ -49,6 +49,8 @@ $border-radius-base: 2px
 
 $cursor-disabled: not-allowed
 
+$disabled-opacity: .65
+
 
 
 //************
@@ -62,8 +64,8 @@ $font-family-monospace: Menlo, Monaco, Consolas, "Courier New", monospace
 $font-family-base: $font-family-sans-serif
 
 $font-size-base: 16px
-$font-size-large: ceil(($font-size-base * 1.25))
-$font-size-small: ceil(($font-size-base * 0.85))
+$font-size-large: 18px
+$font-size-small: 14px
 
 $font-size-h1: floor(($font-size-base * 2.4))
 $font-size-h2: floor(($font-size-base * 2.0))
@@ -71,7 +73,6 @@ $font-size-h3: ceil(($font-size-base * 1.5))
 $font-size-h4: ceil(($font-size-base * 1.2))
 $font-size-h5: $font-size-base
 $font-size-h6: ceil(($font-size-base * 0.85))
-
 
 $line-height-base: 1.428571429
 $line-height-computed: floor(($font-size-base * $line-height-base))
@@ -85,23 +86,36 @@ $headings-small-color: $gray-light
 
 
 //************
+// responsive
+//************
+
+$screen-lg: 1200px
+$screen-lg-min: $screen-lg
+
+$screen-md: 960px
+$screen-md-max: $screen-lg-min - 1
+$screen-md-min: $screen-md
+
+$screen-sm: 764px
+$screen-sm-min: $screen-sm
+$screen-sm-max: $screen-md-min - 1
+
+$screen-xs-max: $screen-sm-min - 1
+
+$grid-breakpoint: $screen-sm
+
+$grid-columns: 12
+$grid-gutter: 30px
+$container-padding-horizontal: 16px
+
+
+
+//************
 // alert
 //************
 
 $alert-padding: 16px
 $alert-border-radius: $border-radius-base
-
-$alert-primary-bg: $brand-primary-lighter
-$alert-primary-color: $brand-primary-darker
-$alert-primary-border: $brand-primary
-
-$alert-secondary-bg: $brand-secondary-lighter
-$alert-secondary-color: $brand-secondary-darker
-$alert-secondary-border: $brand-secondary
-
-$alert-accent-bg: $brand-accent-lighter
-$alert-accent-color: $brand-accent-darker
-$alert-accent-border: $brand-accent
 
 
 
@@ -109,29 +123,15 @@ $alert-accent-border: $brand-accent
 // button
 //************
 
-$btn-font-weight: normal
-$btn-padding-vertical: 6px
-$btn-padding-horizontal: 12px
-
-$btn-default-color: #333
-$btn-default-bg: #fff
-$btn-default-border: #ccc
-$btn-primary-color: #fff
-$btn-primary-bg: $brand-primary-dark
-$btn-primary-border: darken($btn-primary-bg, 5%)
-$btn-secondary-color: #fff
-$btn-secondary-bg: $brand-secondary-dark
-$btn-secondary-border: darken($btn-secondary-bg, 5%)
-$btn-accent-color: #fff
-$btn-accent-bg: $brand-accent-dark
-$btn-accent-border: darken($btn-accent-bg, 5%)
-
-$btn-ghost-default-color: $gray
-$btn-ghost-primary-color: $brand-primary
-$btn-ghost-secondary-color: $brand-secondary
-$btn-ghost-accent-color: $brand-accent
-
-$btn-link-disabled-color: $gray-light
+$btn-font-size: $font-size-base
+$btn-padding-v: 6px
+$btn-padding-h: 12px
+$btn-padding-v-lg: 10px
+$btn-padding-h-lg: 16px
+$btn-padding-v-sm: 5px
+$btn-padding-h-sm: 10px
+$btn-padding-v-xs: 1px
+$btn-padding-h-xs: 5px
 
 
 
@@ -156,27 +156,28 @@ $pre-scrollable-max-height: 340px
 $form-group-margin-bottom: 20px
 $form-label-padding-v: 6px
 $form-label-padding-h: 4px
+$form-label-color: $gray
+
 $form-control-padding-v: 6px
 $form-control-padding-h: 4px
+$form-control-font-size: 16px
 
-$form-label-color: $gray
 $form-control-border-color: $gray-lighter
 $form-control-color: $gray
-
-$form-control-font-size: 16px
 $form-control-bg: #fdfdfd
-$form-control-default-focus-bg: rgba($brand-primary-lighter, .3)
-$form-control-secondary-focus-bg: rgba($brand-secondary-lighter, .3)
-$form-control-accent-focus-bg: rgba($brand-accent-lighter, .3)
 
 $form-control-toggle-label-margin: 6px
 $form-control-toggle-box-size: $form-control-font-size
 $form-control-toggle-inner-size: $form-control-font-size - 6px
 
+$form-control-default-focus-bg: rgba($brand-primary-lighter, .3)
+$form-control-secondary-focus-bg: rgba($brand-secondary-lighter, .3)
+$form-control-accent-focus-bg: rgba($brand-accent-lighter, .3)
+
 
 
 //************
-// panel
+// navbar
 //************
 
 $navbar-bg: rgba($body-bg, .9)
@@ -209,43 +210,38 @@ $navbar-z: 200
 $panel-border-color: $border-color-base
 $panel-border-radius: $border-radius-base
 $panel-shasow: 0
-$panel-body-padding: 16px
-$panel-head-bg: $body-bg
-$panel-head-padding: 12px 16px
+
+$panel-body-padding-v: 12px
+$panel-body-padding-h: 16px
+$panel-condensed-body-padding-v: 8px
+$panel-condensed-body-padding-h: 12px
+
+$panel-head-padding-v: 12px
+$panel-head-padding-h: 16px
 $panel-head-bg: $shaded-bg-base
-$panel-foot-padding: 12px 16px
+$panel-head-title-font-size: 20px
+
+$panel-condensed-head-padding-v: 8px
+$panel-condensed-head-padding-h: 12px
+$panel-condensed-head-title-font-size: 18px
+
+$panel-foot-padding-v: 12px
+$panel-foot-padding-h: 16px
 $panel-foot-bg: $shaded-bg-base
+$panel-condensed-foot-padding-v: 8px
+$panel-condensed-foot-padding-h: 12px
 
 
 
 //************
-// responsive
+// search
 //************
 
-$screen-xs: 480px
-$screen-xs-min: $screen-xs
+$search-padding-v: 6px
+$search-font-size: $font-size-small
+$search-color: $gray-light
 
-$screen-sm: 764px
-$screen-sm-min: $screen-sm
-
-$screen-md: 960px
-$screen-md-min: $screen-md
-
-$screen-lg: 1200px
-$screen-lg-min: $screen-lg
-
-
-$screen-xs-max: $screen-sm-min - 1
-$screen-sm-max: $screen-md-min - 1
-$screen-md-max: $screen-lg-min - 1
-
-$grid-breakpoint: $screen-sm
-
-$grid-columns: 12
-$grid-gutter: 30px
-
-$container-padding-horizontal: 16px
-
+$search-condensed-padding-v: 3px
 
 
 //************
@@ -265,8 +261,8 @@ $tab-link-height-xs: $tab-height-xs - ($tab-spacing * 2)
 
 $tab-link-arrow-size: 10px
 
-$tab-fontsize: 16px
-$tab-fontsize-xs: 14px
+$tab-font-size: 16px
+$tab-font-size-xs: 13px
 
 
 
@@ -286,6 +282,7 @@ $table-border-radius: $border-radius-base
 //************
 // tooltip
 //************
+
 $tooltip-padding: 4px 8px
 $tooltip-z: 100
 
@@ -294,8 +291,6 @@ $tooltip-bg: $gray-darker
 $tooltip-color: $body-bg
 $tooltip-font-size: 12px
 $tooltip-border-radius: $border-radius-base
-$tooltip-min-width: 80px
-$tooltip-max-width: 200px
 $tooltip-color: #fff
 $tooltip-bg: #000
 $tooltip-opacity: .9
@@ -305,6 +300,7 @@ $tooltip-opacity: .9
 //************
 // well
 //************
+
 $well-bg: $gray-more-lighter
 $well-padding: 12px 16px
 $well-border: 0

@@ -4,22 +4,24 @@
     border-collapse: collapse
     margin-bottom: $line-height-computed;
 
-    th
-        background-color: $table-head-bg
-        text-align: center
-
     td, th
         padding: $table-cell-padding
 
+    th
+        word-break: keep-all
+        background-color: $table-head-bg
+        text-align: center
+
     tr
+        word-break: normal
         border-bottom: solid 1px $table-border-color
 
 
-.table.table--condensed
+.table--condensed
     td, th
         padding: $table-condensed-cell-padding
 
-.table.table--bordered
+.table--bordered
     border-radius: $table-border-radius
     border: solid 1px $table-border-color
     td, th

@@ -20,7 +20,7 @@
 .visible-lg-inline,
 .visible-lg-inline-block
 .visible-lg-table-cell
-    display: none !important
+    display: none
 
 .visible-xs-block
     @media (max-width: $screen-xs-max)
@@ -39,25 +39,25 @@
 
 .visible-sm-block
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
-        display: block !important;
+        display: block !important
 .visible-sm-inline
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
-        display: inline !important;
+        display: inline !important
 .visible-sm-inline-block
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
-        display: inline-block !important;
+        display: inline-block !important
 .visible-sm-table-cell
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
-        display: table-cell !important;
+        display: table-cell !important
 
 
 
 .visible-md-block
     @media (min-width: $screen-md-min) and (max-width: $screen-md-max)
-        display: block !important;
+        display: block !important
 .visible-md-inline
     @media (min-width: $screen-md-min) and (max-width: $screen-md-max)
-        display: inline !important;
+        display: inline !important
 .visible-md-inline-block
     @media (min-width: $screen-md-min) and (max-width: $screen-md-max)
         display: inline-block !important
@@ -69,26 +69,73 @@
 
 .visible-lg-block
     @media (min-width: $screen-lg-min)
-        display: block !important;
+        display: block !important
 .visible-lg-inline
     @media (min-width: $screen-lg-min)
-        display: inline !important;
+        display: inline !important
 .visible-lg-inline-block
     @media (min-width: $screen-lg-min)
-        display: inline-block !important;
+        display: inline-block !important
 .visible-lg-table-cell
     @media (min-width: $screen-lg-min)
-        display: table-cell !important;
+        display: table-cell !important
 
 
 
 .hidden-xs
-    +hidden-xs
+    @media (max-width: $screen-xs-max)
+        display: none !important
+
 .hidden-sm
-    +hidden-sm
+    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
+        display: none !important
+
 .hidden-md
-    +hidden-md
+    @media (min-width: $screen-md-min) and (max-width: $screen-xs-max)
+        display: none !important
+
 .hidden-lg
-    +hidden-lg
+    @media (min-width: $screen-xs-max)
+        display: none !important
 
 
+.hidden-from-sm
+    @media (min-width: $screen-sm-min)
+        display: none !important
+.hidden-from-md
+    @media (min-width: $screen-md-min)
+        display: none !important
+.hidden-from-lg
+    @media (min-width: $screen-lg-min)
+        display: none !important
+
+
+.hidden-to-xs
+    @media (max-width: $screen-xs-max)
+        display: none !important
+.hidden-to-sm
+    @media (max-width: $screen-sm-max)
+        display: none !important
+.hidden-to-md
+    @media (max-width: $screen-md-max)
+        display: none !important
+
+
+
+
+div[responsive-width-getter]
+    position: fixed
+    margin: 0
+    padding: 0
+    width: 0
+    height: 0
+    visibility: hidden
+    z-index: 0
+    @media (min-width: $screen-sm-min)
+        z-index: 1
+
+    @media (min-width: $screen-md-min)
+        z-index: 2
+
+    @media (min-width: $screen-lg-min)
+        z-index: 3

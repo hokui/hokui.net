@@ -1,4 +1,4 @@
-.tab
+.tabs
     +clearfix
     background-color: $gray-more-lighter
     height: $tab-height
@@ -6,10 +6,7 @@
         height: $tab-height-xs
     margin-bottom: $tab-margin-bottom
 
-.tab__items
-    +make-container
-
-.tab__items__item
+.tab
     display: table-cell
     width: 1%
 
@@ -25,11 +22,11 @@
 
         height: $tab-link-height
         line-height: $tab-link-height
-        font-size: $tab-fontsize
+        font-size: $tab-font-size
         @media (max-width: $screen-xs-max)
             height: $tab-link-height-xs
             line-height: $tab-link-height-xs
-            font-size: $tab-fontsize-xs
+            font-size: $tab-font-size-xs
 
         transition: background-color ease-in-out .1s, color ease-in-out .1s
         &:hover
@@ -57,7 +54,7 @@
         transition: top ease-in-out .1s .2s
         transition-delay: .2s
 
-.tab__items__item.tab__items__item--active
+.tab.tab--active
     & > a
         background-color: $brand-primary
         color: $body-bg
@@ -75,6 +72,6 @@ ul.tabs
     margin: 0
     padding: 0
 
-li.tabs__tab
+li.tab
     margin: 0
 
