@@ -43,16 +43,21 @@ angular.module moduleConfig, [
 .config (RestrictProvider)->
     RestrictProvider.setNext 'home'
 
-.config (AutoAuthCheckProvider)->
-    AutoAuthCheckProvider.use true
+.config (AuthProvider)->
+    AuthProvider.setAutoCheck true
 
-.run ($rootScope, Restrict, $state, Auth, Notify, AutoAuthCheck)->
+.run ($rootScope, Restrict, $state, Auth, Notify)->
 
-    $rootScope.$on AutoAuthCheck.altStateChangeStart, (ev, toState, toParams, fromState, fromParams)->
+    $rootScope.$on Auth.getAltStateChangeStart(), (ev, stateChangeStart, toState, toParams, fromState, fromParams)->
         result = Restrict toState
         first_visit = fromState.name is ''
         if not result.can
-            ev.preventDefault()
             Notify result.error, type: 'warn', delay: if first_visit then 500 else 0
-            $state.go result.next
+            setTimeout ->
+                $state.go result.next
+            , 0
+            stateChangeStart.preventDefault()
+
+    $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams, error)->
+        console.log 'error'
 
