@@ -1,6 +1,6 @@
 .topfix
 .container
-    .col-sm-10.col-sm-offset-1
+    .col--sm-10.col--sm-offset-1
         h2 ログイン
         div(ng-switch="Auth.active()")
             p(ng-switch-when="true")
@@ -8,46 +8,50 @@
                 | としてすでにログインしています。
             p(ng-switch-when="false") ログインします。
 
-        form.form(role="form", name="login", ng-submit="performLogin(login.$valid)", novalidate)
+        form.form(role="form" name="login" ng-submit="performLogin(login.$valid)" novalidate)
             .panel
                 .panel__body
                     .form__group
-                        .col-sm-2
+                        .col--sm-2
                             label.form__label(for="loginInputEmail") Email
-                        .col-sm-10
+                        .col--sm-10
                             input.form__control(
-                                type="email",
-                                name="email",
-                                ng-model="credencials.email",
-                                required,
-                                ng-pattern="/^[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp$/",
-                                force-invalid="error",
-                                ng-change="error = false",
-                                id="loginInputEmail",
+                                type="email"
+                                name="email"
+                                ng-model="credencials.email"
+                                required
+                                ng-pattern="/^[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp$/"
+                                force-invalid="error"
+                                ng-change="error = null"
+                                id="loginInputEmail"
                                 placeholder="Enter email")
                             .form__error(ng-show="login.email.$dirty")
                                 div(ng-show="login.email.$error.email") 不正なメールアドレスです
                                 div(ng-show="!login.email.$error.email && login.email.$error.pattern") ELSMメールアドレスを指定してください
+
                     .form__group
-                        .col-sm-2
+                        .col--sm-2
                             label.form__label(for="loginInputPassword") Password
-                        .col-sm-10
+                        .col--sm-10
                             input.form__control(
-                                type="password",
-                                ng-model="credencials.password",
-                                required,
-                                force-invalid="error",
-                                ng-change="error = false",
-                                placeholder="Password",
+                                type="password"
+                                ng-model="credencials.password"
+                                required
+                                force-invalid="error"
+                                ng-change="error = null"
+                                placeholder="Password"
                                 id="loginInputPassword")
-                    .col-sm-10.col-sm-offset-2
+
+                    .col--sm-10.col--sm-offset-2
                         .form__error(ng-show="error") メールアドレスかパスワードに誤りがあります。
+
                     .form__group
-                        .col-sm-10.col-sm-offset-2
-                            input.form__control(type="checkbox", ng-model="keepLogin", id="loginInputKeeologin")
+                        .col--sm-10.col--sm-offset-2
+                            input.form__control(type="checkbox" ng-model="keepLogin" id="loginInputKeeologin")
                             label.form__label(for="loginInputKeeologin") ログイン状態を保存する
+
                 .panel__foot
                     .form__group
-                        .col-sm-10.col-sm-offset-2
-                            button.btn.btn--primary(type="submit", ng-disabled="login.$invalid") Login
+                        .col--sm-10.col--sm-offset-2
+                            button.btn.btn--primary(type="submit" ng-disabled="login.$invalid") Login
 
