@@ -6,7 +6,7 @@ describe 'Restrict', ->
 
     beforeEach ->
 
-        angular.module 'RestrictTestModule', (->)
+        angular.module 'RestrictTestModule', [moduleCore]
         .config ($stateProvider) ->
             $stateProvider
             .state 'not_restricted',
@@ -39,7 +39,7 @@ describe 'Restrict', ->
         .config (RestrictProvider) ->
             RestrictProvider.setNext 'redirect_to'
 
-        module moduleCore, 'RestrictTestModule'
+        module 'RestrictTestModule'
 
         inject ($httpBackend, Auth)->
             mockupAPI $httpBackend

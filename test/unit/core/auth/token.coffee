@@ -5,15 +5,13 @@ describe 'TokenProvider', ->
     _TokenProvider = null
 
     beforeEach ->
-        angular.module 'TokenProviderTestModule', (->)
+        angular.module 'TokenProviderTestModule', [moduleCore]
         .config (TokenProvider)->
             _TokenProvider = TokenProvider
 
-        module moduleCore, 'TokenProviderTestModule'
+        module 'TokenProviderTestModule'
 
-        inject ->
-
-    it 'header_key', ->
+    it 'header_key', inject ->
         _TokenProvider.setHeaderKey 'tk'
         expect(_TokenProvider.getHeaderKey()).toBe 'tk'
 
@@ -24,7 +22,7 @@ describe 'TokenProvider', ->
             expect(true).toBeTruthy()
 
 
-    it 'storage_key', ->
+    it 'storage_key', inject ->
         _TokenProvider.setStorageKey 'sk'
         expect(_TokenProvider.getStorageKey()).toBe 'sk'
 
@@ -35,7 +33,7 @@ describe 'TokenProvider', ->
             expect(true).toBeTruthy()
 
 
-    it 'prefix', ->
+    it 'prefix', inject ->
         _TokenProvider.setTokenPrefix 'prefix'
         expect(_TokenProvider.getTokenPrefix()).toBe 'prefix'
 
@@ -50,13 +48,13 @@ describe 'TokenService(With Prefix)', ->
     test_token = 'TEST_TOKEN'
 
     beforeEach ->
-        angular.module 'TokenServiceTestModule', (->)
+        angular.module 'TokenServiceTestModule', [moduleCore]
         .config (TokenProvider)->
             TokenProvider.setHeaderKey header_key
             TokenProvider.setStorageKey storage_key
             TokenProvider.setTokenPrefix token_prefix
 
-        module moduleCore, 'TokenServiceTestModule'
+        module 'TokenServiceTestModule'
 
         inject (Token)->
             Token.clear()
@@ -78,13 +76,13 @@ describe 'TokenService(Without Prefix)', ->
     test_token = 'TEST_TOKEN'
 
     beforeEach ->
-        angular.module 'TokenServiceTestModule', (->)
+        angular.module 'TokenServiceTestModule', [moduleCore]
         .config (TokenProvider)->
             TokenProvider.setHeaderKey header_key
             TokenProvider.setStorageKey storage_key
             TokenProvider.setTokenPrefix ''
 
-        module moduleCore, 'TokenServiceTestModule'
+        module 'TokenServiceTestModule'
 
         inject (Token)->
             Token.clear()
@@ -101,20 +99,23 @@ describe 'TokenService(Store Token)', ->
     test_token_local = 'TEST_TOKEN_LOCAL'
 
     beforeEach ->
-        angular.module 'TokenServiceTestModule', (->)
+        angular.module 'TokenServiceTestModule', [moduleCore]
         .config (TokenProvider)->
             TokenProvider.setHeaderKey header_key
             TokenProvider.setStorageKey storage_key
             TokenProvider.setTokenPrefix ''
 
-        module moduleCore, 'TokenServiceTestModule'
+        module 'TokenServiceTestModule'
+
+        inject (webStorage)->
+            webStorage.session.clear()
+            webStorage.memory.clear()
+            webStorage.local.clear()
 
     describe 'Token is in sessionStorage', ->
         beforeEach ->
             inject (webStorage)->
                 webStorage.session.add storage_key, test_token_session
-                webStorage.memory.clear()
-                webStorage.local.clear()
 
         it 'store from session', inject (Token, $http)->
             expect(Token.get()).toBe test_token_session
@@ -123,8 +124,6 @@ describe 'TokenService(Store Token)', ->
     describe 'Token is in localStorage', ->
         beforeEach ->
             inject (webStorage)->
-                webStorage.session.clear()
-                webStorage.memory.clear()
                 webStorage.local.add storage_key, test_token_local
 
         it 'store from local', inject (Token, $http)->
@@ -137,7 +136,6 @@ describe 'TokenService(Store Token)', ->
         beforeEach ->
             inject (webStorage)->
                 webStorage.session.add storage_key, test_token_session
-                webStorage.memory.clear()
                 webStorage.local.add storage_key, test_token_local
 
         it 'store from session', inject (Token, $http)->
