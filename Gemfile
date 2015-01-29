@@ -11,6 +11,8 @@ gem 'thin'
 
 gem 'whenever', require: false
 
+gem 'figaro'
+
 gem 'sorcery', github: 'iTakeshi/sorcery', branch: 'user_approval'
 gem 'pundit'
 
