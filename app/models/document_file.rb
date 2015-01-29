@@ -17,6 +17,7 @@
 class DocumentFile < ActiveRecord::Base
   belongs_to :document
   belongs_to :user
+  has_many :download_token, dependent: :destroy
 
   validates(:document_id)       { presence }
   validates(:user_id)           { presence }
