@@ -86,3 +86,14 @@ sub1.documents << Document.create(subject: sub1, class_year: 93, code: 3003)
 sub1.documents << Document.create(subject: sub1, class_year: 93, code: 3004)
 sub1.documents << Document.create(subject: sub1, class_year: 93, code: 4001)
 sub1.documents << Document.create(subject: sub1, class_year: 93, code: 5000)
+
+doc = Document.first
+doc.document_files << DocumentFile.create(
+  document:          doc,
+  user:              guest,
+  file_name:         "dummy.pdf",
+  file_content_type: "application/pdf",
+  file_md5:          "c348a159e06d03e9905ed043ab249dda",
+  comments:          "hoge",
+  download_count:    0
+)

@@ -12,6 +12,7 @@
 
 class Document < ActiveRecord::Base
   belongs_to :subject
+  has_many :document_files, dependent: :destroy
 
   validates(:subject_id) { presence }
   validates(:class_year) { presence }
