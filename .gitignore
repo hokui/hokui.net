@@ -15,7 +15,9 @@
 /log/**/*.log
 /tmp
 
-
+# uploaded files dir for dev/test
+/misc/uploaded/*
+!/misc/uploaded/000001-dummy.pdf
 
 # front-end part below
 
