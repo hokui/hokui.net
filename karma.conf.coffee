@@ -4,8 +4,6 @@ module.exports = (config) ->
     files = [
         'client/core/*.coffee'
         'client/core/**/*.coffee'
-        'client/config/*.coffee'
-        'client/config/**/*.coffee'
         'test/unit/helper_*.coffee'
         'test/unit/**/*.coffee'
     ]
@@ -24,7 +22,7 @@ module.exports = (config) ->
         exclude: []
 
         preprocessors:
-            'client/{core,config}/**/*.coffee': ['coverage']
+            'client/core/**/*.coffee': ['coverage']
             'test/unit/**/*.coffee': ['coffee']
 
         reporters: ['progress', 'coverage']

@@ -11,7 +11,7 @@ angular.module modulePage
                 templateUrl: '/page/admin/year/year.html'
                 controller: 'AdminYearCtrl'
                 resolve:
-                    years: (ClassYear)->
+                    classYears: (ClassYear)->
                         ClassYear.query().$promise
 
             'main@admin.year':
@@ -34,8 +34,8 @@ angular.module modulePage
 
 
 .controller 'AdminYearCtrl',
-    ($scope, years, ResourceStore) ->
-        $scope.years = ResourceStore years
+    ($scope, classYears, ResourceStore) ->
+        $scope.classYears = ResourceStore classYears
 
 
 
@@ -48,58 +48,69 @@ angular.module modulePage
         year_id = $stateParams.id
 
         if year_id isnt ''
-            $scope.year =$scope.years.retrieve year_id
-            if not $scope.year?
+            $scope.classYear =$scope.classYears.retrieve year_id
+            if not $scope.classYear?
                 $state.go 'admin.year'
                 Notify "Not found class_year(id: \"#{year_id}\")", type: 'warning'
 
-
-.controller 'AdminYearEditCtrl',
-    ($scope, ClassYear, $state, $stateParams, Notify) ->
-        $scope.editing = $scope.year?.id?
-        $scope.title = if $scope.editing then '編集' else '新規作成'
-
         $scope.deleting = false
 
-        if $scope.editing
-            $scope.new_year = angular.copy $scope.year
-        else
-            $scope.new_year = new ClassYear()
-
-        $scope.doSaveYear = ()->
-            if $scope.editing
-                $scope.new_year.$update {}, (data)->
-                    $scope.years.set data
-                    $state.go 'admin.year.detail', {id: data.id}
-                    Notify '保存しました。'
-            else
-                $scope.new_year.$save {}, (data)->
-                    $scope.years.set data
-                    $state.go 'admin.year.detail', {id: data.id}
-                    Notify '新規作成しました。'
-
-        $scope.doDeleteYear = ()->
-            $scope.year.$remove {}, (data)->
-                $scope.years.del $scope.year
+        $scope.doDeleteYear = ->
+            $scope.classYear.$remove {}, (data)->
+                $scope.classYears.del $scope.classYear
                 $state.go 'admin.year'
                 Notify '削除しました。', type: 'danger'
 
-        $scope.deleteYear = ()->
+        $scope.deleteYear = ->
             if $scope.deleting
                 $scope.doDeleteYear()
             else
-                Notify 'もう一度クリックすると削除します。', type: 'danger'
                 $scope.deleting = true
 
         $scope.stopDeleting = ->
             $scope.deleting = false
-            Notify '削除を中断しました。', type: 'warning'
 
-        $scope.deleteBtnLabel = ()->
+        $scope.deleteBtnLabel = ->
             if $scope.deleting
                 return "マジで削除する"
             else
                 return '削除する'
+
+
+.controller 'AdminYearEditCtrl',
+    ($scope, ClassYear, $state, $stateParams, Notify) ->
+        $scope.editing = $scope.classYear?.id?
+        $scope.title = if $scope.editing then '編集' else '新規作成'
+
+        if $scope.editing
+            $scope.new_year = angular.copy $scope.classYear
+        else
+            $scope.new_year = new ClassYear()
+
+        $scope.errors = {}
+
+        onError = (res)->
+            Notify '入力にエラーがあります。', type: 'warn'
+            $scope.errors = res.data.errors
+
+        $scope.doSaveYear = (valid)->
+            if valid
+                if $scope.editing
+                    $scope.new_year.$update {}, (data)->
+                        $scope.classYears.set data
+                        $state.go 'admin.year.detail', {id: data.id}
+                        Notify '保存しました。'
+                    , onError
+                else
+                    $scope.new_year.$save {}, (data)->
+                        $scope.classYears.set data
+                        $state.go 'admin.year.detail', {id: data.id}
+                        Notify '新規作成しました。'
+                    , onError
+            else
+                Notify '入力にエラーがあります。', type: 'warn'
+
+
 
 
 

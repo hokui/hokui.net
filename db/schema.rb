@@ -31,38 +31,6 @@ ActiveRecord::Schema.define(version: 20150104124737) do
 
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
 
-  create_table "documents", force: :cascade do |t|
-    t.integer  "subject_id",                 null: false
-    t.integer  "user_id",                    null: false
-    t.integer  "class_year",                 null: false
-    t.integer  "document_type",              null: false
-    t.integer  "number",         default: 1, null: false
-    t.integer  "page",           default: 1, null: false
-    t.boolean  "with_answer"
-    t.string   "note"
-    t.integer  "download_count", default: 0, null: false
-    t.string   "file_name",                  null: false
-    t.string   "file_mime",                  null: false
-    t.string   "file_sha1",                  null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
-  add_index "documents", ["class_year"], name: "index_documents_on_class_year"
-  add_index "documents", ["file_sha1"], name: "index_documents_on_file_sha1", unique: true
-  add_index "documents", ["subject_id"], name: "index_documents_on_subject_id"
-  add_index "documents", ["user_id"], name: "index_documents_on_user_id"
-
-  create_table "download_tokens", force: :cascade do |t|
-    t.integer  "document_id", null: false
-    t.string   "token",       null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "download_tokens", ["document_id"], name: "index_download_tokens_on_document_id"
-  add_index "download_tokens", ["token"], name: "index_download_tokens_on_token", unique: true
-
   create_table "news", force: :cascade do |t|
     t.string   "text",       null: false
     t.datetime "created_at", null: false

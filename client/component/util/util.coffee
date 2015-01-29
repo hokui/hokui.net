@@ -2,7 +2,7 @@
 
 angular.module moduleComponent
 
-.directive 'textbox', ($compile)->
+.directive 'textbox', ->
     restrict: 'E'
     link: (scope, element, attrs)->
         element.attr 'contenteditable', true

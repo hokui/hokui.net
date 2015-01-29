@@ -9,6 +9,7 @@ html
     font-size: 10px
     -webkit-tap-highlight-color: rgba(0,0,0,0)
 
+
 body
     font-family: $font-family-base
     font-size: $font-size-base
@@ -67,6 +68,7 @@ h3, .h3
     small, .small
         font-size: 65%
 
+
 h4, .h4,
 h5, .h5,
 h6, .h6
@@ -90,8 +92,10 @@ h5, .h5
 h6, .h6
     font-size: $font-size-h6
 
+
 p
     margin: 0 0 ($line-height-computed / 2)
+
 
 .lead
     margin-bottom: $line-height-computed
@@ -103,59 +107,19 @@ p
         font-size: ($font-size-base * 1.5)
 
 
-
-small, .small
-    font-size: floor((100% * $font-size-small / $font-size-base))
-
-.text-left
-    text-align: left
-.text-right
-    text-align: right
-.text-center
-    text-align: center
-.text-justify
-    text-align: justify
-.text-nowrap
-    white-space: nowrap
-
-
-.text-lowercase
-    text-transform: lowercase
-.text-uppercase
-    text-transform: uppercase
-.text-capitalize
-    text-transform: capitalize
-
-
-.text-muted
-    color: $text-muted
-
-
 ul, ol
     margin-top: 0
     margin-bottom: ($line-height-computed / 2)
     ul,ol
         margin-bottom: 0
 
-.list-unstyled
-    padding-left: 0
-    list-style: none
-
-
-.list-inline
-    @extend .list-unstyled
-    margin-left: -5px
-
-    & > li
-        display: inline-block
-        padding-left: 5px
-        padding-right: 5px
 
 hr
     margin-top: $line-height-computed
     margin-bottom: $line-height-computed
     border: 0
     border-bottom: solid 1px $border-color-base
+
 
 dl
     margin-top: 0
@@ -169,20 +133,3 @@ dt
 
 dd
     margin-left: 0
-
-.primary-text
-    color: $brand-primary
-.secondary-text
-    color: $brand-secondary
-.accent-text
-    color: $brand-accent
-
-.primary-bg
-    color: $body-bg
-    background-color: $brand-primary
-.secondary-bg
-    color: $body-bg
-    background-color: $brand-secondary
-.accent-bg
-    color: $body-bg
-    background-color: $brand-accent

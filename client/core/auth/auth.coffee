@@ -3,8 +3,30 @@
 angular.module moduleCore
 
 .provider 'Auth', ->
-    $get: ($http, $q, Token, Env) ->
-        api = Env.apiRoot()
+    _defaultAltStateChangeStart = '$stateChangeStartAuthChecked'
+    _altStateChangeStart = _defaultAltStateChangeStart
+    _autoCheck = false
+
+    getAutoCheck: ->
+        _autoCheck
+
+    setAutoCheck: (ac)->
+        _autoCheck = ac
+
+    defaultAltStateChangeStart: ()->
+        _defaultStateChangeStart
+
+    setAltStateChangeStart: (s)->
+        if angular.isString s
+            _altStateChangeStart = s
+        else
+            throw new Error "Needs to be String. You provided #{s}"
+
+    getAltStateChangeStart: ->
+        _altStateChangeStart
+
+    $get: ($http, $q, $rootScope, $state, Token, Env) ->
+        _apiRoot = Env.apiRoot()
 
         _current =
             user : null
@@ -14,126 +36,105 @@ angular.module moduleCore
             user: 1
             guest: 0
 
-        level: ->
-            if @admin()
-                return _levels.admin
-            if @active()
-                return _levels.user
-            else
-                return _levels.guest
+        Auth =
+            getAltStateChangeStart: -> _altStateChangeStart
 
-        can : (role_or_level)->
-            if role_or_level?
-                if typeof role_or_level isnt 'number'
-                    needs_level = _levels[role_or_level] or 0
+            level: ->
+                if @admin()
+                    return _levels.admin
+                if @active()
+                    return _levels.user
                 else
-                    needs_level = role_or_level
-            else
-                needs_level = _levels.user
+                    return _levels.guest
 
-            _can = needs_level <= @level()
-            return _can
+            can : (role_or_level)->
+                if role_or_level?
+                    if typeof role_or_level isnt 'number'
+                        needs_level = _levels[role_or_level] or 0
+                    else
+                        needs_level = role_or_level
+                else
+                    needs_level = _levels.user
 
-
-        active: ->
-            Token.exists() and _current.user?
-
-        user: ->
-            _current.user
-
-        admin: ->
-            @active() and !!_current.user.admin and _current.user.admin
-
-        login: (credencials, keepLogin)->
-            deferred = $q.defer()
-            $http.post "#{api}/session",
-                email: credencials.email
-                password: credencials.password
-            .success (data)=>
-                Token.set data.token, keepLogin? and keepLogin
-                _current.user = data.user
-                deferred.resolve _current
-            .error (err)=>
-                @silentLogout()
-                deferred.reject err
-
-            deferred.promise
-
-        logout: ->
-            deferred = $q.defer()
-            _finally = (data)=>
-                @silentLogout()
-                deferred.resolve()
-
-            if Token.exists()
-                $http.delete "#{api}/session", {}
-                .success _finally
-                .error _finally
-            else
-                _finally()
-
-            deferred.promise
-
-        silentLogout: ()->
-            Token.clear()
-            _current.user = null
+                _can = needs_level <= @level()
+                return _can
 
 
-        check: ->
-            deferred = $q.defer()
-            if Token.exists()
-                $http.get "#{api}/profile", {}
+            active: ->
+                Token.exists() and _current.user?
+
+            user: ->
+                _current.user
+
+            admin: ->
+                @active() and !!_current.user.admin and _current.user.admin
+
+            login: (credencials, keepLogin)->
+                deferred = $q.defer()
+                $http.post "#{_apiRoot}/session",
+                    email: credencials.email
+                    password: credencials.password
                 .success (data)=>
-                    _current.user = data
+                    Token.set data.token, keepLogin? and keepLogin
+                    _current.user = data.user
                     deferred.resolve _current
                 .error (err)=>
                     @silentLogout()
+                    deferred.reject err
+
+                deferred.promise
+
+            logout: ->
+                deferred = $q.defer()
+                _finally = (data)=>
+                    @silentLogout()
+                    deferred.resolve()
+
+                if Token.exists()
+                    $http.delete "#{_apiRoot}/session", {}
+                    .success _finally
+                    .error _finally
+                else
+                    _finally()
+
+                deferred.promise
+
+            silentLogout: ()->
+                Token.clear()
+                _current.user = null
+
+
+            check: ->
+                deferred = $q.defer()
+                if Token.exists()
+                    $http.get "#{_apiRoot}/profile", {}
+                    .success (data)=>
+                        _current.user = data
+                        deferred.resolve _current
+                    .error (err)=>
+                        @silentLogout()
+                        deferred.reject _current
+                else
+                    @silentLogout()
                     deferred.reject _current
-            else
-                @silentLogout()
-                deferred.reject _current
-            deferred.promise
+                deferred.promise
 
-.provider 'AutoAuthCheck', ->
-    _enabled = false
-    _defaultAltStateChangeStart = '$stateChangeStartAuthChecked'
-    _altStateChangeStart = _defaultAltStateChangeStart
+        _resolved = false
 
-    use: (u)->
-        _enabled = u
-
-    defaultAltStateChangeStart: ()-> _defaultStateChangeStart
-
-    setAltStateChangeStart: (s)->
-        if angular.isString s
-            _altStateChangeStart = s
-        else
-            throw new Error "Needs to be String. You provided #{s}"
-
-    $get: ($rootScope, $state, Auth)->
-        status =
-            resolved: false
-            altStateChangeStart: _altStateChangeStart
-
-        if _enabled
-            unregister = $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
-                go = ->
-                    status.resolved = true
-                    $state.transitionTo toState, toParams
-
+        if _autoCheck
+            unregister = $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)=>
+                go = =>
+                    _resolved = true
+                    $state.transitionTo toState.name, toParams
                 Auth.check().then go, go
                 ev.preventDefault()
                 unregister()
         else
-            status.resolved = true
+            _resolved = true
 
-        $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
-            if not status.resolved
+        $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)=>
+            if not _resolved
                 return
             $rootScope.$broadcast _altStateChangeStart, ev, toState, toParams, fromState, fromParams
 
-        status
-
-
-
-
+        Auth

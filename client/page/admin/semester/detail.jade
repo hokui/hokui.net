@@ -3,20 +3,20 @@ a(ui-sref="admin.semester") 一覧に戻る
 div(ng-if="!!semester.id")
     h3 {{semesterIdentifierMap[semester.identifier]}}
     a(ui-sref=".edit") 編集
-    table.table.table-bordered.table-horizontal
+    table.table.table--bordered
         tr
             th ID
             td {{semester.id}}
         tr
             th 学期
-            td {{semesterIdentifierMap[semester.identifier]}}
+            td {{identifierMap[semester.identifier]}}
         tr
             th 学年
             td
                 a(ui-sref="admin.year.detail({id:semester.class_year_id})")
-                    | {{class_years.retrieve(semester.class_year_id).year}}期
+                    | {{classYears.retrieve(semester.class_year_id).year}}期
         tr
-            th
+            th 教科
             td
                 ul
                     li(ng-repeat="subject_id in semester.subject_ids")

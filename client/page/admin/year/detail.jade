@@ -1,27 +1,32 @@
-a(ui-sref="admin.year") 一覧に戻る
-alert(ng-if="!!error", type="warning") {{error}}
+a.btn.btn--xs(ui-sref="admin.year") 一覧に戻る
 
+div(ng-if="!!classYear.id")
+    ul.list-inline
+        li
+            h3 {{classYear.year}}期
+        li
+            a.btn.btn--sm.btn--primary(ui-sref=".edit") 編集
+        li
+            button.btn.btn--sm.btn--accent(type="button" ng-click="deleteYear()") {{deleteBtnLabel()}}
+        li(ng-if="deleting")
+            button.btn.btn--sm(type="button" ng-click="stopDeleting()") やっぱりやめる
 
-div(ng-if="!!year.id")
-    h3 {{year.year}}期
-    a(ui-sref=".edit") 編集
-
-    table.table.table-bordered.table-horizontal
+    table.table.table--bordered
         tr
             th ID
-            td {{year.id}}
+            td {{classYear.id}}
         tr
             th 期
-            td {{year.year}}期
+            td {{classYear.year}}期
         tr
             th カリキュラム
             td
-                a(ui-sref="admin.semester({year:year.year})") {{year.year}}期のカリキュラム
+                a(ui-sref="admin.semester({year:classYear.year})") {{classYear.year}}期のカリキュラム
         tr
             th 作成
-            td {{year.created_at | date:'yyyy年MM月dd日HH時mm分'}}
+            td {{classYear.created_at | date:'yyyy年MM月dd日HH時mm分'}}
         tr
             th 更新
-            td {{year.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
+            td {{classYear.updated_at | date:'yyyy年MM月dd日HH時mm分'}}
 
 div.admin-year-edit-view(ui-view="edit")

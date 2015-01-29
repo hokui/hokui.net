@@ -3,7 +3,7 @@
 describe 'Auth', ->
 
     beforeEach ->
-        angular.module 'AuthTestModule', (->)
+        angular.module 'AuthTestModule', [moduleCore]
         .config (TokenProvider)->
             TokenProvider.setStorageKey 'token'
             TokenProvider.setHeaderKey 'Access-Token'
@@ -12,7 +12,7 @@ describe 'Auth', ->
         .config (EnvProvider)->
             EnvProvider.setApiRoot '/api'
 
-        module moduleCore, 'AuthTestModule'
+        module 'AuthTestModule'
 
         inject ($httpBackend, Auth)->
             mockupAPI $httpBackend

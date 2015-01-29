@@ -12,7 +12,7 @@ angular.module modulePage
                 ClassYear.query().$promise
 
 .controller 'SignupCtrl',
-    ($scope, Auth, User, years, $state, Env, Notify) ->
+    ($scope, Auth, User, years, $state, Env, Notify, Responsive) ->
         $scope.user = new User()
         $scope.years = years
         $scope.errors = {}
@@ -36,3 +36,8 @@ angular.module modulePage
 
         $scope.user.birthday = new Date('1990/1/1')
         $scope.user.class_year_id = years[0].id
+
+
+        $scope.tooltipClass = ->
+            'tooltip--right' : not Responsive.xs
+            'tooltip--bottom': Responsive.xs

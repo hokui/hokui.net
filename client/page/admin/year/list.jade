@@ -1,16 +1,18 @@
-a(ui-sref="admin.year.detail.edit({id: ''})") 新規作成
+ul.list-inline
+    li
+        a.btn.btn--sm.btn--primary(ui-sref=".detail.edit({id: ''})") 新規作成
 
-table.table
+table.table.table--condensed
     thead.table__head
         tr
             th ID
             th 期
             th カリキュラム
     tbody.table__body
-        tr(ng-repeat="year in years")
-            td {{year.id}}
+        tr(ng-repeat="classYear in classYears")
+            td {{classYear.id}}
             td
-                a(ui-sref="admin.year.detail({id:year.id})")
-                    | {{year.year}}期
+                a(ui-sref="admin.year.detail({id:classYear.id})")
+                    | {{classYear.year}}期
             td
-                a(ui-sref="admin.semester({year:year.year})") {{year.year}}期のカリキュラム
+                a(ui-sref="admin.semester({class_year:classYear.year})") {{classYear.year}}期のカリキュラム

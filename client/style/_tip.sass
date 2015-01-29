@@ -1,0 +1,59 @@
+$tip-padding-v: 1px
+$tip-font-size: $font-size-small
+$tip-height: $tip-padding-v * 2 + $tip-font-size * $line-height-base
+
+$tip-margin-bottom: 2px
+
+=tip-variant($color)
+    color: $color
+    border-color: $color
+    &:not(.tip--static):not(.tip--disabled)
+        &.tip--active, &:hover
+            background-color: $color
+            color: $body-bg
+
+
+.tips
+    +clearfix
+    margin-bottom: 6px
+
+    &.tips--nomargin
+        margin-bottom: 0
+
+.tip
+    border-radius: $tip-height / 2
+    font-size: $tip-font-size
+    border-width: 1px
+    border-style: solid
+    float: left
+    margin-right: $tip-height / 2
+    margin-bottom: $tip-margin-bottom
+    display: block
+
+    &:last-child
+        margin-right: 0
+
+    & > a, span
+        display: block
+        width: 100%
+        height: 100%
+        padding: $tip-padding-v $tip-height / 2
+        +anchor-non-decoration
+        color: inherit
+
+
+.tip--disabled
+    opacity: $disabled-opacity
+
+
+.tip
+    +tip-variant($brand-primary)
+    &.tip--secondary
+        +tip-variant($brand-secondary)
+
+    &.tip--accent
+        +tip-variant($brand-accent)
+
+
+ul.tips
+    +list-unstyled

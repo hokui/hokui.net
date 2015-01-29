@@ -5,10 +5,6 @@ angular.module moduleCore
 .factory 'Notification',
     ($timeout, $q) ->
         _types = ['ok', 'warn', 'danger']
-        _type_class_map =
-            ok: 'primary'
-            warn: 'secondary'
-            danger: 'accent'
 
         _default =
             type: _types[0]
@@ -36,9 +32,6 @@ angular.module moduleCore
         interfece
         ###
 
-        alertClass: ->
-            "alert--#{_type_class_map[_current.type]}"
-
         current: ->
             _current
 
@@ -65,7 +58,7 @@ angular.module moduleCore
 
                 if options.delay?
                     d = parseInt options.delay
-                    if not isNaN p
+                    if not isNaN d
                         _current.delay = if d > 0 then d else 0
                     else
                         throw new Error "delay needs to be Int or propperly parsed to Int. You provided #{options.period}"

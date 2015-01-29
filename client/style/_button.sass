@@ -1,9 +1,9 @@
-.btn, .btn-ghost
+.btn
     display: inline-block
     margin-bottom: 0
-    font-weight: $btn-font-weight
+    font-weight: normal
     text-align: center
-    vertical-align: middle
+    v-align: middle
     touch-action: manipulation
     cursor: pointer
     background-image: none
@@ -11,7 +11,7 @@
     white-space: nowrap
     user-select: none
 
-    padding: $btn-padding-vertical $btn-padding-horizontal
+    padding: $btn-padding-v $btn-padding-h
     font-size: $font-size-base
     line-height: $line-height-base
     border-radius: $border-radius-base
@@ -26,47 +26,52 @@
     &:hover,
     &:focus,
     &.focus
-        color: $btn-default-color
         text-decoration: none
-
 
 
 .btn[disabled], .btn--disabled
     cursor: $cursor-disabled
     pointer-events: none
-    opacity: .65
+    opacity: $disabled-opacity
     box-shadow: none
 
 .btn
-    +button-variant($btn-default-color, $btn-default-bg, $btn-default-border)
+    &.btn--lg
+        font-size: $font-size-large
+        padding: $btn-padding-v-sm $btn-padding-h-lg
 
-.btn.btn--primary
-    +button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border)
+    &.btn--sm
+        font-size: $font-size-small
+        padding: $btn-padding-v-sm $btn-padding-h-sm
 
-.btn.btn--secondary
-    +button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border)
-
-.btn.btn--accent
-    +button-variant($btn-accent-color, $btn-accent-bg, $btn-accent-border)
-
+    &.btn--xs
+        font-size: $font-size-small
+        padding: $btn-padding-v-xs $btn-padding-h-xs
 
 
 
-.btn[disabled], .btn-ghost--disabled
-    cursor: $cursor-disabled
-    pointer-events: none
-    opacity: .65
-    box-shadow: none
+.btn:not(.btn--ghost)
+    +button-variant(#333, #fff, #ccc)
 
-.btn-ghost
-    +button-ghost-variant($btn-ghost-default-color)
+    &.btn--primary
+        +button-variant(#fff, $brand-primary-dark, darken($brand-primary-dark, 5%))
 
-.btn-ghost.btn-ghost--primary
-    +button-ghost-variant($btn-ghost-primary-color)
+    &.btn--secondary
+        +button-variant(#fff, $brand-secondary-dark, darken($brand-secondary-dark, 5%))
 
-.btn-ghost.btn-ghost--secondary
-    +button-ghost-variant($btn-ghost-secondary-color)
+    &.btn--accent
+        +button-variant(#fff, $brand-accent-dark, darken($brand-accent-dark, 5%))
 
-.btn-ghost.btn-ghost--accent
-    +button-ghost-variant($btn-ghost-accent-color)
+
+.btn.btn--ghost
+    +button-ghost-variant($gray)
+
+    &.btn--primary
+        +button-ghost-variant($brand-primary-dark)
+
+    &.btn--secondary
+        +button-ghost-variant($brand-secondary-dark)
+
+    &.btn--accent
+        +button-ghost-variant($brand-accent-dark)
 

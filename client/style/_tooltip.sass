@@ -15,6 +15,12 @@
         width: 0
         height: 0
 
+        border-top-color: $tooltip-bg
+        border-bottom-color: $tooltip-bg
+        border-left-color: $tooltip-bg
+        border-right-color: $tooltip-bg
+
+
     &:after
         color: $tooltip-color
         background-color: $tooltip-bg
@@ -23,8 +29,6 @@
         word-break: keep-all
         word-wrap: normal
         // set these when shown
-        min-width: $tooltip-min-width
-        max-width: $tooltip-max-width
         content: ''
         padding: 0
 
@@ -33,15 +37,39 @@
     &:after
         padding: $tooltip-padding
         content: attr(tooltip)
+        white-space: nowrap
+
+.tooltip--top
+    &:not(.tooltip--toggle):hover, &.tooltip--shown
+        &:before
+            border-style: solid
+            border-width: $tooltip-arrow-size
+            border-bottom-color: transparent
+            border-left-color: transparent
+            border-right-color: transparent
+            left: 50%
+            margin-left: - $tooltip-arrow-size
+            top: 0
+            margin-top: - $tooltip-arrow-size
+
+
+        &:after
+            left: 50%
+            top: -$tooltip-arrow-size
+            transform: translate(-50%, -100%)
+
 
 
 .tooltip--bottom:not(.tooltip--hidden)
     &:not(.tooltip--toggle):hover, &.tooltip--shown
         &:before
-            border: solid $tooltip-arrow-size transparent
-            border-bottom-color: $tooltip-bg
+            border-style: solid
+            border-width: $tooltip-arrow-size
+            border-top-color: transparent
+            border-left-color: transparent
+            border-right-color: transparent
             left: 50%
-            margin-left: - $tooltip-arrow-size / 2
+            margin-left: - $tooltip-arrow-size
             top: 100%
             margin-top: - $tooltip-arrow-size
 
@@ -53,30 +81,16 @@
             margin-top: $tooltip-arrow-size
 
 
-.tooltip--top
-    &:not(.tooltip--toggle):hover, &.tooltip--shown
-        &:before
-            border: solid $tooltip-arrow-size transparent
-            border-top-color: $tooltip-bg
-            left: 50%
-            margin-left: - $tooltip-arrow-size / 2
-            top: 0
-            margin-top: - $tooltip-arrow-size
-
-
-        &:after
-            left: 50%
-            top: -$tooltip-arrow-size
-            transform: translate(-50%, -100%)
-
-
 .tooltip--left
     &:not(.tooltip--toggle):hover, &.tooltip--shown
         &:before
-            border: solid $tooltip-arrow-size transparent
-            border-left-color: $tooltip-bg
+            border-style: solid
+            border-width: $tooltip-arrow-size
+            border-top-color: transparent
+            border-bottom-color: transparent
+            border-right-color: transparent
             left: 0
-            margin-left: - $tooltip-arrow-size
+            margin-left: - $tooltip-arrow-size - 1px
             top: 50%
             margin-top: - $tooltip-arrow-size
 
@@ -87,12 +101,14 @@
             transform: translate(-100%, -50%)
 
 
-
 .tooltip--right
     &:not(.tooltip--toggle):hover, &.tooltip--shown
         &:before
-            border: solid $tooltip-arrow-size transparent
-            border-right-color: $tooltip-bg
+            border-style: solid
+            border-width: $tooltip-arrow-size
+            border-top-color: transparent
+            border-bottom-color: transparent
+            border-left-color: transparent
             right: 0
             margin-right: - $tooltip-arrow-size
             top: 50%
@@ -106,4 +122,38 @@
             transform: translate(0%, -50%)
 
 
+.tooltip.tooltip--primary
+    &:before
+        border-top-color: $brand-primary-dark
+        border-bottom-color: $brand-primary-dark
+        border-left-color: $brand-primary-dark
+        border-right-color: $brand-primary-dark
+
+    &:after
+        color: #fff
+        background-color: $brand-primary-dark
+
+
+.tooltip.tooltip--secondary
+    &:before
+        border-top-color: $brand-secondary-dark
+        border-bottom-color: $brand-secondary-dark
+        border-left-color: $brand-secondary-dark
+        border-right-color: $brand-secondary-dark
+
+    &:after
+        color: #fff
+        background-color: $brand-secondary-dark
+
+
+.tooltip.tooltip--accent
+    &:before
+        border-top-color: $brand-accent-dark
+        border-bottom-color: $brand-accent-dark
+        border-left-color: $brand-accent-dark
+        border-right-color: $brand-accent-dark
+
+    &:after
+        color: #fff
+        background-color: $brand-accent-dark
 

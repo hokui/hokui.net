@@ -1,118 +1,141 @@
 .topfix
 .container
-    .col-sm-10.col-sm-offset-1
+    .col--sm-10.col--sm-offset-1
         h1 Signup
-        form.form.row(role="form", name="signup", ng-submit="performSignup(signup.$valid)", novalidate)
+        form.form.row(role="form" name="signup" ng-submit="performSignup(signup.$valid)" novalidate)
             .panel
                 .panel__body
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label(for="signupFamilyName") 苗字
-                        .col-sm-8
+                        .col--sm-8.tooltip.tooltip--secondary(tooltip="必須" ng-class="tooltipClass()")
                             input.form__control(
-                                type="text",
-                                name="family_name",
-                                ng-model="user.family_name",
-                                required,
-                                id="signupFamilyName",
+                                type="text"
+                                name="family_name"
+                                ng-model="user.family_name"
+                                required
+                                id="signupFamilyName"
                                 placeholder="苗字")
-                            .form__error(ng-show="signup.family_name.$dirty")
-                                span(ng-show="signup.family_name.$error.required") 入力必須項目です
+                            div(ng-show="signup.family_name.$dirty")
+                                 .form__error(ng-show="signup.family_name.$error.required") 入力必須項目です
+
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label(for="signupGivenName") 名前
-                        .col-sm-8
+                        .col--sm-8.tooltip.tooltip--secondary(tooltip="必須" ng-class="tooltipClass()")
                             input.form__control(
-                                type="text",
-                                name="given_name",
-                                ng-model="user.given_name",
-                                required,
-                                id="signupGivenName",
+                                type="text"
+                                name="given_name"
+                                ng-model="user.given_name"
+                                required
+                                id="signupGivenName"
                                 placeholder="名前")
-                            .form__error(ng-show="signup.given_name.$dirty")
-                                span(ng-show="signup.given_name.$error.required") 入力必須項目です
+                            div(ng-show="signup.given_name.$dirty")
+                                .form__error(ng-show="signup.given_name.$error.required") 入力必須項目です
+
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label(for="signupHandleName") ニックネーム
-                        .col-sm-8
+                        .col--sm-8.tooltip.tooltip--secondary(tooltip="必須" ng-class="tooltipClass()")
                             input.form__control(
-                                type="text",
-                                name="handle_name",
-                                ng-model="user.handle_name",
-                                required,
-                                id="signupHandleName",
-                                force-invalid="errors.handle_name",
+                                type="text"
+                                name="handle_name"
+                                ng-model="user.handle_name"
+                                required
+                                id="signupHandleName"
+                                force-invalid="errors.handle_name"
                                 ng-change="errors.handle_name = null"
                                 placeholder="ニックネーム")
-                            .form__error(ng-show="signup.handle_name.$dirty")
-                                span(ng-show="signup.handle_name.$error.required") 入力必須項目です
-                            .form__error(ng-if="!!errors.handle_name", ng-repeat="error in errors.handle_name")
-                                span {{error}}
+                            div(ng-show="signup.handle_name.$dirty")
+                                .form__error(ng-show="signup.handle_name.$error.required") 入力必須項目です
+                            div
+                                .form__error(ng-if="!!errors.handle_name" ng-repeat="error in errors.handle_name")
+                                    | {{error}}
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label(for="signupBirthday") 生年月日
-                        .col-sm-8.no-gutter(bind-date="user.birthday", date-changed="bd_changed($current)")
-                            .col-xs-4
+                        .col--sm-8.col--no-gutter(bind-date="user.birthday" date-changed="bd_changed($current)")
+                            .col--xs-4
                                 select.form__control(ng-model="$year" ng-options="year as  year+'年' for year in [] | range:1900:2014")
-                            .col-xs-4
+                            .col--xs-4
                                 select.form__control(ng-model="$month" ng-options="month as  month+'月' for month in [] | range:1:12")
-                            .col-xs-4
+                            .col--xs-4
                                 select.form__control(ng-model="$date" ng-options="date as  date+'日' for date in [] | range:1:$lastDate")
+
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label(for="signupEmail") ELSMメール
-                        .col-sm-8
+                        .col--sm-8.tooltip.tooltip--secondary(tooltip="必須" ng-class="tooltipClass()")
                             input.form__control(
-                                type="email",
-                                name="email",
-                                ng-model="user.email",
-                                required,
+                                type="email"
+                                name="email"
+                                ng-model="user.email"
+                                required
                                 ng-pattern="/^[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp$/"
-                                force-invalid="errors.email",
+                                force-invalid="errors.email"
                                 ng-change="errors.email = null"
-                                id="signupEmail",
+                                id="signupEmail"
                                 placeholder="example@ec.hokudai.ac.jp")
-                            .form__error(ng-show="signup.email.$dirty")
-                                div(ng-show="signup.email.$error.required") 入力必須項目です
-                                div(ng-show="signup.email.$error.email") 不正なメールアドレスです
-                                div(ng-show="!signup.email.$error.email && signup.email.$error.pattern") ELSMメールアドレスを指定してください
-                            .form__error(ng-if="!!errors.email", ng-repeat="error in errors.email")
-                                span {{error}}
+                            div(ng-show="signup.email.$dirty")
+                                .form__error(ng-show="signup.email.$error.required") 入力必須項目です
+                                .form__error(ng-show="signup.email.$error.email") 不正なメールアドレスです
+                                .form__error(ng-show="!signup.email.$error.email && signup.email.$error.pattern") ELSMメールアドレスを指定してください
+                            div
+                                .form__error(ng-if="!!errors.email" ng-repeat="error in errors.email") {{error}}
+
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label(for="signupEmailMobile") 携帯メール（空欄可）
-                        .col-sm-8
+                        .col--sm-8.tooltip.tooltip--secondary(tooltip="任意" ng-class="tooltipClass()")
                             input.form__control(
-                                type="email",
+                                type="email"
                                 name="email_mobile"
-                                ng-model="user.email_mobile",
-                                id="signupEmailMobile",
+                                ng-model="user.email_mobile"
+                                id="signupEmailMobile"
                                 placeholder="携帯メール")
-                            .form__error(ng-show="signup.email_mobile.$dirty")
-                                div(ng-show="signup.email_mobile.$error.email") 不正なメールアドレスです
+                            div(ng-show="signup.email_mobile.$dirty")
+                                .form__error(ng-show="signup.email_mobile.$error.email") 不正なメールアドレスです
 
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label 期を選択
-                        .col-sm-8
-                            input.form__control(type="radio", ng-model="user.class_year_id", id="signupYear{{year.id}}", value="{{year.id}}", name="radio", ng-repeat-start="year in years")
-                            label.form__label(for="signupYear{{year.id}}", ng-repeat-end) {{year.year}}期
+                        .col--sm-8
+                            .col--xs-6.col--sm-4.col--sm-3.col--lg-2(ng-repeat="year in years")
+                                input.form__control(type="radio" ng-model="user.class_year_id" id="signupYear{{year.id}}" value="{{year.id}}" name="radio")
+                                label.form__label(for="signupYear{{year.id}}") {{year.year}}期
 
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label(for="signupPassword") パスワード
-                        .col-sm-8
-                            input.form__control(type="password", name="password", ng-model="user.password", minlength="8", id="signupPassword", placeholder="パスワード")
-                            .form__error(ng-show="signup.password.$error.minlength") 短すぎます
+                        .col--sm-8.tooltip.tooltip--secondary(tooltip="必須" ng-class="tooltipClass()")
+                            input.form__control(
+                                type="password"
+                                name="password"
+                                ng-model="user.password"
+                                required
+                                minlength="4"
+                                id="signupPassword"
+                                placeholder="パスワード")
+                            div(ng-show="signup.password.$dirty")
+                                .form__error(ng-show="signup.password.$error.required") 入力必須項目です
+                                .form__error(ng-show="!signup.password.$error.required && signup.password.$error.minlength") 短すぎます
+
                     .form__group
-                        .col-sm-4
+                        .col--sm-4
                             label.form__label(for="signupReenteredPassword") パスワードの確認
-                        .col-sm-8
-                            input.form__control(type="password", name="reenteredPassword", ng-model="reenteredPassword", match="user.password", id="signupReenteredPassword", placeholder="もう一度パスワードを入力")
-                            .form__error(ng-show="signup.password.$dirty")
-                                div(ng-show="signup.reenteredPassword.$error.match") パスワードが一致しません
+                        .col--sm-8.tooltip.tooltip--secondary(tooltip="必須" ng-class="tooltipClass()")
+                            input.form__control(
+                                type="password"
+                                name="reenteredPassword"
+                                ng-model="reenteredPassword"
+                                required
+                                match="user.password"
+                                id="signupReenteredPassword"
+                                placeholder="もう一度パスワードを入力")
+                            div(ng-show="signup.reenteredPassword.$dirty")
+                                .form__error(ng-show="signup.reenteredPassword.$error.match") パスワードが一致しません
 
                 .panel__foot.row
-                    .col-sm-offset-4.col-sm-8
-                        button.btn.btn--primary(type="submit", ng-disabled="signup.$invalid") Signup
+                    .col--sm-offset-4.col--sm-8
+                        button.btn.btn--primary(type="submit" ng-disabled="signup.$invalid") Signup
 
