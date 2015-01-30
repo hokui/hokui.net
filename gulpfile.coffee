@@ -13,6 +13,8 @@ dateFormat = require 'dateformat'
 
 play = require 'play'
 
+
+
 sounds =
     error: 'misc/error.mp3'
 
@@ -84,10 +86,9 @@ g.task 'image', ['clean'], ->
 
 
 g.task 'css:vendor', ['clean'], ->
-    g.src "#{conf.src}/vendor/**/*.{sass,scss}"
+    g.src "#{conf.src}/vendor/**/*.scss"
     .pipe $.sass
         includePaths: [conf.bowerDir]
-        sourceComments: 'normal'
     .on 'error', onError
     .pipe $.autoprefixer()
 
@@ -100,6 +101,7 @@ g.task 'css:common', ['clean'], ->
     g.src "#{conf.src}/style/**/*.sass"
     .pipe $.sass
         sourceComments: 'normal'
+        indentedSyntax: true
     .on 'error', onError
     .pipe $.autoprefixer()
     .pipe g.dest "#{conf.dest}/style/"
@@ -107,7 +109,7 @@ g.task 'css:common', ['clean'], ->
 
 g.task 'css:app:inject', ['clean'], ->
     target = [
-        "#{conf.src}/{page,component}/**/*.{sass,scss}"
+        "#{conf.src}/{page,component}/**/*.sass"
     ]
 
     g.src "#{conf.src}/app.sass"
@@ -128,7 +130,7 @@ g.task 'css:app:inject', ['clean'], ->
 g.task 'css:app', ['clean', 'css:app:inject'], ->
     g.src "#{conf.src}/app.sass"
     .pipe $.sass
-        sourceComments: 'normal'
+        indentedSyntax: true
     .on 'error', onError
     .pipe $.autoprefixer()
     .pipe g.dest "#{conf.dest}/"
