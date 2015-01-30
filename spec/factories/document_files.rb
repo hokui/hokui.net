@@ -17,7 +17,7 @@
 FactoryGirl.define do
   factory :document_file do
     document_id       1
-    user              1
+    user_id           1
     file_name         "dummy.pdf"
     file_content_type "application/pdf"
     file_md5          "c348a159e06d03e9905ed043ab249dda"
