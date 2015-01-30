@@ -25,4 +25,30 @@ class DocumentFile < ActiveRecord::Base
   validates(:file_content_type) { presence }
   validates(:file_md5)          { presence; uniqueness }
   validates(:download_count)    { presence }
+
+  def save
+    DocumentFile.transaction do
+      self.save!
+      if @tempfile
+        @tempfile.rewind
+        File.binwrite(file_fullpath, @tempfile.read)
+      end
+    end
+    true
+  rescue => e
+    logger.error(e.inspect)
+    false
+  end
+
+  def attach_file(file_params)
+    @tempfile = file_params.tempfile
+    self.file_name = file_params.original_filename
+    self.file_content_type = file_params.content_type
+    self.file_md5 = Digest::MD5.hexdigest(@tempfile.read)
+    self
+  end
+
+  def file_fullpath
+    "#{Figaro.env.uploaded_files_dir}/#{sprintf("%06d", id)}-#{file_name}"
+  end
 end

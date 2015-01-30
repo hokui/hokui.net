@@ -11,6 +11,9 @@
 #
 
 class Document < ActiveRecord::Base
+  # NOTE Attribute `class_year` is not a reference to an instance of ClassYear,
+  # but the actual number of class year to which the document was distributed.
+
   belongs_to :subject
   has_many :document_files, dependent: :destroy
 
