@@ -26,6 +26,10 @@ class DownloadToken < ActiveRecord::Base
       .delete_all
   end
 
+  def expired?
+    Time.now - TERM_OF_VALIDITY > self.created_at
+  end
+
   private
 
   def generate_token

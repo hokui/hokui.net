@@ -35,4 +35,8 @@ Rails.application.routes.draw do
 
     match "*path" => "application#not_found", via: :all
   end
+
+  namespace :contents do
+    resources :document_files,     only: [        :show,                           ]
+  end
 end
