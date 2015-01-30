@@ -15,7 +15,7 @@ class DownloadToken < ActiveRecord::Base
   validates(:document_file_id) { presence }
   validates(:token)            { presence; uniqueness }
 
-  before_create :generate_token
+  before_validation :generate_token, on: :create
 
   private
 
