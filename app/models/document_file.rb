@@ -26,7 +26,7 @@ class DocumentFile < ActiveRecord::Base
   validates(:file_md5)          { presence; uniqueness }
   validates(:download_count)    { presence }
 
-  def save
+  def save_with_file
     DocumentFile.transaction do
       self.save!
       if @tempfile

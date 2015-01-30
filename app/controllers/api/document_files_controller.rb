@@ -4,7 +4,7 @@ class Api::DocumentFilesController < Api::ApplicationController
   def create
     document = Document.where(document_params).first_or_create!
     @document_file = document.document_files.new(document_file_params).attach_file(file_params)
-    if @document_file.save
+    if @document_file.save_with_file
       render json: @document_file, status: 201
     else
       render json: @document_file, status: 422
