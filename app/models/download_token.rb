@@ -10,12 +10,21 @@
 #
 
 class DownloadToken < ActiveRecord::Base
+  TERM_OF_VALIDITY = 30.minutes
+
   belongs_to :document_file
 
   validates(:document_file_id) { presence }
   validates(:token)            { presence; uniqueness }
 
   before_validation :generate_token, on: :create
+
+  def self.delete_expired!
+    self
+      .where
+      .not(created_at: (Time.now - TERM_OF_VALIDITY)..Time.now)
+      .delete_all
+  end
 
   private
 
