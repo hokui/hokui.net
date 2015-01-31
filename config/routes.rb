@@ -27,6 +27,16 @@ Rails.application.routes.draw do
 
     resources :semesters,          only: [:index, :show, :create, :update, :destroy]
 
+    resources :document_files,     only: [               :create                   ] do
+      member do
+        get :download_token
+      end
+    end
+
     match "*path" => "application#not_found", via: :all
+  end
+
+  namespace :contents do
+    resources :document_files,     only: [        :show,                           ]
   end
 end

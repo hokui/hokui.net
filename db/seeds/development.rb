@@ -73,3 +73,27 @@ sem1.subjects << sub1
 sem1.subjects << sub2
 sem2.subjects << sub3
 sem2.subjects << sub4
+
+sub1.documents << Document.create(subject: sub1, class_year: 93, code:    1)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code:    2)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code:   99)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 1099)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 2002)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 2004)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 2009)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 3001)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 3003)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 3004)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 4001)
+sub1.documents << Document.create(subject: sub1, class_year: 93, code: 5000)
+
+doc = Document.first
+doc.document_files << DocumentFile.create(
+  document:          doc,
+  user:              guest,
+  file_name:         "dummy.pdf",
+  file_content_type: "application/pdf",
+  file_md5:          "c348a159e06d03e9905ed043ab249dda",
+  comments:          "hoge",
+  download_count:    0
+)

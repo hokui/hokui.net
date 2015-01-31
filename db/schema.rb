@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104124737) do
+ActiveRecord::Schema.define(version: 20150129045504) do
 
   create_table "access_tokens", force: :cascade do |t|
     t.integer  "user_id",          null: false
@@ -30,6 +30,45 @@ ActiveRecord::Schema.define(version: 20150104124737) do
   end
 
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
+
+  create_table "document_files", force: :cascade do |t|
+    t.integer  "document_id",                   null: false
+    t.integer  "user_id",                       null: false
+    t.string   "file_name",                     null: false
+    t.string   "file_content_type",             null: false
+    t.string   "file_md5",                      null: false
+    t.string   "comments"
+    t.integer  "download_count",    default: 0, null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "document_files", ["document_id"], name: "index_document_files_on_document_id"
+  add_index "document_files", ["file_md5"], name: "index_document_files_on_file_md5", unique: true
+  add_index "document_files", ["user_id"], name: "index_document_files_on_user_id"
+
+  create_table "documents", force: :cascade do |t|
+    t.integer  "subject_id", null: false
+    t.integer  "class_year", null: false
+    t.integer  "code",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "documents", ["class_year"], name: "index_documents_on_class_year"
+  add_index "documents", ["code"], name: "index_documents_on_code"
+  add_index "documents", ["subject_id", "class_year", "code"], name: "index_documents_on_subject_id_and_class_year_and_code", unique: true
+  add_index "documents", ["subject_id"], name: "index_documents_on_subject_id"
+
+  create_table "download_tokens", force: :cascade do |t|
+    t.integer  "document_file_id", null: false
+    t.string   "token",            null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "download_tokens", ["document_file_id"], name: "index_download_tokens_on_document_file_id"
+  add_index "download_tokens", ["token"], name: "index_download_tokens_on_token", unique: true
 
   create_table "news", force: :cascade do |t|
     t.string   "text",       null: false

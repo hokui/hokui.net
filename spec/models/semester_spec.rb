@@ -4,7 +4,7 @@
 #
 #  id            :integer          not null, primary key
 #  class_year_id :integer          not null
-#  identifier    :string(255)      not null
+#  identifier    :string           not null
 #  created_at    :datetime
 #  updated_at    :datetime
 #
