@@ -10,3 +10,9 @@ script:
   - npm test
   - npm run gulp silent build
   - npm run gulp silent prod build
+env:
+  global:
+    secure: SDeTgjE6C1ZJsYR28UdQwv5Kp+dM9oIv5zpKC2leAnMvbfPIcqRA745O5uiEkJBl5V3MN/O5QGOmcbTcprWr4A9E+fRx0c/PDxcij8excevxKQJPGSUGky8sB6EOzFoS1QJCNmUnU3LCCub5KJrTp86Pd9q6F5BeeSIdfwwP5mU=
+after_success:
+  - openssl aes-256-cbc -k '$DEPLOY_KEY' -in config/travis_id_rsa_enc -d -a -out config/travis_id_rsa
+  - sh deploy.sh
