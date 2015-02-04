@@ -8,3 +8,5 @@ before_script:
 script:
   - CODECLIMATE_REPO_TOKEN=6379678c9245d7c0695b4a011bac7e58e9a59ee91e5486af9e3ce494d3d7f9f8 bundle exec rspec
   - npm test
+  - npm run gulp silent build
+  - npm run gulp silent prod build
