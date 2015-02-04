@@ -16,7 +16,8 @@ script:
   - npm run gulp silent prod build
 env:
   global:
-    secure: cB2TT8OlHvUW9EwWVtBgXhNxCQrUbMLHDqvZrIgK9Oa6Nd+KQp1SgYHYLeQQzRxxp62K3k6jp+xJk+YQgj33Oh0k9YQxT1A95iCzaNvs505qWZHqRzg+sWTXTm0BLb3kzE5r3lqpiwfpYGTivEh8xbh+WZ+4T42tSMC+lUyuDk4=
+    - secure: cB2TT8OlHvUW9EwWVtBgXhNxCQrUbMLHDqvZrIgK9Oa6Nd+KQp1SgYHYLeQQzRxxp62K3k6jp+xJk+YQgj33Oh0k9YQxT1A95iCzaNvs505qWZHqRzg+sWTXTm0BLb3kzE5r3lqpiwfpYGTivEh8xbh+WZ+4T42tSMC+lUyuDk4=
+    - secure: Id68bv85yig92Xd6+2MqDFOZLxvR11BKSveZ+wpbgwSspFp/ol7sL7ut8cB39Uw3Rr2zB6ijO1fW1tcl3zJLYoWdqFpebPoTIy3bp76AeKaunNe0Dl6HgmQAq/UsDYnO1i+rp0Mj7hpZIpuxL1rqpNKY9ypJ317pTbcpBDnBkh8=
 after_success:
   - openssl aes-256-cbc -k '$DEPLOY_KEY' -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa
   - sh deploy.sh
