@@ -7,32 +7,27 @@ angular.module modulePage
         url: '/style'
         templateUrl: '/page/style/style.html'
         controller: 'StyleCtrl'
+        data:
+            title: '北医ネット - スタイル確認ページ'
 
 .controller 'StyleCtrl',
     ($scope, $animate, Notify) ->
         $scope.notify = (type)->
             Notify 'アラート', type: type
 
-        $scope.tooltipStyle = 0
-        $scope.tooltipClass = ->
-            'tooltip--primary': $scope.tooltipStyle is 1
-            'tooltip--secondary': $scope.tooltipStyle is 2
-            'tooltip--accent': $scope.tooltipStyle is 3
+        $scope.tooltipClass = ''
+        $scope.tooltipColor = (cls)->
+            $scope.tooltipClass = cls
 
 
-        $scope.barIconType = 'bars'
+        $scope.bariconClass = ['baricon--bars', '']
 
-        $scope.barIconToTimes = ->
-            $scope.barIconType = 'times'
-        $scope.barIconToCircle = ->
-            $scope.barIconType = 'circle'
-        $scope.barIconToBars = ->
-            $scope.barIconType = 'bars'
+        $scope.bariconTransform = (cls)->
+            $scope.bariconClass[0] = cls
+            console.log 'trans'
 
-        $scope.barClass = ->
-            t =
-                bars: 'baricon--bars'
-                circle: 'baricon--circle'
-                times: 'baricon--times'
-            t[$scope.barIconType]
-
+        $scope.bariconColor = (cls)->
+            if cls
+                $scope.bariconClass[1] = cls
+            else
+                $scope.bariconClass[1] = ''
