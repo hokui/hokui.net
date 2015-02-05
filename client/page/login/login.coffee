@@ -7,6 +7,8 @@ angular.module modulePage
         url: '/login'
         templateUrl: '/page/login/login.html'
         controller: 'LoginCtrl'
+        data:
+            title: '北医ネット - ログイン'
 
 .controller 'LoginCtrl',
     ($scope, $state, Auth, Notify, Env) ->

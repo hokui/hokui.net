@@ -10,6 +10,8 @@ angular.module modulePage
         resolve:
             years: (ClassYear)->
                 ClassYear.query().$promise
+        data:
+            title: '北医ネット - ユーザー登録'
 
 .controller 'SignupCtrl',
     ($scope, Auth, User, years, $state, Env, Notify, Responsive) ->
@@ -39,5 +41,5 @@ angular.module modulePage
 
 
         $scope.tooltipClass = ->
-            'tooltip--right' : not Responsive.xs
+            'tooltip--left' : not Responsive.xs
             'tooltip--bottom': Responsive.xs
