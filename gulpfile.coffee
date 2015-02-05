@@ -108,13 +108,18 @@ g.task 'css:common', ['clean'], ->
 
 
 g.task 'css:app:inject', ['clean'], ->
-    target = [
-        "#{conf.src}/{page,component}/**/*.sass"
-    ]
+    targetFiles =
+    g.src("#{conf.src}/{page,component}/**/*.sass", read: false)
+    .pipe sort (a, b)->
+        if a < b
+            return -1
+        if a > b
+            return 1
+        0
 
     g.src "#{conf.src}/app.sass"
     .pipe $.inject(
-        g.src(target, read: false),
+        targetFiles,
             starttag: '// inject:sass'
             endtag: '// endinject'
             transform: (filePath, file, i, length)->
@@ -123,12 +128,6 @@ g.task 'css:app:inject', ['clean'], ->
             addRootSlash: false
     )
     .on 'error', onError
-    .pipe sort (a, b)->
-        if a < b
-            return -1
-        if a > b
-            return 1
-        0
     .pipe g.dest "#{conf.src}/"
 
 
