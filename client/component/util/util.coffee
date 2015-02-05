@@ -13,3 +13,7 @@ angular.module moduleComponent
         input.push(i) for i in [parseInt(min)..parseInt(max)]
         input
 
+
+.factory 'NotFound', ($state, $location)->
+    ->
+        $state.transitionTo '404', {url: $location.absUrl()}, location: false
