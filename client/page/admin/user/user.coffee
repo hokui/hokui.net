@@ -39,17 +39,24 @@ angular.module modulePage
         $scope.getClassYearLabel = (user)->
             $scope.classYears.retrieve(user.class_year_id).year
 
-        $scope.doApproveUser = (user)->
+        $scope.doApproveUser = (user, fake)->
             if not $scope.approvable(user)
                 Notify 'すでに認証済みのユーザーです。', type: 'warn'
 
-            $http.post "#{api.apiRoot()}/users/#{user.id}/approve",
-                {}
-            .success (data)->
+            onSuccess =(data)->
                 user.approval_state = 'approved'
                 Notify "「#{user.handle_name}」さんを認証しました。"
-            .error (res)->
+
+            onError =(err)->
                 Notify 'ユーザーの認証に失敗しました。', type: 'danger'
+
+            if not fake
+                $http.post "#{api.apiRoot()}/users/#{user.id}/approve",
+                    {}
+                .success onSuccess
+                .error onError
+            else
+                onSuccess()
 
 .controller 'AdminUserListCtrl',
     ($scope, $templateCache, Notify, ResourceFilterItem, ResourceFilterItems, ResourceFilterGroup) ->
@@ -102,24 +109,40 @@ angular.module modulePage
 
         approvingUsers = {}
 
-        $scope.approveUser = (user)->
-            if approvingUsers[user.id]
-                $scope.doApproveUser user
-            else
-                approvingUsers[user.id] = true
-                Notify 'もう一度クリックすると認証します。'
+        $scope.startApproveUser = (user)->
+            approvingUsers[user.id] = true
 
         $scope.cancelApproveUser = (user)->
-            console.log user
+            approvingUsers[user.id] = false
 
-        # activation_state
-        #   pending : メール認証待ち
-        #   active  : メール認証済
-        # approval_state
-        #   waiting : 管理人承認待ち
-        #   approved: active!
+        statusMap =
+            admin:
+                bariconClass: ['baricon--star', 'baricon--secondary']
+                label: '管理者'
+            active:
+                bariconClass: ['baricon--heart', 'baricon--accent']
+                label: '通常ユーザー'
+            waiting:
+                bariconClass: ['baricon--exclamation', 'baricon--primary', 'clickable']
+                label: '管理人認証待ち'
+                event: (user)->
+                    $scope.startApproveUser user
+            approve_processing:
+                bariconClass: ['baricon--check', 'baricon--primary', 'clickable']
+                label: 'もう一度クリックして認証'
+                event: (user)->
+                    $scope.doApproveUser user
+                blur: (user)->
+                    console.log 'blur'
+                    $scope.cancelApproveUser user
+            pending:
+                bariconClass: 'baricon--times'
+                label: 'メール認証待ち'
+            unknown:
+                bariconClass: 'baricon--question'
+                label: '不明な状態'
 
-        $scope.status = (user)->
+        $scope.userStatus = (user)->
             t = ''
             switch user.activation_state
                 when 'pending'
@@ -132,14 +155,16 @@ angular.module modulePage
                             else
                                 t = 'waiting'
                         when 'approved'
-                            t = 'active'
+                            if user.admin
+                                t = 'admin'
+                            else
+                                t = 'active'
                         else
-                            t = 'annon'
+                            t = 'unknown'
                 else
-                    t = 'annon'
+                    t = 'unknown'
 
-            template = "admin.user.list.status.#{t}.html"
-
+            statusMap[t]
 
 .controller 'AdminUserDetailCtrl',
     ($scope, $state, $stateParams, Notify) ->
