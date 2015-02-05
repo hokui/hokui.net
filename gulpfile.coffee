@@ -123,7 +123,12 @@ g.task 'css:app:inject', ['clean'], ->
             addRootSlash: false
     )
     .on 'error', onError
-    .pipe sort (a, b)-> a < b
+    .pipe sort (a, b)->
+        if a < b
+            return -1
+        if a > b
+            return 1
+        0
     .pipe g.dest "#{conf.src}/"
 
 
