@@ -163,7 +163,6 @@
 
 .navbar__collapse-button
     +button-non-decoration
-    outline: 0
     float: right
     height: $navbar-collapse-button-size
     margin-top: ($navbar-height-xs - $navbar-collapse-button-size) / 2
@@ -172,5 +171,6 @@
         display: none
 
 .baricon--navbar
-    +baricon-variant($navbar-collapse-button-size, #ccc)
+    +baricon-size($navbar-collapse-button-size)
+    +baricon-color(#ccc)
 

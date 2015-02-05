@@ -1,7 +1,7 @@
 //== NOTE: .tooltip makes element 'position: relative'
 
 
-.tooltip[tooltip]
+.tooltip
     z-index: $tooltip-z
     position: relative
 
@@ -32,14 +32,16 @@
         content: ''
         padding: 0
 
-.tooltip:not(.tooltip--toggle):hover, .tooltip.tooltip--shown
 
-    &:after
-        padding: $tooltip-padding
-        content: attr(tooltip)
-        white-space: nowrap
+.tooltip[tooltip]
+    &.tooltip:not(.tooltip--toggle):hover, &.tooltip--shown
+        &:after
+            padding: $tooltip-padding
+            content: attr(tooltip)
+            white-space: nowrap
 
-.tooltip--top
+
+.tooltip.tooltip--top
     &:not(.tooltip--toggle):hover, &.tooltip--shown
         &:before
             border-style: solid
@@ -59,8 +61,7 @@
             transform: translate(-50%, -100%)
 
 
-
-.tooltip--bottom:not(.tooltip--hidden)
+.tooltip.tooltip--bottom:not(.tooltip--hidden)
     &:not(.tooltip--toggle):hover, &.tooltip--shown
         &:before
             border-style: solid
@@ -81,7 +82,7 @@
             margin-top: $tooltip-arrow-size
 
 
-.tooltip--left
+.tooltip.tooltip--left
     &:not(.tooltip--toggle):hover, &.tooltip--shown
         &:before
             border-style: solid
@@ -101,7 +102,7 @@
             transform: translate(-100%, -50%)
 
 
-.tooltip--right
+.tooltip.tooltip--right
     &:not(.tooltip--toggle):hover, &.tooltip--shown
         &:before
             border-style: solid
@@ -122,7 +123,7 @@
             transform: translate(0%, -50%)
 
 
-.tooltip.tooltip--primary
+.tooltip--primary
     &:before
         border-top-color: $brand-primary-dark
         border-bottom-color: $brand-primary-dark
@@ -134,7 +135,7 @@
         background-color: $brand-primary-dark
 
 
-.tooltip.tooltip--secondary
+.tooltip--secondary
     &:before
         border-top-color: $brand-secondary-dark
         border-bottom-color: $brand-secondary-dark
@@ -146,7 +147,7 @@
         background-color: $brand-secondary-dark
 
 
-.tooltip.tooltip--accent
+.tooltip--accent
     &:before
         border-top-color: $brand-accent-dark
         border-bottom-color: $brand-accent-dark
