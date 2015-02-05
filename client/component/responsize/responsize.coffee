@@ -43,3 +43,6 @@ angular.module moduleComponent
     sm: false
     md: false
     ls: false
+
+.run ($rootScope, Responsive)->
+    $rootScope.Responsive = Responsive
