@@ -10,6 +10,7 @@ angular.module moduleCore
             type: _types[0]
             period: 4000
             delay: 0
+            autoHide: true
 
         _visible = false
         _message = ''
@@ -27,10 +28,6 @@ angular.module moduleCore
             if _timeout_promise?
                 $timeout.cancel _timeout_promise
                 timeout_promise = null
-
-        ###*
-        interfece
-        ###
 
         current: ->
             _current
@@ -63,6 +60,10 @@ angular.module moduleCore
                     else
                         throw new Error "delay needs to be Int or propperly parsed to Int. You provided #{options.period}"
 
+                _current.autoHide = true
+                if options.autoHide?
+                    _current.autoHide = !!options.autoHide
+
             _message = message
 
             _inner_show = =>
@@ -91,4 +92,5 @@ angular.module moduleCore
 
 .run ($rootScope, Notification)->
     $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
-        Notification.hide()
+        if Notification.current().autoHide
+            Notification.hide()

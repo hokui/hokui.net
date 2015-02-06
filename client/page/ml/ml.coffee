@@ -12,6 +12,7 @@ angular.module modulePage
                 role: 'user'
                 error: '/ml 以下へアクセスするにはログインしてください。'
                 next: 'login'
+            title: '北医ネット - メーリングリスト'
 
 .controller 'MlCtrl',
     ($scope) ->

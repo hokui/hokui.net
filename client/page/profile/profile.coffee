@@ -12,6 +12,7 @@ angular.module modulePage
                 role: 'user'
                 error: '/profile 以下へアクセスするにはログインしてください。'
                 next: 'login'
+            title: '北医ネット - プロフィール'
 
 .controller 'ProfileCtrl',
     ($scope) ->

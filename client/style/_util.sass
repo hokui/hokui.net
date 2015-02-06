@@ -62,31 +62,26 @@
         padding-right: 5px
 
 
-.primary-text
+.text-primary
     color: $brand-primary
-.secondary-text
+.text-secondary
     color: $brand-secondary
-.accent-text
+.text-accent
     color: $brand-accent
 
-.primary-bg
-    color: $body-bg
-    background-color: $brand-primary
-.secondary-bg
-    color: $body-bg
-    background-color: $brand-secondary
-.accent-bg
-    color: $body-bg
-    background-color: $brand-accent
 
 .v-spacer
     margin-bottom: $line-height-computed
 
+.nobr
+    white-space: nowrap
 
-button.button-unstyled
-    padding: 0
+.clickable
     cursor: pointer
-    background: transparent
-    border: 0
-    -webkit-appearance: none
+
+.inline-block
+    display: inline-block
+
+.button-unstyled
+    +button-non-decoration
 

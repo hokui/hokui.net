@@ -40,25 +40,29 @@
 
 =button-non-decoration
     border: 0
-    padding: 0px
+    padding: 0
     background-color: transparent
+    outline: 0
+    -webkit-appearance: none
 
 
 =list-unstyled
     padding-left: 0
     list-style: none
+
+
 //************
 // responsive
 //************
 
-@import "mixin/responsive"
+@import mixin/responsive
 
 
 //************
 // button
 //************
 
-@import "mixin/button"
+@import mixin/button
 
 
 //************
@@ -75,10 +79,4 @@
 // baricon
 //************
 
-=baricon-variant($size, $color)
-    width: $size
-    height: $size
-    font-size: $size
-    .baricon__bar
-        background-color: $color
-        border-color: $color
+@import mixin/baricon

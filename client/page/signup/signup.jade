@@ -1,7 +1,7 @@
 .topfix
 .container
     .col--sm-10.col--sm-offset-1
-        h1 Signup
+        h1 ユーザー登録
         form.form.row(role="form" name="signup" ng-submit="performSignup(signup.$valid)" novalidate)
             .panel
                 .panel__body
@@ -86,7 +86,7 @@
                     .form__group
                         .col--sm-4
                             label.form__label(for="signupEmailMobile") 携帯メール（空欄可）
-                        .col--sm-8.tooltip.tooltip--secondary(tooltip="任意" ng-class="tooltipClass()")
+                        .col--sm-8.tooltip.tooltip--primary(tooltip="任意" ng-class="tooltipClass()")
                             input.form__control(
                                 type="email"
                                 name="email_mobile"

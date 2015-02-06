@@ -4,37 +4,46 @@ angular.module modulePage
 .config ($stateProvider) ->
     $stateProvider
     .state 'activate',
-        url: '/activate?activation_token'
+        url: '/activate?activation_token?fake'
         templateUrl: '/page/activate/activate.html'
         controller: 'ActivateCtrl'
+        data:
+            title: '北医ネット - ユーザー認証'
 
 .controller 'ActivateCtrl',
-    ($scope, User, $stateParams, $timeout, $http, $state, Env) ->
+    ($scope, $stateParams, $timeout, $http, $state, Env, Notify, NotFound) ->
         token = $stateParams.activation_token
-        if not token?
-            $state.go 'main'
+        fake = $stateParams.fake
+        if token? or (fake? and Env.dev)
+        else
+            NotFound()
+            return
 
-        $scope.status = '処理中..'
+        $scope.completed = false
+        $scope.template = 'activate.processing.html'
 
-        admin = 'hokui.net@gmail.com'
+        onSuccess = (data)->
+            $scope.completed = true
+            $scope.template = 'activate.success.html'
+            Notify 'ユーザー認証に成功しました。管理者の承認をお待ちください。',
+                period: -1
+                autoHide: false
 
-        $http.post "#{Env.apiRoot()}/users/activate",
-            activation_token: token
-        .success (data)->
-            sec = 5
-            left = false
-            unregister = $scope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
-                left = true
-                unregister()
-            countDown = ->
-                $scope.status = "正常に受理されました。管理者の承認をお待ちください。#{sec}秒後にトップに戻ります"
-                sec = sec - 1
-                if sec < 0
-                    if not left
-                        $state.go 'home'
-                else
-                    $timeout countDown, 1000
-            countDown()
+        onError = (err)->
+            $scope.completed = true
+            $scope.template = 'activate.error.html'
+            Notify 'すでに認証が行われているか、無効なURLです。',
+                period: -1
+                autoHide: false
+                type: 'danger'
 
-        .error (err)->
-            $scope.status = "すでに登録の受付が行われているか、無効なURLです。ご不明な点がありましたら、#{admin}までお問い合わせください。"
+        if fake?
+            if fake is 'fail'
+                $timeout onError, 2000
+            else
+                $timeout onSuccess, 2000
+        else
+            $http.post "#{Env.apiRoot()}/users/activate",
+                activation_token: token
+            .success onSuccess
+            .error onError

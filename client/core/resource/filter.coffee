@@ -55,7 +55,7 @@ angular.module moduleCore
                     @multiple = multiple
 
             showAll = new ResourceFilterItem
-                label: 'すべて表示'
+                label: 'すべて'
                 search: -> true
             showAll.active = true
             @add showAll

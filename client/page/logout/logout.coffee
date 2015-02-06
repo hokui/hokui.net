@@ -7,6 +7,8 @@ angular.module modulePage
         url: '/logout'
         templateUrl: '/page/logout/logout.html'
         controller: 'LogoutCtrl'
+        data:
+            title: '北医ネット - ログアウト'
 
 .controller 'LogoutCtrl',
     ($scope, $state, Auth, Notify) ->

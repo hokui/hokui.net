@@ -31,7 +31,7 @@ angular.module moduleConfig, [
             return false
 
     $urlRouterProvider.otherwise ($injector)->
-        $injector.get('$state').go '404', url: $injector.get('$location').absUrl()
+        $injector.get('NotFound')()
 
 
 .config (TokenProvider)->
@@ -46,6 +46,9 @@ angular.module moduleConfig, [
 .config (AuthProvider)->
     AuthProvider.setAutoCheck true
 
+.config (TitleProvider)->
+    TitleProvider.setDefault '北医ネット'
+
 .run ($rootScope, Restrict, $state, Auth, Notify)->
 
     $rootScope.$on Auth.getAltStateChangeStart(), (ev, stateChangeStart, toState, toParams, fromState, fromParams)->
@@ -59,5 +62,6 @@ angular.module moduleConfig, [
             stateChangeStart.preventDefault()
 
     $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams, error)->
-        console.log 'error'
+        Notify 'ページの表示に失敗しました。', period: -1, type: 'danger'
+
 
