@@ -95,12 +95,11 @@ angular.module moduleCore
                     B = b[key]
                     if A is B
                         continue
+
                     if _.isString(A) and _.isString(B)
                         return A.localeCompare B
-                    else
-                        return A - B
 
-                   a[key] > b[key]
+                    A - B
 
 .factory 'ResourceStore', (ResourceSorter)->
     class ResourceStore
