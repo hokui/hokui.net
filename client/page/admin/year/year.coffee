@@ -18,8 +18,15 @@ angular.module modulePage
                 templateUrl: '/page/admin/year/list.html'
                 controller: 'AdminYearListCtrl'
 
+    .state 'admin.year.new',
+        url: '/new',
+        views:
+            'main@admin.year':
+                templateUrl: '/page/admin/year/edit.html'
+                controller: 'AdminYearEditCtrl'
+
     .state 'admin.year.detail',
-        url: '/:id',
+        url: '/{id:int}',
         views:
             'main@admin.year':
                 templateUrl: '/page/admin/year/detail.html'
@@ -35,7 +42,7 @@ angular.module modulePage
 
 .controller 'AdminYearCtrl',
     ($scope, classYears, ResourceStore) ->
-        $scope.classYears = ResourceStore classYears
+        $scope.classYears = new ResourceStore classYears
 
 
 
@@ -44,37 +51,27 @@ angular.module modulePage
 
 
 .controller 'AdminYearDetailCtrl',
-    ($scope, ClassYear, $state, $stateParams, Notify) ->
-        year_id = $stateParams.id
+    ($scope, ClassYear, $state, $stateParams, Notify, NotFound) ->
 
-        if year_id isnt ''
-            $scope.classYear =$scope.classYears.retrieve year_id
-            if not $scope.classYear?
-                $state.go 'admin.year'
-                Notify "Not found class_year(id: \"#{year_id}\")", type: 'warning'
+        if not $scope.classYear = $scope.classYears.retrieve $stateParams.id
+            NotFound()
 
         $scope.deleting = false
 
-        $scope.doDeleteYear = ->
+        $scope.doDeleteClassYear = ->
             $scope.classYear.$remove {}, (data)->
                 $scope.classYears.del $scope.classYear
                 $state.go 'admin.year'
                 Notify '削除しました。', type: 'danger'
 
-        $scope.deleteYear = ->
+        $scope.deleteClassYear = ->
             if $scope.deleting
-                $scope.doDeleteYear()
+                $scope.doDeleteClassYear()
             else
                 $scope.deleting = true
 
         $scope.stopDeleting = ->
             $scope.deleting = false
-
-        $scope.deleteBtnLabel = ->
-            if $scope.deleting
-                return "マジで削除する"
-            else
-                return '削除する'
 
 
 .controller 'AdminYearEditCtrl',
@@ -83,9 +80,9 @@ angular.module modulePage
         $scope.title = if $scope.editing then '編集' else '新規作成'
 
         if $scope.editing
-            $scope.new_year = angular.copy $scope.classYear
+            $scope.newClassYear = angular.copy $scope.classYear
         else
-            $scope.new_year = new ClassYear()
+            $scope.newClassYear = new ClassYear()
 
         $scope.errors = {}
 
@@ -93,16 +90,16 @@ angular.module modulePage
             Notify '入力にエラーがあります。', type: 'warn'
             $scope.errors = res.data.errors
 
-        $scope.doSaveYear = (valid)->
+        $scope.doSaveClassYear = (valid)->
             if valid
                 if $scope.editing
-                    $scope.new_year.$update {}, (data)->
+                    $scope.newClassYear.$update {}, (data)->
                         $scope.classYears.set data
                         $state.go 'admin.year.detail', {id: data.id}
                         Notify '保存しました。'
                     , onError
                 else
-                    $scope.new_year.$save {}, (data)->
+                    $scope.newClassYear.$save {}, (data)->
                         $scope.classYears.set data
                         $state.go 'admin.year.detail', {id: data.id}
                         Notify '新規作成しました。'

@@ -20,7 +20,7 @@ form.form(role="form" ng-submit="doSaveSemester(semesterForm.$valid)", name="sem
                     select.form__control(
                         name="classYear"
                         ng-model="new_semester.class_year_id"
-                        ng-options="v.id as v.year for v in classYears"
+                        ng-options="v.id as v.year for v in classYears.original()"
                         required
                         id="semesterClassYear")
             .form__group
@@ -28,7 +28,7 @@ form.form(role="form" ng-submit="doSaveSemester(semesterForm.$valid)", name="sem
                     label.form__label 教科
                 .col--md-10
                     //- !!no validation for this!!
-                    .col--sm-6.col--md-4.col--lg-3.no-gutter(ng-repeat="subject in subjects | filter: subjectFilter")
+                    .col--sm-6.col--md-4.col--lg-3.no-gutter(ng-repeat="subject in subjects.filtered().original()")
                         input.form__control(
                             type="checkbox"
                             id="semesterSubject{{subject.id}}"
@@ -40,10 +40,8 @@ form.form(role="form" ng-submit="doSaveSemester(semesterForm.$valid)", name="sem
             .clearfix
                 .pull-left
                     div(ng-if="editing")
-                        a.btn(ui-sref="admin.semester.detail({id: semester.id})" tabindex="-1") 詳細に戻る
+                        a.btn(ui-sref="admin.semester.detail({id: semester.id})" tabindex="-1") 編集をやめる
                     div(ng-if="!editing")
                         a.btn(ui-sref="admin.semester" tabindex="-1") 一覧に戻る
                 .pull-right
                     button.btn.btn--primary(type="submit") 保存
-                    button.btn.btn--accent(type="button" ng-if="editing" ng-click="deleteSemester()") {{deleteBtnLabel()}}
-                    button.btn(type="button" ng-if="deleting" ng-click="stopDeleting()") やっぱりやめる

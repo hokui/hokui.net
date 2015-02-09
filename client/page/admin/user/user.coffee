@@ -21,7 +21,7 @@ angular.module modulePage
                 controller: 'AdminUserListCtrl'
 
     .state 'admin.user.detail',
-        url: '/:id',
+        url: '/{id:int}',
         views:
             'main@admin.user':
                 templateUrl: '/page/admin/user/detail.html'
@@ -30,8 +30,8 @@ angular.module modulePage
 
 .controller 'AdminUserCtrl',
     ($scope, $http, $state, Notify, ResourceStore, Env, users, classYears) ->
-        $scope.users = ResourceStore users
-        $scope.classYears = ResourceStore classYears
+        $scope.users = new ResourceStore users
+        $scope.classYears = new ResourceStore classYears
 
         $scope.approvable = (user)->
             user.activation_state is 'active' and user.approval_state is 'waiting'
@@ -59,53 +59,60 @@ angular.module modulePage
                 onSuccess()
 
 .controller 'AdminUserListCtrl',
-    ($scope, $templateCache, Notify, ResourceFilterItem, ResourceFilterItems, ResourceFilterGroup) ->
-        # order
-        $scope.predicate = 'id'
-        $scope.reversed = false
-        $scope.predicateStatus = ['activation_state', 'approval_state']
+    ($scope, $templateCache, Notify, ResourceFilter, ResourceFieldSorter, ResourceSorter) ->
+        $scope.idSorter = new ResourceSorter()
 
-        $scope.orderBy = (field)->
-            if $scope.predicate is field
-                $scope.reversed = not $scope.reversed
-            else
-                $scope.predicate = field
-                $scope.reversed = false
+        classYearMap = $scope.classYears.getMap()
+        $scope.classYearSorter = new ResourceSorter (a, b)->
+            classYearMap[a.class_year_id].year > classYearMap[b.class_year_id].year
 
+        $scope.handleNameSorter = new ResourceFieldSorter ['handle_name']
+        $scope.fullNameSorter = new ResourceFieldSorter ['full_name']
+        $scope.statusSorter = new ResourceFieldSorter ['admin', 'activation_state', 'approval_state']
 
-        $scope.stateFilter = new ResourceFilterItems()
-        .addItem
-            label: 'メール認証待ち'
-            search: (user)->
+        $scope.setSorter = $scope.idSorter
+
+        userFilter = new ResourceFilter()
+
+        $scope.stateFilter = new ResourceFilter
+            parent: userFilter
+            alternative: true
+
+        .append new ResourceFilter
+            label: 'メール承認待ち'
+            filter: (user)->
                 user.activation_state is 'pending'
-        .addItem
+        .append new ResourceFilter
             label: '管理人承認待ち'
-            search: (user)->
+            filter: (user)->
                 user.activation_state is 'active' and user.approval_state is 'waiting'
-        .addItem
+        .append new ResourceFilter
             label: '管理者'
-            search: (user)->
+            filter: (user)->
                 user.admin
 
-        $scope.classYearFilter = new ResourceFilterItems()
-        angular.forEach $scope.classYears, (cy)->
-            $scope.classYearFilter.addItem
-                label: "#{cy.year}期",
-                search: (model)->
-                    model.class_year_id is cy.id
+        $scope.classYearFilter = new ResourceFilter
+            parent: userFilter
+            alternative: true
 
-        $scope.nameFilter = new ResourceFilterItem
-            search: (model)->
+        _.forEach $scope.classYears.original, (cy)->
+            $scope.classYearFilter.append new ResourceFilter
+                label: "#{cy.year}期",
+                filter: (user)->
+                    user.class_year_id is cy.id
+
+        $scope.nameFilter = new ResourceFilter
+            parent: userFilter
+            value: ''
+            filter: (user)->
                 exp = new RegExp @value
-                hname = model.handle_name.match exp
-                fname = model.full_name.match exp
+                hname = user.handle_name.match exp
+                fname = user.full_name.match exp
                 hname or fname
 
 
-        $scope.userFilter = new ResourceFilterGroup()
-        .add $scope.stateFilter
-        .add $scope.classYearFilter
-        .add $scope.nameFilter
+        $scope.users.setFilter userFilter
+
 
         approvingUsers = {}
 
@@ -133,7 +140,6 @@ angular.module modulePage
                 event: (user)->
                     $scope.doApproveUser user
                 blur: (user)->
-                    console.log 'blur'
                     $scope.cancelApproveUser user
             pending:
                 bariconClass: 'baricon--times'
@@ -167,26 +173,22 @@ angular.module modulePage
             statusMap[t]
 
 .controller 'AdminUserDetailCtrl',
-    ($scope, $state, $stateParams, Notify) ->
+    ($scope, $state, $stateParams, Notify, NotFound) ->
         user_id = $stateParams.id
 
-        $scope.deleting = false
-        $scope.user = $scope.users.retrieve user_id
+        if not $scope.user = $scope.users.retrieve $stateParams.id
+            NotFound()
 
+        $scope.deleting = false
         $scope.doDeleteUser = (user)->
             user_name = user.handle_name
             user.$remove (data)->
-                $scope.users.del user
+                $scope.users.remove user
                 $state.go 'admin.user'
                 Notify "「#{user_name}」さんを削除しました。", type: 'danger'
             , (err)->
-                Notify "ユーザーの削除に失敗しました。", type: 'danger'
+                Notify 'ユーザーの削除に失敗しました。', type: 'danger'
 
-        $scope.deleteBtnLabel = ()->
-            if $scope.deleting
-                return "マジで削除する"
-            else
-                return '削除する'
 
         $scope.stopDeleting = ->
             $scope.deleting = false

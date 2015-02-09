@@ -18,8 +18,16 @@ angular.module modulePage
                 templateUrl: '/page/admin/subject/list.html'
                 controller: 'AdminSubjectListCtrl'
 
+
+    .state 'admin.subject.new',
+        url: '/new',
+        views:
+            'main@admin.subject':
+                templateUrl: '/page/admin/subject/edit.html'
+                controller: 'AdminSubjectEditCtrl'
+
     .state 'admin.subject.detail',
-        url: '/:id',
+        url: '/{id:int}',
         views:
             'main@admin.subject':
                 templateUrl: '/page/admin/subject/detail.html'
@@ -35,49 +43,44 @@ angular.module modulePage
 
 .controller 'AdminSubjectCtrl',
     ($scope, ResourceStore, subjects) ->
-        $scope.subjects = ResourceStore subjects
+        $scope.subjects = new ResourceStore subjects
 
 
 .controller 'AdminSubjectListCtrl',
-    ($scope, ResourceFilterItem, ResourceFilterGroup) ->
-        $scope.predicate = 'id'
-        $scope.reversed = false
+    ($scope, ResourceFilter, ResourceFieldSorter, ResourceSorter)->
+        $scope.idSorter = new ResourceSorter()
+        $scope.titleJaSorter = new ResourceFieldSorter ['title_ja']
+        $scope.titleEnSorter = new ResourceFieldSorter ['title_en']
 
-        $scope.orderBy = (field)->
-            if $scope.predicate is field
-                $scope.reversed = not $scope.reversed
-            else
-                $scope.predicate = field
-                $scope.reversed = false
+        $scope.subjects.setSorter $scope.idSorter
 
-        $scope.titleFilter = new ResourceFilterItem
-            search: (model)->
+        subjectFilter = new ResourceFilter()
+
+        $scope.titleFilter = new ResourceFilter
+            parent: subjectFilter
+            value: ''
+            filter: (subject)->
                 exp = new RegExp @value
-                en = model.title_en.match exp
-                ja = model.title_ja.match exp
+                en = subject.title_en.match exp
+                ja = subject.title_ja.match exp
                 en or ja
 
-        $scope.subjectFilter = new ResourceFilterGroup()
-        .add $scope.titleFilter
+        $scope.subjects.setFilter subjectFilter
 
 
 .controller 'AdminSubjectDetailCtrl',
-    ($scope, Subject, $state, $stateParams, Notify) ->
+    ($scope, Subject, $state, $stateParams, Notify, NotFound) ->
 
-        if subject_id = $stateParams.id
-            $scope.subject = $scope.subjects.retrieve subject_id
-            if not $scope.subject?
-                $state.go 'admin.subject'
-                Notify "Not found subject has id: #{subject_id}", type: 'warn'
-        else
-            if $state.current.name is not 'admin.subject.detail.edit'
-                $state.go 'admin.subject'
+        $scope.subject = $scope.subjects.retrieve $stateParams.id
+        if not $scope.subject?
+            NotFound()
+            return
 
         $scope.deleting = false
 
         $scope.doDeleteSubject = ()->
             $scope.subject.$remove {}, (data)->
-                $scope.subjects.del $scope.subject
+                $scope.subjects.remove $scope.subject
                 $state.go 'admin.subject'
                 Notify '削除しました。', type: 'danger'
 
@@ -89,12 +92,6 @@ angular.module modulePage
 
         $scope.stopDeleting = ->
             $scope.deleting = false
-
-        $scope.deleteBtnLabel = ()->
-            if $scope.deleting
-                return "マジで削除する"
-            else
-                return '削除する'
 
 
 .controller 'AdminSubjectEditCtrl',
