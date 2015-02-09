@@ -12,7 +12,7 @@ angular.module moduleCore
         _header_key
 
     setHeaderKey: (v)->
-        if angular.isString(v) and v isnt ''
+        if _.isString(v) and v isnt ''
             _header_key = v
         else
             throw new Error 'token prefix is to be non-empty string'
@@ -22,7 +22,7 @@ angular.module moduleCore
         _storage_key
 
     setStorageKey: (v)->
-        if angular.isString(v) and v isnt ''
+        if _.isString(v) and v isnt ''
             _storage_key = v
         else
             throw new Error 'token prefix is to be non-empty string'
@@ -32,7 +32,7 @@ angular.module moduleCore
         _token_prefix
 
     setTokenPrefix: (v)->
-        if angular.isString(v)
+        if _.isString(v)
             _token_prefix = v
         else
             throw new Error 'token prefix is to be string'
@@ -56,7 +56,7 @@ angular.module moduleCore
 
         Token =
             set: (token, keep)->
-                if angular.isString(token) and token isnt ''
+                if _.isString(token) and token isnt ''
                     _storage = do ->
                         if not keep?
                             return webStorage.memory

@@ -14,14 +14,7 @@ angular.module moduleCore
 
         _visible = false
         _message = ''
-
         _current = {}
-
-        _set_default = ->
-            _current = angular.copy _default
-
-        _set_default()
-
         _timeout_promise = null
 
         _cancel_closing = ->
@@ -40,29 +33,9 @@ angular.module moduleCore
 
         show: (message, options)->
             _cancel_closing()
-            _set_default()
 
-            if options?
-                if options.type? and (_types.indexOf(options.type) > -1)
-                    _current.type = options.type
-
-                if options.period?
-                    p = parseInt options.period
-                    if not isNaN p
-                        _current.period = if p > 0 then p else -1
-                    else
-                        throw new Error "period needs to be Int or propperly parsed to Int. You provided #{options.period}"
-
-                if options.delay?
-                    d = parseInt options.delay
-                    if not isNaN d
-                        _current.delay = if d > 0 then d else 0
-                    else
-                        throw new Error "delay needs to be Int or propperly parsed to Int. You provided #{options.period}"
-
-                _current.autoHide = true
-                if options.autoHide?
-                    _current.autoHide = !!options.autoHide
+            if _.isObject options
+                _.assign _current, _default
 
             _message = message
 

@@ -16,7 +16,7 @@ angular.module moduleCore
         this
 
     setSeed: (key, value)->
-        if angular.isString key
+        if _.isString key
             _seed[key] = value
         else
             throw new Exception '"key" must be String'
@@ -27,7 +27,7 @@ angular.module moduleCore
             throw new Error 'API path is not configured.'
 
         _api_root = do ->
-            if angular.isFunction _api_root
+            if _.isFunction _api_root
                 return _api_root $injector
             else
                 return '' + _api_root
@@ -35,7 +35,7 @@ angular.module moduleCore
         dev: _dev
         seed: (key)->
             if _seed[key]?
-                return angular.copy _seed[key]
+                return _.clone _seed[key]
             else
                 return null
         apiRoot: ->

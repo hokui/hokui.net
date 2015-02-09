@@ -17,7 +17,7 @@ angular.module moduleCore
         _defaultStateChangeStart
 
     setAltStateChangeStart: (s)->
-        if angular.isString s
+        if _.isString s
             _altStateChangeStart = s
         else
             throw new Error "Needs to be String. You provided #{s}"
