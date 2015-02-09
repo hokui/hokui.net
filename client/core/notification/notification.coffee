@@ -35,7 +35,7 @@ angular.module moduleCore
             _cancel_closing()
 
             if _.isObject options
-                _.assign _current, _default
+                _current = _.assign _default, options
 
             _message = message
 
@@ -61,7 +61,7 @@ angular.module moduleCore
 .factory 'Notify',
     (Notification) ->
         (message, options)->
-            Notification.show(message, options)
+            Notification.show message, options
 
 .run ($rootScope, Notification)->
     $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)->
