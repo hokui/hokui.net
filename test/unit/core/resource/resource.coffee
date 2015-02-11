@@ -1,113 +1,174 @@
 'use strict'
 
-describe 'ResourceStore', ->
-
-    obj1 = obj2 = obj3 = objects = resources = null
+describe 'Resource', ->
+    ResourceStore = ResourceFilter = ResourceFieldSorter = ResourceSorter = null
 
     beforeEach ->
-        obj1 =
-            id: 1
-            text: 'obj1'
-        obj2 =
-            id: 2
-            text: 'obj2'
-        obj3 =
-            id: 3
-            text: 'obj3'
-
-        objects = [obj1, obj2, obj3]
-
         module moduleCore
+        inject (_ResourceStore_, _ResourceFilter_, _ResourceFieldSorter_, _ResourceSorter_)->
+            ResourceStore = _ResourceStore_
+            ResourceFilter = _ResourceFilter_
+            ResourceFieldSorter = _ResourceFieldSorter_
+            ResourceSorter = _ResourceSorter_
 
-        inject (ResourceStore)->
+    it 'init store', ->
+        list = [1, 2, 3]
+        resources = new ResourceStore list
+        expect resources.original
+        .toBe list
+
+    it 'init store error', ->
+        list = 'string'
+        try
+            resources = new ResourceStore list
+            expect true
+            .toBe false
+        catch e
+            expect true
+            .toBe true
+
+
+    describe 'ResourceStore', ->
+        obj1 = obj2 = obj3 = objects = resources = null
+
+        beforeEach ->
+            obj1 =
+                id: 1
+                text: 'obj1'
+                type: 'A'
+            obj2 =
+                id: 2
+                text: 'obj2'
+                type: 'B'
+            obj3 =
+                id: 3
+                text: 'obj3'
+                type: 'B'
+            objects = [obj1, obj2, obj3]
+
             resources = new ResourceStore objects
 
-    it 'init', inject ->
-        expect resources.original
-        .toBe objects
 
-    it 'retrieve', inject ->
-        expect resources.retrieve 1
-        .toBe obj1
+        it 'retrieve', ->
+            expect resources.retrieve 1
+            .toBe obj1
 
-        expect resources.retrieve 'obj1', 'text'
-        .toBe obj1
+            expect resources.retrieve 'obj3', 'text'
+            .toBe obj3
 
-        expect resources.retrieve 100
-        .toBe null
+            # get first macth element
+            expect resources.retrieve 'B', 'type'
+            .toBe obj2
+
+            expect resources.retrieve 100
+            .toBe null
 
 
-    it 'set to add',inject ->
-        obj10 =
-            id: 10
-            text: 'obj10'
+        it 'set to add',->
+            obj10 =
+                id: 10
+                text: 'obj10'
 
-        expect resources.set obj10
-        .toBe true
+            expect resources.set obj10
+            .toBe true
 
-        expect resources.retrieve 10
-        .toBe obj10
+            expect resources.retrieve 10
+            .toBe obj10
 
-    it 'set to extend', inject ->
-        new_obj2 =
-            id: 2
-            text: 'new obj2'
 
-        expect resources.set new_obj2
-        .toBe false
+        it 'set to extend', ->
+            new_obj2 =
+                id: 2
+                text: 'new obj2'
 
-        expect obj2.text
-        .toBe new_obj2.text
+            expect resources.set new_obj2
+            .toBe false
 
-    it 'set no id object',inject ->
-        obj =
-            text : 'has no id'
-        try
-            resources.set obj
-            expect(true).toBe false
-        catch e
-            expect(true).toBe true
+            expect obj2
+            .not.toBe new_obj2
+            expect obj2
+            .toEqual
+                id: 2
+                text: 'new obj2'
+                type: 'B'
 
-    it 'remove', inject ->
-        expect resources.remove obj2
-        .toBe true
-        expect resources.remove obj2
-        .toBe false
 
-        expect resources.retrieve 1
-        .toBe obj1
-        expect resources.retrieve 2
-        .toBe null
-        expect resources.retrieve 3
-        .toBe obj3
+        it 'set no id object',->
+            obj =
+                text : 'has no id'
+            try
+                resources.set obj
 
-    it 'remove by id', inject ->
-        expect resources.removeById 2
-        .toBe true
-        expect resources.removeById 2
-        .toBe false
+                expect true
+                .toBe false
+            catch e
+                expect true
+                .toBe true
 
-        expect resources.retrieve 2
-        .toBe null
 
-    it 'same reference', inject ->
-        obj1.text = 'modified obj1'
-        expect resources.retrieve(1).text
-        .toBe 'modified obj1'
+        it 'remove', ->
+            expect resources.remove obj2
+            .toBe true
+            expect resources.remove obj2
+            .toBe false
 
-        retrieved_obj2 = resources.retrieve 2
-        retrieved_obj2.text = 'modified obj2'
-        expect obj2.text
-        .toBe retrieved_obj2.text
+            expect resources.retrieve 1
+            .toBe obj1
+            expect resources.retrieve 2
+            .toBe null
+            expect resources.retrieve 3
+            .toBe obj3
 
-describe 'ResourceFilter', ->
-    filter1 = filter1_1 = filter1_2 = filter1_3 = filters = null
-    obj1 = obj2 = obj3 = resources = null
 
-    beforeEach ->
-        module moduleCore
+        it 'remove by id', ->
+            expect resources.removeById 2
+            .toBe true
+            expect resources.removeById 2
+            .toBe false
 
-        inject (ResourceStore)->
+            expect resources.retrieve 2
+            .toBe null
+            expect resources.count()
+            .toBe 2
+
+
+        it 'same reference', ->
+            obj1.text = 'modified obj1'
+            expect resources.retrieve(1).text
+            .toBe 'modified obj1'
+
+            retrieved_obj2 = resources.retrieve 2
+            retrieved_obj2.text = 'modified obj2'
+            expect obj2.text
+            .toBe retrieved_obj2.text
+
+
+        it 'get map', ->
+            mapId = resources.getMap()
+            expect mapId[obj2.id]
+            .toBe obj2
+
+            # when the values are not uniq, map will be truncated
+            mapType = resources.getMap 'type'
+            expect mapType
+            .toBe null
+
+        it 'transformed', ->
+            expect resources.transformed()
+            .not.toBe objects
+            expect resources.transformed()
+            .toEqual objects
+
+            resources.inverted true
+
+            expect resources.transformed()[0]
+            .toEqual obj3
+
+
+    describe 'ResourceFilter not alternative', ->
+        obj1 = obj2 = obj3 = obj4 = resources = null
+
+        beforeEach ->
             obj1 =
                 filteredBy: ['1_2']
             obj2 =
@@ -118,12 +179,13 @@ describe 'ResourceFilter', ->
             obj4 =
                 filteredBy: ['1_1', '1_2']
                 value: 'HOGE'
-
             resources = new ResourceStore [obj1, obj2, obj3, obj4]
 
-    describe 'basic', ->
-        beforeEach ->
-            inject (ResourceFilter)->
+
+        describe 'ResourceFilter not alternative', ->
+            filter1 = filter1_1 = filter1_2 = filter1_3 = filters = null
+
+            beforeEach ->
                 filter1 = new ResourceFilter
                 filter1_1 = new ResourceFilter
                     parent: filter1
@@ -147,58 +209,72 @@ describe 'ResourceFilter', ->
                 filters = [filter1, filter1_1, filter1_2, filter1_3]
 
 
-        it 'filter init', inject ->
-            expect filter1.active()
-            .toBe true
-            expect filter1_1.active()
-            .toBe true
-            expect filter1_2.active()
-            .toBe true
+            it 'filter init', ->
+                expect filter1.active()
+                .toBe true
+                expect filter1_1.active()
+                .toBe true
+                expect filter1_2.active()
+                .toBe true
 
-            expect filter1_1.label
-            .toBe '1_1'
-            expect filter1.findBySlug 'slug_1_2'
-            .toBe filter1_2
+                expect filter1_1.label
+                .toBe '1_1'
+                expect filter1.findBySlug 'slug_1_2'
+                .toBe filter1_2
+
+                expect filter1.children().length
+                .toBe 3
+
+            it 'perform filter', ->
+                resources.setFilter filter1
+                expect resources.getFilter()
+                .toBe filter1
+
+                filter1_1.active false
+                filter1_2.active false
+                filter1_3.active false
+                result = -> resources.transformed()
+
+                expect result().length
+                .toBe 4
+
+                filter1_1.active true
+                expect result().length
+                .toBe 3
+
+                filter1_2.active true
+                expect result().length
+                .toBe 2
+
+                filter1_3.active true
+                expect result().length
+                .toBe 1
+
+                filter1_3.value = 'FUGA'
+                expect result().length
+                .toBe 0
+
+                filter1_3.value = 'PIYO'
+                expect result().length
+                .toBe 1
+
+                filter1.active false
+                expect result().length
+                .toBe 4
+
+                filter1.active true
+                expect result().length
+                .toBe 1
+
+                resources.clearFilter filter1
+                expect result().length
+                .toBe 4
 
 
-        it 'perform filter', inject ->
-            resources.setFilter filter1
-            filter1_1.active false
-            filter1_2.active false
-            filter1_3.active false
-            result = -> resources.transformed()
+        describe 'ResourceFilter alternative', ->
+            filter1 = filter1_1 = filter1_2 = filter1_3 = filters = null
 
-            expect result().length
-            .toBe 4
-
-            filter1_1.active true
-            expect result().length
-            .toBe 3
-
-            filter1_2.active true
-            expect result().length
-            .toBe 2
-
-            filter1_3.active true
-            expect result().length
-            .toBe 1
-
-            filter1_3.value = 'FUGA'
-            expect result().length
-            .toBe 0
-
-            filter1_3.value = 'PIYO'
-            expect result().length
-            .toBe 1
-
-            filter1.active false
-            expect result().length
-            .toBe 4
-
-
-    describe 'alternative', ->
-        beforeEach ->
-            inject (ResourceFilter)->
+            beforeEach ->
                 filter1 = new ResourceFilter
                     alternative: true
                 filter1_1 = new ResourceFilter
@@ -216,117 +292,162 @@ describe 'ResourceFilter', ->
                         obj.value is @value
                 filters = [filter1, filter1_1, filter1_2, filter1_3]
 
-        it 'activity', inject ->
-            expect _.map filters, (el)-> el.active()
-            .toEqual [false, false, false, false]
 
-            filter1_2.active true
+            it 'activity', ->
+                expect _.map filters, (el)-> el.active()
+                .toEqual [false, false, false, false]
 
-            expect _.map filters, (el)-> el.active()
-            .toEqual [true, false, true, false]
+                filter1.active true
+                expect _.map filters, (el)-> el.active()
+                .toEqual [true, true, false, false]
 
-            filter1_3.active true
+                filter1.active false
+                expect _.map filters, (el)-> el.active()
+                .toEqual [false, false, false, false]
 
-            expect _.map filters, (el)-> el.active()
-            .toEqual [true, false, false, true]
 
-            filter1_3.active false
+                filter1_2.active true
+                expect _.map filters, (el)-> el.active()
+                .toEqual [true, false, true, false]
 
-            expect _.map filters, (el)-> el.active()
-            .toEqual [false, false, false, false]
+                filter1_3.active true
+                expect _.map filters, (el)-> el.active()
+                .toEqual [true, false, false, true]
 
-        it 'perform filter', inject ->
-            resources.setFilter filter1
-            result = -> resources.transformed()
+                filter1_3.active false
+                expect _.map filters, (el)-> el.active()
+                .toEqual [false, false, false, false]
 
-            expect result().length
-            .toBe 4
 
-            filter1_1.active true
-            expect result().length
-            .toBe 3
+            it 'perform filter', ->
+                resources.setFilter filter1
+                result = -> resources.transformed()
 
-            filter1_2.active true
-            expect result().length
-            .toBe 3
+                expect result().length
+                .toBe 4
 
-            filter1_3.active true
-            expect result().length
-            .toBe 1
+                filter1_1.active true
+                expect result().length
+                .toBe 3
 
-            filter1_1.active true
-            expect result().length
-            .toBe 3
+                filter1_2.active true
+                expect result().length
+                .toBe 3
 
-describe 'ResourceSorter', ->
-    obj1 = obj2 = obj3 = resources = null
-    sorter1 = sorter2 = sorter3 = filter = null
+                filter1_3.active true
+                expect result().length
+                .toBe 1
 
-    beforeEach ->
-        module moduleCore
+                filter1_1.active true
+                expect result().length
+                .toBe 3
 
-        inject (ResourceStore)->
+
+    describe 'ResourceSorter', ->
+        obj1 = obj2 = obj3 = resources = null
+        sorter1 = sorter2 = sorter3 = sorter4 = filter = null
+
+        beforeEach ->
             obj1 =
                 id: 1
                 name: 'うえだ'
                 type: 'A'
+                value: 9
             obj2 =
                 id: 2
                 name: 'いのうえ'
                 type: 'B'
+                value: 3
             obj3 =
                 id: 3
                 name: 'あおき'
                 type: 'A'
+                value: 6
 
             resources = new ResourceStore [obj1, obj2, obj3]
 
-        inject (ResourceSorter, ResourceFieldSorter, ResourceFilter)->
             sorter1 = new ResourceFieldSorter ['name']
             sorter2 = new ResourceFieldSorter ['type', 'name']
             sorter3 = new ResourceSorter()
+            sorter4 = new ResourceFieldSorter ['value']
 
             filter = new ResourceFilter
                 filter: (obj)->
                     obj.type is 'A'
 
-    it 'basic', inject ->
-        result = -> resources.transformed()
 
-        resources.setSorter sorter1
-        expect result()
-        .toEqual [obj3, obj2, obj1]
+        it 'basic', ->
+            result = -> resources.transformed()
+
+            resources.setSorter sorter1
+            expect result()
+            .toEqual [obj3, obj2, obj1]
+            expect resources.getSorter()
+            .toBe sorter1
+            expect resources.inverted()
+            .toBe false
+
+            resources.setSorter sorter2
+            resources.setSorter sorter2
+            expect result()
+            .toEqual [obj3, obj1, obj2]
+            expect resources.inverted()
+            .toBe false
+
+            resources.setSorterOrInverse sorter2
+            expect result()
+            .toEqual [obj2, obj1, obj3]
+            expect resources.inverted()
+            .toBe true
+
+            resources.setSorterOrInverse sorter3
+            expect result()
+            .toEqual [obj1, obj2, obj3]
+            expect resources.inverted()
+            .toBe false
+
+            resources.inverted true
+            expect result()
+            .toEqual [obj3, obj2, obj1]
+            expect resources.inverted()
+            .toBe true
+
+            resources.setSorterOrInverse sorter3
+            expect result()
+            .toEqual [obj1, obj2, obj3]
+            expect resources.inverted()
+            .toBe false
+
+            resources.clearSorter()
+            expect result()
+            .toEqual [obj1, obj2, obj3]
+            expect resources.inverted()
+            .toBe false
+
+            resources.setSorter sorter4
+            expect result()
+            .toEqual [obj2, obj3, obj1]
+            expect resources.inverted()
+            .toBe false
 
 
-        resources.setSorter sorter2
-        expect result()
-        .toEqual [obj3, obj1, obj2]
+        it 'integrated with filter', ->
+            result = -> resources.transformed()
 
-        resources.setSorterOrInverse sorter2
-        expect result()
-        .toEqual [obj2, obj1, obj3]
+            expect result()
+            .toEqual [obj1, obj2, obj3]
 
-        resources.setSorter sorter3
-        resources.inverted true
-        expect result()
-        .toEqual [obj3, obj2, obj1]
+            resources.setFilter filter
 
-    it 'integrated with filter', inject ->
-        result = -> resources.transformed()
+            expect result()
+            .toEqual [obj1, obj3]
 
-        expect result()
-        .toEqual [obj1, obj2, obj3]
+            resources.setSorter sorter2
+            expect result()
+            .toEqual [obj3, obj1]
 
-        resources.setFilter filter
+            filter.active false
 
-        expect result()
-        .toEqual [obj1, obj3]
+            expect result()
+            .toEqual [obj3, obj1, obj2]
 
-        resources.setSorter sorter2
-        expect result()
-        .toEqual [obj3, obj1]
-
-        filter.active false
-
-        expect result()
-        .toEqual [obj3, obj1, obj2]

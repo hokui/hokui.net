@@ -1,4 +1,4 @@
-
+'use strict'
 
 window.mocks =
     admin_credencials:
@@ -47,15 +47,11 @@ window.mocks =
         last_login_from_ip_address: null
         last_logout_at: null
 
-
     admin_token: 'ThisIsTestTokenOfAdmin'
     user_token: 'ThisIsTestTokenOfUser'
 
 
 window.mockupAPI = ($httpBackend)->
-    ###*
-    API MOCK: LOGIN
-    ###
     $httpBackend
     .whenPOST '/api/session', mocks.admin_credencials
     .respond
@@ -72,23 +68,14 @@ window.mockupAPI = ($httpBackend)->
     .whenPOST '/api/session'
     .respond 422, ''
 
-    ###*
-    API MOCK: LOGOUT
-    ###
     $httpBackend
     .whenDELETE '/api/session'
     .respond 200, ''
 
-
-
-    ###*
-    API MOCK: PROFILE
-    ###
     $httpBackend
     .whenGET '/api/profile', (headers)->
         return headers['Access-Token'] is mocks.admin_token
     .respond 200, mocks.admin_user
-
 
     $httpBackend
     .whenGET '/api/profile', (headers)->
@@ -99,14 +86,15 @@ window.mockupAPI = ($httpBackend)->
     .whenGET '/api/profile'
     .respond 401, ''
 
-getLoginAdminProc = ($httpBackend, Auth)->
+
+getLoginAsAdminProc = ($httpBackend, Auth)->
     ->
-        $httpBackend.expectPOST('/api/session')
+        $httpBackend.expectPOST '/api/session'
         Auth.login mocks.admin_credencials, false
         $httpBackend.flush()
 
-getLoginUserProc = ($httpBackend, Auth)->
+getLoginAsUserProc = ($httpBackend, Auth)->
     ->
-        $httpBackend.expectPOST('/api/session')
+        $httpBackend.expectPOST '/api/session'
         Auth.login mocks.user_credencials, false
         $httpBackend.flush()

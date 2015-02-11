@@ -1,21 +1,21 @@
 'use strict'
 
 describe 'Restrict', ->
-
-    loginAdmin = loginUser = null
+    RestrictProvider = null
+    doLoginAsAdmin = doLoginAsUser = null
 
     beforeEach ->
+        localStorage.clear()
+        sessionStorage.clear()
 
         angular.module 'RestrictTestModule', [moduleCore]
         .config ($stateProvider) ->
             $stateProvider
             .state 'not_restricted',
                 url: '/not_restricted'
-                template: '<h1>not restricted</1h>'
 
             .state 'user_page',
                 url: '/user_page'
-                template: '<h1>user page</1h>'
                 data:
                     restrict:
                         role: 'user'
@@ -23,73 +23,111 @@ describe 'Restrict', ->
 
             .state 'user_page.nested',
                 url: '/nested'
-                template: '<h1>nested user page</1h>'
 
             .state 'admin_page',
                 url: '/admin_page'
-                template: '<h1>admin page</1h>'
                 data:
                     restrict:
                         role: 'admin'
                         error: 'admin only'
 
-        .config (EnvProvider) ->
-            EnvProvider.setApiRoot '/api'
-
-        .config (RestrictProvider) ->
-            RestrictProvider.setNext 'redirect_to'
+        .config (_RestrictProvider_) ->
+            RestrictProvider = _RestrictProvider_
 
         module 'RestrictTestModule'
 
         inject ($httpBackend, Auth)->
             mockupAPI $httpBackend
             Auth.silentLogout()
-            loginAdmin = getLoginAdminProc($httpBackend, Auth)
-            loginUser = getLoginUserProc($httpBackend, Auth)
+            doLoginAsAdmin = getLoginAsAdminProc $httpBackend, Auth
+            doLoginAsUser = getLoginAsUserProc $httpBackend, Auth
 
-    afterEach inject (Auth)->
-        Auth.silentLogout()
+    afterEach ->
+        localStorage.clear()
+        sessionStorage.clear()
 
+        inject (Auth)->
+            Auth.silentLogout()
 
-    it 'not restrict', inject (Restrict, $state)->
-        expect($state.get('not_restricted').url).toBe '/not_restricted'
+    it 'not provided default page to redirect', ->
+        inject ($injector)->
+            try
+                $injector.get 'Restrict'
 
-        result = Restrict $state.get 'not_restricted'
-        expect(result.can).toBe true
-        result = Restrict $state.get 'user_page'
-        expect(result.can).toBe false
-        expect(result.next).toBe 'login_page'
-        result = Restrict $state.get 'user_page.nested'
-        expect(result.can).toBe false
-        expect(result.next).toBe 'login_page'
-        result = Restrict $state.get 'admin_page'
-        expect(result.can).toBe false
-        expect(result.error).toBe 'admin only'
+                expect true
+                .toBe false
+            catch e
+                expect true
+                .toBe true
 
-    it 'needs user level', inject (Restrict, $state, Auth)->
-        loginUser(Auth)
+    describe 'configured', ->
+        beforeEach ->
+            RestrictProvider.setNext 'home_page'
+            RestrictProvider.setError 'default message'
 
-        result = Restrict $state.get 'not_restricted'
-        expect(result.can).toBe true
-        result = Restrict $state.get 'user_page'
-        expect(result.can).toBe true
-        result = Restrict $state.get 'user_page.nested'
-        expect(result.can).toBe true
-        result = Restrict $state.get 'admin_page'
-        expect(result.can).toBe false
-        expect(result.next).toBe 'redirect_to'
+        it 'level guest', inject ($state, Auth, Restrict)->
+            result = Restrict $state.get 'not_restricted'
+            expect result.can
+            .toBe true
 
+            result = Restrict $state.get 'user_page'
+            expect result.can
+            .toBe false
+            expect result.next
+            .toBe 'login_page'
 
-    it 'needs admin level', inject (Restrict, $state, Auth)->
-        loginAdmin(Auth)
+            result = Restrict $state.get 'user_page.nested'
+            expect result.can
+            .toBe false
+            expect result.next
+            .toBe 'login_page'
+            expect result.error
+            .toBe 'default message'
 
-        result = Restrict $state.get 'not_restricted'
-        expect(result.can).toBe true
-        result = Restrict $state.get 'user_page'
-        expect(result.can).toBe true
-        result = Restrict $state.get 'user_page.nested'
-        expect(result.can).toBe true
-        result = Restrict $state.get 'admin_page'
-        expect(result.can).toBe true
+            result = Restrict $state.get 'admin_page'
+            expect result.can
+            .toBe false
+            expect result.error
+            .toBe 'admin only'
+
+        it 'level user', inject ($state, Auth, Restrict)->
+            doLoginAsUser()
+
+            result = Restrict $state.get 'not_restricted'
+            expect result.can
+            .toBe true
+
+            result = Restrict $state.get 'user_page'
+            expect result.can
+            .toBe true
+
+            result = Restrict $state.get 'user_page.nested'
+            expect result.can
+            .toBe true
+
+            result = Restrict $state.get 'admin_page'
+            expect result.can
+            .toBe false
+            expect result.next
+            .toBe 'home_page'
+
+        it 'level admin', inject ($state, Auth, Restrict)->
+            doLoginAsAdmin()
+
+            result = Restrict $state.get 'not_restricted'
+            expect result.can
+            .toBe true
+
+            result = Restrict $state.get 'user_page'
+            expect result.can
+            .toBe true
+
+            result = Restrict $state.get 'user_page.nested'
+            expect result.can
+            .toBe true
+
+            result = Restrict $state.get 'admin_page'
+            expect result.can
+            .toBe true
 
 
