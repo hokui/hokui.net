@@ -3,7 +3,7 @@
 angular.module moduleCore
 
 .factory 'ResourceFilter', ->
-    class ResourceFilter
+    class
         constructor: (params)->
             @_parent = null
             @_active = true
@@ -14,17 +14,17 @@ angular.module moduleCore
                 alternative: false
                 slug: null
                 value: null
-                filter: @filter
                 parent: null
+                filter: @_defaultFilterFunc
 
             p = if _.isObject params then _.assign default_params, params else default_params
 
             @label = p.label
             @slug = p.slug
             @value = p.value
-            @filter = p.filter
             @alternative = !!p.alternative
             @_parent = p.parent
+            @_filterFunc = p.filter
 
             if @alternative
                 @_active = false
@@ -51,10 +51,10 @@ angular.module moduleCore
             if flag?
                 @_active = flag = !!flag
                 if @alternative
+                    for child in @_children
+                        child._active = false
                     if flag
-                    else
-                        for child in @_children
-                            child._active = false
+                        @_children[0]._active = true
 
                 if @_parent?.alternative
                     for child in @_parent._children
@@ -65,15 +65,19 @@ angular.module moduleCore
 
             return @_active
 
-        filter: (resource)->
+        _defaultFilterFunc: (resource)->
             for child in @_children
                 if child._active
-                    if not child.filter resource
+                    if not child.getFilterFunc().call child, resource
                         return false
             return true
 
+        getFilterFunc: ->
+            @_filterFunc
+
+
 .factory 'ResourceSorter', ->
-    class ResourceSorter
+    class
         constructor: (sortFunc)->
             if _.isFunction sortFunc
                 @_sortFunc = sortFunc
@@ -81,13 +85,11 @@ angular.module moduleCore
                 @_sortFunc = (a, b)->
                     a.id > b.id
 
-        sort: (list)->
-            sorted = _.clone list
-            sorted.sort @_sortFunc
-            sorted
+        getSortFunc: ->
+            @_sortFunc
 
 .factory 'ResourceFieldSorter', (ResourceSorter)->
-    class ResourceSorter extends ResourceSorter
+    class extends ResourceSorter
         constructor: (keys)->
             super (a, b)->
                 for key in keys
@@ -104,13 +106,13 @@ angular.module moduleCore
                         return diff
             0
 
-.factory 'ResourceStore', (ResourceSorter)->
-    class ResourceStore
+.factory 'ResourceStore', ->
+    class
         constructor: (original)->
             if _.isArray original
                 @original = original
             else
-                throw new Error 'resources is to be Array'
+                throw new Error 'resources must be Array'
 
             @_inverted = false
 
@@ -124,12 +126,7 @@ angular.module moduleCore
             matches = {}
             matches[key] = value
 
-            if findIndex
-                finder = _.findIndex
-            else
-                finder = _.find
-
-            retVal = finder @original, matches
+            retVal = _.find @original, matches
 
             if retVal? then retVal else null
 
@@ -139,7 +136,7 @@ angular.module moduleCore
 
             retrieved = @retrieve resource.id
 
-            if retrieved
+            if retrieved?
                 if retrieved isnt resource
                     _.assign retrieved, resource
                 return false
@@ -161,7 +158,10 @@ angular.module moduleCore
 
         getMap: (key)->
             key = key or 'id'
-            _.indexBy @original, key
+            map = _.indexBy @original, key
+            if @original.length isnt _.size map
+                return null
+            map
 
         inverted: (flag)->
             if flag?
@@ -172,10 +172,7 @@ angular.module moduleCore
             @_filter
 
         setFilter: (filter)->
-            if filter?
-                @_filter = filter
-            else
-                @clearFilter()
+            @_filter = filter
 
         clearFilter: ->
             @_filter = null
@@ -184,32 +181,31 @@ angular.module moduleCore
             @_sorter
 
         setSorter: (sorter)->
-            if sorter?
+            if sorter isnt @_sorter
                 @_sorter = sorter
-            else
-                @clearSorter()
+                @_inverted = false
 
         clearSorter: ->
-            @_sorter = defaultSorter
+            @_sorter = null
+            @_inverted = false
 
         setSorterOrInverse: (sorter)->
             if @_sorter is sorter
                 @_inverted = not @_inverted
             else
-                @setSorter sorter
+                @_sorter = sorter
                 @_inverted = false
 
         transformed: ->
-            transformed = @original
             if @_filter?.active()
-                transformed = _.filter transformed, (resource)=>
-                    @_filter.filter resource
+                transformed = _.filter @original, @_filter.getFilterFunc(), @_filter
+            else
+                transformed = _.clone @original
+
             if @_sorter?
-                transformed = @_sorter.sort transformed
+                transformed.sort @_sorter.getSortFunc()
 
             if @_inverted
-                if transformed is @original
-                    transformed = _.clone @original
                 transformed.reverse()
 
             transformed

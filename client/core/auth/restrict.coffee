@@ -22,7 +22,7 @@ angular.module moduleCore
 
             if state.data?.restrict?
                 restrict = state.data.restrict
-                _result.can = Auth.can state.data.restrict.role
+                _result.can = Auth.can restrict.role
 
                 if not _result.can
                     _result.error = restrict.error or _default.error
