@@ -15,6 +15,7 @@ describe 'Env', ->
 
         inject ->
 
+
     it 'default', inject (Env)->
         expect Env.dev()
         .toBe false
@@ -40,6 +41,4 @@ describe 'Env', ->
 
             expect Env.seed 'seed'
             .toEqual seed
-
-
 

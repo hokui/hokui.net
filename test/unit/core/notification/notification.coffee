@@ -45,6 +45,7 @@ describe 'Notification', ->
         $timeout.flush()
         $timeout.verifyNoPendingTasks()
 
+
     it 'delay', ->
         Notification.show '', delay: 1000
 
@@ -62,6 +63,7 @@ describe 'Notification', ->
         .toBe false
 
         $timeout.verifyNoPendingTasks()
+
 
     it 'not timeout to hide / hide when transit state', ->
         Notification.show '', period: -1

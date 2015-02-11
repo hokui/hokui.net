@@ -1,6 +1,5 @@
 'use strict'
 
-
 describe 'Token configuration', ->
 
     TokenProvider = null
@@ -110,6 +109,7 @@ describe 'Token(local/session both supported)', ->
         localStorage.clear()
         sessionStorage.clear()
 
+
     describe 'configured', ->
         Token = $http = webStorage = null
         beforeEach ->
@@ -120,6 +120,7 @@ describe 'Token(local/session both supported)', ->
                 Token = _Token_
                 $http = _$http_
                 webStorage = _webStorage_
+
 
         it 'set token keeping', ->
             expect Token.empty()
@@ -172,6 +173,7 @@ describe 'Token(local/session both supported)', ->
             expect webStorage.local.get storage_key
             .toBe null
 
+
         it 'multiple token supplying', ->
             Token.set 'token1', true
             expect Token.get()
@@ -188,6 +190,7 @@ describe 'Token(local/session both supported)', ->
             Token.set 'token4', false
             expect Token.get()
             .toBe 'token4'
+
 
         it 'clear token', ->
             Token.set 'valid token'
@@ -206,6 +209,7 @@ describe 'Token(local/session both supported)', ->
             expect webStorage.local.get storage_key
             .toBe null
 
+
         it 'set invalid token', ->
             Token.set 'valid token'
             expect Token.get()
@@ -222,7 +226,6 @@ describe 'Token(local/session both supported)', ->
             .toBe undefined
             expect webStorage.local.get storage_key
             .toBe null
-
 
 
     describe 'store token', ->
@@ -326,6 +329,7 @@ describe 'Token(local is not supported)', ->
             expect webStorage.session.get storage_key
             .toBe test_token
 
+
         it 'set token not keeping', ->
             Token.set test_token, false
 
@@ -349,7 +353,8 @@ describe 'Token(local is not supported)', ->
                 expect Token.get()
                 .toBe ''
                 expect $http.defaults.headers.common[header_key]
-                .toBeFalsy()
+                .toBe undefined
+
 
         it 'store from session', inject ($http, webStorage)->
             webStorage.session.add storage_key, test_token_in_session
@@ -359,7 +364,6 @@ describe 'Token(local is not supported)', ->
                 .toBe test_token_in_session
                 expect $http.defaults.headers.common[header_key]
                 .toBe test_token_in_session
-
 
 
 
@@ -413,6 +417,7 @@ describe 'Token(session is not supported)', ->
             expect webStorage.session.isSupported
             .toBe false
 
+
         it 'set token keeping', ->
             Token.set test_token, true
 
@@ -420,6 +425,7 @@ describe 'Token(session is not supported)', ->
             .toBe test_token
             expect webStorage.local.get storage_key
             .toBe test_token
+
 
         it 'set token not keeping', ->
             Token.set test_token, false
@@ -444,7 +450,7 @@ describe 'Token(session is not supported)', ->
                 expect Token.get()
                 .toBe ''
                 expect $http.defaults.headers.common[header_key]
-                .toBeFalsy
+                .toBe undefined
 
 
         it 'store from local', inject ($http, webStorage)->
@@ -455,8 +461,6 @@ describe 'Token(session is not supported)', ->
                 .toBe test_token_in_local
                 expect $http.defaults.headers.common[header_key]
                 .toBe test_token_in_local
-
-
 
 
 describe 'Token(session/local are both not supported)', ->
@@ -507,11 +511,13 @@ describe 'Token(session/local are both not supported)', ->
                 $http = _$http_
                 webStorage = _webStorage_
 
+
         it 'confirm supported', ->
             expect webStorage.local.isSupported
             .toBe false
             expect webStorage.session.isSupported
             .toBe false
+
 
         it 'set token keeping', ->
             Token.set test_token, true
@@ -520,6 +526,7 @@ describe 'Token(session/local are both not supported)', ->
             .toBe test_token
             expect webStorage.memory.get storage_key
             .toBe test_token
+
 
         it 'set token not keeping', ->
             Token.set test_token, false
@@ -542,6 +549,5 @@ describe 'Token(session/local are both not supported)', ->
                 expect Token.get()
                 .toBe ''
                 expect $http.defaults.headers.common[header_key]
-                .toBeFalsy
-
+                .toBe undefined
 

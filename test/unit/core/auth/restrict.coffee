@@ -30,7 +30,6 @@ describe 'Restrict', ->
                     restrict:
                         role: 'admin'
                         error: 'admin only'
-
         .config (_RestrictProvider_) ->
             RestrictProvider = _RestrictProvider_
 
@@ -49,6 +48,7 @@ describe 'Restrict', ->
         inject (Auth)->
             Auth.silentLogout()
 
+
     it 'not provided default page to redirect', ->
         inject ($injector)->
             try
@@ -60,10 +60,12 @@ describe 'Restrict', ->
                 expect true
                 .toBe true
 
+
     describe 'configured', ->
         beforeEach ->
             RestrictProvider.setNext 'home_page'
             RestrictProvider.setError 'default message'
+
 
         it 'level guest', inject ($state, Auth, Restrict)->
             result = Restrict $state.get 'not_restricted'
@@ -90,6 +92,7 @@ describe 'Restrict', ->
             expect result.error
             .toBe 'admin only'
 
+
         it 'level user', inject ($state, Auth, Restrict)->
             doLoginAsUser()
 
@@ -111,6 +114,7 @@ describe 'Restrict', ->
             expect result.next
             .toBe 'home_page'
 
+
         it 'level admin', inject ($state, Auth, Restrict)->
             doLoginAsAdmin()
 
@@ -129,5 +133,4 @@ describe 'Restrict', ->
             result = Restrict $state.get 'admin_page'
             expect result.can
             .toBe true
-
 

@@ -29,7 +29,6 @@ describe 'Auth', ->
         mockupAPI $httpBackend
         Auth.silentLogout()
 
-
     afterEach ->
         localStorage.clear()
         sessionStorage.clear()
@@ -234,10 +233,10 @@ describe 'AuthChecker', ->
         localStorage.clear()
         sessionStorage.clear()
 
-    afterEach inject ($httpBackend, Auth)->
-        $httpBackend.verifyNoOutstandingExpectation()
-        $httpBackend.verifyNoOutstandingRequest()
-        Auth.silentLogout()
+        inject ($httpBackend, Auth)->
+            $httpBackend.verifyNoOutstandingExpectation()
+            $httpBackend.verifyNoOutstandingRequest()
+            Auth.silentLogout()
 
 
     it 'config alt event', ->
@@ -304,6 +303,7 @@ describe 'AuthChecker', ->
 
             expect eventEmitted
             .toBe true
+
 
     it 'stateChange is prevented', ->
         AuthCheckerProvider.enabled true
