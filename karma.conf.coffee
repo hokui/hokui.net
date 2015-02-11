@@ -40,7 +40,7 @@ module.exports = (config) ->
         singleRun: not autoWatch
 
         coverageReporter:
-            type : 'html',
+            type: 'lcov'
             dir : 'coverage/'
 
 
