@@ -43,8 +43,8 @@ angular.module moduleConfig, [
 .config (RestrictProvider)->
     RestrictProvider.setNext 'home'
 
-.config (AuthProvider)->
-    AuthProvider.setAutoCheck true
+.config (AuthCheckerProvider)->
+    AuthCheckerProvider.enabled true
 
 .config (TitleProvider)->
     TitleProvider.setDefault '北医ネット'
