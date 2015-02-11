@@ -25,7 +25,7 @@ angular.module moduleCore
         current: ->
             _current
 
-        isVisible: ->
+        visible: ->
             _visible
 
         getMessage: ->
@@ -34,15 +34,14 @@ angular.module moduleCore
         show: (message, options)->
             _cancel_closing()
 
-            if _.isObject options
-                _current = _.assign _default, options
+            _current = _.assign {}, _default, if _.isObject options then options else {}
 
             _message = message
 
             _inner_show = =>
                 _visible = true
                 if _current.period > 0
-                    _timeout_promise = $timeout ()=>
+                    _timeout_promise = $timeout =>
                         @hide()
                     , _current.period
 

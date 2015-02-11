@@ -1,4 +1,4 @@
-.notify(ng-controller='NotifyCtrl', ng-class="{ 'notify--shown': Notification.isVisible() }")
+.notify(ng-controller='NotifyCtrl', ng-class="{ 'notify--shown': Notification.visible() }")
     .alert-container
         .alert(ng-class="alertClass()")
             | {{Notification.getMessage()}}
