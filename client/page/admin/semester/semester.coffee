@@ -104,6 +104,8 @@ angular.module modulePage
             parent: semesterFilter
             value: ''
             filter: (semester)->
+                if not @value
+                    return true
                 exp = new RegExp @value
                 for id in semester.subject_ids
                     en = subjectMap[id].title_en.match exp
@@ -127,37 +129,15 @@ angular.module modulePage
 
 .controller 'AdminSemesterDetailCtrl',
     ($scope, Semester, $state, $stateParams, Notify, NotFound) ->
-        if not $scope.semester = $scope.semesters.retrieve $stateParams.id
+        $scope.semester = $scope.semesters.retrieve $stateParams.id
+        if not $scope.semester?
             NotFound()
-
-.controller 'AdminSemesterEditCtrl',
-    ($scope, Semester, $state, $stateParams, Notify) ->
-        $scope.editing = $scope.semester?.id?
-        $scope.title = if $scope.editing then '編集' else '新規作成'
 
         $scope.deleting = false
 
-        if $scope.editing
-            $scope.new_semester = angular.copy $scope.semester
-        else
-            $scope.new_semester = new Semester()
-            $scope.new_semester.subject_ids = []
-
-        $scope.doSaveSemester = ()->
-            if $scope.editing
-                $scope.new_semester.$update {}, (data)->
-                    $scope.semesters.set data
-                    $state.go 'admin.semester.detail', {id: data.id}
-                    Notify '保存しました。'
-            else
-                $scope.new_semester.$save {}, (data)->
-                    $scope.semesters.set data
-                    $state.go 'admin.semester.detail', {id: data.id}
-                    Notify '新規作成しました。'
-
         $scope.doDeleteSemester = ()->
             $scope.semester.$remove {}, (data)->
-                $scope.semesters.del $scope.semester
+                $scope.semesters.remove $scope.semester
                 $state.go 'admin.semester'
                 Notify '削除しました。', type: 'danger'
 
@@ -165,18 +145,52 @@ angular.module modulePage
             if $scope.deleting
                 $scope.doDeleteSemester()
             else
-                Notify 'もう一度クリックすると削除します。', type: 'danger'
                 $scope.deleting = true
 
         $scope.stopDeleting = ->
             $scope.deleting = false
-            Notify '削除を中断しました。', type: 'warning'
+
+
+.controller 'AdminSemesterEditCtrl',
+    ($scope, Semester, $state, $stateParams, Notify) ->
+        $scope.editing = $scope.semester? and $scope.semester.id?
+        $scope.title = if $scope.editing then '編集' else '新規作成'
+
+        $scope.deleting = false
+
+        $scope.errors = {}
+
+        if $scope.editing
+            $scope.newSemester = angular.copy $scope.semester
+        else
+            $scope.newSemester = new Semester()
+            $scope.newSemester.subject_ids = []
+
+        onError = (res)->
+            Notify '入力にエラーがあります。', type: 'warn'
+            $scope.errors = res.data.errors
+
+        $scope.doSaveSemester = (valid)->
+            if valid
+                if $scope.editing
+                    $scope.newSemester.$update {}, (data)->
+                        $scope.semesters.set data
+                        $state.go 'admin.semester.detail', {id: data.id}
+                        Notify '保存しました。'
+                    , onError
+                else
+                    $scope.newSemester.$save {}, (data)->
+                        $scope.semesters.set data
+                        $state.go 'admin.semester.detail', {id: data.id}
+                        Notify '新規作成しました。'
+                    , onError
+
 
 
         $scope.subjectCheckboxChange = (subject)->
-            idx = $scope.new_semester.subject_ids.indexOf subject.id
+            idx = $scope.newSemester.subject_ids.indexOf subject.id
             if idx > -1
-                $scope.new_semester.subject_ids.splice idx, 1
+                $scope.newSemester.subject_ids.splice idx, 1
             else
-                $scope.new_semester.subject_ids.push subject.id
+                $scope.newSemester.subject_ids.push subject.id
 

@@ -30,8 +30,6 @@ form.form(role="form" ng-submit="doSaveClassYear(classYearForm.$valid)" name="cl
                 .pull-left
                     div(ng-if="editing")
                         a.btn.btn-default(ui-sref="admin.year.detail({id: classYear.id})" tabindex="-1") 編集をやめる
-                    div(ng-if="!editing")
-                        a.btn.btn-default(ui-sref="admin.year" tabindex="-1") 一覧に戻る
                 .pull-right
                     button.btn.btn--primary(type="submit" ng-disabled="year.$invalid") 保存
 

@@ -100,9 +100,9 @@ angular.module modulePage
         $scope.title = if $scope.editing then '編集' else '新規作成'
 
         if $scope.editing
-            $scope.new_subject = angular.copy $scope.subject
+            $scope.newSubject = angular.copy $scope.subject
         else
-            $scope.new_subject = new Subject()
+            $scope.newSubject = new Subject()
 
         $scope.errors = {}
 
@@ -113,13 +113,13 @@ angular.module modulePage
         $scope.doSaveSubject = (valid)->
             if valid
                 if $scope.editing
-                    $scope.new_subject.$update {}, (data)->
+                    $scope.newSubject.$update {}, (data)->
                         $scope.subjects.set data
                         $state.go 'admin.subject.detail', {id: data.id}
                         Notify '保存しました。'
                     , onError
                 else
-                    $scope.new_subject.$save {}, (data)->
+                    $scope.newSubject.$save {}, (data)->
                         $scope.subjects.set data
                         $state.go 'admin.subject.detail', {id: data.id}
                         Notify '新規作成しました。'

@@ -45,6 +45,9 @@ angular.module modulePage
                 state: 'admin.semester'
         ]
 
+        $scope.currentState = ->
+            $state.current.name
+
 
 .controller 'AdminMainCtrl',
     ($scope, Auth) ->
