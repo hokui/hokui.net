@@ -23,8 +23,15 @@ angular.module modulePage
                 templateUrl: '/page/admin/semester/list.html'
                 controller: 'AdminSemesterListCtrl'
 
+    .state 'admin.semester.new',
+        url: '/new',
+        views:
+            'main@admin.semester':
+                templateUrl: '/page/admin/semester/edit.html'
+                controller: 'AdminSemesterEditCtrl'
+
     .state 'admin.semester.detail',
-        url: '/:id',
+        url: '/{id:int}',
         views:
             'main@admin.semester':
                 templateUrl: '/page/admin/semester/detail.html'
@@ -40,9 +47,9 @@ angular.module modulePage
 
 .controller 'AdminSemesterCtrl',
     ($scope, ResourceStore, semesters, classYears, subjects) ->
-        $scope.semesters = ResourceStore semesters
-        $scope.classYears = ResourceStore classYears
-        $scope.subjects = ResourceStore subjects
+        $scope.semesters = new ResourceStore semesters
+        $scope.classYears = new ResourceStore classYears
+        $scope.subjects = new ResourceStore subjects
 
         map_ab =
             a: '前期'
@@ -53,105 +60,84 @@ angular.module modulePage
                 $scope.identifierMap["#{grade}#{label}"] = "#{grade}年#{map_ab[label]}"
 
 .controller 'AdminSemesterListCtrl',
-    ($scope, $state, $stateParams, ResourceFilterGroup, ResourceFilterItems, ResourceFilterItem) ->
+    ($scope, $state, $stateParams, ResourceFilter) ->
 
-        $scope.classYearFilter = new ResourceFilterItems()
-        angular.forEach $scope.classYears, (cy)->
-            $scope.classYearFilter.addItem
+        semesterFilter = new ResourceFilter()
+
+        $scope.classYearFilter = new ResourceFilter
+            parent: semesterFilter
+            alternative: true
+        _.forEach $scope.classYears.original, (cy)->
+            $scope.classYearFilter.append new ResourceFilter
+                slug: cy.year
                 label: "#{cy.year}期"
-                slug: cy.id
-                search: (model)->
-                    model.class_year_id is cy.id
+                filter: (semester)->
+                    semester.class_year_id is cy.id
 
-        $scope.yearFilter = new ResourceFilterItems()
-        angular.forEach [2..6], (year)->
+        $scope.yearFilter = new ResourceFilter
+            parent: semesterFilter
+            alternative: true
+        _.forEach [2..6], (year)->
             strYear = ''+year
-            $scope.yearFilter.addItem
+            $scope.yearFilter.append new ResourceFilter
                 label: "#{year}年"
-                search: (model)->
-                    model.identifier[0] is strYear
+                filter: (semester)->
+                    semester.identifier[0] is strYear
 
-        $scope.abFilter = new ResourceFilterItems()
-        .addItem
+        $scope.abFilter = new ResourceFilter
+            parent: semesterFilter
+            alternative: true
+        .append new ResourceFilter
             label: '前期'
-            search: (model)->
-                model.identifier[1] is 'a'
-        .addItem
+            filter: (semester)->
+                semester.identifier[1] is 'a'
+        .append new ResourceFilter
             label: '後期'
-            search: (model)->
-                model.identifier[1] is 'b'
+            filter: (semester)->
+                semester.identifier[1] is 'b'
 
         subjectMap = {}
-        for subject in $scope.subjects
+        for subject in $scope.subjects.original
             subjectMap[subject.id] = subject
 
-        $scope.subjectFilter = new ResourceFilterItem
-            search: (model)->
+        $scope.subjectFilter = new ResourceFilter
+            parent: semesterFilter
+            value: ''
+            filter: (semester)->
+                if not @value
+                    return true
                 exp = new RegExp @value
-                for id in model.subject_ids
+                for id in semester.subject_ids
                     en = subjectMap[id].title_en.match exp
                     ja = subjectMap[id].title_ja.match exp
                     if en or ja
                         return true
                 false
 
-        $scope.semesterFilter = new ResourceFilterGroup()
-        .add $scope.classYearFilter
-        .add $scope.yearFilter
-        .add $scope.abFilter
-        .add $scope.subjectFilter
 
         if $stateParams.class_year
-            selectedClassYear = $scope.classYears.retrieve $stateParams.class_year, 'year'
-            $scope.classYearFilter.selectBySlug selectedClassYear.id
+            if current = $scope.classYearFilter.finfBySlug $stateParams.class_year
+                current.active true
 
         if $stateParams.subject
             selectedSubject = $scope.subjects.retrieve $stateParams.subject, 'title_en'
             $scope.subjectFilter.value = selectedSubject.title_ja
 
 
+        $scope.semesters.setFilter semesterFilter
 
 
 .controller 'AdminSemesterDetailCtrl',
-    ($scope, Semester, $state, $stateParams, Notify) ->
-        semester_id = $stateParams.id
-
-        if semester_id isnt ''
-            $scope.semester = $scope.semesters.retrieve semester_id
-            if not $scope.semester?
-                $state.go 'admin.semester'
-                Notify "Not found semester(id: \"#{semester_id}\")", type: 'warning'
-        else
-            $scope.semester = null
-
-.controller 'AdminSemesterEditCtrl',
-    ($scope, Semester, $state, $stateParams, Notify) ->
-        $scope.editing = $scope.semester?.id?
-        $scope.title = if $scope.editing then '編集' else '新規作成'
+    ($scope, Semester, $state, $stateParams, Notify, NotFound) ->
+        $scope.semester = $scope.semesters.retrieve $stateParams.id
+        if not $scope.semester?
+            NotFound()
 
         $scope.deleting = false
 
-        if $scope.editing
-            $scope.new_semester = angular.copy $scope.semester
-        else
-            $scope.new_semester = new Semester()
-            $scope.new_semester.subject_ids = []
-
-        $scope.doSaveSemester = ()->
-            if $scope.editing
-                $scope.new_semester.$update {}, (data)->
-                    $scope.semesters.set data
-                    $state.go 'admin.semester.detail', {id: data.id}
-                    Notify '保存しました。'
-            else
-                $scope.new_semester.$save {}, (data)->
-                    $scope.semesters.set data
-                    $state.go 'admin.semester.detail', {id: data.id}
-                    Notify '新規作成しました。'
-
         $scope.doDeleteSemester = ()->
             $scope.semester.$remove {}, (data)->
-                $scope.semesters.del $scope.semester
+                $scope.semesters.remove $scope.semester
                 $state.go 'admin.semester'
                 Notify '削除しました。', type: 'danger'
 
@@ -159,24 +145,52 @@ angular.module modulePage
             if $scope.deleting
                 $scope.doDeleteSemester()
             else
-                Notify 'もう一度クリックすると削除します。', type: 'danger'
                 $scope.deleting = true
 
         $scope.stopDeleting = ->
             $scope.deleting = false
-            Notify '削除を中断しました。', type: 'warning'
 
-        $scope.deleteBtnLabel = ()->
-            if $scope.deleting
-                return "マジで削除する"
-            else
-                return '削除する'
+
+.controller 'AdminSemesterEditCtrl',
+    ($scope, Semester, $state, $stateParams, Notify) ->
+        $scope.editing = $scope.semester? and $scope.semester.id?
+        $scope.title = if $scope.editing then '編集' else '新規作成'
+
+        $scope.deleting = false
+
+        $scope.errors = {}
+
+        if $scope.editing
+            $scope.newSemester = angular.copy $scope.semester
+        else
+            $scope.newSemester = new Semester()
+            $scope.newSemester.subject_ids = []
+
+        onError = (res)->
+            Notify '入力にエラーがあります。', type: 'warn'
+            $scope.errors = res.data.errors
+
+        $scope.doSaveSemester = (valid)->
+            if valid
+                if $scope.editing
+                    $scope.newSemester.$update {}, (data)->
+                        $scope.semesters.set data
+                        $state.go 'admin.semester.detail', {id: data.id}
+                        Notify '保存しました。'
+                    , onError
+                else
+                    $scope.newSemester.$save {}, (data)->
+                        $scope.semesters.set data
+                        $state.go 'admin.semester.detail', {id: data.id}
+                        Notify '新規作成しました。'
+                    , onError
+
 
 
         $scope.subjectCheckboxChange = (subject)->
-            idx = $scope.new_semester.subject_ids.indexOf subject.id
+            idx = $scope.newSemester.subject_ids.indexOf subject.id
             if idx > -1
-                $scope.new_semester.subject_ids.splice idx, 1
+                $scope.newSemester.subject_ids.splice idx, 1
             else
-                $scope.new_semester.subject_ids.push subject.id
+                $scope.newSemester.subject_ids.push subject.id
 

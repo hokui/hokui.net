@@ -10,7 +10,7 @@ form.form(role="form" ng-submit="doSaveSubject(subjectForm.$valid)" name="subjec
                     input.form__control(
                         type="text"
                         name="title_ja"
-                        ng-model="new_subject.title_ja"
+                        ng-model="newSubject.title_ja"
                         required
                         ng-change="errors.title_ja = null"
                         id="subjectTitleJa"
@@ -28,7 +28,7 @@ form.form(role="form" ng-submit="doSaveSubject(subjectForm.$valid)" name="subjec
                     input.form__control(
                         type="text"
                         name="title_en"
-                        ng-model="new_subject.title_en"
+                        ng-model="newSubject.title_en"
                         required
                         ng-pattern="/^[0-9a-z_]+$/"
                         ng-change="errors.title_en = null"
@@ -46,8 +46,6 @@ form.form(role="form" ng-submit="doSaveSubject(subjectForm.$valid)" name="subjec
                 .pull-left
                     div(ng-if="editing")
                         a.btn(ui-sref="admin.subject.detail({id: subject.id})" tabindex="-1") 編集をやめる
-                    div(ng-if="!editing")
-                        a.btn(ui-sref="admin.subject" tabindex="-1") 一覧に戻る
                 .pull-right
                     button.btn.btn--primary(type="submit" ng-disabled="subjectForm.$invalid") 保存
 

@@ -1,4 +1,4 @@
-form.form(role="form", ng-submit="doSaveYear(yearForm.$valid)", name="yearForm", novalidate)
+form.form(role="form" ng-submit="doSaveClassYear(classYearForm.$valid)" name="classYearForm" novalidate)
     .panel
         .panel__head
             h3.panel__head__title {{title}}
@@ -10,7 +10,7 @@ form.form(role="form", ng-submit="doSaveYear(yearForm.$valid)", name="yearForm",
                     input.form__control(
                         type="number"
                         name="year"
-                        ng-model="new_year.year"
+                        ng-model="newClassYear.year"
                         integer
                         min="91"
                         max="149"
@@ -18,10 +18,10 @@ form.form(role="form", ng-submit="doSaveYear(yearForm.$valid)", name="yearForm",
                         ng-change="errors.year = null"
                         id="yearYear"
                         placeholder="期")
-                    div(ng-show="yearForm.year.$dirty")
-                        .form__error(ng-show="yearForm.year.$error.required") 入力必須項目です
-                        .form__error(ng-show="!yearForm.year.$error.required && yearForm.year.$error.integer || yearForm.year.$error.number") 整数値を入力してください
-                        .form__error(ng-show="!yearForm.year.$error.required && !yearForm.year.$error.integer && yearForm.year.$error.min || yearForm.year.$error.max") 91以上149以下を入力してください
+                    div(ng-show="classYearForm.year.$dirty")
+                        .form__error(ng-show="classYearForm.year.$error.required") 入力必須項目です
+                        .form__error(ng-show="!classYearForm.year.$error.required && classYearForm.year.$error.integer || classYearForm.year.$error.number") 整数値を入力してください
+                        .form__error(ng-show="!classYearForm.year.$error.required && !classYearForm.year.$error.integer && classYearForm.year.$error.min || classYearForm.year.$error.max") 91以上149以下を入力してください
                     div
                         .form__error(ng-if="!!errors.year" ng-repeat="error in errors.year") {{error}}
 
@@ -29,9 +29,7 @@ form.form(role="form", ng-submit="doSaveYear(yearForm.$valid)", name="yearForm",
             .clearfix
                 .pull-left
                     div(ng-if="editing")
-                        a.btn.btn-default(ui-sref="admin.year.detail({id: year.id})" tabindex="-1") 編集をやめる
-                    div(ng-if="!editing")
-                        a.btn.btn-default(ui-sref="admin.year" tabindex="-1") 一覧に戻る
+                        a.btn.btn-default(ui-sref="admin.year.detail({id: classYear.id})" tabindex="-1") 編集をやめる
                 .pull-right
                     button.btn.btn--primary(type="submit" ng-disabled="year.$invalid") 保存
 

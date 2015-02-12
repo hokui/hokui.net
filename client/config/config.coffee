@@ -43,15 +43,15 @@ angular.module moduleConfig, [
 .config (RestrictProvider)->
     RestrictProvider.setNext 'home'
 
-.config (AuthProvider)->
-    AuthProvider.setAutoCheck true
+.config (AuthCheckerProvider)->
+    AuthCheckerProvider.enabled true
 
 .config (TitleProvider)->
     TitleProvider.setDefault '北医ネット'
 
-.run ($rootScope, Restrict, $state, Auth, Notify)->
+.run ($rootScope, Restrict, $state, AuthChecker, Notify)->
 
-    $rootScope.$on Auth.getAltStateChangeStart(), (ev, stateChangeStart, toState, toParams, fromState, fromParams)->
+    $rootScope.$on AuthChecker.altStateChangeStart(), (ev, toState, toParams, fromState, fromParams)->
         result = Restrict toState
         first_visit = fromState.name is ''
         if not result.can
@@ -59,9 +59,11 @@ angular.module moduleConfig, [
             setTimeout ->
                 $state.go result.next
             , 0
-            stateChangeStart.preventDefault()
+            ev.preventDefault()
 
     $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams, error)->
-        Notify 'ページの表示に失敗しました。', period: -1, type: 'danger'
+        Notify 'ページの表示に失敗しました。',
+            period: -1
+            type: 'danger'
 
 

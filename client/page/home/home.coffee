@@ -12,4 +12,4 @@ angular.module modulePage
     ($scope, Env) ->
         $scope.email = 'hokui.net@gmail.com'
 
-        $scope.dev = Env.dev
+        $scope.dev = Env.dev()

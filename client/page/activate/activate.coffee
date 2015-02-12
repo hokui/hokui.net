@@ -14,7 +14,7 @@ angular.module modulePage
     ($scope, $stateParams, $timeout, $http, $state, Env, Notify, NotFound) ->
         token = $stateParams.activation_token
         fake = $stateParams.fake
-        if token? or (fake? and Env.dev)
+        if token? or (fake? and Env.dev())
         else
             NotFound()
             return

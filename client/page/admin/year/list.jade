@@ -1,6 +1,5 @@
-ul.list-inline
-    li
-        a.btn.btn--sm.btn--primary(ui-sref=".detail.edit({id: ''})") 新規作成
+p
+    a.btn.btn--sm.btn--primary(ui-sref=".new") 新規作成
 
 table.table.table--condensed
     thead.table__head
@@ -9,7 +8,7 @@ table.table.table--condensed
             th 期
             th カリキュラム
     tbody.table__body
-        tr(ng-repeat="classYear in classYears")
+        tr(ng-repeat="classYear in classYears.original")
             td {{classYear.id}}
             td
                 a(ui-sref="admin.year.detail({id:classYear.id})")

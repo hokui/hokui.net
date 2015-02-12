@@ -1,191 +1,319 @@
 'use strict'
 
 describe 'Auth', ->
+    $httpBackend = Token = Auth = null
+    doLoginAsAdmin = doLoginAsUser = null
 
     beforeEach ->
+        localStorage.clear()
+        sessionStorage.clear()
+
         angular.module 'AuthTestModule', [moduleCore]
         .config (TokenProvider)->
             TokenProvider.setStorageKey 'token'
             TokenProvider.setHeaderKey 'Access-Token'
             TokenProvider.setTokenPrefix ''
-
         .config (EnvProvider)->
             EnvProvider.setApiRoot '/api'
 
         module 'AuthTestModule'
 
-        inject ($httpBackend, Auth)->
-            mockupAPI $httpBackend
-            Auth.silentLogout()
+        inject (_$httpBackend_, _Token_, _Auth_)->
+            $httpBackend = _$httpBackend_
+            Token = _Token_
+            Auth = _Auth_
+
+        doLoginAsAdmin = getLoginAsAdminProc $httpBackend, Auth
+        doLoginAsUser = getLoginAsUserProc $httpBackend, Auth
+
+        mockupAPI $httpBackend
+        Auth.silentLogout()
 
     afterEach ->
-        inject ($httpBackend, Auth)->
-            $httpBackend.verifyNoOutstandingExpectation()
-            $httpBackend.verifyNoOutstandingRequest()
-            Auth.silentLogout()
+        localStorage.clear()
+        sessionStorage.clear()
 
-    it 'silent logout', inject ($httpBackend, Token, Auth)->
+        $httpBackend.verifyNoOutstandingExpectation()
+        $httpBackend.verifyNoOutstandingRequest()
+        Auth.silentLogout()
+
+
+    it 'silent logout', ->
         Token.set 'ThisIsDummyToken', false
+
+        expect Token.empty()
+        .toBe false
+        expect Auth.active()
+        .toBe false
+        expect Auth.user()
+        .toBe null
 
         Auth.silentLogout()
 
-        expect(Auth.active()).toBe false
-        expect(Auth.user()).toEqual null
-        expect(Token.get()).toBe ''
+        expect Token.empty()
+        .toBe true
 
 
-    it 'login fail', inject ($httpBackend, Token, Auth)->
-        $httpBackend.expectPOST('/api/session')
+    it 'login fail', ->
+        $httpBackend.expectPOST '/api/session'
 
         Auth.login
             email: 'not_authorized@hokudai.ac.jp'
             password: 'not_authorized'
         , false
         $httpBackend.flush()
-        expect(Auth.active()).toBe false
-        expect(Auth.user()).toEqual null
+
+        expect Auth.active()
+        .toBe false
+        expect Auth.user()
+        .toBe null
 
 
-    it 'admin login', inject ($httpBackend, Token, Auth)->
-        $httpBackend.expectPOST('/api/session')
+    it 'login admin', ->
+        doLoginAsAdmin()
 
-        Auth.login mocks.admin_credencials, false
-
-        $httpBackend.flush()
-
-        expect(Auth.active()).toBe true
-        expect(Auth.user()).toEqual mocks.admin_user
-        expect(Token.get()).toBe mocks.admin_token
-
-
-        expect(Auth.can('admin')).toBe true
-        expect(Auth.can(2)).toBe true
-        expect(Auth.can('user')).toBe true
-        expect(Auth.can(1)).toBe true
-        expect(Auth.can('guest')).toBe true
-        expect(Auth.can(0)).toBe true
-        # defaultly needs 'user'
-        expect(Auth.can()).toBe true
+        expect Auth.active()
+        .toBe true
+        expect Auth.user()
+        .toEqual mocks.admin_user
+        expect Token.get()
+        .toBe mocks.admin_token
 
 
-    it 'user login', inject ($httpBackend, Token, Auth)->
-        $httpBackend.expectPOST('/api/session')
-        Auth.login mocks.admin_credencials, false
-        $httpBackend.flush()
+    it 'login user', ->
+        doLoginAsUser()
 
-        $httpBackend.expectPOST('/api/session')
-        Auth.login mocks.user_credencials, false
-
-        $httpBackend.flush()
-
-        expect(Auth.active()).toBe(true)
-        expect(Auth.user()).toEqual(mocks.user_user)
-        expect(Token.get()).toBe(mocks.user_token)
+        expect Auth.active()
+        .toBe true
+        expect Auth.user()
+        .toEqual mocks.user_user
+        expect Token.get()
+        .toBe mocks.user_token
 
 
-        expect(Auth.can('admin')).toBe false
-        expect(Auth.can(2)).toBe false
-        expect(Auth.can('user')).toBe true
-        expect(Auth.can(1)).toBe true
-        expect(Auth.can('guest')).toBe true
-        expect(Auth.can(0)).toBe true
-
-        expect(Auth.can()).toBe true
-
-
-    # HELPER SPEC
-    it 'admin login helper', inject ($httpBackend, Token, Auth)->
-        getLoginAdminProc($httpBackend, Auth)()
-        expect(Auth.active()).toBe(true)
-        expect(Auth.user()).toEqual(mocks.admin_user)
-        expect(Token.get()).toBe(mocks.admin_token)
+    describe 'roles', ->
+        rolesByStr = rolesByInt = null
+        beforeEach ->
+            rolesByStr = ->
+                _.map ['admin', 'user', 'guest'], _.bind Auth.can, Auth
+            rolesByInt = ->
+                _.map [2, 1, undefined, 0], _.bind Auth.can, Auth
 
 
-    # HELPER SPEC
-    it 'user login helper', inject ($httpBackend, Token, Auth)->
-        getLoginUserProc($httpBackend, Auth)()
-        expect(Auth.active()).toBe(true)
-        expect(Auth.user()).toEqual(mocks.user_user)
-        expect(Token.get()).toBe(mocks.user_token)
+        it 'admin', ->
+            doLoginAsAdmin()
+
+            expect rolesByStr()
+            .toEqual [true, true, true]
+            expect rolesByInt()
+            .toEqual [true, true, true, true]
 
 
-    it 'logout', inject ($httpBackend, Token, Auth)->
-        $httpBackend.expectPOST('/api/session')
-        Auth.login mocks.admin_credencials, false
-        $httpBackend.flush()
+        it 'user', ->
+            doLoginAsUser()
 
-        $httpBackend.expectDELETE('/api/session')
+            expect rolesByStr()
+            .toEqual [false, true, true]
+            expect rolesByInt()
+            .toEqual [false, true, true, true]
+
+
+        it 'guest', ->
+            Auth.silentLogout()
+
+            expect rolesByStr()
+            .toEqual [false, false, true]
+            expect rolesByInt()
+            .toEqual [false, false, false, true]
+
+
+    it 'logout', ->
+        doLoginAsUser()
+
+        $httpBackend.expectDELETE '/api/session'
         Auth.logout()
         $httpBackend.flush()
 
-        expect(Auth.active()).toBe(false)
-        expect(Auth.user()).toEqual(null)
-        expect(Token.get()).toBe('')
+        expect Auth.active()
+        .toBe false
+        expect Auth.user()
+        .toBe null
+        expect Token.empty()
+        .toBe true
 
-    it 'logout when token is unset', inject ($httpBackend, Token, Auth)->
-        # if token is empty, Auth doesnt call API
+
+    it 'logout when token is unset', ->
         Auth.logout()
 
-        expect(Auth.active()).toBe(false)
-        expect(Auth.user()).toEqual(null)
-        expect(Token.get()).toBe('')
+        expect Auth.active()
+        .toBe false
+        expect Auth.user()
+        .toBe null
+        expect Token.empty()
+        .toBe true
 
-        expect(Auth.can('admin')).toBe false
-        expect(Auth.can(2)).toBe false
-        expect(Auth.can('user')).toBe false
-        expect(Auth.can(1)).toBe false
-        expect(Auth.can('guest')).toBe true
-        expect(Auth.can(0)).toBe true
 
-        expect(Auth.can()).toBe false
+    it 'check without token', ->
+        doLoginAsUser()
 
-    it 'check fail', inject ($httpBackend, Token, Auth)->
-        # Need to set fake token because Auth.check() doesnt call API if token is empty
+        Token.clear()
+
+        Auth.check()
+
+        expect Auth.active()
+        .toBe false
+        expect Auth.user()
+        .toBe null
+
+
+    it 'check fail', ->
         Token.set 'ThisIsUnauthorizedTestToken', false
 
-        $httpBackend.expectGET('/api/profile')
+        $httpBackend.expectGET '/api/profile'
         Auth.check()
         $httpBackend.flush()
 
-        expect(Auth.active()).toBe false
-        expect(Auth.user()).toEqual null
+        expect Auth.active()
+        .toBe false
+        expect Auth.user()
+        .toBe null
 
 
-    it 'check fail after token is changed', inject ($httpBackend, Token, Auth)->
-        # token is invalid somehow after login
-        $httpBackend.expectPOST('/api/session')
-        Auth.login mocks.admin_credencials, false
-        $httpBackend.flush()
-
-        Token.set 'ThisIsUnauthorizedTestToken', false
-
-        $httpBackend.expectGET('/api/profile')
-        Auth.check()
-        $httpBackend.flush()
-
-        expect(Auth.active()).toBe false
-        expect(Auth.user()).toEqual null
-
-
-    it 'check admin', inject ($httpBackend, Token, Auth)->
+    it 'check admin', ->
         Token.set mocks.admin_token, false
 
-        $httpBackend.expectGET('/api/profile')
+        $httpBackend.expectGET '/api/profile'
         Auth.check()
         $httpBackend.flush()
 
-        expect(Auth.active()).toBe true
-        expect(Auth.user()).toEqual mocks.admin_user
+        expect Auth.active()
+        .toBe true
+        expect Auth.user()
+        .toEqual mocks.admin_user
 
-    it 'check user', inject ($httpBackend, Token, Auth)->
+
+    it 'check user', ->
         Token.set mocks.user_token, false
 
-        $httpBackend.expectGET('/api/profile')
+        $httpBackend.expectGET '/api/profile'
         Auth.check()
         $httpBackend.flush()
 
-        expect(Auth.active()).toBe true
-        expect(Auth.user()).toEqual mocks.user_user
+        expect Auth.active()
+        .toBe true
+        expect Auth.user()
+        .toEqual mocks.user_user
 
 
+describe 'AuthChecker', ->
+    AuthCheckerProvider = null
+
+    beforeEach ->
+        angular.module 'AuthCheckerTestModule', [moduleCore]
+        .config (_AuthCheckerProvider_)->
+            AuthCheckerProvider = _AuthCheckerProvider_
+        .config ($stateProvider)->
+            $stateProvider
+            .state 'fake',
+                url: '/fake'
+        .config (TokenProvider)->
+            TokenProvider.setStorageKey 'token'
+            TokenProvider.setHeaderKey 'Access-Token'
+            TokenProvider.setTokenPrefix ''
+
+        module 'AuthCheckerTestModule'
+
+        inject ($httpBackend, Auth)->
+            Auth.silentLogout()
+            mockupAPI $httpBackend
+        localStorage.clear()
+        sessionStorage.clear()
+
+    afterEach ->
+        localStorage.clear()
+        sessionStorage.clear()
+
+        inject ($httpBackend, Auth)->
+            $httpBackend.verifyNoOutstandingExpectation()
+            $httpBackend.verifyNoOutstandingRequest()
+            Auth.silentLogout()
+
+
+    it 'config alt event', ->
+        expect AuthCheckerProvider.getAltStateChangeStart()
+        .toBe AuthCheckerProvider.defaultAltStateChangeStart()
+
+        AuthCheckerProvider.setAltStateChangeStart '$event'
+
+        expect AuthCheckerProvider.getAltStateChangeStart()
+        .toBe '$event'
+
+        inject (AuthChecker)->
+            expect AuthChecker.altStateChangeStart()
+            .toBe '$event'
+
+
+    it 'enabled false', ->
+        AuthCheckerProvider.enabled false
+        expect AuthCheckerProvider.enabled()
+        .toBe false
+
+        inject ($state, $httpBackend, Token, Auth, AuthChecker, $rootScope)->
+            expect AuthChecker.enabled()
+            .toBe false
+
+            eventEmitted = false
+            $rootScope.$on AuthChecker.altStateChangeStart(), ->
+                eventEmitted = true
+
+            Token.set mocks.admin_token, false
+
+            $state.go 'fake'
+
+            expect eventEmitted
+            .toBe false
+
+            expect Auth.active()
+            .toBe false
+
+
+    it 'enabled true', ->
+        expect AuthCheckerProvider.enabled()
+        .toBe false
+        AuthCheckerProvider.enabled true
+        expect AuthCheckerProvider.enabled()
+        .toBe true
+
+        inject ($state, $httpBackend, Token, Auth, AuthChecker, $rootScope)->
+            expect AuthChecker.enabled()
+            .toBe true
+
+            eventEmitted = false
+            $rootScope.$on AuthChecker.altStateChangeStart(), ->
+                eventEmitted = true
+
+            Token.set mocks.admin_token, false
+
+            $httpBackend.expectGET '/api/profile'
+            $state.go 'fake'
+            $httpBackend.flush()
+
+            expect Auth.active()
+            .toBe true
+
+            expect eventEmitted
+            .toBe true
+
+
+    it 'stateChange is prevented', ->
+        AuthCheckerProvider.enabled true
+
+        inject ($state, $httpBackend, Token, Auth, AuthChecker, $rootScope)->
+            $rootScope.$on AuthChecker.altStateChangeStart(), (ev)->
+                ev.preventDefault()
+
+            $state.go 'fake'
+
+            expect $state.current.name
+            .not.toBe 'fake'
 
