@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npm install && bower install && gulp --seed --nosound",
     "test": "./node_modules/karma/bin/karma start",
+    "gulp": "./node_modules/gulp/bin/gulp.js",
     "postinstall": "webdriver-manager update",
     "nginx": "sudo nginx -c /var/www/hokui.net/nginx/nginx.conf",
     "nginx-reload": "sudo nginx -c /var/www/hokui.net/nginx/nginx.conf -s reload",
