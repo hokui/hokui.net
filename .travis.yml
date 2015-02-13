@@ -12,8 +12,8 @@ before_script:
 script:
   - CODECLIMATE_REPO_TOKEN=6379678c9245d7c0695b4a011bac7e58e9a59ee91e5486af9e3ce494d3d7f9f8 bundle exec rspec
   - npm test
-  - ./node_modules/gulp/bin/gulp.js silent run-e2e
-  - ./node_modules/gulp/bin/gulp.js silent prod run-e2e
+  - ./node_modules/gulp/bin/gulp.js run-e2e --nosound
+  - ./node_modules/gulp/bin/gulp.js run-e2e --nosound --prod
 env:
   global:
     - secure: gx4ZFVVi++vT5oQusrzLasy/szWmrcd29MrkO1n6iYeh6wVHMqNUPlW9f8yfua7wg5Gfg5Uvien0RxhdzY7ov4V6qGk/IXSMGFbECLZB2neOCWci86BZQ+cgL4ekvbN+JucrWC48dTDlFPwltUWHaDCpm3V7Y6/+3rTp8l5t4Ws=
