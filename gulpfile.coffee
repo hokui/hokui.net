@@ -6,6 +6,8 @@ $ = do require 'gulp-load-plugins'
 
 fs = require 'fs'
 del = require 'del'
+spawn = require('child_process').spawn
+argv = require('yargs').argv
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
 lazypipe = require 'lazypipe'
@@ -14,39 +16,45 @@ dateFormat = require 'dateformat'
 play = require 'play'
 
 
-
 sounds =
     error: 'misc/error.mp3'
 
 p = console.log
 
 class Conf
-    setProd: (isProd)->
-        if isProd?
-            @prod = isProd
-        else
-            @prod = false
-        @dest = if @prod then 'dist' else 'public'
-
-    constructor: (isProd)->
+    constructor: ->
+        @hash = dateFormat (new Date()), 'yyyymmddhhMMss'
         @src = 'client'
+        @static = 'static'
         @bowerDir = (try
             JSON.parse(fs.readFileSync '.bowerrc', 'utf8').directory ? throw 'e'
         catch error
             'bower_components'
         )
         @ngAppName = 'hokuiApp'
-        @watching = false
-        @minify = true
-        @static = 'static'
-        @setProd(isProd)
-        @hash = dateFormat (new Date()), 'yyyymmddhhMMss'
-        @useSounds = true
 
-conf = new Conf(false)
+        @prod = !!argv.prod
+        @dest = if @prod then 'dist' else 'public'
+        @minify = !argv.skipmin
+        @seeding = !!argv.seed
+        @silent = !!argv.nosound
+
+        @watching = false
+
+scripts =
+    setupRails: ->
+        'bundle exec rake db:dev'
+    startRails: ->
+        'bundle exec rails s -d'
+    stopRails: ->
+        'if [ -f "./tmp/pids/server.pid" ]; then kill -QUIT `cat tmp/pids/server.pid`; fi'
+    startE2ETest: ->
+        'protractor protractor.conf.js'
+
+conf = new Conf()
 
 onError = (arg)->
-    if conf.useSounds
+    if not conf.silent
         play.sound sounds.error
     console.warn "plugin: #{arg.plugin}"
     console.warn "error: #{arg.message}"
@@ -111,12 +119,7 @@ g.task 'css:app:inject', ['clean'], ->
     targetFiles =
     g.src("#{conf.src}/{page,component}/**/*.sass", read: false)
     .pipe sort (a, b)->
-        if a < b
-            return -1
-        if a > b
-            return 1
-        0
-
+        a.path.localeCompare b.path
     g.src "#{conf.src}/app.sass"
     .pipe $.inject(
         targetFiles,
@@ -178,9 +181,13 @@ g.task 'js', ['clean'], ->
         "!#{conf.bowerDir}/**/*.coffee"
     ]
     if conf.prod
-        target.push "!#{conf.src}/config/development/*.coffee"
+        target.push "!#{conf.src}/config/development/**/*.coffee"
     else
-        target.push "!#{conf.src}/config/production/*.coffee"
+        target.push "!#{conf.src}/config/production/**/*.coffee"
+
+    if not conf.seeding
+        target.push "!#{conf.src}/config/seed/**/*.coffee"
+
 
     anotateAndConcat = lazypipe()
         .pipe $.ngAnnotate
@@ -360,11 +367,8 @@ g.task 'watch', ['build'], (cb)->
     g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor']
     g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common']
     g.watch "#{conf.src}/{page,core,component}/**/*.{sass,scss}", ['watch:css:app']
-
     g.watch "#{conf.src}/**/*.coffee", ['watch:js']
-
     g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html']
-
     g.watch "#{conf.src}/index.jade", ['watch:index']
 
 
@@ -379,13 +383,28 @@ g.task 'serve', ['build'], ->
             target: 'http://localhost:3000/api'
         ]
 
-g.task 'prod', ->
-    conf.setProd true
+g.task 'rails:setup', $.shell.task [
+    scripts.setupRails()
+]
 
-g.task 'skipmin', ->
-    conf.minify = false
+g.task 'rails', $.shell.task [
+    scripts.stopRails()
+    scripts.startRails()
+]
 
-g.task 'silent', ->
-    conf.useSounds = false
+g.task 'rails:stop', $.shell.task [
+    scripts.stopRails()
+]
 
-g.task 'default', ['build', 'watch', 'serve']
+g.task 'e2e', $.shell.task [
+    scripts.startE2ETest()
+]
+
+g.task 'run-e2e', ['serve', 'rails:setup'], $.shell.task [
+    scripts.stopRails()
+    scripts.startRails()
+    scripts.startE2ETest()
+    scripts.stopRails()
+]
+
+g.task 'default', ['watch', 'serve', 'rails']
