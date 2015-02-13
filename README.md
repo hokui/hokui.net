@@ -49,7 +49,12 @@ bundle exec rake db:dev
 * `gulp serve` ... 上記の`Rails`サーバーを起動しない版
 * `gulp build` ... ビルドのみ。
 * `gulp e2e` ... `http://localhost:9000`に対してE2Eテストを実行する
-* `gulp run-e2e` ... ビルド、バック/フロントエンドのサーバー起動、DB初期化などもろもろ準備してからE2Eテストを実行する。基本travis用
+* `gulp run-e2e` ... ビルド、バック/
+* `gulp rails` ... バックエンドで`Rails`サーバー起動
+* `gulp rails:stop` ... バックエンドで起動した`Rails`サーバーを停止
+* `gulp rails:setup` ... `bundle exec rake db:dev`のエイリアス
+
+フロントエンドのサーバー起動、DB初期化などもろもろ準備してからE2Eテストを実行する。travis用
 
 
 #### オプション
