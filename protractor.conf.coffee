@@ -1,11 +1,7 @@
 'use strict'
 
 config =
-    directConnect: true
-    seleniumAddress: 'http://localhost:4444/wd/hub'
     baseUrl: 'http://localhost:9000'
-    capabilities:
-        'browserName': 'chrome'
 
     specs: ['test/e2e/**/*.coffee']
 
@@ -19,7 +15,14 @@ config =
         global.By = `by`
         # browser.ignoreSynchronization = true
 
-if  process.env.TRAVIS_BUILD_NUMBER
+if not process.env.TRAVIS_BUILD_NUMBER
+    # Local Configuration
+    config.directConnect = true
+    config.seleniumAddress = 'http://localhost:4444/wd/hub'
+    config.capabilities =
+        'browserName': 'chrome'
+else
+    # TravisCI Configuration
     config.sauceUser = process.env.SAUCE_USERNAME
     config.sauceKey = process.env.SAUCE_ACCESS_KEY
     config.capabilities =
