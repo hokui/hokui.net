@@ -28,6 +28,6 @@ script:
   - ./node_modules/gulp/bin/gulp.js run-e2e --nosound --prod
 after_success:
   - cat ./coverage/**/lcov.info | ./node_modules/coveralls/bin/coveralls.js;
-  - sh scripts/print_logs.sh
+  # - sh scripts/print_logs.sh
   - openssl aes-256-cbc -k '$DEPLOY_KEY' -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa
   - sh scripts/deploy.sh
