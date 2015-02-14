@@ -24,7 +24,7 @@ env:
     # sauce user
     - secure: o3paFBqwFDz4oYN8FNOL1gNrzjkyHODNsx5Okak/Kbg7WNlF/UN52jozZvGJbhhph2iQQmKney/HYrdV0ble99hySOTN5KatjX9eQrnpwSMxDbSyWLFmUqUqKUJ0q8QlCsO10JXRmKQ/ip1VdGYNSRB7eG/5LTV0RuFtc3FM2Q8=
     # sauce access key
-    - secure: D4Ur0/26bFfMjzbtQ7XfWmhwdvxBPohwlLlrKyL984NbnCxO1h9H6BE6u4RcOsKkxThMIKsnkq8vlVyKFNhhpAzhfBCl7Ff0X6esobRWeTmRjPswjLn+K0yaCcxlGgn/6doeHiR1MWE1PxkxTQyvPkPHFrNAi609LmPlGtsOGfA=after_success:
+    - secure: D4Ur0/26bFfMjzbtQ7XfWmhwdvxBPohwlLlrKyL984NbnCxO1h9H6BE6u4RcOsKkxThMIKsnkq8vlVyKFNhhpAzhfBCl7Ff0X6esobRWeTmRjPswjLn+K0yaCcxlGgn/6doeHiR1MWE1PxkxTQyvPkPHFrNAi609LmPlGtsOGfA=
 after_success:
   - cat ./coverage/**/lcov.info | ./node_modules/coveralls/bin/coveralls.js;
   - openssl aes-256-cbc -k '$DEPLOY_KEY' -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa
