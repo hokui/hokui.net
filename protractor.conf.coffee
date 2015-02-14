@@ -9,7 +9,7 @@ config =
     jasmineNodeOpts:
         showColors: true
         isVerbose: false
-        defaultTimeoutInterval: 30000
+        defaultTimeoutInterval: 100000
 
     onPrepare: ->
         global.By = `by`
