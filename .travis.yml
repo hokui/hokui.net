@@ -8,7 +8,7 @@ rvm:
 env:
   global:
     - SAUCE_USERNAME=endaaman
-    - SAUCE_ACCESS_KEY=89741d3f-0ed6-44d5-8b36-9f48a4e6aadf
+    - SAUCE_ACCESS_KEY=a8249603-9c1f-4f7d-83a7-ac85e7a6389f
     - LOGS_DIR=/tmp/hokui.net-build/logs
     - BROWSER_PROVIDER_READY_FILE=/tmp/sauce-connect-ready
     - secure: gx4ZFVVi++vT5oQusrzLasy/szWmrcd29MrkO1n6iYeh6wVHMqNUPlW9f8yfua7wg5Gfg5Uvien0RxhdzY7ov4V6qGk/IXSMGFbECLZB2neOCWci86BZQ+cgL4ekvbN+JucrWC48dTDlFPwltUWHaDCpm3V7Y6/+3rTp8l5t4Ws=
@@ -28,5 +28,6 @@ script:
   - ./node_modules/gulp/bin/gulp.js run-e2e --nosound --prod
 after_success:
   - cat ./coverage/**/lcov.info | ./node_modules/coveralls/bin/coveralls.js;
+  - sh scripts/print_logs.sh
   - openssl aes-256-cbc -k '$DEPLOY_KEY' -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa
   - sh scripts/deploy.sh
