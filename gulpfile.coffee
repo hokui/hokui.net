@@ -400,10 +400,8 @@ g.task 'e2e', $.shell.task [
     scripts.startE2ETest()
 ]
 
-g.task 'run-e2e', ['serve', 'rails:setup'], ->
+g.task 'run-e2e', ['serve', 'rails:setup', 'rails'], ->
     $.shell.task([
-        scripts.stopRails()
-        scripts.startRails()
         scripts.startE2ETest()
         scripts.stopRails()
     ])()
