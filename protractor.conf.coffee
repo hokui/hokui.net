@@ -8,7 +8,8 @@ config =
     framework: 'jasmine'
     jasmineNodeOpts:
         showColors: true
-        isVerbose: false
+        isVerbose: true
+        showTiming: true
         defaultTimeoutInterval: 100000
 
     onPrepare: ->
