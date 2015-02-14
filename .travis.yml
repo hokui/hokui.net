@@ -5,6 +5,8 @@ cache:
     - node_modules
 rvm:
   - 2.2.0
+addons:
+  sauce_connect: true
 before_script:
   - npm install
   - ./node_modules/protractor/bin/webdriver-manager update
@@ -19,6 +21,10 @@ env:
   global:
     - secure: gx4ZFVVi++vT5oQusrzLasy/szWmrcd29MrkO1n6iYeh6wVHMqNUPlW9f8yfua7wg5Gfg5Uvien0RxhdzY7ov4V6qGk/IXSMGFbECLZB2neOCWci86BZQ+cgL4ekvbN+JucrWC48dTDlFPwltUWHaDCpm3V7Y6/+3rTp8l5t4Ws=
     - secure: fVRHp8RNn4e3fLg2iRyZiUk+UVLqx+m65ClADT5a9Hw4ea9jvu1v+5t3j7Im/vzgl9T6EE5DkuAPuJYHAlq0PK1lUH1FV4+yv4XP7IOaqU659nY1oxxAsIeByfNrh1qZob9XVyDlYxEXRcHaZqy6l/dmD+IKHj5p+KZHTzMovQE=
+    # sauce user
+    - secure: o3paFBqwFDz4oYN8FNOL1gNrzjkyHODNsx5Okak/Kbg7WNlF/UN52jozZvGJbhhph2iQQmKney/HYrdV0ble99hySOTN5KatjX9eQrnpwSMxDbSyWLFmUqUqKUJ0q8QlCsO10JXRmKQ/ip1VdGYNSRB7eG/5LTV0RuFtc3FM2Q8=
+    # sauce access key
+    - secure: D4Ur0/26bFfMjzbtQ7XfWmhwdvxBPohwlLlrKyL984NbnCxO1h9H6BE6u4RcOsKkxThMIKsnkq8vlVyKFNhhpAzhfBCl7Ff0X6esobRWeTmRjPswjLn+K0yaCcxlGgn/6doeHiR1MWE1PxkxTQyvPkPHFrNAi609LmPlGtsOGfA=after_success:
 after_success:
   - cat ./coverage/**/lcov.info | ./node_modules/coveralls/bin/coveralls.js;
   - openssl aes-256-cbc -k '$DEPLOY_KEY' -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa
