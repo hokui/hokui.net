@@ -6,7 +6,7 @@ hokui.net
 [![Code Climate](https://codeclimate.com/github/hokui/hokui.net/badges/gpa.svg)](https://codeclimate.com/github/hokui/hokui.net)
 [![Test Coverage](https://codeclimate.com/github/hokui/hokui.net/badges/coverage.svg)](https://codeclimate.com/github/hokui/hokui.net)  
 **Frontend**  
-[![Coverage Status](https://coveralls.io/repos/hokui/hokui.net/badge.svg?branch=)](https://coveralls.io/r/hokui/hokui.net?branch=)
+[![Coverage Status](https://coveralls.io/repos/hokui/hokui.net/badge.svg?branch=master)](https://coveralls.io/r/hokui/hokui.net?branch=master)
 
 バックエンド
 --------
@@ -29,34 +29,51 @@ bundle exec rake db:dev
 
 フロントエンド
 --------
-**NOTE**: Need to install `Gulp` globally or run Gulp with `npm run gulp ...`.
+
+**NOTE**: Need to install `Gulp` globally or run `Gulp` with `npm run gulp ...`.
 
 ### 開発版ビルド
-`public/`に、`client/`以降の構造をほぼ保ったまま展開する。
-`client/config/development/development.coffee`がビルドに含まれ、`client/config/production/production.coffee`はスルーされる。
+`public/`に、`client/`以降の構造を保って展開する。
+
 
 ### プロダクションビルド
-`dist/`に展開。`index.jade`以外のマークアップはすべてテンプレートとして`$templateChache`を使ってスクリプトに埋め込み、他のスクリプトも合わせて結合/Minifyして一つのファイルで出力。スタイルシートも同様にして一つのファイルで出力。  
-開発版と逆で、`client/config/production/production.coffee`がビルドに含まれ、`client/config/development/development.coffee`はスルーされる。
+`dist/`に展開する。
+`index.jade`以外のマークアップはすべてテンプレートとして`$templateChache`を使ってJSに埋め込み、他と併せて結合/圧縮して一つのファイルで出力。CSSも同様。
 
-### Gulpのビルドについて
 
-- `gulp` ... 開発版ビルドを行ったのちライブリロードが有効な状態で開発サーバー(http://localhost:9000)が立ち上がる
-- `gulp silent serve` ... 上のうるさくない版
-- `gulp prod [skipmin, slient] build` ... プロダクションビルドのみ。`skipmin`でMinify省略。`silent`を付けるとビルドに失敗してもうるさくない
-- `gulp prod [skipmin, silent] serve` ... プロダクションビルドして`dist/`で開発サーバー起動(ラライブリロードなし)
+### Gulp
+
+#### タスク
+
+* `gulp` ... 開発版ビルドを行い、バックエンドで`Rails`サーバーを起動し、開発サーバー(`http://localhost:9000`)が立ち上げる
+* `gulp serve` ... 上記の`Rails`サーバーを起動しない版
+* `gulp build` ... ビルドのみ。
+* `gulp e2e` ... `http://localhost:9000`に対してE2Eテストを実行する
+* `gulp run-e2e` ... ビルド、`Rails`サーバー/開発サーバーの起動、DB初期化後、E2Eテストを実行する
+* `gulp rails` ... バックエンドで`Rails`サーバー起動
+* `gulp rails:stop` ... バックエンドで起動した`Rails`サーバーを停止
+* `gulp rails:setup` ... `bundle exec rake db:dev`のエイリアス
+
+
+#### オプション
+
+* `--prod` ... プロダクションビルドになる。開発サーバーを立ち上げる場合はライブリロードは無効化
+* `--nosound` ... エラーを起こしてもうるさくない
+* `--skipmin` ... プロダクションビルドでJSとCSSの圧縮をしない(結合のみ)
+* `--seed` ... ログインとユーザー登録のときに初期値を入力した状態になる
+
+
+### ユニットテスト
+* `npm test` ... 対象は`client/core/**/*.coffee`のみ
+
 
 ### 一発構築
+
 ```
 npm start
 ```
-`npm install`と`bower install`と`gulp silent serve`が走る。フロントのコミット後は何も考えずこれでOK。
 
-### test
-```
-npm test
-```
-現状`client/core/`以下のKarmaを使ったユニットテストのみ。
+`npm install && bower install && gulp --seed --nosound`が実行される。
 
 
 Run hokui.net on Nginx

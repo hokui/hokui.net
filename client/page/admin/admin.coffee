@@ -16,6 +16,7 @@ angular.module modulePage
         data:
             restrict:
                 role: 'admin'
+                next: 'home'
                 error: '/admin 以降へのアクセスは管理者権限が必要です。'
             title: '北医ネット - 管理画面'
 

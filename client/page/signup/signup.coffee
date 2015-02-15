@@ -30,16 +30,16 @@ angular.module modulePage
             else
                 Notify '入力にエラーがあります。', type: 'warn'
 
+        $scope.tooltipClass = ->
+            'tooltip--left' : not Responsive.xs
+            'tooltip--bottom': Responsive.xs
 
         seed = Env.seed 'signup'
         if seed?
-            angular.extend $scope.user, seed.user
+            _.assign $scope.user, seed.user
             $scope.reenteredPassword = $scope.user.password
 
         $scope.user.birthday = new Date('1990/1/1')
         $scope.user.class_year_id = years[0].id
 
 
-        $scope.tooltipClass = ->
-            'tooltip--left' : not Responsive.xs
-            'tooltip--bottom': Responsive.xs

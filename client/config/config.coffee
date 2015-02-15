@@ -55,9 +55,9 @@ angular.module moduleConfig, [
         result = Restrict toState
         first_visit = fromState.name is ''
         if not result.can
-            Notify result.error, type: 'warn', delay: if first_visit then 500 else 0
             setTimeout ->
                 $state.go result.next
+                Notify result.error, type: 'warn', delay: if first_visit then 500 else 0
             , 0
             ev.preventDefault()
 
