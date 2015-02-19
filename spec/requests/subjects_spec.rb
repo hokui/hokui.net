@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Subjects", :type => :request do
+RSpec.describe "Subjects", type: :request do
   before(:all) do
     create(:subject)
   end

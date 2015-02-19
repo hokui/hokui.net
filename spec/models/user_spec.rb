@@ -30,7 +30,7 @@
 
 require 'rails_helper'
 
-RSpec.describe User, :type => :model do
+RSpec.describe User, type: :model do
   describe "scopes" do
     describe "active_approved_users" do
       it "includes active and approved users" do

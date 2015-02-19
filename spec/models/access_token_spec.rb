@@ -12,7 +12,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AccessToken, :type => :model do
+RSpec.describe AccessToken, type: :model do
   describe "class methods" do
     describe "find_token" do
       it "finds AccessToken instance which has token passed as an argument" do

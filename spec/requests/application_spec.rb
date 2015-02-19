@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Application', :type => :request do
+RSpec.describe 'Application', type: :request do
   before(:each) do
     @admin = create_admin_with_token
     @guest = create_guest_with_token

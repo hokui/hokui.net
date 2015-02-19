@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "ClassYears", :type => :request do
+RSpec.describe "ClassYears", type: :request do
   before(:all) do
     create(:class_year)
   end

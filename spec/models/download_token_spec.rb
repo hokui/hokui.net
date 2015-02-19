@@ -11,5 +11,5 @@
 
 require 'rails_helper'
 
-RSpec.describe DownloadToken, :type => :model do
+RSpec.describe DownloadToken, type: :model do
 end

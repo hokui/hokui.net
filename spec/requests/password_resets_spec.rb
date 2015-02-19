@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "PasswordResets", :type => :request do
+RSpec.describe "PasswordResets", type: :request do
   describe "POST /api/password_reset" do
     before do
       @guest = create(:guest)

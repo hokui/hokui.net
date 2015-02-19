@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users" do
+RSpec.describe "Users", type: :request do
   describe "GET /api/users" do
     it "returns a list of users to an admin", autodoc: true do
       admin = create_admin_with_token

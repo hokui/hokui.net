@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "News", :type => :request do
+RSpec.describe "News", type: :request do
   before(:all) do
     20.times { create(:news) }
   end
