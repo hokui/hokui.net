@@ -2,3 +2,6 @@ uploaded_files_dir: "/YOUR/PROJECT/ROOT/misc/uploaded"
 
 production:
   uploaded_files_dir: "/SOMEWHERE/IN/THE/SERVER"
+
+test:
+  uploaded_files_dir: "/tmp"
