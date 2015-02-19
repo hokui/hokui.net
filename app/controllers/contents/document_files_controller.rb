@@ -25,8 +25,8 @@ class Contents::DocumentFilesController < ActionController::Base
   end
 
   def authorize_download
-    download_token = DownloadToken.find_by(token: params[:download_token])
-    if download_token && !download_token.expired? && download_token.document_file_id == @document_file.id
+    download_token = DownloadToken.find_token(params[:download_token])
+    if download_token && download_token.document_file_id == @document_file.id
       download_token.destroy!
       true
     else
