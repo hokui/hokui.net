@@ -48,7 +48,7 @@ angular.module moduleComponent
             if item isnt '' then $state.href item.state() else ''
 
         $scope.navEvent = (item)->
-            if item.event?
+            if _.isFunction item.event
                 item.event()
 
         $scope.navClass = (item)->

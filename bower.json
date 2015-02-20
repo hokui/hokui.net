@@ -1,8 +1,5 @@
 {
   "name": "hokui.net",
-  "version": "4.0.0",
-  "homepage": "https://github.com/hokui/hokui.net",
-  "description": "http://hokui.net",
   "private": true,
   "dependencies": {
     "font-awesome": "~4.2.0",
@@ -12,7 +9,7 @@
     "angular-ui-router": "~0.2.13",
     "angular-webstorage": "~0.11.0",
     "angular-google-analytics": "~0.0.9",
-    "angular-date-binder": "~0.1.1",
+    "angular-date-binder": "~0.2.1",
     "lodash": "~3.2.0"
   },
   "devDependencies": {
