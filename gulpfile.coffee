@@ -5,13 +5,18 @@ g = require 'gulp'
 $ = do require 'gulp-load-plugins'
 
 fs = require 'fs'
-del = require 'del'
-spawn = require('child_process').spawn
 argv = require('yargs').argv
+dateFormat = require 'dateformat'
+
+del = require 'del'
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
 lazypipe = require 'lazypipe'
-dateFormat = require 'dateformat'
+
+url = require 'url'
+proxy = require 'proxy-middleware'
+modRewrite  = require 'connect-modrewrite'
+browserSync = require 'browser-sync'
 
 play = require 'play'
 
@@ -166,7 +171,6 @@ g.task 'css:build', ['css'], (cb)->
     .pipe g.dest "#{conf.dest}/"
 
 
-
 g.task 'js', ['clean'], ->
     target = [
         "#{conf.src}/core/*.coffee"
@@ -234,6 +238,7 @@ g.task 'html', ['clean'], ->
     .on 'error', onError
     .pipe $.if conf.prod, minifyAndTemplate()
     .pipe g.dest "#{conf.dest}/"
+
 
 g.task 'html:build', ['html'], (cb)->
     cb()
@@ -325,27 +330,6 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
 
 
 ###*
-watch tasks
-###
-
-g.task 'watch:css:vendor', ['css:vendor'], ->
-    $.livereload.changed()
-g.task 'watch:css:common', ['css:common'], ->
-    $.livereload.changed()
-g.task 'watch:css:app', ['css:app'], ->
-    $.livereload.changed()
-
-g.task 'watch:js', ['js'], ->
-    $.livereload.changed()
-
-g.task 'watch:html', ['html'], ->
-    $.livereload.changed()
-
-g.task 'watch:index', ['index'], ->
-    $.livereload.changed()
-
-
-###*
 integrated tasks
 ###
 
@@ -359,29 +343,59 @@ g.task 'build', [
     'index'
 ]
 
-g.task 'watch', ['build'], (cb)->
+
+g.task 'serve', ['build'], ->
+    makeProxy = (path)->
+        proxyOptions = url.parse "http://localhost:3000#{path}"
+        proxyOptions.route = path
+        proxy proxyOptions
+
+    browserSync
+        port: 9000
+        notify: false
+        open: false
+        server:
+            baseDir: 'public/'
+            middleware: [
+                makeProxy '/api'
+            ,
+                makeProxy '/contents'
+            ,
+                modRewrite [
+                    '(.+)/$ $1 [R]'
+                    '!\\.\\w+$ /index.html [L]'
+                ]
+            ]
+
+g.task 'watch:css:vendor', ['css:vendor'], ->
+    $.livereload.changed()
+g.task 'watch:css:common', ['css:common'], ->
+    $.livereload.changed()
+g.task 'watch:css:app', ['css:app'], ->
+    $.livereload.changed()
+g.task 'watch:js', ['js'], ->
+    $.livereload.changed()
+g.task 'watch:html', ['html'], ->
+    $.livereload.changed()
+g.task 'watch:index', ['index'], ->
+    $.livereload.changed()
+
+g.task 'bs-reload', ->
+    browserSync.reload()
+
+
+g.task 'watch', ['build', 'serve'], (cb)->
     if conf.prod
         return cb()
     conf.watching = true
     $.livereload.listen()
-    g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor']
-    g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common']
-    g.watch "#{conf.src}/{page,core,component}/**/*.{sass,scss}", ['watch:css:app']
-    g.watch "#{conf.src}/**/*.coffee", ['watch:js']
-    g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html']
-    g.watch "#{conf.src}/index.jade", ['watch:index']
+    g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor', 'bs-reload']
+    g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common', 'bs-reload']
+    g.watch "#{conf.src}/{page,core,component}/**/*.{sass,scss}", ['watch:css:app', 'bs-reload']
+    g.watch "#{conf.src}/**/*.coffee", ['watch:js', 'bs-reload']
+    g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html', 'bs-reload']
+    g.watch "#{conf.src}/index.jade", ['watch:index', 'bs-reload']
 
-
-g.task 'serve', ['build'], ->
-    g.src "#{conf.dest}/"
-    .pipe $.webserver
-        port: 9000
-        fallback: 'index.html'
-        livereload: not conf.prod
-        proxies:[
-            source: '/api'
-            target: 'http://localhost:3000/api'
-        ]
 
 g.task 'rails:setup', $.shell.task [
     scripts.setupRails()
@@ -400,6 +414,7 @@ g.task 'e2e', $.shell.task [
     scripts.startE2ETest()
 ]
 
+
 g.task 'run-e2e', ['serve', 'rails:setup', 'rails'], ->
     $.shell.task([
         scripts.startE2ETest()
@@ -411,4 +426,4 @@ g.task 'run-e2e', ['serve', 'rails:setup', 'rails'], ->
         process.exit 0
 
 
-g.task 'default', ['watch', 'serve', 'rails']
+g.task 'default', ['watch', 'rails']
