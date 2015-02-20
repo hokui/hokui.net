@@ -99,6 +99,8 @@ g.task 'image', ['clean'], ->
 
 
 g.task 'css:vendor', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/vendor/"
+
     g.src "#{conf.src}/vendor/**/*.scss"
     .pipe $.sass
         includePaths: [conf.bowerDir]
@@ -107,17 +109,19 @@ g.task 'css:vendor', ['clean'], ->
 
     .pipe $.if conf.prod, $.concat 'vendor.css'
 
-    .pipe g.dest "#{conf.dest}/vendor/"
+    .pipe g.dest dest
 
 
 g.task 'css:common', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/style/"
+
     g.src "#{conf.src}/style/**/*.sass"
     .pipe $.sass
         sourceComments: 'normal'
         indentedSyntax: true
     .on 'error', onError
     .pipe $.autoprefixer()
-    .pipe g.dest "#{conf.dest}/style/"
+    .pipe g.dest dest
 
 
 g.task 'css:app:inject', ['clean'], ->
@@ -140,12 +144,14 @@ g.task 'css:app:inject', ['clean'], ->
 
 
 g.task 'css:app', ['clean', 'css:app:inject'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
+
     g.src "#{conf.src}/app.sass"
     .pipe $.sass
         indentedSyntax: true
     .on 'error', onError
     .pipe $.autoprefixer()
-    .pipe g.dest "#{conf.dest}/"
+    .pipe g.dest dest
 
 
 g.task 'css', ['css:vendor', 'css:common', 'css:app']
@@ -155,14 +161,14 @@ g.task 'css:build', ['css'], (cb)->
     if not conf.prod
         return cb()
     # concat order
-    # 1. vendor/vendor.css: vendor style
-    # 2. style/common.css: common style
+    # 1. vendor.css: vendor style
+    # 2. common.css: common style
     # 3. app.css: app style
 
     target = [
-        "#{conf.dest}/vendor/vendor.css"
-        "#{conf.dest}/style/common.css"
-        "#{conf.dest}/app.css"
+        "#{conf.dest}/.cache/vendor.css"
+        "#{conf.dest}/.cache/common.css"
+        "#{conf.dest}/.cache/app.css"
     ]
 
     g.src target
@@ -172,6 +178,8 @@ g.task 'css:build', ['css'], (cb)->
 
 
 g.task 'js', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
+
     target = [
         "#{conf.src}/core/*.coffee"
         "#{conf.src}/core/**/*.coffee"
@@ -205,7 +213,7 @@ g.task 'js', ['clean'], ->
     .on 'error', onError
 
     .pipe $.if conf.prod, anotateAndConcat(), $.sourcemaps.write()
-    .pipe g.dest "#{conf.dest}/"
+    .pipe g.dest dest
 
 
 g.task 'bower', ['clean'], (cb)->
@@ -214,10 +222,12 @@ g.task 'bower', ['clean'], (cb)->
 
     g.src bowerFiles()
     .pipe $.concat 'vendor.js'
-    .pipe g.dest "#{conf.dest}/vendor/"
+    .pipe g.dest "#{conf.dest}/.cache/"
 
 
 g.task 'html', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
+
     target = [
         "#{conf.src}/**/*.jade"
         "!#{conf.src}/index.jade"
@@ -237,7 +247,7 @@ g.task 'html', ['clean'], ->
     .pipe $.jade pretty: not conf.prod
     .on 'error', onError
     .pipe $.if conf.prod, minifyAndTemplate()
-    .pipe g.dest "#{conf.dest}/"
+    .pipe g.dest dest
 
 
 g.task 'html:build', ['html'], (cb)->
@@ -249,14 +259,14 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
         return cb()
 
     # concat order
-    # 1. vendor/vendor.js: bower js
+    # 1. vendor.js: bower js
     # 2. app.js: app script
     # 3. templates.js: templates
 
     target = [
-        "#{conf.dest}/vendor/vendor.js"
-        "#{conf.dest}/app.js"
-        "#{conf.dest}/templates.js"
+        "#{conf.dest}/.cache/vendor.js"
+        "#{conf.dest}/.cache/app.js"
+        "#{conf.dest}/.cache/templates.js"
     ]
 
     g.src target
@@ -271,18 +281,13 @@ g.task 'clean:cache', ['css:build', 'js:build', 'html:build'], (cb)->
         return cb()
 
     del [
-        "#{conf.dest}/style"
-        "#{conf.dest}/app"
-        "#{conf.dest}/vendor"
-        "#{conf.dest}/templates.js"
-        "#{conf.dest}/app.js"
-        "#{conf.dest}/app.css"
+        "#{conf.dest}/.cache"
     ], cb
 
 
 
 g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
-    ignorePath = ["#{conf.src}/", "#{conf.dest}/"]
+    ignorePath = ["#{conf.dest}/"]
     target = ''
     if conf.prod
         target = [
@@ -355,7 +360,7 @@ g.task 'serve', ['build'], ->
         notify: false
         open: false
         server:
-            baseDir: 'public/'
+            baseDir: "#{conf.dest}/"
             middleware: [
                 makeProxy '/api'
             ,
@@ -363,38 +368,34 @@ g.task 'serve', ['build'], ->
             ,
                 modRewrite [
                     '(.+)/$ $1 [R]'
+                    '^(.+)/\\?(.+)$ $1?$2 [R]'
                     '!\\.\\w+$ /index.html [L]'
                 ]
             ]
 
 g.task 'watch:css:vendor', ['css:vendor'], ->
-    $.livereload.changed()
-g.task 'watch:css:common', ['css:common'], ->
-    $.livereload.changed()
-g.task 'watch:css:app', ['css:app'], ->
-    $.livereload.changed()
-g.task 'watch:js', ['js'], ->
-    $.livereload.changed()
-g.task 'watch:html', ['html'], ->
-    $.livereload.changed()
-g.task 'watch:index', ['index'], ->
-    $.livereload.changed()
-
-g.task 'bs-reload', ->
     browserSync.reload()
-
+g.task 'watch:css:common', ['css:common'], ->
+    browserSync.reload()
+g.task 'watch:css:app', ['css:app'], ->
+    browserSync.reload()
+g.task 'watch:js', ['js'], ->
+    browserSync.reload()
+g.task 'watch:html', ['html'], ->
+    browserSync.reload()
+g.task 'watch:index', ['index'], ->
+    browserSync.reload()
 
 g.task 'watch', ['build', 'serve'], (cb)->
     if conf.prod
         return cb()
     conf.watching = true
-    $.livereload.listen()
-    g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor', 'bs-reload']
-    g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common', 'bs-reload']
-    g.watch "#{conf.src}/{page,core,component}/**/*.{sass,scss}", ['watch:css:app', 'bs-reload']
-    g.watch "#{conf.src}/**/*.coffee", ['watch:js', 'bs-reload']
-    g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html', 'bs-reload']
-    g.watch "#{conf.src}/index.jade", ['watch:index', 'bs-reload']
+    g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor']
+    g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common']
+    g.watch "#{conf.src}/{page,core,component}/**/*.{sass,scss}", ['watch:css:app']
+    g.watch "#{conf.src}/**/*.coffee", ['watch:js']
+    g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html']
+    g.watch "#{conf.src}/index.jade", ['watch:index']
 
 
 g.task 'rails:setup', $.shell.task [
