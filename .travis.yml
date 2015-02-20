@@ -19,15 +19,15 @@ before_script:
   - bower install
   - node_modules/protractor/bin/webdriver-manager update
   - mkdir -p $LOGS_DIR
-  - sh scripts/sauce_connect_setup.sh
-  - sh scripts/wait_for_browser_provider.sh
+  - bash scripts/sauce_connect_setup.sh
+  - bash scripts/wait_for_browser_provider.sh
   - cp config/application.yml.travis config/application.yml
 script:
   - CODECLIMATE_REPO_TOKEN=6379678c9245d7c0695b4a011bac7e58e9a59ee91e5486af9e3ce494d3d7f9f8 bundle exec rspec
   - npm test
-  - sh scripts/e2e_on_sauce.sh
+  - bash scripts/e2e_on_sauce.sh
 after_success:
   - cat ./coverage/**/lcov.info | ./node_modules/coveralls/bin/coveralls.js;
-  # - sh scripts/print_logs.sh
+  # - bash scripts/print_logs.sh
   - openssl aes-256-cbc -k '$DEPLOY_KEY' -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa
-  - sh scripts/deploy.sh
+  - bash scripts/deploy.sh
