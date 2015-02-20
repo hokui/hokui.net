@@ -12,18 +12,19 @@ angular.module moduleConfig, [
     .html5Mode true
     .hashPrefix '!'
 
-.config ($urlRouterProvider)->
+.config ($urlRouterProvider, $urlMatcherFactoryProvider)->
     $urlRouterProvider.rule ($injector, $location)->
         path = $location.url()
         replaced = false
 
-        if path.indexOf('/?') > 0
-            replaced = true
-            path = path.replace('/?', '?')
+        if path isnt '/'
+            if path.indexOf('/?') > 0
+                replaced = true
+                path = path.replace '/?', '?'
 
-        if path is not '/' or '/' is path[path.length - 1]
-            replaced = true
-            path = path.replace /\/$/, ''
+            if path[path.length - 1] is '/'
+                replaced = true
+                path = path.replace /\/$/, ''
 
         if replaced
             return path
