@@ -13,7 +13,11 @@ class Api::DocumentFilesController < Api::ApplicationController
 
   def create
     # NOTE this action returns either Document or DocumentFile
-    @document = Document.where(document_params).first_or_initialize
+    @document = Document.where(
+      subject_id: document_params[:subject_id],
+      class_year: document_params[:class_year],
+      code:       document_params[:code]
+    ).first_or_initialize
     unless @document.save
       render json: @document, status: 422
       return

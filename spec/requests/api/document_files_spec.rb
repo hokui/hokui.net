@@ -12,6 +12,10 @@ RSpec.describe "DocumentFiles", type: :request do
       @df = create(:document_file, document_id: @doc.id)
     end
 
+    after(:all) do
+      @df.destroy
+    end
+
     it "returns a list of document files which belong to the document" do
       get_with_token(@guest, "/api/subjects/#{@sub.id}/documents/#{@doc.id}/document_files")
       expect(response.status).to eq(200)
@@ -63,7 +67,7 @@ RSpec.describe "DocumentFiles", type: :request do
     end
 
     it "returns 422 with invalid params" do
-      @json_params.delete(:code)
+      @json_params.delete(:class_year)
       old_size = DocumentFile.count
       post_with_token(
         @guest,
@@ -92,6 +96,8 @@ RSpec.describe "DocumentFiles", type: :request do
       df = create(:document_file)
       get_with_token(@guest, "/api/document_files/#{df.id}/download_token")
       expect(json["token"]).to eq(df.download_tokens.last.token)
+
+      df.destroy
     end
   end
 end
