@@ -14,7 +14,6 @@ class Api::DocumentFilesController < Api::ApplicationController
   def create
     # NOTE this action returns either Document or DocumentFile
     @document = Document.where(document_params).first_or_initialize
-    binding.pry
     unless @document.save
       render json: @document, status: 422
       return
