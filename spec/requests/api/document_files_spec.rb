@@ -5,6 +5,25 @@ RSpec.describe "DocumentFiles", type: :request do
     @guest = create_guest_with_token
   end
 
+  describe "GET /api/subjects/1/documents/1/document_files" do
+    before(:all) do
+      @sub = create(:subject)
+      @doc = create(:document, subject_id: @sub.id)
+      @df = create(:document_file, document_id: @doc.id)
+    end
+
+    it "returns a list of document files which belong to the document" do
+      get_with_token(@guest, "/api/subjects/#{@sub.id}/documents/#{@doc.id}/document_files")
+      expect(response.status).to eq(200)
+      expect(json.first["file_name"]).to eq(@df.file_name)
+    end
+
+    it "returns 401 to an unauthorized client" do
+      get("/api/subjects/#{@sub.id}/documents/#{@doc.id}/document_files")
+      expect(response.status).to eq(401)
+    end
+  end
+
   describe "POST /api/document_files" do
     before do
       @filepath = File.join(Rails.root, "misc", "uploaded", "000001-dummy.pdf")

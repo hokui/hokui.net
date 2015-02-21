@@ -1,9 +1,20 @@
 class Api::DocumentFilesController < Api::ApplicationController
   before_action :set_document_file, only: :download_token
 
+  def index
+    # NOTE this action is intended to be called as
+    #   /api/subjects/1/documents/1/document_files
+    # but not
+    #   /api/document_files
+    document = Subject.find(params[:subject_id]).documents.find(params[:document_id])
+    @document_files = DocumentFile.where(document_id: document.id)
+    render json: @document_files
+  end
+
   def create
     # NOTE this action returns either Document or DocumentFile
     @document = Document.where(document_params).first_or_initialize
+    binding.pry
     unless @document.save
       render json: @document, status: 422
       return
