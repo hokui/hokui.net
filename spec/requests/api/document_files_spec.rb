@@ -28,7 +28,7 @@ RSpec.describe "DocumentFiles", type: :request do
       expect(response.status).to eq(201)
       expect(DocumentFile.count).to eq(old_size + 1)
       df_id = json["id"]
-      expect(File.read("/tmp/#{sprintf("%06d", df_id)}-000001-dummy.pdf")).to eq(File.read(@filepath))
+      expect(File.binread("/tmp/#{sprintf("%06d", df_id)}-000001-dummy.pdf")).to eq(File.binread(@filepath))
     end
 
     it "returns 422 if uploaded file is missing" do
