@@ -23,5 +23,12 @@ FactoryGirl.define do
     file_md5          "c348a159e06d03e9905ed043ab249dda"
     comments          "hoge"
     download_count    0
+
+    after(:create) do |df|
+      FileUtils.cp(
+        File.join(Rails.root, "misc", "uploaded", "000001-dummy.pdf"),
+        File.join("/tmp", "#{sprintf("%06d", df.id)}-#{df.file_name}")
+      )
+    end
   end
 end
