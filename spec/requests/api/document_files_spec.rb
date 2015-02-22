@@ -2,20 +2,14 @@ require 'rails_helper'
 
 RSpec.describe "DocumentFiles", type: :request do
   before do
+    @admin = create_admin_with_token
     @guest = create_guest_with_token
+    @sub = create(:subject)
+    @doc = create(:document, subject_id: @sub.id)
+    @df = create(:document_file, document_id: @doc.id)
   end
 
   describe "GET /api/subjects/1/documents/1/document_files" do
-    before(:all) do
-      @sub = create(:subject)
-      @doc = create(:document, subject_id: @sub.id)
-      @df = create(:document_file, document_id: @doc.id)
-    end
-
-    after(:all) do
-      @df.destroy
-    end
-
     it "returns a list of document files which belong to the document" do
       get_with_token(@guest, "/api/subjects/#{@sub.id}/documents/#{@doc.id}/document_files")
       expect(response.status).to eq(200)
@@ -30,7 +24,7 @@ RSpec.describe "DocumentFiles", type: :request do
 
   describe "POST /api/document_files" do
     before do
-      @filepath = File.join(Rails.root, "misc", "uploaded", "000001-dummy.pdf")
+      @filepath = File.join(Rails.root, "misc", "uploaded", "000002-dummy.pdf")
       @json_params = {
         subject_id: 1,
         class_year: 93,
@@ -51,7 +45,7 @@ RSpec.describe "DocumentFiles", type: :request do
       expect(response.status).to eq(201)
       expect(DocumentFile.count).to eq(old_size + 1)
       df_id = json["id"]
-      expect(File.binread("/tmp/#{sprintf("%06d", df_id)}-000001-dummy.pdf")).to eq(File.binread(@filepath))
+      expect(File.binread("/tmp/#{sprintf("%06d", df_id)}-000002-dummy.pdf")).to eq(File.binread(@filepath))
     end
 
     it "returns 422 if uploaded file is missing" do
@@ -93,11 +87,8 @@ RSpec.describe "DocumentFiles", type: :request do
 
   describe "GET /api/document_files/1/download_token" do
     it "creates new DownloadToken and returns it" do
-      df = create(:document_file)
-      get_with_token(@guest, "/api/document_files/#{df.id}/download_token")
-      expect(json["token"]).to eq(df.download_tokens.last.token)
-
-      df.destroy
+      get_with_token(@guest, "/api/document_files/#{@df.id}/download_token")
+      expect(json["token"]).to eq(@df.download_tokens.last.token)
     end
   end
 end
