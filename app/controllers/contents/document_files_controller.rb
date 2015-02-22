@@ -1,4 +1,4 @@
-class Contents::DocumentFilesController < ActionController::Base
+class Contents::DocumentFilesController < Contents::ApplicationController
   def show
     begin
       @document_file = DocumentFile.find(params[:id])
