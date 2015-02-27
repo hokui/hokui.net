@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Semesters", :type => :request do
+RSpec.describe "Semesters", type: :request do
   before(:all) do
     create(:class_year)
     3.times { create(:subject) }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe UserMailer, :type => :mailer do
+RSpec.describe UserMailer, type: :mailer do
   describe "email_confirmation_on_create" do
     before do
       @user = create(:admin) { |admin| admin.setup_activation }

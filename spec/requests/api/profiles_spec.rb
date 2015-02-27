@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Profiles", :type => :request do
+RSpec.describe "Profiles", type: :request do
   describe "GET /api/profile" do
     it "returns self profile to an user", autodoc: true do
       guest = create_guest_with_token

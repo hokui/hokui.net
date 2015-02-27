@@ -21,6 +21,7 @@ before_script:
   - mkdir -p $LOGS_DIR
   - sh scripts/sauce_connect_setup.sh
   - sh scripts/wait_for_browser_provider.sh
+  - cp config/application.yml.travis config/application.yml
 script:
   - CODECLIMATE_REPO_TOKEN=6379678c9245d7c0695b4a011bac7e58e9a59ee91e5486af9e3ce494d3d7f9f8 bundle exec rspec
   - npm test

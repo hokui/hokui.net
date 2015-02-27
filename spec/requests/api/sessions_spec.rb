@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Sessions" do
+RSpec.describe "Sessions", type: :request do
   describe "POST /api/session" do
     before do
       @guest = create(:guest)

@@ -19,6 +19,15 @@ class DownloadToken < ActiveRecord::Base
 
   before_validation :generate_token, on: :create
 
+  def self.find_token(token)
+    download_token = self.find_by(token: token)
+    if download_token && !download_token.expired?
+      download_token
+    else
+      nil
+    end
+  end
+
   def self.delete_expired!
     self
       .where

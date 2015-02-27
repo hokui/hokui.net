@@ -21,13 +21,17 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :class_years,        only: [:index, :show, :create, :update, :destroy]
-
-    resources :subjects,           only: [:index, :show, :create, :update, :destroy]
-
     resources :semesters,          only: [:index, :show, :create, :update, :destroy]
 
-    resources :document_files,     only: [               :create                   ] do
+    resources :class_years,        only: [:index, :show, :create, :update, :destroy]
+
+    resources :subjects,           only: [:index, :show, :create, :update, :destroy] do
+      resources :documents,        only: [:index, :show,          :update, :destroy] do
+        resources :document_files, only: [:index                                   ]
+      end
+    end
+
+    resources :document_files,     only: [        :show, :create, :update, :destroy] do
       member do
         get :download_token
       end
@@ -38,5 +42,7 @@ Rails.application.routes.draw do
 
   namespace :contents do
     resources :document_files,     only: [        :show,                           ]
+
+    match "*path" => "application#not_found", via: :all
   end
 end

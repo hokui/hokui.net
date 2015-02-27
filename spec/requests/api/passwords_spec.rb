@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Passwords", :type => :request do
+RSpec.describe "Passwords", type: :request do
   describe "GET /api/profile/password" do
     it "updates password", autodoc: true do
       guest = create_guest_with_token
