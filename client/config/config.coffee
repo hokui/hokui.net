@@ -36,19 +36,16 @@ angular.module moduleConfig, [
 
 
 .config (TokenProvider)->
-    TokenProvider
-    .setHeaderKey 'Access-Token'
-    .setStorageKey 'token'
-    .setTokenPrefix ''
+    TokenProvider.headerKey 'Access-Token'
+    TokenProvider.storageKey 'token'
+    TokenProvider.tokenPrefix ''
 
 .config (RestrictProvider)->
-    RestrictProvider.setNext 'home'
+    RestrictProvider.defaultError 'アクセスする権限がありません。'
+    RestrictProvider.defaultNext 'home'
 
 .config (AuthCheckerProvider)->
     AuthCheckerProvider.enabled true
-
-.config (TitleProvider)->
-    TitleProvider.setDefault '北医ネット'
 
 .run ($rootScope, Restrict, $state, AuthChecker, Notify)->
 
