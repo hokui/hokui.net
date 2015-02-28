@@ -4,6 +4,8 @@ describe 'Meta', ->
     MetaProvider = null
 
     beforeEach ->
+        window.document.title = 'default title'
+
 
         angular.module 'MetaTestModule', [moduleCore]
         .config ($stateProvider) ->
@@ -36,7 +38,7 @@ describe 'Meta', ->
 
     it 'default', ->
         expect MetaProvider.defaultTitle()
-        .toBe ''
+        .toBe 'default title'
         expect MetaProvider.defaultDescription()
         .toBe ''
         expect MetaProvider.defaultKeywords()
@@ -188,7 +190,7 @@ describe 'Meta', ->
             $rootScope.$digest()
 
             expect Meta.title()
-            .toBe ''
+            .toBe 'default title'
             expect Meta.description()
             .toBe ''
             expect Meta.keywords()
