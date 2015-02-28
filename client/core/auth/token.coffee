@@ -8,40 +8,25 @@ angular.module moduleCore
     _default_storage_key = 'token'
     _default_token_prefix = 'token'
 
-    _header_key = _default_header_key
-    _storage_key = _default_storage_key
-    _token_prefix = _default_token_prefix
+    headerKey: (header_key)->
+        if (_.isString header_key) and header_key
+            _default_header_key = header_key
+        _default_header_key
 
-    getHeaderKey: ->
-        _header_key
+    storageKey: (storage_key)->
+        if (_.isString storage_key) and storage_key
+            _default_storage_key = storage_key
+        _default_storage_key
 
-    setHeaderKey: (v)->
-        _header_key = v
-        this
-
-    getStorageKey: ->
-        _storage_key
-
-    setStorageKey: (v)->
-        _storage_key = v
-        this
-
-    getTokenPrefix: ->
-        _token_prefix
-
-    setTokenPrefix: (v)->
-        _token_prefix = v
-        this
+    tokenPrefix: (token_prefix)->
+        if _.isString token_prefix
+            _default_token_prefix = token_prefix
+        _default_token_prefix
 
     $get: ($log, $http, webStorage)->
-        if not _.isString(_header_key) or not _header_key
-            _header_key = _default_header_key
-
-        if not _.isString(_storage_key) or not _storage_key
-            _storage_key = _default_storage_key
-
-        if not _.isString(_token_prefix)
-            _token_prefix = _default_token_prefix
+        _header_key = _default_header_key
+        _storage_key = _default_storage_key
+        _token_prefix = _default_token_prefix
 
         _current_storage = do ->
             l = webStorage.local.isSupported
@@ -109,9 +94,9 @@ angular.module moduleCore
 
         empty: ->
             get_token() is ''
-        getHeaderKey: ->
+        headerKey: ->
             _header_key
-        getStorageKey: ->
+        storageKey: ->
             _storage_key
-        getTokenPrefix: ->
+        tokenPrefix: ->
             _token_prefix

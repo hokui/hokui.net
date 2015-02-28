@@ -3,17 +3,21 @@
 angular.module moduleCore
 
 .provider 'Restrict', ->
-    _default =
-        error: 'You have no permission to access the page you try to view.'
+    _default_error = 'You have no permission to access the page.'
+    _default_next = null
 
-    setError: (error)->
-        _default.error = error
+    defaultError: (error)->
+        if _.isString
+            _default_error = error
+        _default_error
 
-    setNext: (next)->
-        _default.next = next
+    defaultNext: (next)->
+        if _.isString next
+            _default_next = next
+        _default_next
 
     $get: (Auth)->
-        if not _default.next?
+        if not _default_next?
             throw new Error 'Need to set default state to be redirect to'
 
         (state)->
@@ -25,7 +29,7 @@ angular.module moduleCore
                 _result.can = Auth.can restrict.role
 
                 if not _result.can
-                    _result.error = restrict.error or _default.error
-                    _result.next = restrict.next or _default.next
+                    _result.error = restrict.error or _default_error
+                    _result.next = restrict.next or _default_next
 
             _result
