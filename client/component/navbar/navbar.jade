@@ -12,4 +12,4 @@
 
     .navbar__items(ng-class="{'navbar__items--collapsed': collapsed}")
         .navbar__items__item(ng-repeat="item in items" ng-class="navClass(item)" ng-if="isVisible(item)")
-            a(ng-href="{{getHref(item)}}" ng-click="navEvent(item)" ng-bind-html="item.label()")
+            a(ng-href="{{getHref(item)}}" ng-click="navEvent(item)" ng-bind-html="item.label")
