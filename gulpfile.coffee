@@ -1,10 +1,8 @@
-###*
-preparalations
-###
 g = require 'gulp'
 $ = do require 'gulp-load-plugins'
 
 fs = require 'fs'
+child_process = require 'child_process'
 argv = require('yargs').argv
 dateFormat = require 'dateformat'
 
@@ -46,17 +44,19 @@ class Conf
 
         @watching = false
 
+conf = new Conf()
+
+
 scripts =
     setupRails: ->
-        'bundle exec rake db:dev'
+        'bundle exec rake db:dev 1>/dev/null 2>/dev/null'
+    startE2ETest: ->
+        'protractor protractor.conf.js'
     startRails: ->
         'bundle exec rails s -d'
     stopRails: ->
         'if [ -f "./tmp/pids/server.pid" ]; then kill -QUIT `cat tmp/pids/server.pid`; fi'
-    startE2ETest: ->
-        'protractor protractor.conf.js'
 
-conf = new Conf()
 
 onError = (arg)->
     if not conf.silent
@@ -66,9 +66,6 @@ onError = (arg)->
     process.exit 1
 
 
-###*
-tasks
-###
 
 g.task 'clean', (cb)->
     if conf.watching
@@ -81,6 +78,7 @@ g.task 'clean', (cb)->
     ], cb
 
 
+
 g.task 'copy:fonts', ['clean'], ->
     g.src "#{conf.bowerDir}/font-awesome/fonts/**/*"
     .pipe g.dest "#{conf.dest}/fonts/"
@@ -91,6 +89,8 @@ g.task 'copy:static', ['clean'], ->
     .pipe g.dest "#{conf.dest}/"
 
 g.task 'copy', ['copy:fonts', 'copy:static']
+
+
 
 g.task 'image', ['clean'], ->
     g.src "#{conf.static}/img/**/*"
@@ -110,6 +110,7 @@ g.task 'css:vendor', ['clean'], ->
     .pipe $.if conf.prod, $.concat 'vendor.css'
 
     .pipe g.dest dest
+
 
 
 g.task 'css:common', ['clean'], ->
@@ -177,53 +178,6 @@ g.task 'css:build', ['css'], (cb)->
     .pipe g.dest "#{conf.dest}/"
 
 
-g.task 'js', ['clean'], ->
-    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
-
-    target = [
-        "#{conf.src}/core/*.coffee"
-        "#{conf.src}/core/**/*.coffee"
-        "#{conf.src}/component/*.coffee"
-        "#{conf.src}/component/**/*.coffee"
-        "#{conf.src}/page/*.coffee"
-        "#{conf.src}/page/**/*.coffee"
-        "#{conf.src}/config/*.coffee"
-        "#{conf.src}/config/**/*.coffee"
-        "#{conf.src}/*.coffee"
-        "!#{conf.bowerDir}/**/*.coffee"
-    ]
-    if conf.prod
-        target.push "!#{conf.src}/config/development/**/*.coffee"
-    else
-        target.push "!#{conf.src}/config/production/**/*.coffee"
-
-    if not conf.seeding
-        target.push "!#{conf.src}/config/seed/**/*.coffee"
-
-
-    anotateAndConcat = lazypipe()
-        .pipe $.ngAnnotate
-        .pipe $.concat, 'app.js'
-
-    g.src target, base: "#{conf.src}/"
-    .pipe $.sourcemaps.init()
-    .pipe $.coffee
-        bare: true
-        sourceRoot: ''
-    .on 'error', onError
-
-    .pipe $.if conf.prod, anotateAndConcat(), $.sourcemaps.write()
-    .pipe g.dest dest
-
-
-g.task 'bower', ['clean'], (cb)->
-    if not conf.prod
-        return cb()
-
-    g.src bowerFiles()
-    .pipe $.concat 'vendor.js'
-    .pipe g.dest "#{conf.dest}/.cache/"
-
 
 g.task 'html', ['clean'], ->
     dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
@@ -252,6 +206,54 @@ g.task 'html', ['clean'], ->
 
 g.task 'html:build', ['html'], (cb)->
     cb()
+
+
+
+g.task 'js', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
+
+    target = [
+        "#{conf.src}/core/*.coffee"
+        "#{conf.src}/core/**/*.coffee"
+        "#{conf.src}/component/*.coffee"
+        "#{conf.src}/component/**/*.coffee"
+        "#{conf.src}/page/*.coffee"
+        "#{conf.src}/page/**/*.coffee"
+        "#{conf.src}/config/*.coffee"
+        "#{conf.src}/config/**/*.coffee"
+        "#{conf.src}/*.coffee"
+        "!#{conf.bowerDir}/**/*.coffee"
+    ]
+    if conf.prod
+        target.push "!#{conf.src}/config/development/**/*.coffee"
+    else
+        target.push "!#{conf.src}/config/production/**/*.coffee"
+
+    if not conf.seeding
+        target.push "!#{conf.src}/config/seed/**/*.coffee"
+
+    anotateAndConcat = lazypipe()
+        .pipe $.ngAnnotate
+        .pipe $.concat, 'app.js'
+
+    g.src target, base: "#{conf.src}/"
+    .pipe $.sourcemaps.init()
+    .pipe $.coffee
+        bare: true
+        sourceRoot: ''
+    .on 'error', onError
+
+    .pipe $.if conf.prod, anotateAndConcat(), $.sourcemaps.write()
+    .pipe g.dest dest
+
+
+g.task 'bower', ['clean'], (cb)->
+    if not conf.prod
+        return cb()
+
+    g.src bowerFiles()
+    .pipe $.concat 'vendor.js'
+    .pipe g.dest "#{conf.dest}/.cache/"
 
 
 g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
@@ -311,7 +313,6 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
             "#{conf.dest}/app.js"
         ]
 
-
     g.src "#{conf.src}/index.jade"
     .pipe $.jade pretty: not conf.prod
     .on 'error', onError
@@ -323,7 +324,7 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
                 empty: true
                 conditionals: true
                 quotes: true
-
+                comments: true
         ),
         $.inject(g.src(bowerFiles(), base: conf.bowerDir, read: false ),{
             ignorePath: ignorePath
@@ -334,10 +335,6 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
 
 
 
-###*
-integrated tasks
-###
-
 g.task 'build', [
     'copy'
     'image'
@@ -347,6 +344,7 @@ g.task 'build', [
     'clean:cache'
     'index'
 ]
+
 
 
 g.task 'serve', ['build'], ->
@@ -362,9 +360,9 @@ g.task 'serve', ['build'], ->
         server:
             baseDir: "#{conf.dest}/"
             middleware: [
-                makeProxy '/api'
+                makeProxy '/api/'
             ,
-                makeProxy '/contents'
+                makeProxy '/contents/'
             ,
                 modRewrite [
                     '(.+)/$ $1 [R]'
@@ -372,6 +370,8 @@ g.task 'serve', ['build'], ->
                     '!\\.\\w+$ /index.html [L]'
                 ]
             ]
+
+
 
 g.task 'watch:css:vendor', ['css:vendor'], ->
     browserSync.reload()
@@ -386,30 +386,39 @@ g.task 'watch:html', ['html'], ->
 g.task 'watch:index', ['index'], ->
     browserSync.reload()
 
+
 g.task 'watch', ['build', 'serve'], (cb)->
     if conf.prod
         return cb()
     conf.watching = true
     g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor']
     g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common']
-    g.watch "#{conf.src}/{page,core,component}/**/*.{sass,scss}", ['watch:css:app']
+    g.watch "#{conf.src}/{page,component}/**/*.{sass,scss}", ['watch:css:app']
     g.watch "#{conf.src}/**/*.coffee", ['watch:js']
     g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html']
     g.watch "#{conf.src}/index.jade", ['watch:index']
+
 
 
 g.task 'rails:setup', $.shell.task [
     scripts.setupRails()
 ]
 
-g.task 'rails', $.shell.task [
-    scripts.stopRails()
-    scripts.startRails()
-]
-
 g.task 'rails:stop', $.shell.task [
     scripts.stopRails()
 ]
+
+g.task 'rails', ['rails:stop'], (cb)->
+    $.util.log $.util.colors.magenta 'Booting Rails server..'
+    child_process.exec scripts.startRails(), (err, stdout, stderr)->
+        $.util.log $.util.colors.magenta 'Rails server is booted!'
+        cb()
+
+    process.on 'SIGINT', ->
+        child_process.exec scripts.stopRails(), (err, stdout, stderr)->
+            $.util.log $.util.colors.magenta 'Stop Rails server'
+            process.exit()
+
 
 g.task 'e2e', $.shell.task [
     scripts.startE2ETest()
