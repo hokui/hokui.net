@@ -56,7 +56,7 @@
                             label.form__label(for="signupBirthday") 生年月日
                         .col--sm-8.col--no-gutter(bind-date="user.birthday" date-changed="bd_changed($current)")
                             .col--xs-4
-                                select.form__control(ng-model="$year" ng-options="year as  year+'年' for year in [] | range:1900:2014")
+                                select.form__control(ng-model="$year" ng-options="year as  year+'年' for year in [] | range:1955:2000")
                             .col--xs-4
                                 select.form__control(ng-model="$month" ng-options="month as  month+'月' for month in [] | range:1:12")
                             .col--xs-4
