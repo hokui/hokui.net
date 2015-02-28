@@ -1,16 +1,18 @@
 doctype html
 html(ng-app="hokuiApp")
-    title(ng-bind="Title()") 北医ネット
     base(href="/")
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+    title(bind-title) 北医ネット
+    <!-- directive: meta -->
     <!-- inject:css -->
     <!-- endinject -->
     body
         div(responsive-width-getter)
-        div(ng-include="'/component/nav/nav.html'")
+        div(ng-include="'/component/navbar/navbar.html'")
         div(ng-include="'/component/notify/notify.html'")
-        div(ui-view)
+
+        #root(ui-view)
         <!-- bower:js -->
         <!-- endinject -->
         <!-- inject:js -->
