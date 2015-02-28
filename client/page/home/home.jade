@@ -1,51 +1,58 @@
 .hero
-    .topfix
-    .hero--bg
-    h1.hero--title HOKUI.NET
-    .hero--elocution
-        | This is brand new hokui.net powered by Rails and Angular.js.
-        ul.list-inline
-            li
-                a(ui-sref="login") Sign in
-            li |
-            li
-                a(ui-sref="signup") Sign up
+    .hero__bg
 
-.container
-    .panel(ng-if="dev")
-        .panel__head
-            h3.panel__head__title 開発用ページ
-        .panle__body
-            ul
-                li
-                    a(ui-sref="style") スタイルの確認
-                li
-                    a(ui-sref="activate({fake: true})") フェイク認証
-                li
-                    a(ui-sref="activate({fake: 'fail'})") フェイク認証(失敗)
+    .hero__login(ng-if="!Auth.active()")
+        form.form(role="form" name="login" ng-submit="performLogin(login.$valid)" novalidate)
+            .form__group
+                input.form__control(
+                    type="email"
+                    name="email"
+                    ng-model="credencials.email"
+                    required
+                    ng-pattern="/^[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp$/"
+                    force-invalid="error"
+                    ng-change="error = null"
+                    placeholder="Email address")
+                .form__error(ng-show="login.email.$dirty")
+                    div(ng-show="login.email.$error.email") 不正なメールアドレスです
+                    div(ng-show="!login.email.$error.email && login.email.$error.pattern") ELSMメールアドレスを指定してください
 
-    h3 本ウェブサイトについて
-    p.
-        本ウェブサイトは、北海道大学医学部医学科に所属するみなさんが
-        日々の学生生活をより豊かに過ごすことができるよう、設立されたものです。
-        本ウェブサイトでは以下の機能を提供します。
-    ul
-        li 過去問・授業レジュメなど、各種資料の共有
-        li Google Calenderとの連携
-        li メーリングリスト
+            .form__group
+                input.form__control(
+                    type="password"
+                    ng-model="credencials.password"
+                    required
+                    force-invalid="error"
+                    ng-change="error = null"
+                    placeholder="Password")
 
-    p 管理者に要望すれば、新しい機能が追加されるかもしれません。
+            .form__group(ng-show="error")
+                .form__error メールアドレスかパスワードに誤りがあります。
 
-    h3 開発チーム
-    ul
-        li
-            h5 @iTakeshi(Backend)
-        li
-            h5 @endaaman(Frontend)
+            .form__group
+                    input.form__control(type="checkbox" ng-model="keepLogin" id="loginInputKeeologin")
+                    label.form__label(for="loginInputKeeologin") ログイン状態を保存する
+            .form__group
+                button.btn.btn--primary.btn--block(type="submit" ng-disabled="login.$invalid") ログイン
+            div.text-muted.text-small
+                | パスワードを忘れた場合は
+                a(ui-sref="reset_password") こちら
+            hr
+            .v-spacer
+            div
+                a.btn.btn--primary.btn--block.btn--ghost(ui-sref="signup") ユーザー登録する
 
-    h3 お問い合わせ
-    p
-        | このサイトのご利用に際し、ご不明な点がありましたら、上記開発チームまたは
-        span(ng-bind-html="'hokui.net@gmail.com' | linky")
-        | までお問い合わせください。
-
+    .hero__welcome(ng-if="Auth.active()")
+        h1.hero__welcome__title HOKUI.NET
+        .hero__welcome__elocution(ng-if="dev")
+            .panel
+                .panel__head
+                    h3.panel__head__title 開発用ページ
+                .panle__body
+                    ul
+                        li
+                            a(ui-sref="style") スタイルの確認
+                        li
+                            a(ui-sref="activate({fake: true})") フェイク認証
+                        li
+                            a(ui-sref="activate({fake: 'fail'})") フェイク認証(失敗)
