@@ -52,11 +52,6 @@ $cursor-disabled: not-allowed
 $disabled-opacity: .65
 
 
-
-//************
-// typography
-//************
-
 $font-family-sans-serif: "Open Sans", "Hiragino Kaku Gothic ProN", "游ゴシック", YuGothic, Meiryo sans-serif !default
 $font-family-serif: Georgia, "Times New Roman", Times, "Hiragino Mincho ProN", "游明朝", YuMincho, Meiryo, serif !default
 
@@ -67,15 +62,15 @@ $font-size-base: 16px
 $font-size-large: 18px
 $font-size-small: 14px
 
+$line-height-base: 1.428571429
+$line-height-computed: floor(($font-size-base * $line-height-base))
+
 $font-size-h1: 32px
 $font-size-h2: 28px
 $font-size-h3: 24px
 $font-size-h4: $font-size-large
 $font-size-h5: $font-size-base
 $font-size-h6: $font-size-small
-
-$line-height-base: 1.428571429
-$line-height-computed: floor(($font-size-base * $line-height-base))
 
 $headings-font-family: inherit
 $headings-font-weight: 500
@@ -161,7 +156,7 @@ $pre-scrollable-max-height: 340px
 // form
 //************
 
-$form-group-margin-bottom: 20px
+$form-group-margin-bottom: 12px
 $form-label-padding-v: 6px
 $form-label-padding-h: 4px
 $form-label-color: $gray

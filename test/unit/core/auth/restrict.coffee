@@ -66,8 +66,8 @@ describe 'Restrict', ->
 
     describe 'configured', ->
         beforeEach ->
-            RestrictProvider.setNext 'home'
-            RestrictProvider.setError default_error
+            RestrictProvider.defaultNext 'home'
+            RestrictProvider.defaultError default_error
 
 
         it 'level guest', inject ($state, Auth, Restrict)->

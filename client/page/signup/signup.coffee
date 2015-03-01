@@ -39,7 +39,8 @@ angular.module modulePage
             _.assign $scope.user, seed.user
             $scope.reenteredPassword = $scope.user.password
 
-        $scope.user.birthday = new Date('1990/1/1')
+        nowYear = (new Date()).getFullYear()
+        $scope.user.birthday = new Date "#{nowYear-19}/4/1"
         $scope.user.class_year_id = years[0].id
 
 

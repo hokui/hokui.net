@@ -7,7 +7,7 @@
     z-index: $navbar-z
     box-shadow: $navbar-box-shadow
     background-color: $navbar-bg
-
+    transition: transform .5 ease-in-out
 
     @media (min-width: $screen-md-min)
         height: $navbar-height
@@ -25,6 +25,9 @@
         padding-left: 16px
         padding-right: 16px
 
+    &.navbar--hidden
+        transform: translate(0, -100%)
+
 =topfix
     padding-top: $navbar-height
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max)
@@ -41,7 +44,7 @@
     color: $gray-dark
     &:hover,&:active,&:focus
         color: $gray-dark
-    +anchor-non-decoration($gray-dark)
+    +anchor-non-decoration
 
     @media (min-width: $screen-md-min)
         margin-left: 32px

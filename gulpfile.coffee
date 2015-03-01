@@ -1,17 +1,20 @@
-###*
-preparalations
-###
 g = require 'gulp'
 $ = do require 'gulp-load-plugins'
 
 fs = require 'fs'
-del = require 'del'
-spawn = require('child_process').spawn
+child_process = require 'child_process'
 argv = require('yargs').argv
+dateFormat = require 'dateformat'
+
+del = require 'del'
 bowerFiles = require 'main-bower-files'
 sort = require 'sort-stream'
 lazypipe = require 'lazypipe'
-dateFormat = require 'dateformat'
+
+url = require 'url'
+proxy = require 'proxy-middleware'
+modRewrite  = require 'connect-modrewrite'
+browserSync = require 'browser-sync'
 
 play = require 'play'
 
@@ -41,17 +44,19 @@ class Conf
 
         @watching = false
 
+conf = new Conf()
+
+
 scripts =
     setupRails: ->
-        'bundle exec rake db:dev'
+        'bundle exec rake db:dev 1>/dev/null 2>/dev/null'
+    startE2ETest: ->
+        'protractor protractor.conf.js'
     startRails: ->
         'bundle exec rails s -d'
     stopRails: ->
         'if [ -f "./tmp/pids/server.pid" ]; then kill -QUIT `cat tmp/pids/server.pid`; fi'
-    startE2ETest: ->
-        'protractor protractor.conf.js'
 
-conf = new Conf()
 
 onError = (arg)->
     if not conf.silent
@@ -61,9 +66,6 @@ onError = (arg)->
     process.exit 1
 
 
-###*
-tasks
-###
 
 g.task 'clean', (cb)->
     if conf.watching
@@ -74,6 +76,7 @@ g.task 'clean', (cb)->
         "!#{conf.bowerDir}"
         "!#{conf.bowerDir}/**/*"
     ], cb
+
 
 
 g.task 'copy:fonts', ['clean'], ->
@@ -87,6 +90,8 @@ g.task 'copy:static', ['clean'], ->
 
 g.task 'copy', ['copy:fonts', 'copy:static']
 
+
+
 g.task 'image', ['clean'], ->
     g.src "#{conf.static}/img/**/*"
     .pipe $.if conf.prod, $.imagemin()
@@ -94,6 +99,8 @@ g.task 'image', ['clean'], ->
 
 
 g.task 'css:vendor', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/vendor/"
+
     g.src "#{conf.src}/vendor/**/*.scss"
     .pipe $.sass
         includePaths: [conf.bowerDir]
@@ -102,17 +109,20 @@ g.task 'css:vendor', ['clean'], ->
 
     .pipe $.if conf.prod, $.concat 'vendor.css'
 
-    .pipe g.dest "#{conf.dest}/vendor/"
+    .pipe g.dest dest
+
 
 
 g.task 'css:common', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/style/"
+
     g.src "#{conf.src}/style/**/*.sass"
     .pipe $.sass
         sourceComments: 'normal'
         indentedSyntax: true
     .on 'error', onError
     .pipe $.autoprefixer()
-    .pipe g.dest "#{conf.dest}/style/"
+    .pipe g.dest dest
 
 
 g.task 'css:app:inject', ['clean'], ->
@@ -135,12 +145,14 @@ g.task 'css:app:inject', ['clean'], ->
 
 
 g.task 'css:app', ['clean', 'css:app:inject'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
+
     g.src "#{conf.src}/app.sass"
     .pipe $.sass
         indentedSyntax: true
     .on 'error', onError
     .pipe $.autoprefixer()
-    .pipe g.dest "#{conf.dest}/"
+    .pipe g.dest dest
 
 
 g.task 'css', ['css:vendor', 'css:common', 'css:app']
@@ -150,14 +162,14 @@ g.task 'css:build', ['css'], (cb)->
     if not conf.prod
         return cb()
     # concat order
-    # 1. vendor/vendor.css: vendor style
-    # 2. style/common.css: common style
+    # 1. vendor.css: vendor style
+    # 2. common.css: common style
     # 3. app.css: app style
 
     target = [
-        "#{conf.dest}/vendor/vendor.css"
-        "#{conf.dest}/style/common.css"
-        "#{conf.dest}/app.css"
+        "#{conf.dest}/.cache/vendor.css"
+        "#{conf.dest}/.cache/common.css"
+        "#{conf.dest}/.cache/app.css"
     ]
 
     g.src target
@@ -167,7 +179,39 @@ g.task 'css:build', ['css'], (cb)->
 
 
 
+g.task 'html', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
+
+    target = [
+        "#{conf.src}/**/*.jade"
+        "!#{conf.src}/index.jade"
+    ]
+
+    minifyAndTemplate = lazypipe()
+    .pipe $.minifyHtml,
+        spare: true
+        empty: true
+        conditionals: true
+        quotes: true
+    .pipe $.angularTemplatecache, 'templates.js',
+        module: conf.ngAppName
+        root: '/'
+
+    g.src target
+    .pipe $.jade pretty: not conf.prod
+    .on 'error', onError
+    .pipe $.if conf.prod, minifyAndTemplate()
+    .pipe g.dest dest
+
+
+g.task 'html:build', ['html'], (cb)->
+    cb()
+
+
+
 g.task 'js', ['clean'], ->
+    dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
+
     target = [
         "#{conf.src}/core/*.coffee"
         "#{conf.src}/core/**/*.coffee"
@@ -188,7 +232,6 @@ g.task 'js', ['clean'], ->
     if not conf.seeding
         target.push "!#{conf.src}/config/seed/**/*.coffee"
 
-
     anotateAndConcat = lazypipe()
         .pipe $.ngAnnotate
         .pipe $.concat, 'app.js'
@@ -201,7 +244,7 @@ g.task 'js', ['clean'], ->
     .on 'error', onError
 
     .pipe $.if conf.prod, anotateAndConcat(), $.sourcemaps.write()
-    .pipe g.dest "#{conf.dest}/"
+    .pipe g.dest dest
 
 
 g.task 'bower', ['clean'], (cb)->
@@ -210,33 +253,7 @@ g.task 'bower', ['clean'], (cb)->
 
     g.src bowerFiles()
     .pipe $.concat 'vendor.js'
-    .pipe g.dest "#{conf.dest}/vendor/"
-
-
-g.task 'html', ['clean'], ->
-    target = [
-        "#{conf.src}/**/*.jade"
-        "!#{conf.src}/index.jade"
-    ]
-
-    minifyAndTemplate = lazypipe()
-    .pipe $.minifyHtml,
-        spare: true
-        empty: true
-        conditionals: true
-        quotes: true
-    .pipe $.angularTemplatecache, 'templates.js',
-        module: conf.ngAppName
-        root: '/'
-
-    g.src target
-    .pipe $.jade pretty: not conf.prod
-    .on 'error', onError
-    .pipe $.if conf.prod, minifyAndTemplate()
-    .pipe g.dest "#{conf.dest}/"
-
-g.task 'html:build', ['html'], (cb)->
-    cb()
+    .pipe g.dest "#{conf.dest}/.cache/"
 
 
 g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
@@ -244,14 +261,14 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
         return cb()
 
     # concat order
-    # 1. vendor/vendor.js: bower js
+    # 1. vendor.js: bower js
     # 2. app.js: app script
     # 3. templates.js: templates
 
     target = [
-        "#{conf.dest}/vendor/vendor.js"
-        "#{conf.dest}/app.js"
-        "#{conf.dest}/templates.js"
+        "#{conf.dest}/.cache/vendor.js"
+        "#{conf.dest}/.cache/app.js"
+        "#{conf.dest}/.cache/templates.js"
     ]
 
     g.src target
@@ -266,18 +283,13 @@ g.task 'clean:cache', ['css:build', 'js:build', 'html:build'], (cb)->
         return cb()
 
     del [
-        "#{conf.dest}/style"
-        "#{conf.dest}/app"
-        "#{conf.dest}/vendor"
-        "#{conf.dest}/templates.js"
-        "#{conf.dest}/app.js"
-        "#{conf.dest}/app.css"
+        "#{conf.dest}/.cache"
     ], cb
 
 
 
 g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
-    ignorePath = ["#{conf.src}/", "#{conf.dest}/"]
+    ignorePath = ["#{conf.dest}/"]
     target = ''
     if conf.prod
         target = [
@@ -301,7 +313,6 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
             "#{conf.dest}/app.js"
         ]
 
-
     g.src "#{conf.src}/index.jade"
     .pipe $.jade pretty: not conf.prod
     .on 'error', onError
@@ -313,7 +324,7 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
                 empty: true
                 conditionals: true
                 quotes: true
-
+                comments: true
         ),
         $.inject(g.src(bowerFiles(), base: conf.bowerDir, read: false ),{
             ignorePath: ignorePath
@@ -323,31 +334,6 @@ g.task 'index', ['js:build', 'css:build', 'html:build', 'clean:cache'], ->
     .pipe g.dest "#{conf.dest}/"
 
 
-
-###*
-watch tasks
-###
-
-g.task 'watch:css:vendor', ['css:vendor'], ->
-    $.livereload.changed()
-g.task 'watch:css:common', ['css:common'], ->
-    $.livereload.changed()
-g.task 'watch:css:app', ['css:app'], ->
-    $.livereload.changed()
-
-g.task 'watch:js', ['js'], ->
-    $.livereload.changed()
-
-g.task 'watch:html', ['html'], ->
-    $.livereload.changed()
-
-g.task 'watch:index', ['index'], ->
-    $.livereload.changed()
-
-
-###*
-integrated tasks
-###
 
 g.task 'build', [
     'copy'
@@ -359,46 +345,85 @@ g.task 'build', [
     'index'
 ]
 
-g.task 'watch', ['build'], (cb)->
+
+
+g.task 'serve', ['build'], ->
+    makeProxy = (path)->
+        proxyOptions = url.parse "http://localhost:3000#{path}"
+        proxyOptions.route = path
+        proxy proxyOptions
+
+    browserSync
+        port: 9000
+        notify: false
+        open: false
+        server:
+            baseDir: "#{conf.dest}/"
+            middleware: [
+                makeProxy '/api/'
+            ,
+                makeProxy '/contents/'
+            ,
+                modRewrite [
+                    '(.+)/$ $1 [R]'
+                    '^(.+)/\\?(.+)$ $1?$2 [R]'
+                    '!\\.\\w+$ /index.html [L]'
+                ]
+            ]
+
+
+
+g.task 'watch:css:vendor', ['css:vendor'], ->
+    browserSync.reload()
+g.task 'watch:css:common', ['css:common'], ->
+    browserSync.reload()
+g.task 'watch:css:app', ['css:app'], ->
+    browserSync.reload()
+g.task 'watch:js', ['js'], ->
+    browserSync.reload()
+g.task 'watch:html', ['html'], ->
+    browserSync.reload()
+g.task 'watch:index', ['index'], ->
+    browserSync.reload()
+
+
+g.task 'watch', ['build', 'serve'], (cb)->
     if conf.prod
         return cb()
     conf.watching = true
-    $.livereload.listen()
     g.watch "#{conf.src}/vendor/**/*.{sass,scss}", ['watch:css:vendor']
     g.watch "#{conf.src}/style/**/*.{sass,scss}", ['watch:css:common']
-    g.watch "#{conf.src}/{page,core,component}/**/*.{sass,scss}", ['watch:css:app']
+    g.watch "#{conf.src}/{page,component}/**/*.{sass,scss}", ['watch:css:app']
     g.watch "#{conf.src}/**/*.coffee", ['watch:js']
     g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html']
     g.watch "#{conf.src}/index.jade", ['watch:index']
 
 
-g.task 'serve', ['build'], ->
-    g.src "#{conf.dest}/"
-    .pipe $.webserver
-        port: 9000
-        fallback: 'index.html'
-        livereload: not conf.prod
-        proxies:[
-            source: '/api'
-            target: 'http://localhost:3000/api'
-        ]
 
 g.task 'rails:setup', $.shell.task [
     scripts.setupRails()
-]
-
-g.task 'rails', $.shell.task [
-    scripts.stopRails()
-    scripts.startRails()
 ]
 
 g.task 'rails:stop', $.shell.task [
     scripts.stopRails()
 ]
 
+g.task 'rails', ['rails:stop'], (cb)->
+    $.util.log $.util.colors.magenta 'Booting Rails server..'
+    child_process.exec scripts.startRails(), (err, stdout, stderr)->
+        $.util.log $.util.colors.magenta 'Rails server is booted!'
+        cb()
+
+    process.on 'SIGINT', ->
+        child_process.exec scripts.stopRails(), (err, stdout, stderr)->
+            $.util.log $.util.colors.magenta 'Stop Rails server'
+            process.exit()
+
+
 g.task 'e2e', $.shell.task [
     scripts.startE2ETest()
 ]
+
 
 g.task 'run-e2e', ['serve', 'rails:setup', 'rails'], ->
     $.shell.task([
@@ -411,4 +436,4 @@ g.task 'run-e2e', ['serve', 'rails:setup', 'rails'], ->
         process.exit 0
 
 
-g.task 'default', ['watch', 'serve', 'rails']
+g.task 'default', ['watch', 'rails']

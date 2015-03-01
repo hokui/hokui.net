@@ -13,6 +13,8 @@ angular.module moduleCore
         user: 1
         guest: 0
 
+    _notifier = $q.defer()
+
     level: ->
         if @admin()
             return _levels.admin
@@ -51,6 +53,7 @@ angular.module moduleCore
             Token.set data.token, keepLogin? and keepLogin
             _current.user = data.user
             deferred.resolve _current
+            _notifier.notify true
         .error (err)=>
             @silentLogout()
             deferred.reject err
@@ -73,6 +76,7 @@ angular.module moduleCore
         deferred.promise
 
     silentLogout: ()->
+        _notifier.notify false
         Token.clear()
         _current.user = null
 
@@ -83,6 +87,7 @@ angular.module moduleCore
             .success (data)=>
                 _current.user = data
                 deferred.resolve _current
+                _notifier.notify true
             .error (err)=>
                 @silentLogout()
                 deferred.reject _current
@@ -90,6 +95,9 @@ angular.module moduleCore
             @silentLogout()
             deferred.reject _current
         deferred.promise
+
+    on: (ev)->
+        _notifier.promise.then (->), (->), ev
 
 
 .provider 'AuthChecker', ->

@@ -22,61 +22,61 @@ describe 'Token configuration', ->
 
 
     it 'default', ->
-        expect TokenProvider.getHeaderKey()
+        expect TokenProvider.headerKey()
         .toBe 'Authorization'
-        expect TokenProvider.getStorageKey()
+        expect TokenProvider.storageKey()
         .toBe 'token'
-        expect TokenProvider.getTokenPrefix()
+        expect TokenProvider.tokenPrefix()
         .toBe 'token'
 
         inject (Token)->
-            expect Token.getHeaderKey()
+            expect Token.headerKey()
             .toBe 'Authorization'
-            expect Token.getStorageKey()
+            expect Token.storageKey()
             .toBe 'token'
-            expect Token.getTokenPrefix()
+            expect Token.tokenPrefix()
             .toBe 'token'
 
 
     it 'changed', ->
-        TokenProvider.setHeaderKey 'hk'
-        expect TokenProvider.getHeaderKey()
+        TokenProvider.headerKey 'hk'
+        expect TokenProvider.headerKey()
         .toBe 'hk'
 
-        TokenProvider.setStorageKey 'sk'
-        expect TokenProvider.getStorageKey()
+        TokenProvider.storageKey 'sk'
+        expect TokenProvider.storageKey()
         .toBe 'sk'
 
-        TokenProvider.setTokenPrefix 'prefix'
-        expect TokenProvider.getTokenPrefix()
+        TokenProvider.tokenPrefix 'prefix'
+        expect TokenProvider.tokenPrefix()
         .toBe 'prefix'
 
         inject (Token)->
-            expect Token.getHeaderKey()
+            expect Token.headerKey()
             .toBe 'hk'
-            expect Token.getStorageKey()
+            expect Token.storageKey()
             .toBe 'sk'
-            expect Token.getTokenPrefix()
+            expect Token.tokenPrefix()
             .toBe 'prefix'
 
 
     it 'use default', ->
-        TokenProvider.setHeaderKey ''
-        TokenProvider.setStorageKey ''
-        TokenProvider.setTokenPrefix 1
+        TokenProvider.headerKey ''
+        TokenProvider.storageKey ''
+        TokenProvider.tokenPrefix 1
 
         inject (Token)->
-            expect Token.getHeaderKey()
+            expect Token.headerKey()
             .toBe 'Authorization'
-            expect Token.getStorageKey()
+            expect Token.storageKey()
             .toBe 'token'
-            expect Token.getTokenPrefix()
+            expect Token.tokenPrefix()
             .toBe 'token'
 
 
     it 'prefix', ->
-        TokenProvider.setHeaderKey 'hk'
-        TokenProvider.setTokenPrefix 'prefix'
+        TokenProvider.headerKey 'hk'
+        TokenProvider.tokenPrefix 'prefix'
 
         inject (Token, $http)->
             Token.set 'token'
@@ -113,9 +113,9 @@ describe 'Token(local/session both supported)', ->
     describe 'configured', ->
         Token = $http = webStorage = null
         beforeEach ->
-            TokenProvider.setStorageKey storage_key
-            TokenProvider.setHeaderKey header_key
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.storageKey storage_key
+            TokenProvider.headerKey header_key
+            TokenProvider.tokenPrefix ''
             inject (_Token_, _$http_, _webStorage_)->
                 Token = _Token_
                 $http = _$http_
@@ -233,9 +233,9 @@ describe 'Token(local/session both supported)', ->
         test_token_in_local = 'TEST_TOKEN_IN_LOCAL'
 
         beforeEach ->
-            TokenProvider.setHeaderKey header_key
-            TokenProvider.setStorageKey storage_key
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.headerKey header_key
+            TokenProvider.storageKey storage_key
+            TokenProvider.tokenPrefix ''
 
 
         it 'store from session', inject ($http, webStorage)->
@@ -305,9 +305,9 @@ describe 'Token(local is not supported)', ->
     describe 'configured', ->
         Token = $http = webStorage = null
         beforeEach ->
-            TokenProvider.setStorageKey storage_key
-            TokenProvider.setHeaderKey header_key
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.storageKey storage_key
+            TokenProvider.headerKey header_key
+            TokenProvider.tokenPrefix ''
             inject (_Token_, _$http_, _webStorage_)->
                 Token = _Token_
                 $http = _$http_
@@ -343,9 +343,9 @@ describe 'Token(local is not supported)', ->
         test_token_in_session = 'TEST_TOKEN_IN_SESSION'
 
         beforeEach ->
-            TokenProvider.setHeaderKey header_key
-            TokenProvider.setStorageKey storage_key
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.headerKey header_key
+            TokenProvider.storageKey storage_key
+            TokenProvider.tokenPrefix ''
 
 
         it 'not store', inject ($http, webStorage)->
@@ -403,9 +403,9 @@ describe 'Token(session is not supported)', ->
     describe 'configured', ->
         Token = $http = webStorage = null
         beforeEach ->
-            TokenProvider.setStorageKey storage_key
-            TokenProvider.setHeaderKey header_key
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.storageKey storage_key
+            TokenProvider.headerKey header_key
+            TokenProvider.tokenPrefix ''
             inject (_Token_, _$http_, _webStorage_)->
                 Token = _Token_
                 $http = _$http_
@@ -440,9 +440,9 @@ describe 'Token(session is not supported)', ->
         test_token_in_local = 'TEST_TOKEN_IN_LOCAL'
 
         beforeEach ->
-            TokenProvider.setHeaderKey header_key
-            TokenProvider.setStorageKey storage_key
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.headerKey header_key
+            TokenProvider.storageKey storage_key
+            TokenProvider.tokenPrefix ''
 
 
         it 'not store', inject ($http, webStorage)->
@@ -503,9 +503,9 @@ describe 'Token(session/local are both not supported)', ->
     describe 'configured', ->
         Token = $http = webStorage = null
         beforeEach ->
-            TokenProvider.setStorageKey storage_key
-            TokenProvider.setHeaderKey header_key
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.storageKey storage_key
+            TokenProvider.headerKey header_key
+            TokenProvider.tokenPrefix ''
             inject (_Token_, _$http_, _webStorage_)->
                 Token = _Token_
                 $http = _$http_
@@ -539,9 +539,9 @@ describe 'Token(session/local are both not supported)', ->
 
     describe 'store token', ->
         beforeEach ->
-            TokenProvider.setHeaderKey header_key
-            TokenProvider.setStorageKey storage_key
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.headerKey header_key
+            TokenProvider.storageKey storage_key
+            TokenProvider.tokenPrefix ''
 
 
         it 'not store', inject ($http, webStorage)->

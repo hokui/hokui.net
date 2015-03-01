@@ -5,6 +5,10 @@
         box-sizing: border-box
 
 
+html,body
+    height: 100%
+
+
 html
     font-size: 10px
     -webkit-tap-highlight-color: rgba(0,0,0,0)
@@ -16,15 +20,6 @@ body
     line-height: $line-height-base
     color: $text-color
     background-color: $body-bg
-
-
-input,
-button,
-select,
-textarea
-    font-family: inherit
-    font-size: inherit
-    line-height: inherit
 
 
 a
@@ -97,16 +92,6 @@ p
     margin: 0 0 ($line-height-computed / 2)
 
 
-.lead
-    margin-bottom: $line-height-computed
-    font-size: floor(($font-size-base * 1.15))
-    font-weight: 300
-    line-height: 1.4
-
-    @media (min-width: $grid-breakpoint)
-        font-size: ($font-size-base * 1.5)
-
-
 ul, ol
     margin-top: 0
     margin-bottom: ($line-height-computed / 2)
@@ -115,8 +100,6 @@ ul, ol
 
 
 hr
-    margin-top: $line-height-computed
-    margin-bottom: $line-height-computed
     border: 0
     border-bottom: solid 1px $border-color-base
 
@@ -133,3 +116,12 @@ dt
 
 dd
     margin-left: 0
+
+
+input,
+button,
+select,
+textarea
+    font-family: inherit
+    font-size: inherit
+    line-height: inherit

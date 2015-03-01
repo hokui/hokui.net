@@ -10,9 +10,9 @@ describe 'Auth', ->
 
         angular.module 'AuthTestModule', [moduleCore]
         .config (TokenProvider)->
-            TokenProvider.setStorageKey 'token'
-            TokenProvider.setHeaderKey 'Access-Token'
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.storageKey 'token'
+            TokenProvider.headerKey 'Access-Token'
+            TokenProvider.tokenPrefix ''
         .config (EnvProvider)->
             EnvProvider.setApiRoot '/api'
 
@@ -217,9 +217,9 @@ describe 'AuthChecker', ->
             .state 'fake',
                 url: '/fake'
         .config (TokenProvider)->
-            TokenProvider.setStorageKey 'token'
-            TokenProvider.setHeaderKey 'Access-Token'
-            TokenProvider.setTokenPrefix ''
+            TokenProvider.storageKey 'token'
+            TokenProvider.headerKey 'Access-Token'
+            TokenProvider.tokenPrefix ''
 
         module 'AuthCheckerTestModule'
 
