@@ -57,48 +57,5 @@ RSpec.describe "Documents", type: :request do
       expect(response.status).to eq(401)
     end
   end
-
-  describe "PATCH /api/subjects/1/documents/1" do
-    before(:all) do
-      @params = {
-        subject_id: 3,
-        class_year: 95,
-        code: 99
-      }
-    end
-
-    it "updates document parameters", autodoc: true do
-      patch_with_token(@admin, "/api/subjects/#{@doc2.subject_id}/documents/#{@doc2.id}", @params.to_json)
-      expect(response.status).to eq(200)
-      expect(json["code"]).to eq(99)
-    end
-
-    it "returns 403 to a guest" do
-      patch_with_token(@guest, "/api/subjects/#{@doc1.subject_id}/documents/#{@doc1.id}", @params.to_json)
-      expect(response.status).to eq(403)
-    end
-
-    it "returns 401 to an unauthorized client" do
-      patch("/api/subjects/#{@doc1.subject_id}/documents/#{@doc1.id}", @params.to_json)
-      expect(response.status).to eq(401)
-    end
-  end
-
-  describe "DELETE /api/subjects/1/documents/1" do
-    it "destroys the document", autodoc: true do
-      delete_with_token(@admin, "/api/subjects/#{@doc1.subject_id}/documents/#{@doc1.id}")
-      expect(response.status).to eq(200)
-    end
-
-    it "returns 403 to a guest" do
-      delete_with_token(@guest, "/api/subjects/#{@doc1.subject_id}/documents/#{@doc1.id}")
-      expect(response.status).to eq(403)
-    end
-
-    it "returns 401 to an unauthorized client" do
-      delete("/api/subjects/#{@doc1.subject_id}/documents/#{@doc1.id}")
-      expect(response.status).to eq(401)
-    end
-  end
 end
 
