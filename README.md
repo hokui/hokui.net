@@ -1,7 +1,7 @@
 # hokui.net
 
 **Project**  
-[![Build Status](https://travis-ci.org/hokui/hokui.net.svg)](https://travis-ci.org/hokui/hokui.net)  
+[![Codeship Status for hokui/hokui.net](https://codeship.com/projects/1b154840-a7bd-0132-be13-5ac1da2e580b/status?branch=master)](https://codeship.com/projects/67249)  
 **Backend**  
 [![Code Climate](https://codeclimate.com/github/hokui/hokui.net/badges/gpa.svg)](https://codeclimate.com/github/hokui/hokui.net)
 [![Test Coverage](https://codeclimate.com/github/hokui/hokui.net/badges/coverage.svg)](https://codeclimate.com/github/hokui/hokui.net)  
