@@ -31,7 +31,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :document_files,     only: [        :show, :create, :update, :destroy] do
+    resources :document_files,     only: [:index, :show, :create, :update, :destroy] do
       member do
         get :download_token
       end

@@ -22,6 +22,14 @@ RSpec.describe "DocumentFiles", type: :request do
     end
   end
 
+  describe "GET /api/document_files?user_id=1" do
+    it "returns a list of document belonging to the specified user" do
+      get_with_token(@guest, "/api/document_files?user_id=#{@guest.id}")
+      expect(response.status).to eq(200)
+      expect(json.first["file_name"]).to eq(@df.file_name)
+    end
+  end
+
   describe "GET /api/document_files/1" do
     it "returns a document file" do
       get_with_token(@guest, "/api/document_files/#{@df.id}")
