@@ -50,8 +50,8 @@ class Api::DocumentFilesController < Api::ApplicationController
   private
 
   def find_or_create_document
-    # NOTE this before_action might return Document and prevent original action
-    # from returning DocumentFile
+    # NOTE this before_action might return an instance of Document and prevent
+    # original action from returning a instance of DocumentFile
     @document = Document.where(
       subject_id: document_params[:subject_id],
       class_year: document_params[:class_year],

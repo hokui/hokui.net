@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     resources :class_years,        only: [:index, :show, :create, :update, :destroy]
 
     resources :subjects,           only: [:index, :show, :create, :update, :destroy] do
-      resources :documents,        only: [:index, :show,          :update, :destroy] do
+      resources :documents,        only: [:index, :show                            ] do
         resources :document_files, only: [:index                                   ]
       end
     end

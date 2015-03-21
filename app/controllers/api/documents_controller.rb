@@ -4,8 +4,7 @@ class Api::DocumentsController < Api::ApplicationController
   # but not
   #   /api/documents
 
-  before_action :set_document, only: [:show, :update, :destroy]
-  after_action :verify_authorized, except: [:index, :show]
+  before_action :set_document, only: :show
 
   def index
     @documents = if params[:code]
@@ -22,35 +21,11 @@ class Api::DocumentsController < Api::ApplicationController
     render json: @document
   end
 
-  def update
-    authorize @document
-    if @document.update_attributes(document_params)
-      render json: @document, status: 200
-    else
-      render json: @document, status: 422
-    end
-  end
-
-  def destroy
-    authorize @document
-    @document.destroy
-    head 200
-  end
-
   private
 
   def set_document
     @document = Subject.find(params[:subject_id]).documents.find(params[:id])
   rescue
     head 404
-  end
-
-  def document_params
-    ActionController::Parameters.new(JSON.parse(request.body.read)).
-      permit(
-        :subject_id,
-        :class_year,
-        :code
-    )
   end
 end
