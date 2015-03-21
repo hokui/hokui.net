@@ -40,7 +40,8 @@ bundle exec rake db:dev
 `index.jade`以外のマークアップはすべてテンプレートとして`$templateChache`を使ってJSに埋め込み、他と併せて結合/圧縮して一つのファイルで出力。CSSも同様。
 
 ### 開発サーバーについて
-Nginxとの歳
+index.htmlを「pathに.を含まない」を条件にして返しているのと、trailing slash周りが怪しいので開発サーバー側で取り除くようにしている点で、若干Nginxと挙動がことなります。
+
 
 
 ### Gulp
