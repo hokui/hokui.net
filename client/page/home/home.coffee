@@ -7,9 +7,6 @@ angular.module modulePage
         url: '/'
         templateUrl: '/page/home/home.html'
         controller: 'HomeCtrl'
-        data:
-            keywords: ['うんちww', 'うんこww']
-            description: 'うんこっこwwwww'
 
 .controller 'HomeCtrl',
     ($scope, $state, Env, Auth, Notify) ->
