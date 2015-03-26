@@ -1,3 +1,5 @@
 test:
   uploaded_files_dir: "/tmp"
   mailing_list_host: "localhost:3001"
+  mailing_list_user: "hoge"
+  mailing_list_pass: "fuga"
