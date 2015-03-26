@@ -110,7 +110,7 @@ class User < ActiveRecord::Base
   end
 
   def uniqueness_between_email_and_email_mobile
-    emails = Member.where.not(id: self.id).pluck(:email, :email_mobile).flatten.select { |e| !e.blank? }
+    emails = User.where.not(id: self.id).pluck(:email, :email_mobile).flatten.select { |e| !e.blank? }
     errors.add(:email, "has already been taken") if emails.include?(email)
     errors.add(:email_mobile, "has already been taken") if emails.include?(email_mobile)
   end
