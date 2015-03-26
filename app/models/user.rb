@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
   validates(:class_year_id)    { presence }
 
   after_create :send_activation_needed_email!
+  after_create :register_ml_member!
 
   scope :waiting_approval,      -> { where(activation_state: "active", approval_state: "waiting") }
   scope :active_approved_users, -> { where(activation_state: "active", approval_state: "approved") }
@@ -83,6 +84,16 @@ class User < ActiveRecord::Base
 
   def send_reset_password_instructions!
     UserMailer.reset_password_instructions(self).deliver_now
+  end
+
+  def register_ml_member!
+    member = MailingList::Member.create!(
+      name: self.full_name,
+      email: self.email,
+      email_sub: self.email_mobile
+    )
+    self.ml_member_id = member.id
+    self.save!
   end
 
   class << self
