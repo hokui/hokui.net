@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326103315) do
+ActiveRecord::Schema.define(version: 20150326131126) do
 
   create_table "access_tokens", force: :cascade do |t|
     t.integer  "user_id",          null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150326103315) do
     t.integer  "year",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ml_list_id"
   end
 
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
