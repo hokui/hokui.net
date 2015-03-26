@@ -35,13 +35,14 @@ class User < ActiveRecord::Base
   has_many :access_tokens, dependent: :destroy
   has_many :document_files
 
-  validates(:email)            { presence; uniqueness; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
+  validates(:email)            { presence; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
   validates(:family_name)      { presence }
   validates(:given_name)       { presence }
   validates(:handle_name)      { presence; uniqueness }
   validates(:birthday)         { presence }
   validates(:crypted_password) { presence }
   validates(:class_year_id)    { presence }
+  validate :uniqueness_between_email_and_email_mobile
 
   after_create :send_activation_needed_email!
   after_create :register_ml_member!
@@ -106,5 +107,11 @@ class User < ActiveRecord::Base
 
   def host
     Rails.application.routes.default_url_options[:host]
+  end
+
+  def uniqueness_between_email_and_email_mobile
+    emails = Member.where.not(id: self.id).pluck(:email, :email_mobile).flatten.select { |e| !e.blank? }
+    errors.add(:email, "has already been taken") if emails.include?(email)
+    errors.add(:email_mobile, "has already been taken") if emails.include?(email_mobile)
   end
 end
