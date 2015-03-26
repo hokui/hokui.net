@@ -1,2 +1,3 @@
 test:
   uploaded_files_dir: "/tmp"
+  mailing_list_host: "localhost:3001"

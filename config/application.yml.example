@@ -1,8 +1,11 @@
 development:
   uploaded_files_dir: "/YOUR/PROJECT/ROOT/misc/uploaded"
+  mailing_list_host: "localhost:3001"
 
 production:
   uploaded_files_dir: "/SOMEWHERE/IN/THE/SERVER"
+  mailing_list_host: "ml.YOURDOMAIN.com"
 
 test:
   uploaded_files_dir: "/tmp"
+  mailing_list_host: "localhost:3001"
