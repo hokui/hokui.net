@@ -4,4 +4,4 @@ cd mailing_list
 cp config/application.example.yml config/application.yml
 bundle --jobs=4
 bundle exec rake db:migrate
-bundle exec rails server -p 3001 &
+bundle exec rails server -p 3001 > /dev/null &
