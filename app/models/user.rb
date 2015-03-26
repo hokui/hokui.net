@@ -93,6 +93,8 @@ class User < ActiveRecord::Base
       email: self.email,
       email_sub: self.email_mobile
     )
+    list = MailingList::List.find(self.class_year.ml_list_id)
+    list.get(:add_member, { member_id: member.id })
     self.ml_member_id = member.id
     self.save!
   end
