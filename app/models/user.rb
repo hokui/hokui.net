@@ -88,11 +88,11 @@ class User < ActiveRecord::Base
   end
 
   def register_ml_member!
-    member = MailingList::Member.create!(
+    member = MailingList::Member.where(
       name: self.full_name,
       email: self.email,
       email_sub: self.email_mobile
-    )
+    ).first_or_create
     list = MailingList::List.find(self.class_year.ml_list_id)
     list.get(:add_member, { member_id: member.id })
     self.ml_member_id = member.id

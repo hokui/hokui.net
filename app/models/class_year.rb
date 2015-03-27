@@ -17,9 +17,7 @@ class ClassYear < ActiveRecord::Base
   after_create :register_ml_list!
 
   def register_ml_list!
-    list = MailingList::List.create!(
-      name: self.year
-    )
+    list = MailingList::List.where(name: self.year).first_or_create
     self.ml_list_id = list.id
     self.save!
   end
