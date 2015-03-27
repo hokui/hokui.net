@@ -27,6 +27,16 @@ bundle install
 bundle exec rake db:dev
 ```
 
+mailing listを実行
+```
+git clone https://github.com/hokui/mailing_list
+cd mailing_list
+bundle install --path .bundle/gems --jobs=4
+cp config/application.example.yml config/application.yml
+bundle exec rake db:migrate
+bundle exec rails s -p 3001
+```
+
 ## フロントエンド
 
 **NOTE**: Need to install `Gulp` globally or run `Gulp` with `npm run gulp ...`.
