@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150129045504) do
+ActiveRecord::Schema.define(version: 20150326131126) do
 
   create_table "access_tokens", force: :cascade do |t|
     t.integer  "user_id",          null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150129045504) do
     t.integer  "year",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ml_list_id"
   end
 
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
@@ -128,6 +129,7 @@ ActiveRecord::Schema.define(version: 20150129045504) do
     t.string   "email_mobile"
     t.boolean  "admin",                           default: false, null: false
     t.integer  "class_year_id",                   default: 1,     null: false
+    t.integer  "ml_member_id"
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token"

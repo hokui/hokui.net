@@ -35,15 +35,17 @@ class User < ActiveRecord::Base
   has_many :access_tokens, dependent: :destroy
   has_many :document_files
 
-  validates(:email)            { presence; uniqueness; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
+  validates(:email)            { presence; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
   validates(:family_name)      { presence }
   validates(:given_name)       { presence }
   validates(:handle_name)      { presence; uniqueness }
   validates(:birthday)         { presence }
   validates(:crypted_password) { presence }
   validates(:class_year_id)    { presence }
+  validate :uniqueness_between_email_and_email_mobile
 
   after_create :send_activation_needed_email!
+  after_create :register_ml_member!
 
   scope :waiting_approval,      -> { where(activation_state: "active", approval_state: "waiting") }
   scope :active_approved_users, -> { where(activation_state: "active", approval_state: "approved") }
@@ -85,6 +87,18 @@ class User < ActiveRecord::Base
     UserMailer.reset_password_instructions(self).deliver_now
   end
 
+  def register_ml_member!
+    member = MailingList::Member.where(
+      name: self.full_name,
+      email: self.email,
+      email_sub: self.email_mobile
+    ).first_or_create
+    list = MailingList::List.find(self.class_year.ml_list_id)
+    list.get(:add_member, { member_id: member.id })
+    self.ml_member_id = member.id
+    self.save!
+  end
+
   class << self
     def send_approval_request_to_admin!
       AdminMailer.approval_request(admins, waiting_approval).deliver_now
@@ -95,5 +109,11 @@ class User < ActiveRecord::Base
 
   def host
     Rails.application.routes.default_url_options[:host]
+  end
+
+  def uniqueness_between_email_and_email_mobile
+    emails = User.where.not(id: self.id).pluck(:email, :email_mobile).flatten.select { |e| !e.blank? }
+    errors.add(:email, "has already been taken") if emails.include?(email)
+    errors.add(:email_mobile, "has already been taken") if emails.include?(email_mobile)
   end
 end

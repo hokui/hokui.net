@@ -1,4 +1,5 @@
-cp config/application.yml.travis config/application.yml
+cp config/application.yml.ci config/application.yml
+bash scripts/setup_mailing_list_server.sh
 export CODECLIMATE_REPO_TOKEN=6379678c9245d7c0695b4a011bac7e58e9a59ee91e5486af9e3ce494d3d7f9f8
 export SAUCE_USERNAME=endaaman
 export SAUCE_ACCESS_KEY=b71f108fc073-ae18-c904-5f8f-08589d51

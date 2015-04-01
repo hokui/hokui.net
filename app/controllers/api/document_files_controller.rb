@@ -4,12 +4,10 @@ class Api::DocumentFilesController < Api::ApplicationController
   after_action :verify_authorized , except: [:index, :show, :create, :download_token]
 
   def index
-    # NOTE this action is intended to be called as
-    #   /api/subjects/1/documents/1/document_files
-    # but not
-    #   /api/document_files
-    document = Subject.find(params[:subject_id]).documents.find(params[:document_id])
-    @document_files = DocumentFile.where(document_id: document.id)
+    [:subject_id, :document_id, :user_id].each.with_object({}) do |key, hash|
+      hash[key] = params[key] if params[key]
+    end
+    @document_files = DocumentFile.where(hash)
     render json: @document_files
   end
 

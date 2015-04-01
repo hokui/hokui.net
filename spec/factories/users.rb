@@ -32,6 +32,10 @@
 
 FactoryGirl.define do
   factory :admin, class: User do
+    after(:build) do |user|
+      user.class_year_id = ClassYear.where(year: 100).first_or_create.id
+    end
+
     transient do
       activate true
       approve  true
@@ -45,7 +49,6 @@ FactoryGirl.define do
     handle_name   "admin"
     birthday      "1990-01-01"
     email_mobile  "admin@example.com"
-    class_year_id 1
     admin         true
 
     after(:create) do |user, evaluator|
@@ -55,6 +58,10 @@ FactoryGirl.define do
   end
 
   factory :guest, class: User do
+    after(:build) do |user|
+      user.class_year_id = ClassYear.where(year: 100).first_or_create.id
+    end
+
     transient do
       activate true
       approve  true
@@ -68,7 +75,6 @@ FactoryGirl.define do
     handle_name   "guest"
     birthday      "1990-01-01"
     email_mobile  "guest@example.com"
-    class_year_id 1
     admin         false
 
     after(:create) do |user, evaluator|

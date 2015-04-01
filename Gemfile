@@ -7,6 +7,8 @@ gem 'sqlite3'
 
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 
+gem 'activeresource'
+
 gem 'thin'
 
 gem 'whenever', require: false
