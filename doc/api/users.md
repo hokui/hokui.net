@@ -17,7 +17,7 @@ Content-Type: application/json; charset=utf-8
 [
   {
     "id": 1,
-    "email": "admin@ec.hokudai.ac.jp",
+    "email": "admin@eis.hokudai.ac.jp",
     "activation_state": "active",
     "approval_state": "approved",
     "last_login_at": null,
@@ -31,7 +31,7 @@ Content-Type: application/json; charset=utf-8
     "birthday": "1990-01-01",
     "email_mobile": "admin@example.com",
     "admin": true,
-    "class_year_id": 1,
+    "class_year_id": 8,
     "created_at": "2014-01-01T00:00:00.000+09:00",
     "updated_at": "2014-01-01T00:00:00.000+09:00",
     "errors": {
@@ -75,7 +75,7 @@ Content-Type: application/json; charset=utf-8
 
 {
   "id": 2,
-  "email": "guest@ec.hokudai.ac.jp",
+  "email": "guest@eis.hokudai.ac.jp",
   "activation_state": "active",
   "approval_state": "approved",
   "last_login_at": null,
@@ -89,7 +89,7 @@ Content-Type: application/json; charset=utf-8
   "birthday": "1990-01-01",
   "email_mobile": "guest@example.com",
   "admin": false,
-  "class_year_id": 1,
+  "class_year_id": 8,
   "created_at": "2014-01-01T00:00:00.000+09:00",
   "updated_at": "2014-01-01T00:00:00.000+09:00",
   "errors": {
@@ -115,7 +115,7 @@ Content-Type: application/json; charset=utf-8
 
 {
   "id": 2,
-  "email": "guest@ec.hokudai.ac.jp",
+  "email": "guest@eis.hokudai.ac.jp",
   "activation_state": "active",
   "approval_state": "approved",
   "last_login_at": null,
@@ -129,7 +129,7 @@ Content-Type: application/json; charset=utf-8
   "birthday": "1990-01-01",
   "email_mobile": "guest@example.com",
   "admin": false,
-  "class_year_id": 1,
+  "class_year_id": 8,
   "created_at": "2014-01-01T00:00:00.000+09:00",
   "updated_at": "2014-01-01T00:00:00.000+09:00",
   "errors": {
@@ -164,7 +164,7 @@ Creates new user.
 POST /api/users HTTP/1.1
 
 
-{"id":2,"email":"guest@ec.hokudai.ac.jp","password":"guest","family_name":"guest","given_name":"guest","handle_name":"guest","birthday":"1990-01-01","email_mobile":"guest@example.com","class_year_id":1}
+{"id":2,"email":"guest@eis.hokudai.ac.jp","password":"guest","family_name":"guest","given_name":"guest","handle_name":"guest","birthday":"1990-01-01","email_mobile":"guest@example.com"}
 ```
 
 #### Response
@@ -174,7 +174,7 @@ Content-Type: application/json; charset=utf-8
 
 {
   "id": 3,
-  "email": "guest@ec.hokudai.ac.jp",
+  "email": "guest@eis.hokudai.ac.jp",
   "activation_state": "pending",
   "approval_state": "waiting",
   "last_login_at": null,
@@ -206,7 +206,7 @@ Successes if the guest is previously unactivated.
 POST /api/users/activate HTTP/1.1
 
 
-{"activation_token":"r2tsr5ZysbqPgvhBpDxD"}
+{"activation_token":"aQq2mRshh8KzdXtqqLV5"}
 ```
 
 #### Response
@@ -225,7 +225,7 @@ Fails if the guest is already activated.
 POST /api/users/activate HTTP/1.1
 
 
-{"activation_token":"rpEWuT6DTGDfstmpt6Pi"}
+{"activation_token":"K6PNsKfhAD7QFYPSMyvW"}
 ```
 
 #### Response

@@ -73,7 +73,7 @@ HTTP/1.1 201
 Content-Type: application/json; charset=utf-8
 
 {
-  "id": 2,
+  "id": 7,
   "year": 94,
   "created_at": "2014-01-01T00:00:00.000+09:00",
   "updated_at": "2014-01-01T00:00:00.000+09:00",
