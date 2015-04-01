@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   has_many :access_tokens, dependent: :destroy
   has_many :document_files
 
-  validates(:email)            { presence; format(with: /\A[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp\Z/) }
+  validates(:email)            { presence; format(with: /\A[0-9a-zA-Z_\-]+@(eis|med)\.hokudai\.ac\.jp\Z/) }
   validates(:family_name)      { presence }
   validates(:given_name)       { presence }
   validates(:handle_name)      { presence; uniqueness }
