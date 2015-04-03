@@ -1,24 +1,20 @@
 FROM hokui/ruby_nginx_base
 
-RUN echo deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu `lsb_release -cs` main \
-  && echo deb-src http://ppa.launchpad.net/chris-lea/node.js/ubuntu `lsb_release -cs` main
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C7917B12 \
-  && apt-get update \
-  && apt-get -yqq install nodejs git-core supervisor
+RUN apt-get -yqq install nodejs nodejs-legacy npm git-core supervisor zlib1g-dev sqlite3 libsqlite3-dev
 
 WORKDIR /tmp
 
 ADD Gemfile Gemfile
 ADD Gemfile.lock Gemfile.lock
-RUN bundle install
+RUN bundle install --jobs=4
 
 ADD package.json package.json
 RUN npm install
 
-ADD bower.json bower.json
-RUN bower install
+RUN npm install -g gulp bower
 
-RUN npm install -g gulp
+ADD bower.json bower.json
+RUN bower install --allow-root
 
 RUN rm -v /etc/nginx/mime.types
 ADD nginx/nginx.conf /etc/nginx/
@@ -28,6 +24,7 @@ ADD docker_supervisor.conf /etc/supervisor/conf.d/supervisord.conf
 
 ADD . /var/app
 WORKDIR /var/app
+RUN mkdir public
 
 RUN cp -r /tmp/node_modules /var/app/node_modules
 RUN cp -r /tmp/bower_components /var/app/public/bower_components
@@ -37,5 +34,7 @@ RUN gulp build --prod --nosound
 RUN rake db:migrate
 
 EXPOSE 8001
+
+VOLUME ["/var/log/nginx"]
 
 ENTRYPOINT ["/usr/bin/supervisord"]
