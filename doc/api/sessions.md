@@ -8,7 +8,7 @@ Returns new access token and user profile.
 POST /api/session HTTP/1.1
 
 
-{"email":"guest@ec.hokudai.ac.jp","password":"guest"}
+{"email":"guest@eis.hokudai.ac.jp","password":"guest"}
 ```
 
 #### Response
@@ -17,10 +17,10 @@ HTTP/1.1 201
 Content-Type: application/json; charset=utf-8
 
 {
-  "token": "213680a6d0053321bebb8efbe906b730e0a90fa56310256f3c3383688a305fd7",
+  "token": "d34bcc24006eabe0a78dbb7a2157ea4fb052bd81bc63412d20e62d60be5990e9",
   "user": {
     "id": 2,
-    "email": "guest@ec.hokudai.ac.jp",
+    "email": "guest@eis.hokudai.ac.jp",
     "activation_state": "active",
     "approval_state": "approved",
     "last_login_at": "2014-01-01T00:00:00.000+09:00",
@@ -34,7 +34,7 @@ Content-Type: application/json; charset=utf-8
     "birthday": "1990-01-01",
     "email_mobile": "guest@example.com",
     "admin": false,
-    "class_year_id": 1,
+    "class_year_id": 8,
     "created_at": "2014-01-01T00:00:00.000+09:00",
     "updated_at": "2014-01-01T00:00:00.000+09:00",
     "errors": {
@@ -53,7 +53,7 @@ Returns 401 if password is wrong.
 POST /api/session HTTP/1.1
 
 
-{"email":"guest@ec.hokudai.ac.jp","password":"admin"}
+{"email":"guest@eis.hokudai.ac.jp","password":"admin"}
 ```
 
 #### Response

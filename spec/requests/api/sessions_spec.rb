@@ -7,7 +7,7 @@ RSpec.describe "Sessions", type: :request do
     end
 
     it "returns new access token and user profile", autodoc: true do
-      email = "guest@ec.hokudai.ac.jp"
+      email = "guest@eis.hokudai.ac.jp"
       password = "guest"
       params = { email: email, password: password }
 
@@ -23,7 +23,7 @@ RSpec.describe "Sessions", type: :request do
     end
 
     it "returns 401 if password is wrong", autodoc: true do
-      email = "guest@ec.hokudai.ac.jp"
+      email = "guest@eis.hokudai.ac.jp"
       password = "admin"
       params = { email: email, password: password }
 
