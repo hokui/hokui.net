@@ -35,6 +35,6 @@ RUN rake db:migrate
 
 EXPOSE 8001
 
-VOLUME ["/var/log/nginx"]
+VOLUME ["/var/log/supervisor", "/var/log/nginx", "/var/app/log"]
 
 ENTRYPOINT ["/usr/bin/supervisord"]
