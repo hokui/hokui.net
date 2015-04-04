@@ -32,10 +32,8 @@ RUN cp -r /tmp/node_modules /var/app/node_modules
 RUN cp -r /tmp/bower_components /var/app/public/bower_components
 RUN gulp build --prod --nosound
 
-RUN rake db:migrate
-
 EXPOSE 8001
 
 VOLUME ["/var/log/supervisor", "/var/log/nginx", "/var/app/log"]
 
-ENTRYPOINT ["/usr/bin/supervisord"]
+ENTRYPOINT ["bash", "run.sh"]
