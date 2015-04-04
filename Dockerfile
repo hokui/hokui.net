@@ -26,11 +26,17 @@ ADD . /var/app
 WORKDIR /var/app
 RUN mkdir public
 
+ENV RAILS_ENV=production
+
+RUN rm -v /var/app/config/*.yml*
+ADD /var/config/hokui/app/application.yml /var/app/config/application.yml
+ADD /var/config/hokui/app/database.yml /var/app/config/database.yml
+ADD /var/config/hokui/app/secrets.yml /var/app/config/secrets.yml
+
 RUN cp -r /tmp/node_modules /var/app/node_modules
 RUN cp -r /tmp/bower_components /var/app/public/bower_components
 RUN gulp build --prod --nosound
 
-# TODO use volume container
 RUN rake db:migrate
 
 EXPOSE 8001
