@@ -14,7 +14,7 @@ RSpec.describe "ActivationRequests", type: :request do
 
     it "returns 400 if user is not found on db", autodoc: true do
       expect_any_instance_of(User).not_to receive(:send_activation_needed_email!)
-      post("/api/activation_request", { email: "hoge@ec.hokudai.ac.jp" }.to_json)
+      post("/api/activation_request", { email: "hoge@eis.hokudai.ac.jp" }.to_json)
       expect(response.status).to eq(400)
       expect(json).to eq({})
     end
