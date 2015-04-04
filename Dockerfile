@@ -43,6 +43,4 @@ EXPOSE 8001
 
 VOLUME ["/var/log/supervisor", "/var/log/nginx", "/var/app/log"]
 
-ENV RAILS_ENV=production
-
 ENTRYPOINT ["/usr/bin/supervisord"]
