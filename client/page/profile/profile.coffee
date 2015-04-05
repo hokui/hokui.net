@@ -7,6 +7,10 @@ angular.module modulePage
         url: '/profile'
         templateUrl: '/page/profile/profile.html'
         controller: 'ProfileCtrl'
+        resolve:
+            classYears: (ClassYear, ResourceStore)->
+                ClassYear.query().$promise.then (data)->
+                    new ResourceStore data
         data:
             restrict:
                 role: 'user'
@@ -15,4 +19,9 @@ angular.module modulePage
             title: '北医ネット - プロフィール'
 
 .controller 'ProfileCtrl',
-    ($scope) ->
+    ($scope, Auth, classYears) ->
+        $scope.classYears = classYears
+        $scope.user = Auth.user()
+
+        $scope.getClassYearLabel = (user)->
+            $scope.classYears.retrieve(user.class_year_id).year

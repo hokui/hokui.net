@@ -1,12 +1,14 @@
 p
-    a.btn.btn--primary.btn--sm(ui-sref=".new") 新規アップロード
+    a.btn.btn--primary.btn--sm.btn--disabled(ui-sref=".new") 新規アップロード
+    | &nbsp;
+    span.text-muted ※ 資料の投稿機能は現在準備中です。
 
 table.table.table--condensed.table--bordered(ng-if="documents.count() > 0")
     tr
         th 期
         th(ng-if="parseCode") 回
         th ファイル
-    tr(ng-repeat="doc in documents.original")
+    tr(ng-repeat="doc in documents.transformed()")
         td {{doc.class_year}}
         td(ng-if="parseCode") {{parseCode(doc.code)}}
         td

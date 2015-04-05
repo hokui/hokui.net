@@ -37,8 +37,10 @@ angular.module modulePage
 
 
 .controller 'StudySummaeyMainCtrl',
-    ($scope, $stateParams, documents, ResourceStore, NotFound)->
+    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter)->
         $scope.documents = documents
+
+        documents.setSorter new ResourceFieldSorter ['class_year', 'code']
 
         $scope.parseCode = (code)->
             time = code % 100

@@ -9,6 +9,8 @@ class Contents::DocumentFilesController < Contents::ApplicationController
     end
 
     if authorize_download
+      @document_file.download_count += 1
+      @document_file.save!
       filepath = @document_file.file_fullpath
       filename = ERB::Util.url_encode(@document_file.file_name)
       filesize = File.stat(filepath).size

@@ -1,21 +1,26 @@
 p
-    a.btn.btn--primary.btn--sm(ui-sref=".new") 新規アップロード
+    a.btn.btn--primary.btn--sm.btn--disabled(ui-sref=".new") 新規アップロード
+    | &nbsp;
+    span.text-muted ※ 資料の投稿機能は現在準備中です。
 
 table.table.table--condensed.table--bordered(ng-if="documents.count() > 0")
     tr
         th 期
         th(ng-if="parseCode") 回
         th ファイル
-    tr(ng-repeat="doc in documents.original")
+    tr(ng-repeat="doc in documents.transformed()")
         td
             span(ng-show="!sameClassYearToBefore($index)") {{doc.class_year}}
         td(ng-if="parseCode") {{parseCode(doc.code)}}
         td
             p(ng-if="doc.document_files.length < 1") no files uploaded
-            ul(ng-repeat="file in doc.document_files")
-                //- li
-                //-     pre {{file | json}}
-                li {{file.file_name}}
-                li user_id:{{file.user_id}} {{file.download_count}}回
+            .row(ng-repeat-start="file in doc.document_files")
+                .col--xs-12.col--sm-8
+                    a(ng-click="downloadFile(file)") {{file.file_name}}
+                .col--xs-12.col--sm-4
+                    span {{file.user.name}}({{file.user.class_year}}期)
+                    span &nbsp;
+                    span {{file.download_count}}回
+            hr(ng-repeat-end ng-if="!$last")
 
 p(ng-if="documents.count() === 0") 資料がまだ投稿されていません。

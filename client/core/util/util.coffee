@@ -25,3 +25,17 @@ angular.module moduleCore
         if (new Date()).getMonth < 4
             year = year -1
         year - entrance - 1917
+
+
+.factory 'DownloadDocumentFile', ($http, Env, Notify)->
+    (documentFile, suc, err)->
+        console.log documentFile
+        $http.get "#{Env.apiRoot()}/document_files/#{documentFile.id}/download_token"
+        .success (data)->
+            $http.get "/contents/document_files/#{documentFile.id}?download_token=#{data.token}",
+                responseType: 'arraybuffer'
+            .success (binary)->
+                file = new Blob [binary], type: documentFile.file_content_type
+                saveAs file, documentFile.file_name
+                documentFile.download_count = documentFile.download_count + 1
+

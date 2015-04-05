@@ -37,8 +37,11 @@ angular.module modulePage
 
 
 .controller 'StudyExamMainCtrl',
-    ($scope, $stateParams, ResourceStore, NotFound, documents)->
+    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter, DownloadDocumentFile)->
         $scope.documents = documents
+
+        documents.setSorter new ResourceFieldSorter ['class_year', 'code']
+
 
         $scope.sameClassYearToBefore = ($index)->
             a = $scope.documents.original[$index]
@@ -68,6 +71,12 @@ angular.module modulePage
                 result = result + '試'
 
             if code > 1000 then result + '(解答)' else result
+
+        $scope.downloadFile = (file)->
+            DownloadDocumentFile file
+            .then (res)->
+                console.log res.data
+
 
 
 .controller 'StudyExamNewCtrl',

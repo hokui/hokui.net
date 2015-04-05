@@ -35,7 +35,8 @@ angular.module modulePage
         1
 
 .controller 'StudyQuizMainCtrl',
-    ($scope, $stateParams, documents, ResourceStore, NotFound)->
+    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter)->
+        documents.setSorter new ResourceFieldSorter ['class_year', 'code']
         $scope.documents = documents
 
         $scope.parseCode = (code)->

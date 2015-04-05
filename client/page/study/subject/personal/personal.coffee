@@ -37,8 +37,10 @@ angular.module modulePage
 
 
 .controller 'StudyPersonalMainCtrl',
-    ($scope, $stateParams, documents, ResourceStore, NotFound)->
+    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter)->
         $scope.documents = documents
+
+        documents.setSorter new ResourceFieldSorter ['class_year', 'code']
 
 .controller 'StudyPersonalNewCtrl',
     ($scope)->

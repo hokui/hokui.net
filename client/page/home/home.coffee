@@ -7,6 +7,9 @@ angular.module modulePage
         url: '/'
         templateUrl: '/page/home/home.html'
         controller: 'HomeCtrl'
+        resolve:
+            news: ->
+                1
 
 .controller 'HomeCtrl',
     ($scope, $state, Auth, Notify, Env) ->
