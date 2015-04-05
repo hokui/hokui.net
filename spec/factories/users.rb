@@ -42,7 +42,7 @@ FactoryGirl.define do
     end
 
     id            1
-    email         "admin@ec.hokudai.ac.jp"
+    email         "admin@eis.hokudai.ac.jp"
     password      "admin"
     family_name   "admin"
     given_name    "admin"
@@ -68,7 +68,7 @@ FactoryGirl.define do
     end
 
     id            2
-    email         "guest@ec.hokudai.ac.jp"
+    email         "guest@eis.hokudai.ac.jp"
     password      "guest"
     family_name   "guest"
     given_name    "guest"

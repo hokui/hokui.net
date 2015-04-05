@@ -2,9 +2,9 @@ unless cy = ClassYear.find_by(year: 93)
   cy = ClassYear.create!(year: 93)
 end
 
-unless admin = User.find_by(email: "admin@ec.hokudai.ac.jp")
+unless admin = User.find_by(email: "admin@eis.hokudai.ac.jp")
   admin = User.create(
-    email:         "admin@ec.hokudai.ac.jp",
+    email:         "admin@eis.hokudai.ac.jp",
     password:      "admin",
     family_name:   "admin",
     given_name:    "admin",
@@ -18,9 +18,9 @@ end
 admin.activate!
 admin.approve!
 
-unless guest = User.find_by(email: "guest@ec.hokudai.ac.jp")
+unless guest = User.find_by(email: "guest@eis.hokudai.ac.jp")
   guest = User.create(
-    email:         "guest@ec.hokudai.ac.jp",
+    email:         "guest@eis.hokudai.ac.jp",
     password:      "guest",
     family_name:   "guest",
     given_name:    "guest",
@@ -45,9 +45,9 @@ AccessToken.create(
 )
 AccessToken.set_callback(:validation, :before, :generate_token)
 
-unless not_activated = User.find_by(email: "not_activated@ec.hokudai.ac.jp")
+unless not_activated = User.find_by(email: "not_activated@eis.hokudai.ac.jp")
   not_activated = User.create(
-    email:         "not_activated@ec.hokudai.ac.jp",
+    email:         "not_activated@eis.hokudai.ac.jp",
     password:      "not_activated",
     family_name:   "not_activated",
     given_name:    "not_activated",
