@@ -63,6 +63,11 @@ class User < ActiveRecord::Base
     approval_state == "approved"
   end
 
+  def approve!
+    super
+    send_approved_notification!
+  end
+
   def activation_url
     if activation_token.blank?
       raise "activation_token is not generated"
@@ -81,6 +86,10 @@ class User < ActiveRecord::Base
 
   def send_activation_needed_email!
     UserMailer.email_confirmation_on_create(self).deliver_now
+  end
+
+  def send_approved_notification!
+    UserMailer.approved_notification(self).deliver_now
   end
 
   def send_reset_password_instructions!
