@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326131126) do
+ActiveRecord::Schema.define(version: 20150404145015) do
 
   create_table "access_tokens", force: :cascade do |t|
     t.integer  "user_id",          null: false
@@ -33,15 +33,17 @@ ActiveRecord::Schema.define(version: 20150326131126) do
   add_index "class_years", ["year"], name: "index_class_years_on_year", unique: true
 
   create_table "document_files", force: :cascade do |t|
-    t.integer  "document_id",                   null: false
-    t.integer  "user_id",                       null: false
-    t.string   "file_name",                     null: false
-    t.string   "file_content_type",             null: false
-    t.string   "file_md5",                      null: false
+    t.integer  "document_id",                          null: false
+    t.integer  "user_id",                              null: false
+    t.string   "file_name",                            null: false
+    t.string   "file_content_type",                    null: false
+    t.string   "file_md5",                             null: false
     t.string   "comments"
-    t.integer  "download_count",    default: 0, null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.integer  "download_count",           default: 0, null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "previous_user_name"
+    t.integer  "previous_user_class_year"
   end
 
   add_index "document_files", ["document_id"], name: "index_document_files_on_document_id"
