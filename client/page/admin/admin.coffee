@@ -14,15 +14,17 @@ angular.module modulePage
                 controller: 'AdminMainCtrl'
 
         data:
+            title: '北医ネット - 管理画面'
             restrict:
                 role: 'admin'
+                message: '/admin 以降へのアクセスは管理者権限が必要です。'
                 next: 'home'
-                error: '/admin 以降へのアクセスは管理者権限が必要です。'
-            title: '北医ネット - 管理画面'
 
 
 .controller 'AdminCtrl',
-    ($scope, Auth, $state) ->
+    ($scope, Auth, $state, Env) ->
+        $scope.dev = Env.dev()
+
         $scope.isActive = (item)->
             state = item.state
             if state is 'admin'

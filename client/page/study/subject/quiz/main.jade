@@ -1,0 +1,21 @@
+p
+    a.btn.btn--primary.btn--sm(ui-sref=".new") 新規アップロード
+
+table.table.table--condensed.table--bordered(ng-if="documents.count() > 0")
+    tr
+        th 期
+        th(ng-if="parseCode") 回
+        th ファイル
+    tr(ng-repeat="doc in documents.original")
+        td {{doc.class_year}}
+        td(ng-if="parseCode") {{parseCode(doc.code)}}
+        td
+            p(ng-if="doc.document_files.length < 1") no files uploaded
+            ul(ng-repeat="file in doc.document_files")
+                //- li
+                //-     pre {{file | json}}
+                li {{file.file_name}}
+                li {{file.user_id}}
+                li {{file.download_count}}
+
+p(ng-if="documents.count() === 0") 資料がまだ投稿されていません。

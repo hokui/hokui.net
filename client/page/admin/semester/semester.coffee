@@ -69,7 +69,7 @@ angular.module modulePage
             alternative: true
         _.forEach $scope.classYears.original, (cy)->
             $scope.classYearFilter.append new ResourceFilter
-                slug: cy.year
+                slug: ''+cy.year
                 label: "#{cy.year}期"
                 filter: (semester)->
                     semester.class_year_id is cy.id
@@ -116,7 +116,7 @@ angular.module modulePage
 
 
         if $stateParams.class_year
-            if current = $scope.classYearFilter.finfBySlug $stateParams.class_year
+            if current = $scope.classYearFilter.findBySlug $stateParams.class_year
                 current.active true
 
         if $stateParams.subject

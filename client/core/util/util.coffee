@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module moduleComponent
+angular.module moduleCore
 
 .directive 'textbox', ->
     restrict: 'E'
@@ -17,3 +17,11 @@ angular.module moduleComponent
 .factory 'NotFound', ($state, $location)->
     ->
         $state.transitionTo '404', {url: $location.absUrl()}, location: false
+
+
+.factory 'Grade', ->
+    (entrance)->
+        year = (new Date()).getFullYear()
+        if (new Date()).getMonth < 4
+            year = year -1
+        year - entrance - 1917

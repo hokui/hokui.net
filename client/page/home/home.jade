@@ -44,15 +44,5 @@
 
     .hero__welcome(ng-if="Auth.active()")
         h1.hero__welcome__title HOKUI.NET
-        .hero__welcome__elocution(ng-if="dev")
-            .panel
-                .panel__head
-                    h3.panel__head__title 開発用ページ
-                .panle__body
-                    ul
-                        li
-                            a(ui-sref="style") スタイルの確認
-                        li
-                            a(ui-sref="activate({fake: true})") フェイク認証
-                        li
-                            a(ui-sref="activate({fake: 'fail'})") フェイク認証(失敗)
+        .hero__welcome__elocution
+

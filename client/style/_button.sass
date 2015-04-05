@@ -59,24 +59,24 @@
     +button-variant(#333, #fff, #ccc)
 
     &.btn--primary
-        +button-variant(#fff, $brand-primary-dark, darken($brand-primary-dark, 5%))
+        +button-variant(#fff, $brand-primary, $brand-primary-dark)
 
     &.btn--secondary
-        +button-variant(#fff, $brand-secondary-dark, darken($brand-secondary-dark, 5%))
+        +button-variant(#fff, $brand-secondary, $brand-secondary-dark)
 
     &.btn--accent
-        +button-variant(#fff, $brand-accent-dark, darken($brand-accent-dark, 5%))
+        +button-variant(#fff, $brand-accent, $brand-accent-dark)
 
 
 .btn.btn--ghost
     +button-ghost-variant($gray)
 
     &.btn--primary
-        +button-ghost-variant($brand-primary-dark)
+        +button-ghost-variant($brand-primary)
 
     &.btn--secondary
-        +button-ghost-variant($brand-secondary-dark)
+        +button-ghost-variant($brand-secondary)
 
     &.btn--accent
-        +button-ghost-variant($brand-accent-dark)
+        +button-ghost-variant($brand-accent)
 

@@ -5,5 +5,6 @@ class DocumentSerializer < ActiveModel::Serializer
              :code,
              :created_at,
              :updated_at,
-             :errors
+             :errors,
+             :document_files
 end

@@ -71,11 +71,11 @@
                                 name="email"
                                 ng-model="user.email"
                                 required
-                                ng-pattern="/^[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp$/"
+                                ng-pattern="/^[0-9a-zA-Z_\-]+@(eis|med)\.hokudai\.ac\.jp$/"
                                 force-invalid="errors.email"
                                 ng-change="errors.email = null"
                                 id="signupEmail"
-                                placeholder="example@ec.hokudai.ac.jp")
+                                placeholder="example@eis.hokudai.ac.jp")
                             div(ng-show="signup.email.$dirty")
                                 .form__error(ng-show="signup.email.$error.required") 入力必須項目です
                                 .form__error(ng-show="signup.email.$error.email") 不正なメールアドレスです

@@ -41,7 +41,10 @@ angular.module moduleCore
             this
 
         findBySlug: (slug)->
+            matches = {}
             _.find @_children, (child)->
+                console.log child.slug
+                console.log slug
                 child.slug is slug
 
         children: ->

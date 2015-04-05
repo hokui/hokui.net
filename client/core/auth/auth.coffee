@@ -113,33 +113,33 @@ angular.module moduleCore
     defaultAltStateChangeStart: ->
         _defaultAltStateChangeStart
 
-    setAltStateChangeStart: (s)->
-        _altStateChangeStart = s
-
-    getAltStateChangeStart: ->
+    altStateChangeStart: (s)->
+        if s?
+            _altStateChangeStart = s
         _altStateChangeStart
 
-    $get: ($rootScope, $state, Auth)->
-        if _enabled
-            _resolved = false
-
-            $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)=>
-                if _resolved
-                    result = $rootScope.$broadcast _altStateChangeStart, toState, toParams, fromState, fromParams
-                    if result.defaultPrevented
-                        ev.preventDefault()
-                    return
-
-                go = (r)=>
-                    _resolved = true
-                    $state.transitionTo toState.name, toParams
-                Auth.check().then go, go
-                ev.preventDefault()
-
+    $get: ->
         enabled: ->
             _enabled
 
         altStateChangeStart: ->
             _altStateChangeStart
 
+.run ($rootScope, $state, Auth, AuthChecker)->
+    if not AuthChecker.enabled()
+        return
 
+    _resolved = false
+
+    $rootScope.$on '$stateChangeStart', (ev, toState, toParams, fromState, fromParams)=>
+        if _resolved
+            result = $rootScope.$broadcast AuthChecker.altStateChangeStart(), toState, toParams, fromState, fromParams
+            if result.defaultPrevented
+                ev.preventDefault()
+            return
+
+        go = (r)=>
+            _resolved = true
+            $state.transitionTo toState.name, toParams
+        Auth.check().then go, go
+        ev.preventDefault()

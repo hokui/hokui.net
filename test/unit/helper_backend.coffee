@@ -2,11 +2,11 @@
 
 window.mocks =
     admin_credencials:
-        email: 'admin@ec.hokudai.ac.jp'
+        email: 'admin@eis.hokudai.ac.jp'
         password: 'admin'
 
     user_credencials:
-        email: 'guest@ec.hokudai.ac.jp'
+        email: 'guest@eis.hokudai.ac.jp'
         password: 'guest'
 
     admin_user:
@@ -15,7 +15,7 @@ window.mocks =
         approval_state: "approved"
         birthday: "1990-01-01"
         class_year_id: 1
-        email: "admin@ec.hokudai.ac.jp"
+        email: "admin@eis.hokudai.ac.jp"
         email_mobile: "admin@example.com"
         errors: {}
         family_name: "admin"
@@ -34,7 +34,7 @@ window.mocks =
         approval_state: "approved"
         birthday: "1990-01-01"
         class_year_id: 1
-        email: "guest@ec.hokudai.ac.jp"
+        email: "guest@eis.hokudai.ac.jp"
         email_mobile: "guest@example.com"
         errors: {}
         family_name: "guest"

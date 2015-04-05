@@ -6,6 +6,7 @@ class DocumentFileSerializer < ActiveModel::Serializer
              :download_count,
              :created_at,
              :updated_at,
+<<<<<<< Updated upstream
              :errors,
              :user
 
@@ -18,4 +19,7 @@ class DocumentFileSerializer < ActiveModel::Serializer
       { name: object.user.handle_name, class_year: object.user.class_year.year }
     end
   end
+=======
+             :errors
+>>>>>>> Stashed changes
 end

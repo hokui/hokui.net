@@ -2,12 +2,6 @@
 .container
     .col--sm-10.col--sm-offset-1
         h2 ログイン
-        div(ng-switch="Auth.active()")
-            p(ng-switch-when="true")
-                a(ui-sref="profile") {{Auth.user().handle_name}}
-                | としてすでにログインしています。
-            p(ng-switch-when="false") ログインします。
-
         form.form(role="form" name="login" ng-submit="performLogin(login.$valid)" novalidate)
             .panel
                 .panel__body

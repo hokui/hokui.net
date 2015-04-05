@@ -9,11 +9,8 @@ angular.module modulePage
         controller: 'HomeCtrl'
 
 .controller 'HomeCtrl',
-    ($scope, $state, Env, Auth, Notify) ->
+    ($scope, $state, Auth, Notify, Env) ->
         $scope.email = 'hokui.net@gmail.com'
-
-        $scope.dev = Env.dev()
-
 
         $scope.Auth = Auth
         $scope.credencials = {}
