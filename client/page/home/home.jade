@@ -45,4 +45,10 @@
     .hero__welcome(ng-if="Auth.active()")
         h1.hero__welcome__title HOKUI.NET
         .hero__welcome__elocution
+            h3 おしらせ
+            table.table.table--bordered
+                tr(ng-repeat="news in newss.original")
+                    th(style="width: 160px") {{news.created_at | date:'yyyy年M月d日'}}
+                    td
+                        a(ui-sref="news.detail({id: news.id})") {{news.title}}
 

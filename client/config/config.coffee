@@ -4,6 +4,7 @@ window.moduleConfig = 'hokuiConfig'
 
 angular.module moduleConfig, [
     moduleCore
+    modulePage
     'angular-google-analytics'
 ]
 
@@ -54,5 +55,8 @@ angular.module moduleConfig, [
             period: -1
             type: 'danger'
 
+.config (markedProvider)->
+    markedProvider.setOptions
+        gfm: true
 
 

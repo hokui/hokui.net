@@ -46,6 +46,9 @@ angular.module modulePage
             ,
                 title: '学期'
                 state: 'admin.semester'
+            ,
+                title: 'お知らせ'
+                state: 'admin.news'
         ]
 
         $scope.currentState = ->

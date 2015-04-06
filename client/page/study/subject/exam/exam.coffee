@@ -74,8 +74,6 @@ angular.module modulePage
 
         $scope.downloadFile = (file)->
             DownloadDocumentFile file
-            .then (res)->
-                console.log res.data
 
 
 

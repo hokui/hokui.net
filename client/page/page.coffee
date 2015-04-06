@@ -6,5 +6,7 @@ angular.module modulePage, [
     moduleCore
     moduleComponent
     'angularDateBinder'
+    'monospaced.elastic'
+    'hc.marked'
 ]
 

@@ -35,7 +35,7 @@ angular.module modulePage
         1
 
 .controller 'StudyQuizMainCtrl',
-    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter)->
+    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter, DownloadDocumentFile)->
         documents.setSorter new ResourceFieldSorter ['class_year', 'code']
         $scope.documents = documents
 
@@ -46,6 +46,8 @@ angular.module modulePage
                 ret = ret + '(解答)'
             ret
 
+        $scope.downloadFile = (file)->
+            DownloadDocumentFile file
 
 
 .controller 'StudyQuizNewCtrl',

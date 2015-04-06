@@ -8,11 +8,16 @@ angular.module modulePage
         templateUrl: '/page/home/home.html'
         controller: 'HomeCtrl'
         resolve:
-            news: ->
-                1
+            newss: (News, ResourceStore, Auth)->
+                if Auth.active()
+                    News.query(count: 3).$promise.then (data)->
+                        new ResourceStore data
+                else
+                    []
+
 
 .controller 'HomeCtrl',
-    ($scope, $state, Auth, Notify, Env) ->
+    ($scope, $state, Auth, Notify, Env, newss, News) ->
         $scope.email = 'hokui.net@gmail.com'
 
         $scope.Auth = Auth
@@ -24,6 +29,8 @@ angular.module modulePage
             if valid
                 Auth.login $scope.credencials, $scope.keepLogin
                 .then ->
+                    News.query(count: 3).then (data)->
+                        $scope.newss = data
                     $state.go 'home'
                     Notify 'ログインしました。', type: 'ok'
                 , (error)->
@@ -35,3 +42,7 @@ angular.module modulePage
         if seed?
             angular.extend $scope.credencials, seed.credencials
             $scope.keepLogin = seed.keepLogin
+
+
+        if Auth.active()
+            $scope.newss = newss

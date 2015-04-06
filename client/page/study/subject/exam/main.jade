@@ -18,7 +18,7 @@ table.table.table--condensed.table--bordered(ng-if="documents.count() > 0")
                 .col--xs-12.col--sm-8
                     a(ng-click="downloadFile(file)") {{file.file_name}}
                 .col--xs-12.col--sm-4
-                    span {{file.user.name}}({{file.user.class_year}}期)
+                    span.tooltip.tooltip--right.clickable.text-secondary(tooltip="{{file.user.class_year}}期") {{file.user.name}}
                     span &nbsp;
                     span {{file.download_count}}回
             hr(ng-repeat-end ng-if="!$last")
