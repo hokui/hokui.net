@@ -96,6 +96,16 @@ angular.module moduleCore
             deferred.reject _current
         deferred.promise
 
+    updateProfile: (newUser)->
+        deferred = $q.defer()
+        $http.patch "#{Env.apiRoot()}/profile", newUser
+        .success (data)->
+            _current.user = data
+            deferred.resolve _current
+        .error (err)->
+            deferred.reject _current
+        deferred.promise
+
     on: (ev)->
         _notifier.promise.then (->), (->), ev
 

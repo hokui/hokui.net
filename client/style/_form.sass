@@ -33,7 +33,10 @@
     display: block
     width: 100%
     border: 0
-
+    &[disabled],
+    &[readonly],
+        cursor: $cursor-disabled
+        opacity: $disabled-opacity
 
 
 textbox.form__control

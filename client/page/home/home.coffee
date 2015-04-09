@@ -17,32 +17,34 @@ angular.module modulePage
 
 
 .controller 'HomeCtrl',
-    ($scope, $state, Auth, Notify, Env, newss, News) ->
+    ($scope, $state, Auth, Notify, Env, newss, News, ResourceStore) ->
         $scope.email = 'hokui.net@gmail.com'
 
         $scope.Auth = Auth
         $scope.credencials = {}
-        $scope.keepLogin = false
+        $scope.keepLogin =
+            a: false
         $scope.error = false
+
+        seed = Env.seed 'login'
+        if seed?
+            angular.extend $scope.credencials, seed.credencials
+            $scope.keepLogin.a = seed.keepLogin
 
         $scope.performLogin = (valid)->
             if valid
-                Auth.login $scope.credencials, $scope.keepLogin
+                Auth.login $scope.credencials, $scope.keepLogin.a
                 .then ->
-                    News.query(count: 3).then (data)->
-                        $scope.newss = data
-                    $state.go 'home'
-                    Notify 'ログインしました。', type: 'ok'
+                    News.query count: 3, (data)->
+                        $scope.newss = new ResourceStore data
+                        Notify 'ログインしました。', type: 'ok'
                 , (error)->
                     $scope.error = true
                     Notify 'ログインに失敗しました。入力項目をご確認ください。', type: 'warn'
             else
 
-        seed = Env.seed 'login'
-        if seed?
-            angular.extend $scope.credencials, seed.credencials
-            $scope.keepLogin = seed.keepLogin
-
+        $scope.change = ->
+            console.log $scope.keepLogin.a
 
         if Auth.active()
             $scope.newss = newss
