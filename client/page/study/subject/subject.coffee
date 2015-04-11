@@ -45,10 +45,6 @@ angular.module modulePage
                 state: '.personal'
         ]
 
-        $scope.previewable = (file)->
-            # console.log file.file_content_type
-            true
-
         $scope.sameClassYear = (docs, $index)->
             a = docs[$index]
             b = docs.original[$index-1]
@@ -56,10 +52,14 @@ angular.module modulePage
                 return a.class_year is b.class_year
             false
 
-        $scope.PrevewableFiles =
+        prevewableFiles =
             [
                 'application/pdf'
             ]
+
+
+        $scope.previewable = (file)->
+            prevewableFiles.indexOf file.file_content_type > 0
 
         $scope.downloadFile = (file)->
             GetDocumentFileToken file, (token)->
