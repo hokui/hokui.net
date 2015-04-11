@@ -37,13 +37,12 @@ angular.module modulePage
 
 
 .controller 'StudyPersonalMainCtrl',
-    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter, DownloadDocumentFile)->
+    ($scope, documents, ResourceFieldSorter)->
         $scope.documents = documents
+        documents.setSorter new ResourceFieldSorter ['-class_year', 'code']
+        $scope.transformed = documents.transformed()
+        $scope.cyMap = $scope.generateClassYearMap $scope.transformed
 
-        documents.setSorter new ResourceFieldSorter ['class_year', 'code']
-
-        $scope.downloadFile = (file)->
-            DownloadDocumentFile file
 
 .controller 'StudyPersonalNewCtrl',
     ($scope)->

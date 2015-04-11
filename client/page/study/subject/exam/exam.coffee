@@ -37,18 +37,11 @@ angular.module modulePage
 
 
 .controller 'StudyExamMainCtrl',
-    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter, DownloadDocumentFile)->
+    ($scope, documents, ResourceFieldSorter)->
         $scope.documents = documents
-
-        documents.setSorter new ResourceFieldSorter ['class_year', 'code']
-
-
-        $scope.sameClassYearToBefore = ($index)->
-            a = $scope.documents.original[$index]
-            b = $scope.documents.original[$index-1]
-            if a? and b?
-                return a.class_year is b.class_year
-            false
+        documents.setSorter new ResourceFieldSorter ['-class_year', 'code']
+        $scope.transformed = documents.transformed()
+        $scope.cyMap = $scope.generateClassYearMap $scope.transformed
 
         $scope.parseCode = (code)->
             result = ''
@@ -71,10 +64,6 @@ angular.module modulePage
                 result = result + '試'
 
             if code > 1000 then result + '(解答)' else result
-
-        $scope.downloadFile = (file)->
-            DownloadDocumentFile file
-
 
 
 .controller 'StudyExamNewCtrl',

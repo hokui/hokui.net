@@ -103,7 +103,7 @@ angular.module moduleCore
             _current.user = data
             deferred.resolve _current
         .error (err)->
-            deferred.reject _current
+            deferred.reject errror.data
         deferred.promise
 
     on: (ev)->

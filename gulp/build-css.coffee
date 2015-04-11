@@ -4,7 +4,7 @@ sort = require 'sort-stream'
 g.task 'css:vendor', ['clean'], ->
     dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/vendor/"
 
-    g.src "#{conf.src}/vendor/**/*.scss"
+    g.src "#{conf.src}/vendor/**/*.{sass,scss}"
     .pipe $.sass
         includePaths: [conf.bowerDir]
     .on 'error', onError

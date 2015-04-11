@@ -1,8 +1,15 @@
-h1
-    | プロフィール
-    | &nbsp;
-    a.link-unstyled.tooltip.tooltip--right(ui-sref="profile.edit" tooltip="プロフィールを編集する")
-        i.fa.fa-pencil
+ul.list-inline
+    li
+        h1
+            | プロフィール
+    li
+        a.btn.btn--primary(ui-sref="profile.edit" tooltip="プロフィールを編集する")
+            i.fa.fa-pencil
+            | &nbsp;編集
+    li
+        a.btn.btn--secondary(ui-sref="profile.password" tooltip="プロフィールを編集する")
+            i.fa.fa-key
+            | &nbsp;パスワードの変更
 p(ng-if="user.admin") あなたは管理者です。
 table.table.table--bordered.no-mb
     tbody

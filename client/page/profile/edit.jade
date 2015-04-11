@@ -1,4 +1,6 @@
 h1 プロフィールの編集
+p
+    a(ui-sref="profile") プロフィールに戻る
 p.text-small
     | 氏名・ELMSメールアドレスの変更を行いたい場合はお手数ですが
     span(ng-bind-html="'hokui.net@gmail' | linky")
@@ -98,3 +100,5 @@ form.form.row(role="form" name="profile" ng-submit="saveProfile(profile.$valid)"
     .col--sm-offset-4.col--sm-8
         p
             button.btn.btn--primary(type="submit" ng-disabled="profile.$invalid") 保存する
+
+

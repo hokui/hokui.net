@@ -37,17 +37,15 @@ angular.module modulePage
 
 
 .controller 'StudySummaeyMainCtrl',
-    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter, DownloadDocumentFile)->
+    ($scope, documents, ResourceFieldSorter)->
         $scope.documents = documents
-
-        documents.setSorter new ResourceFieldSorter ['class_year', 'code']
+        documents.setSorter new ResourceFieldSorter ['-class_year', 'code']
+        $scope.transformed = documents.transformed()
+        $scope.cyMap = $scope.generateClassYearMap $scope.transformed
 
         $scope.parseCode = (code)->
             time = code % 100
             if time > 0 then "第#{time}回" else ''
-
-        $scope.downloadFile = (file)->
-            DownloadDocumentFile file
 
 
 .controller 'StudySummaeyNewCtrl',

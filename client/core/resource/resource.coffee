@@ -96,6 +96,9 @@ angular.module moduleCore
         constructor: (keys)->
             super (a, b)->
                 for key in keys
+                    reversed = _.isString(key) and key[0] is '-'
+                    if reversed
+                        key = key.slice 1
                     A = a[key]
                     B = b[key]
                     if A is B
@@ -106,7 +109,10 @@ angular.module moduleCore
                         diff = A - B
 
                     if diff isnt 0
-                        return diff
+                        if reversed
+                            return - diff
+                        else
+                            return diff
             0
 
 .factory 'ResourceStore', ->
@@ -122,7 +128,7 @@ angular.module moduleCore
         count: ->
             @original.length
 
-        retrieve: (value, key, findIndex)->
+        retrieve: (value, key)->
             if not key?
                 key = 'id'
 

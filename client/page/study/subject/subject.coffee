@@ -18,9 +18,18 @@ angular.module modulePage
                 subjects.retrieve $stateParams.subjectName, 'title_en'
 
 
+.factory 'GetDocumentFileToken', ($http, Env, Notify)->
+    (documentFile, cb)->
+        $http.get "#{Env.apiRoot()}/document_files/#{documentFile.id}/download_token"
+        .success (data)->
+            cb data.token
+
 .controller 'StudySubjectCtrl',
-    ($scope, $state, $stateParams, subject)->
-        $scope.subject = subject
+    ($scope, $state, NotFound, subject, GetDocumentFileToken, $window)->
+        if subject
+            $scope.subject = subject
+        else
+            NotFound()
 
         $scope.items = [
                 title: '過去問'
@@ -36,6 +45,45 @@ angular.module modulePage
                 state: '.personal'
         ]
 
+        $scope.previewable = (file)->
+            # console.log file.file_content_type
+            true
+
+        $scope.sameClassYear = (docs, $index)->
+            a = docs[$index]
+            b = docs.original[$index-1]
+            if a? and b?
+                return a.class_year is b.class_year
+            false
+
+        $scope.PrevewableFiles =
+            [
+                'application/pdf'
+            ]
+
+        $scope.downloadFile = (file)->
+            GetDocumentFileToken file, (token)->
+                url = "/contents/document_files/#{file.id}/download?download_token=#{token}"
+                $window.open url
+
+        $scope.previewFile = (file)->
+            GetDocumentFileToken file, (token)->
+                url = "/contents/document_files/#{file.id}?download_token=#{token}"
+                $window.open url
+
+
+        $scope.generateClassYearMap = (docs)->
+            map = new Array docs.length
+            lastIndex = 0
+            lastClassYear = -1
+            _.forEach docs, (doc, i)->
+                if docs[i-1]? and docs[i-1].class_year is doc.class_year
+                    map[i] = 0
+                    map[lastIndex] = map[lastIndex] + 1
+                else
+                    map[i] = 1
+                    lastIndex = i
+            map
 
 .controller 'StudySubjectMainCtrl',
     ($scope, $state, $stateParams)->

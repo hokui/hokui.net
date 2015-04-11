@@ -8,5 +8,6 @@ angular.module modulePage, [
     'angularDateBinder'
     'monospaced.elastic'
     'hc.marked'
+    'angular-loading-bar'
 ]
 

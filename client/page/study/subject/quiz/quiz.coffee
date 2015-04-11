@@ -35,9 +35,11 @@ angular.module modulePage
         1
 
 .controller 'StudyQuizMainCtrl',
-    ($scope, $stateParams, ResourceStore, NotFound, documents, ResourceFieldSorter, DownloadDocumentFile)->
-        documents.setSorter new ResourceFieldSorter ['class_year', 'code']
+    ($scope, documents, ResourceFieldSorter)->
         $scope.documents = documents
+        documents.setSorter new ResourceFieldSorter ['-class_year', 'code']
+        $scope.transformed = documents.transformed()
+        $scope.cyMap = $scope.generateClassYearMap $scope.transformed
 
         $scope.parseCode = (code)->
             time = code % 100
@@ -45,9 +47,6 @@ angular.module modulePage
             if code > 3000
                 ret = ret + '(解答)'
             ret
-
-        $scope.downloadFile = (file)->
-            DownloadDocumentFile file
 
 
 .controller 'StudyQuizNewCtrl',
