@@ -26,6 +26,9 @@
     },
     "marked": {
       "main": "lib/marked.js"
+    },
+    "angular-loading-bar": {
+      "main": "build/loading-bar.min.js"
     }
   }
 }

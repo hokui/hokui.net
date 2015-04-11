@@ -1,5 +1,7 @@
 lazypipe = require 'lazypipe'
 
+bowerFiles = require 'main-bower-files'
+
 
 g.task 'js', ['clean'], ->
     dest = if conf.prod then "#{conf.dest}/.cache/" else "#{conf.dest}/"
