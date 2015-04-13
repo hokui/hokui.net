@@ -27,3 +27,15 @@ angular.module moduleCore
         year - entrance - 1917
 
 
+.provider 'Download', ->
+    a = document.createElement 'a'
+    a.style.display = 'none'
+    a.target = '_blank'
+    a.appendChild document.createTextNode ''
+    document.body.appendChild(a);
+
+    $get: ->
+        (url, filename)->
+            a.href = url
+            a.download = filename
+            a.click()

@@ -25,7 +25,7 @@ angular.module modulePage
             cb data.token
 
 .controller 'StudySubjectCtrl',
-    ($scope, $state, NotFound, subject, GetDocumentFileToken, $window)->
+    ($scope, $state, NotFound, subject, GetDocumentFileToken, $window, Download)->
         if subject
             $scope.subject = subject
         else
@@ -63,8 +63,8 @@ angular.module modulePage
 
         $scope.downloadFile = (file)->
             GetDocumentFileToken file, (token)->
-                url = "/contents/document_files/#{file.id}/download?download_token=#{token}"
-                $window.open url
+                url = "/contents/document_files/#{file.id}?download_token=#{token}"
+                Download url, file.file_name
 
         $scope.previewFile = (file)->
             GetDocumentFileToken file, (token)->
