@@ -69,7 +69,7 @@ angular.module modulePage
         $scope.previewFile = (file)->
             GetDocumentFileToken file, (token)->
                 url = "/contents/document_files/#{file.id}?download_token=#{token}"
-                $window.open url
+                $window.location.href = url
 
 
         $scope.generateClassYearMap = (docs)->

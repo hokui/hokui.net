@@ -4,12 +4,16 @@ angular.module moduleCore
 
 .factory 'DocumentFile',
     ($resource, Env) ->
-        $resource "#{Env.apiRoot()}/subjects/:subject_id/documents/:document_id/Document_file/:id",
+        $resource "#{Env.apiRoot()}/document_files/:id",
             id: '@id'
         ,
             get:
                 method: 'GET'
                 isArray: false
+
+            query:
+                method: 'GET'
+                isArray: true
 
             save:
                 method: 'POST'

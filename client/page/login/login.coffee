@@ -23,8 +23,6 @@ angular.module modulePage
         $scope.error = false
 
         $scope.performLogin = (valid)->
-            console.log $scope.keepLogin
-            return
             if valid
                 Auth.login $scope.credencials, $scope.keepLogin
                 .then ->
