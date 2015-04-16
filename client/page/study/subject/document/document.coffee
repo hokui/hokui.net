@@ -29,15 +29,15 @@ angular.module modulePage
 
             result
 
-        # isAnswer: (code)->
+        # isAnswer: (code, doc)->
         #     code > 1000
-
     ,
         name: 'quiz'
         codeRange: '2000-3999'
         timeLabel: (code)->
             time = code % 100
             if time > 0 then "第#{time}回" else ''
+
         # isAnswer: (code)->
         #     code > 3000
     ,
@@ -82,13 +82,40 @@ angular.module modulePage
                     controller: 'StudyDocumentNewCtrl'
 
 
+.factory 'GenerateClassYearMap', ->
+    (docs)->
+        map = new Array docs.length
+        lastIndex = 0
+        _.forEach docs, (doc, i)->
+            if docs[i-1]? and docs[i-1].class_year is doc.class_year
+                map[i] = 0
+                map[lastIndex] = map[lastIndex] + 1
+            else
+                map[i] = 1
+                lastIndex = i
+        map
+
+
+.factory 'GenerateCodeMap', ->
+    (docs)->
+        map = new Array docs.length
+        lastIndex = 0
+        _.forEach docs, (doc, i)->
+            if docs[i-1]? and (docs[i].code % 1000) is (docs[i-1].code % 1000)
+                map[i] = 0
+                map[lastIndex] = map[lastIndex] + 1
+            else
+                map[i] = 1
+                lastIndex = i
+        map
+
+
 .controller 'StudyDocumentCtrl',
     ($scope)->
-        1
 
 
 .controller 'StudyDocumentMainCtrl',
-    ($scope, $state, documents, ResourceFieldSorter)->
+    ($scope, $state, $window, documents, ResourceFieldSorter, GenerateClassYearMap, GenerateCodeMap, GetDocumentFileToken, Download)->
         $scope.documents = documents
         documents.setSorter new ResourceFieldSorter [
             '-class_year'
@@ -97,10 +124,39 @@ angular.module modulePage
                 A.code % 1000 - B.code % 1000
         ]
         $scope.transformed = documents.transformed()
-        $scope.cyMap = $scope.generateClassYearMap $scope.transformed
 
         $scope.timeLabel = $state.current.data.definition.timeLabel
         $scope.isAnswer = $state.current.data.definition.isAnswer
+
+        $scope.cyMap = GenerateClassYearMap $scope.transformed
+        $scope.codeMap = GenerateCodeMap $scope.transformed
+
+
+        $scope.sameClassYear = (docs, $index)->
+            a = docs[$index]
+            b = docs.original[$index-1]
+            if a? and b?
+                return a.class_year is b.class_year
+            false
+
+        prevewableFiles =
+            [
+                'application/pdf'
+            ]
+
+
+        $scope.previewable = (file)->
+            prevewableFiles.indexOf file.file_content_type > 0
+
+        $scope.downloadFile = (file)->
+            GetDocumentFileToken file, (token)->
+                url = "/contents/document_files/#{file.id}?download_token=#{token}"
+                Download url, file.file_name
+
+        $scope.previewFile = (file)->
+            GetDocumentFileToken file, (token)->
+                url = "/contents/document_files/#{file.id}?download_token=#{token}"
+                $window.location.href = url
 
 
 .controller 'StudyDocumentNewCtrl',

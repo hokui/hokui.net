@@ -39,3 +39,31 @@ angular.module moduleCore
             a.href = url
             a.download = filename
             a.click()
+
+
+.directive 'bindModel', ($parse)->
+    restrict: 'A'
+    link: (scope, element, attrs)->
+        target = element[0]
+
+        mapGetter = $parse attrs.bindMap
+        getMap = ->
+            mapGetter scope
+
+        performBind = (model)->
+            if attrs.bindTrue and attrs.bindFalse
+                if model
+                    target.innerText = attrs.bindTrue
+                else
+                    target.innerText = attrs.bindFalse
+                return
+            else
+                map = getMap()
+                if map and angular.isObject(map) or angular.isArray(map)
+                    if map[model]
+                        target.innerText = map[model]
+                        return
+            target.innerText = ''
+
+        scope.$watch attrs.bindModel, (newModel, oldModel)->
+            performBind newModel
