@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module moduleComponent
+angular.module moduleCore
 
 .directive 'responsiveWidthGetter', ($window, Responsive)->
     restrict: 'A'

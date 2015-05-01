@@ -33,7 +33,10 @@
     display: block
     width: 100%
     border: 0
-
+    &[disabled],
+    &[readonly],
+        cursor: $cursor-disabled
+        opacity: $disabled-opacity
 
 
 textbox.form__control
@@ -72,6 +75,10 @@ textbox
             border-color: $brand-accent
             &:focus
                 background-color: $form-control-accent-focus-bg
+
+        &::-webkit-input-placeholder, &:-moz-placeholder, &::-moz-placeholder
+            // color: $form-control-placeholder-color
+            color: red
 
 
 input[type="radio"].form__control,
@@ -155,3 +162,43 @@ select.form__control
     background-size: 16px
 
     overflow: hidden
+
+
+textarea.form__control
+    appearance: none
+    -webkit-appearance: none
+    -moz-appearance: none
+
+    background-color: $form-control-bg
+    border-radius: 0
+    border: solid 2px $form-control-border-color
+    color: $form-control-color
+    transition: border-color ease-in-out .2s, background-color ease-in-out .2s
+
+    &:focus
+        outline: 0
+        border-color: $brand-primary
+        background-color: $form-control-default-focus-bg
+
+    .form__control--secondary
+        border-color: $brand-secondary
+        &:focus
+            background-color: $form-control-secondary-focus-bg
+
+    .form__control--accent, &.ng-invalid.ng-dirty
+        border-color: $brand-accent
+        &:focus
+            background-color: $form-control-accent-focus-bg
+
+
+.droparea
+    padding: $line-height-computed 0
+    line-height: $line-height-computed
+    text-align: center
+    font-size: $font-size-base
+
+    border: dotted 1px #ccc
+    background-color: #eee
+
+    &:hover
+        background-color: #ddd

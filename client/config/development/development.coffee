@@ -8,4 +8,4 @@ angular.module moduleConfig
     .setDev true
 
 .config (AnalyticsProvider)->
-    AnalyticsProvider.useAnalytics false
+    AnalyticsProvider.setDomainName 'none'

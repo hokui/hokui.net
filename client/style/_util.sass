@@ -1,3 +1,6 @@
+.hidden
+    display: none
+
 .clearfix
     +clearfix
 
@@ -37,6 +40,8 @@
 .text-nowrap
     white-space: nowrap
 
+.text-middle
+    vertical-align: middle
 
 .text-lowercase
     text-transform: lowercase
@@ -84,6 +89,14 @@
 .button-unstyled
     +button-non-decoration
 
+.link-unstyled
+    +anchor-non-decoration
+    color: $text-color
+
+    &:link, &:visited, &:hover
+        color: $text-color
+
+
 a.link-wrap
     display: block
     color: $text-color
@@ -93,3 +106,5 @@ a.link-wrap
 .page-block
     min-height: 100%
 
+.no-mb
+    margin-bottom: 0
