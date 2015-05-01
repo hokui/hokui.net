@@ -7,31 +7,41 @@ angular.module modulePage
         url: '/'
         templateUrl: '/page/home/home.html'
         controller: 'HomeCtrl'
+        resolve:
+            newss: (News, ResourceStore, Auth)->
+                if Auth.active()
+                    News.query(count: 3).$promise.then (data)->
+                        new ResourceStore data
+                else
+                    []
+
 
 .controller 'HomeCtrl',
-    ($scope, $state, Env, Auth, Notify) ->
+    ($scope, $state, Auth, Notify, Env, newss, News, ResourceStore) ->
         $scope.email = 'hokui.net@gmail.com'
-
-        $scope.dev = Env.dev()
-
 
         $scope.Auth = Auth
         $scope.credencials = {}
-        $scope.keepLogin = false
+        $scope.keepLogin =
+            a: false
         $scope.error = false
+
+        seed = Env.seed 'login'
+        if seed?
+            angular.extend $scope.credencials, seed.credencials
+            $scope.keepLogin.a = seed.keepLogin
 
         $scope.performLogin = (valid)->
             if valid
-                Auth.login $scope.credencials, $scope.keepLogin
+                Auth.login $scope.credencials, $scope.keepLogin.a
                 .then ->
-                    $state.go 'home'
-                    Notify 'ログインしました。', type: 'ok'
+                    News.query count: 3, (data)->
+                        $scope.newss = new ResourceStore data
+                        Notify 'ログインしました。', type: 'ok'
                 , (error)->
                     $scope.error = true
                     Notify 'ログインに失敗しました。入力項目をご確認ください。', type: 'warn'
             else
 
-        seed = Env.seed 'login'
-        if seed?
-            angular.extend $scope.credencials, seed.credencials
-            $scope.keepLogin = seed.keepLogin
+        if Auth.active()
+            $scope.newss = newss
