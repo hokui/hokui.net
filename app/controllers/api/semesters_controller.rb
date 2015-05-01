@@ -3,7 +3,11 @@ class Api::SemestersController < Api::ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @semesters = Semester.all
+    @semesters = if params[:class_year_id]
+                   Semester.where(class_year_id: params[:class_year_id])
+                 else
+                   Semester.all
+                 end
     render json: @semesters
   end
 
