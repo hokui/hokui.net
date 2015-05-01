@@ -8,15 +8,15 @@ angular.module modulePage
         templateUrl: '/page/signup/signup.html'
         controller: 'SignupCtrl'
         resolve:
-            years: (ClassYear)->
+            classYears: (ClassYear)->
                 ClassYear.query().$promise
         data:
             title: '北医ネット - ユーザー登録'
 
 .controller 'SignupCtrl',
-    ($scope, Auth, User, years, $state, Env, Notify, Responsive) ->
+    ($scope, Auth, User, classYears, $state, Env, Notify, Responsive) ->
         $scope.user = new User()
-        $scope.years = years
+        $scope.classYears = classYears
         $scope.errors = {}
 
         $scope.performSignup = (valid)->
@@ -41,6 +41,6 @@ angular.module modulePage
 
         nowYear = (new Date()).getFullYear()
         $scope.user.birthday = new Date "#{nowYear-19}/4/1"
-        $scope.user.class_year_id = years[0].id
+        $scope.user.class_year_id = classYears?[classYears.length-1]?.id
 
 
