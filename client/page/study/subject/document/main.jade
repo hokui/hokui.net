@@ -1,7 +1,7 @@
 p
     a.btn.btn--primary.btn--sm(ui-sref=".new") 新規アップロード
 
-table.table.table--condensed.table--bordered(ng-if="documents.count() > 0")
+table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
     tr
         th 期
         th(ng-if="inningLabel") 回
@@ -34,4 +34,4 @@ table.table.table--condensed.table--bordered(ng-if="documents.count() > 0")
                     .pull-right.text-right.uploader(tooltip="{{file.user.class_year}}期") {{file.user.name}}
             hr.dotted(ng-repeat-end ng-if="!$last")
 
-p(ng-if="documents.count() === 0") 資料がまだ投稿されていません。
+p(ng-if="transformed.length === 0") 資料がまだ投稿されていません。

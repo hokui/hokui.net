@@ -2,6 +2,14 @@
 .container
     .col--sm-10.col--sm-offset-1
         h1 ユーザー登録
+        p
+            | 　氏名は本名を入力してください。
+            | 認証確認メールはELMSメールアドレス宛に送信されます。
+            | メール認証後、ログイン可能となるのは管理者の承認後になりますのでご注意ください。
+        p
+            | 　不具合等ございましたら
+            span(ng-bind-html="'hokui.net@gmail.com' | linky")
+            | までご連絡ください。
         form.form.row(role="form" name="signup" ng-submit="performSignup(signup.$valid)" novalidate)
             .panel
                 .panel__body
