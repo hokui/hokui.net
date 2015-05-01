@@ -26,7 +26,6 @@ form.form(role="form" ng-submit="doSaveNews(newsForm.$valid)" name="newsForm" no
             force-invalid="errors.text")
         div(ng-show="newsForm.text.$dirty")
             .form__error(ng-show="newsForm.text.$error.required") 入力必須項目です
-            .form__error(ng-show="!newsForm.text.$error.required && newsForm.text.$error.pattern") 数字、小文字英字もしくは_(アンダーバー)で入力してください
         div
             .form__error(ng-if="!!errors.text" ng-repeat="error in errors.text") {{error}}
 

@@ -41,6 +41,8 @@ angular.module modulePage
         $scope.semesters = semesters
         $scope.classYears = classYears
         $scope.userClassYear = classYears.retrieve Auth.user().class_year_id
+        $scope.user = Auth.user()
+
 
         map_ab =
             a: '前期'

@@ -1,23 +1,20 @@
 p
-    a.btn.btn--primary.btn--sm.btn--disabled(ui-sref=".new") 新規アップロード
-    | &nbsp;
-    span.text-muted ※ 資料の投稿機能は現在準備中です。
+    a.btn.btn--primary.btn--sm(ui-sref=".new") 新規アップロード
 
 table.table.table--condensed.table--bordered(ng-if="documents.count() > 0")
     tr
         th 期
-        th(ng-if="timeLabel") 回
+        th(ng-if="inningLabel") 回
         th(ng-if="isAnswer") 種別
         th ファイル
-    tr(ng-repeat="doc in transformed")
+    tr(ng-repeat="doc in transformed" ng-if="doc.document_files.length > 0")
         td(ng-if="cyMap[$index] > 0" rowspan="{{cyMap[$index]}}")
             .text-center {{doc.class_year}}
-        td(ng-if="timeLabel && codeMap[$index] > 0" rowspan="{{codeMap[$index]}}")
-            .text-center {{timeLabel(doc.code)}}
+        td(ng-if="inningLabel && codeMap[$index] > 0" rowspan="{{codeMap[$index]}}")
+            .text-center {{inningLabel(doc.code)}}
         td(ng-if="isAnswer")
-            .text-center(bind-model="isAnswer(doc.code, doc)" bind-true="問題" bind-false="解答")
+            .text-center(bind-model="isAnswer(doc.code, doc)" bind-true="解答" bind-false="問題")
         td
-            span(ng-if="doc.document_files.length < 1") no files uploaded
             .row(ng-repeat-start="file in doc.document_files")
                 .pull-left
                     | {{file.file_name}}
@@ -27,6 +24,9 @@ table.table.table--condensed.table--bordered(ng-if="documents.count() > 0")
                     | &nbsp;
                     button.button-unstyled.tooltip.tooltip--top(ng-click="previewFile(file)" ng-if="previewable(file)" tooltip="ブラウザで表示")
                         i.fa.fa-eye
+                    | &nbsp;
+                    a.link-unstyled.tooltip.tooltip--top(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集" ng-if="user.id === file.user_id")
+                        i.fa.fa-cog
                 .pull-right
                     .pull-right.text-right.downloaded {{file.download_count}}回
                     .pull-right

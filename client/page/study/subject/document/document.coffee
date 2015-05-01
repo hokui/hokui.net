@@ -6,50 +6,79 @@ angular.module modulePage
 
     documentDifinitionList = [
         name: 'exam'
+        label: '過去問'
         codeRange: '0-1999'
-        timeLabel: (code)->
-            result = ''
+        inningLabel: (code)->
+            base = switch code % 100
+                when 99 then '期末'
+                when 98 then '中間'
+                else "第#{code % 100}回"
 
-            time = code % 100
-            if time is 98
-                result = result + '中間'
-            else if time is 99
-                result = result + '期末'
-            else if time is 0
-                result = ''
+            i_onjou = (code % 1000) // 100
+            if i_onjou > 0
+                onjou = '追'
+                if i_onjou > 1
+                    onjou = onjou + Array(i_onjou).join('々')
+                onjou = onjou + '試験'
             else
-                result = '第' + result + time + '回'
+                onjou = ''
+            if i_onjou > 0 then"#{base}の#{onjou}" else base
 
-            onjou = (code % 1000) // 100
-            if onjou > 0
-                result = result + '追'
-                if onjou > 1
-                    result = result + Array(onjou).join('々')
-                result = result + '試'
+        codeLabel: (code)->
+            name = if code > 1000 then '解答' else '問題'
 
-            result
+            inning = @inningLabel code
 
-        # isAnswer: (code, doc)->
-        #     code > 1000
+            "#{inning}の#{name}"
+
+        isAnswer: (code, doc)->
+            code > 1000
+
+        codeEditorTemplate: 'exam.code_editor.html'
+        codeEditorController: 'ExamCodeEditorCtrl'
     ,
         name: 'quiz'
+        label: '小テスト'
         codeRange: '2000-3999'
-        timeLabel: (code)->
+        inningLabel: (code)->
             time = code % 100
             if time > 0 then "第#{time}回" else ''
 
-        # isAnswer: (code)->
-        #     code > 3000
+        isAnswer: (code)->
+            code > 3000
+
+        codeEditorTemplate: 'quiz.code_editor.html'
+        codeEditorController: 'QuizCodeEditorCtrl'
+
+        codeLabel: (code)->
+            name = if code > 3000 then '解答' else '問題'
+
+            inning = @inningLabel code
+
+            "#{inning}の#{@label}の#{name}"
+
     ,
         name: 'summary'
+        label: '講義資料'
         codeRange: '4000-4999'
-        timeLabel: (code)->
+        inningLabel: (code)->
             time = code % 100
             if time > 0 then "第#{time}回" else ''
+        codeEditorTemplate: 'summary.code_editor.html'
+        codeEditorController: 'SummaryCodeEditorCtrl'
+        codeLabel: (code)->
+            inning = @inningLabel code
+            "#{inning}の#{@label}"
+
     ,
         name: 'personal'
+        label: '個人作成資料'
         codeRange: '5000-5999'
-        timeLabel: null
+        inningLabel: null
+        codeEditorTemplate: 'personal.code_editor.html'
+        codeEditorController: 'PersonalCodeEditorCtrl'
+        codeLabel: (code)->
+            @label
     ]
 
     _.forEach documentDifinitionList, (obj)->
@@ -71,8 +100,17 @@ angular.module modulePage
                         code: obj.codeRange
                     .$promise.then (data)->
                         new ResourceStore data
-            data:
-                definition: obj
+
+                documentFiles: (documents, ResourceStore)->
+                    files = _.reduce documents.original, (result, doc)->
+                        _.forEach doc.document_files, (docFile)->
+                            result.push docFile
+                        result
+                    , []
+                    new ResourceStore files
+
+                definition: ->
+                    obj
 
         .state "study.subject.#{obj.name}.new",
             url: '/new'
@@ -80,32 +118,52 @@ angular.module modulePage
                 "main@study.subject.#{obj.name}":
                     templateUrl: '/page/study/subject/document/new.html'
                     controller: 'StudyDocumentNewCtrl'
+                "codeEditor@study.subject.#{obj.name}.new":
+                    templateUrl: "/page/study/subject/document/code_editor/#{obj.name}.html"
+                    controller: obj.codeEditorController
+
+        .state "study.subject.#{obj.name}.detail",
+            url: '/{documentFileId:int}'
+            abstract: true
+
+        .state "study.subject.#{obj.name}.detail.edit",
+            url: '/edit'
+            views:
+                "main@study.subject.#{obj.name}":
+                    templateUrl: '/page/study/subject/document/edit.html'
+                    controller: 'StudyDocumentEditCtrl'
+            resolve:
+                documentFile: (documentFiles, $stateParams)->
+                    documentFiles.retrieve $stateParams.documentFileId
 
 
 .factory 'GenerateClassYearMap', ->
     (docs)->
-        map = new Array docs.length
+        map = []
         lastIndex = 0
-        _.forEach docs, (doc, i)->
-            if docs[i-1]? and docs[i-1].class_year is doc.class_year
-                map[i] = 0
+        _.forEach docs, (a, i)->
+            b = docs[i-1]
+            if b? and a.class_year is b.class_year
+                map.push 0
                 map[lastIndex] = map[lastIndex] + 1
             else
-                map[i] = 1
+                map.push 1
                 lastIndex = i
         map
 
 
 .factory 'GenerateCodeMap', ->
     (docs)->
-        map = new Array docs.length
+        map = []
         lastIndex = 0
-        _.forEach docs, (doc, i)->
-            if docs[i-1]? and (docs[i].code % 1000) is (docs[i-1].code % 1000)
-                map[i] = 0
+        _.forEach docs, (a, i)->
+            b = docs[i-1]
+
+            if b? and a.class_year is b.class_year and (a.code % 1000) is (b.code % 1000)
+                map.push 0
                 map[lastIndex] = map[lastIndex] + 1
             else
-                map[i] = 1
+                map.push 1
                 lastIndex = i
         map
 
@@ -115,18 +173,23 @@ angular.module modulePage
 
 
 .controller 'StudyDocumentMainCtrl',
-    ($scope, $state, $window, documents, ResourceFieldSorter, GenerateClassYearMap, GenerateCodeMap, GetDocumentFileToken, Download)->
+    ($scope, $state, $window, documents, documentFiles, ResourceFieldSorter, GenerateClassYearMap, GenerateCodeMap, GetDocumentFileToken, Download, definition, ResourceFilter)->
         $scope.documents = documents
+        $scope.documentFiles = documentFiles
+
         documents.setSorter new ResourceFieldSorter [
             '-class_year'
         ,
             (A, B)->
                 A.code % 1000 - B.code % 1000
         ]
+        documents.setFilter new ResourceFilter
+            filter: (doc)->
+                doc.document_files.length > 0
         $scope.transformed = documents.transformed()
 
-        $scope.timeLabel = $state.current.data.definition.timeLabel
-        $scope.isAnswer = $state.current.data.definition.isAnswer
+        $scope.inningLabel = definition.inningLabel
+        $scope.isAnswer = definition.isAnswer
 
         $scope.cyMap = GenerateClassYearMap $scope.transformed
         $scope.codeMap = GenerateCodeMap $scope.transformed
@@ -139,14 +202,20 @@ angular.module modulePage
                 return a.class_year is b.class_year
             false
 
-        prevewableFiles =
+        prevewableExt =
             [
-                'application/pdf'
+                'html', 'htm', 'shtml', 'css', 'xml', 'gif', 'jpeg', 'jpg', 'js',
+                'atom', 'rss', 'txt', 'png', 'tif', 'tiff', 'ico', 'jng', 'bmp',
+                'svg', 'svgz', 'json', 'hqx', 'pdf', 'rtf', 'xls', 'swf', 'mid', 'midi', 'kar',
+                'mp3', 'ogg', 'm4a', '3gpp 3gp', 'mp4', 'mpeg', 'mpg', 'mov', 'flv', 'm4v',
+                'wmv', 'avi'
             ]
 
 
         $scope.previewable = (file)->
-            prevewableFiles.indexOf file.file_content_type > 0
+            tmp = file.file_name.split '.'
+            ext = tmp[tmp.length - 1]
+            prevewableExt.indexOf(ext) > -1
 
         $scope.downloadFile = (file)->
             GetDocumentFileToken file, (token)->
@@ -158,7 +227,69 @@ angular.module modulePage
                 url = "/contents/document_files/#{file.id}?download_token=#{token}"
                 $window.location.href = url
 
+.controller 'StudyDocumentEditCtrl',
+    ($scope, $http, Notify, Env, $state, documentFile)->
+        if not documentFile?
+            $state.go '^.^'
+
+        $scope.documentFile = documentFile
+        $scope.deleting = false
+
+        $scope.performDelete = ->
+            if not $scope.deleting
+                Notify 'もう一度クリックして削除します。', type: 'warn'
+                $scope.deleting = true
+            else
+                $http.delete "#{Env.apiRoot()}/document_files/#{documentFile.id}"
+                .success (data)->
+                    $state.go '^.^', {}, reload: true
+                    Notify '削除しました'
+                .error (err)->
+                    Notify 'エラーが発生しました。', type: 'warn'
 
 .controller 'StudyDocumentNewCtrl',
-    ($scope)->
-        1
+    ($scope, $http, Notify, definition, MaxClassYear, Auth, Env, subject, $state)->
+        $scope.maxClassYear = MaxClassYear
+        $scope.definition = definition
+
+        $scope.files = []
+
+        $scope.newDoc =
+            subject_id: $scope.subject.id
+            user_id: Auth.user().id
+            comments: ''
+            class_year: $scope.userClassYear.year
+
+        $scope.codeEditorTemplate = definition.codeEditorTemplate
+
+        $scope.uploadButtonLabel = (valid)->
+            if valid
+                codeLabel = definition.codeLabel $scope.newDoc.code
+                "「#{$scope.newDoc.class_year}期の#{subject.title_ja}の#{codeLabel}」をアップロード"
+            else
+                '入力に不備があります'
+
+
+
+        $scope.performUpload = (valid)->
+            if valid
+                fd = new FormData()
+                fd.append 'json', angular.toJson $scope.newDoc
+                fd.append 'file', $scope.files[0]
+
+                $http.post "#{Env.apiRoot()}/document_files", fd,
+                    transformRequest: angular.identity
+                    headers:
+                        'Content-Type': undefined
+                .success (data)->
+                    $state.go '^', {}, reload: true
+                    Notify '資料をアップロードしました。'
+
+                .error (err)->
+                    $scope.errors = err.errors
+                    Notify '入力にエラーがあります。', type: 'warn'
+
+            else
+                Notify '入力にエラーがあります。', type: 'warn'
+
+

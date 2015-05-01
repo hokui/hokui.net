@@ -13,6 +13,16 @@ angular.module moduleCore
         input.push(i) for i in [parseInt(min)..parseInt(max)]
         input
 
+.filter 'bytes', ->
+    (bytes, precision)->
+        if isNaN(parseFloat(bytes)) or not isFinite bytes
+            return '-'
+        if not precision?
+            precision = 1;
+        units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
+        number = Math.floor(Math.log(bytes) / Math.log(1024))
+        (bytes / Math.pow 1024, Math.floor number).toFixed(precision) +  ' ' + units[number]
+
 
 .factory 'NotFound', ($state, $location)->
     ->
@@ -21,10 +31,18 @@ angular.module moduleCore
 
 .factory 'Grade', ->
     (entrance)->
-        year = (new Date()).getFullYear()
-        if (new Date()).getMonth < 4
+        d = new Date()
+        year = d.getFullYear()
+        if d.getMonth < 4
             year = year -1
         year - entrance - 1917
+
+.factory 'MaxClassYear', ->
+    d = new Date()
+    year = d.getFullYear()
+    if d.getMonth < 4
+        year = year -1
+    year - 1918
 
 
 .provider 'Download', ->

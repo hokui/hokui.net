@@ -76,6 +76,10 @@ textbox
             &:focus
                 background-color: $form-control-accent-focus-bg
 
+        &::-webkit-input-placeholder, &:-moz-placeholder, &::-moz-placeholder
+            // color: $form-control-placeholder-color
+            color: red
+
 
 input[type="radio"].form__control,
 input[type="checkbox"].form__control
@@ -185,3 +189,16 @@ textarea.form__control
         border-color: $brand-accent
         &:focus
             background-color: $form-control-accent-focus-bg
+
+
+.droparea
+    padding: $line-height-computed 0
+    line-height: $line-height-computed
+    text-align: center
+    font-size: $font-size-base
+
+    border: dotted 1px #ccc
+    background-color: #eee
+
+    &:hover
+        background-color: #ddd

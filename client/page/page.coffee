@@ -9,5 +9,6 @@ angular.module modulePage, [
     'monospaced.elastic'
     'hc.marked'
     'angular-loading-bar'
+    'angularFileUpload'
 ]
 
