@@ -9,10 +9,15 @@ angular.module modulePage
         controller: 'LoginCtrl'
         data:
             title: '北医ネット - ログイン'
+            restrict:
+                role: ($injector)->
+                    Auth = $injector.get 'Auth'
+                    Auth.active()
+                message: 'すでにログインしています。'
+
 
 .controller 'LoginCtrl',
     ($scope, $state, Auth, Notify, Env) ->
-        $scope.Auth = Auth
         $scope.credencials = {}
         $scope.keepLogin = false
         $scope.error = false
