@@ -93,17 +93,29 @@ angular.module moduleCore
         constructor: (keys)->
             super (a, b)->
                 for key in keys
-                    A = a[key]
-                    B = b[key]
-                    if A is B
-                        continue
-                    if _.isString(A) and _.isString(B)
-                        diff = A.localeCompare B
-                    else
-                        diff = A - B
+                    diff = 0
+                    if _.isString key
+                        reversed =  key[0] is '-'
+                        if reversed
+                            key = key.slice 1
+                        A = a[key]
+                        B = b[key]
+                        if A is B
+                            continue
+                        if _.isString(A) and _.isString(B)
+                            diff = A.localeCompare B
+                        else
+                            diff = A - B
+
+                        if reversed
+                            diff = - diff
+
+                    else if _.isFunction key
+                        diff = key a, b
 
                     if diff isnt 0
                         return diff
+
             0
 
 .factory 'ResourceStore', ->
@@ -119,7 +131,7 @@ angular.module moduleCore
         count: ->
             @original.length
 
-        retrieve: (value, key, findIndex)->
+        retrieve: (value, key)->
             if not key?
                 key = 'id'
 
