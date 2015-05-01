@@ -1,0 +1,37 @@
+p
+    a.btn.btn--primary.btn--sm(ui-sref=".new") 新規アップロード
+
+table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
+    tr
+        th 期
+        th(ng-if="inningLabel") 回
+        th(ng-if="isAnswer") 種別
+        th ファイル
+    tr(ng-repeat="doc in transformed" ng-if="doc.document_files.length > 0")
+        td(ng-if="cyMap[$index] > 0" rowspan="{{cyMap[$index]}}")
+            .text-center {{doc.class_year}}
+        td(ng-if="inningLabel && codeMap[$index] > 0" rowspan="{{codeMap[$index]}}")
+            .text-center {{inningLabel(doc.code)}}
+        td(ng-if="isAnswer")
+            .text-center(bind-model="isAnswer(doc.code, doc)" bind-true="解答" bind-false="問題")
+        td
+            .row(ng-repeat-start="file in doc.document_files")
+                .pull-left
+                    | {{file.file_name}}
+                    | &nbsp;
+                    button.button-unstyled.tooltip.tooltip--top(ng-click="downloadFile(file)" tooltip="ダウンロード")
+                        i.fa.fa-floppy-o
+                    | &nbsp;
+                    button.button-unstyled.tooltip.tooltip--top(ng-click="previewFile(file)" ng-if="previewable(file)" tooltip="ブラウザで表示")
+                        i.fa.fa-eye
+                    | &nbsp;
+                    a.link-unstyled.tooltip.tooltip--top(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集" ng-if="user.id === file.user_id")
+                        i.fa.fa-cog
+                .pull-right
+                    .pull-right.text-right.downloaded {{file.download_count}}回
+                    .pull-right
+                        | &nbsp;
+                    .pull-right.text-right.uploader(tooltip="{{file.user.class_year}}期") {{file.user.name}}
+            hr.dotted(ng-repeat-end ng-if="!$last")
+
+p(ng-if="transformed.length === 0") 資料がまだ投稿されていません。
