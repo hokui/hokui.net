@@ -5,8 +5,8 @@ describe 'Auth', ->
     doLoginAsAdmin = doLoginAsUser = null
 
     beforeEach ->
-        localStorage.clear()
-        sessionStorage.clear()
+        window.localStorage.clear()
+        window.sessionStorage.clear()
 
         angular.module 'AuthTestModule', [moduleCore]
         .config (TokenProvider)->
@@ -30,8 +30,8 @@ describe 'Auth', ->
         Auth.silentLogout()
 
     afterEach ->
-        localStorage.clear()
-        sessionStorage.clear()
+        window.localStorage.clear()
+        window.sessionStorage.clear()
 
         $httpBackend.verifyNoOutstandingExpectation()
         $httpBackend.verifyNoOutstandingRequest()
@@ -210,8 +210,6 @@ describe 'AuthChecker', ->
 
     beforeEach ->
         angular.module 'AuthCheckerTestModule', [moduleCore]
-        .config (_AuthCheckerProvider_)->
-            AuthCheckerProvider = _AuthCheckerProvider_
         .config ($stateProvider)->
             $stateProvider
             .state 'fake',
@@ -223,95 +221,114 @@ describe 'AuthChecker', ->
 
         module 'AuthCheckerTestModule'
 
-        inject ($httpBackend, Auth)->
-            Auth.silentLogout()
-            mockupAPI $httpBackend
-        localStorage.clear()
-        sessionStorage.clear()
-
     afterEach ->
-        localStorage.clear()
-        sessionStorage.clear()
-
         inject ($httpBackend, Auth)->
             $httpBackend.verifyNoOutstandingExpectation()
             $httpBackend.verifyNoOutstandingRequest()
             Auth.silentLogout()
 
 
-    it 'config alt event', ->
-        expect AuthCheckerProvider.getAltStateChangeStart()
-        .toBe AuthCheckerProvider.defaultAltStateChangeStart()
+    it 'configuration', ->
+        angular.module 'AuthCheckerTestModule'
+        .config (_AuthCheckerProvider_)->
+            AuthCheckerProvider = _AuthCheckerProvider_
+            AuthCheckerProvider.altStateChangeStart '$event'
 
-        AuthCheckerProvider.setAltStateChangeStart '$event'
-
-        expect AuthCheckerProvider.getAltStateChangeStart()
-        .toBe '$event'
-
-        inject (AuthChecker)->
-            expect AuthChecker.altStateChangeStart()
+        inject ->
+            expect AuthCheckerProvider.altStateChangeStart()
             .toBe '$event'
+
+            inject (AuthChecker)->
+                expect AuthChecker.altStateChangeStart()
+                .toBe '$event'
 
 
     it 'enabled false', ->
-        AuthCheckerProvider.enabled false
-        expect AuthCheckerProvider.enabled()
-        .toBe false
+        angular.module 'AuthCheckerTestModule'
+        .config (_AuthCheckerProvider_)->
+            AuthCheckerProvider = _AuthCheckerProvider_
+            AuthCheckerProvider.enabled false
 
-        inject ($state, $httpBackend, Token, Auth, AuthChecker, $rootScope)->
-            expect AuthChecker.enabled()
+        inject ->
+            expect AuthCheckerProvider.altStateChangeStart()
+            .toBe AuthCheckerProvider.defaultAltStateChangeStart()
+
+            expect AuthCheckerProvider.enabled()
             .toBe false
 
-            eventEmitted = false
-            $rootScope.$on AuthChecker.altStateChangeStart(), ->
-                eventEmitted = true
+            inject ($state, $httpBackend, Token, Auth, AuthChecker, $rootScope)->
+                mockupAPI $httpBackend
 
-            Token.set mocks.admin_token, false
+                expect AuthChecker.enabled()
+                .toBe false
 
-            $state.go 'fake'
+                eventEmitted = false
+                $rootScope.$on AuthChecker.altStateChangeStart(), ->
+                    eventEmitted = true
 
-            expect eventEmitted
-            .toBe false
+                Token.set mocks.admin_token, false
 
-            expect Auth.active()
-            .toBe false
+                $state.go 'fake'
+
+                expect eventEmitted
+                .toBe false
+
+                expect Auth.active()
+                .toBe false
 
 
     it 'enabled true', ->
-        expect AuthCheckerProvider.enabled()
-        .toBe false
-        AuthCheckerProvider.enabled true
-        expect AuthCheckerProvider.enabled()
-        .toBe true
+        angular.module 'AuthCheckerTestModule'
+        .config (_AuthCheckerProvider_)->
+            AuthCheckerProvider = _AuthCheckerProvider_
+            AuthCheckerProvider.enabled true
 
-        inject ($state, $httpBackend, Token, Auth, AuthChecker, $rootScope)->
-            expect AuthChecker.enabled()
+        inject ->
+            expect AuthCheckerProvider.enabled()
             .toBe true
 
-            eventEmitted = false
-            $rootScope.$on AuthChecker.altStateChangeStart(), ->
-                eventEmitted = true
+            inject ($state, $httpBackend, Token, Auth, AuthChecker, $rootScope)->
+                mockupAPI $httpBackend
 
-            Token.set mocks.admin_token, false
+                expect AuthChecker.enabled()
+                .toBe true
 
-            $httpBackend.expectGET '/api/profile'
-            $state.go 'fake'
-            $httpBackend.flush()
+                eventEmitted = false
+                $rootScope.$on AuthChecker.altStateChangeStart(), ->
+                    eventEmitted = true
 
-            expect Auth.active()
-            .toBe true
+                Token.set mocks.admin_token, false
 
-            expect eventEmitted
-            .toBe true
+                $httpBackend.expectGET '/api/profile'
+                $state.go 'fake'
+                $httpBackend.flush()
+
+                expect Auth.active()
+                .toBe true
+
+                expect eventEmitted
+                .toBe true
 
 
     it 'stateChange is prevented', ->
-        AuthCheckerProvider.enabled true
+        angular.module 'AuthCheckerTestModule'
+        .config (_AuthCheckerProvider_)->
+            AuthCheckerProvider = _AuthCheckerProvider_
+
+            # default false
+            expect AuthCheckerProvider.enabled()
+            .toBe false
+
+            AuthCheckerProvider.enabled true
+
 
         inject ($state, $httpBackend, Token, Auth, AuthChecker, $rootScope)->
+            mockupAPI $httpBackend
+
             $rootScope.$on AuthChecker.altStateChangeStart(), (ev)->
                 ev.preventDefault()
 
+            # when token is empty, not calling api
             $state.go 'fake'
 
             expect $state.current.name

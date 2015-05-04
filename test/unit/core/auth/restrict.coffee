@@ -1,7 +1,7 @@
 'use strict'
 
 describe 'Restrict', ->
-    default_error = 'default error message'
+    default_message = 'default message'
     RestrictProvider = null
     doLoginAsAdmin = doLoginAsUser = null
 
@@ -10,7 +10,7 @@ describe 'Restrict', ->
         sessionStorage.clear()
 
         angular.module 'RestrictTestModule', [moduleCore]
-        .config ($stateProvider) ->
+        .config ($stateProvider)->
             $stateProvider
             .state 'home',
                 url: '/home'
@@ -31,10 +31,11 @@ describe 'Restrict', ->
                     restrict:
                         role: 'admin'
                         next: 'home'
-                        error: 'admin only'
+                        message: 'admin only'
 
-        .config (_RestrictProvider_) ->
-            RestrictProvider = _RestrictProvider_
+        .config (RestrictProvider)->
+            RestrictProvider.defaultNext 'home'
+            RestrictProvider.defaultMessage default_message
 
         module 'RestrictTestModule'
 
@@ -52,94 +53,76 @@ describe 'Restrict', ->
             Auth.silentLogout()
 
 
-    it 'not provided default page to redirect', ->
-        inject ($injector)->
-            try
-                $injector.get 'Restrict'
+    it 'level guest', inject ($state, Auth, Restrict)->
+        result = Restrict.check $state.get 'home'
+        expect result.can
+        .toBe true
 
-                expect true
-                .toBe false
-            catch e
-                expect true
-                .toBe true
+        result = Restrict.check $state.get 'profile'
+        expect result.can
+        .toBe false
+        expect result.message
+        .toBe default_message
+        expect result.next
+        .toBe 'login'
 
+        result = Restrict.check $state.get 'profile.nested'
+        expect result.can
+        .toBe false
+        expect result.message
+        .toBe default_message
+        expect result.next
+        .toBe 'login'
 
-    describe 'configured', ->
-        beforeEach ->
-            RestrictProvider.defaultNext 'home'
-            RestrictProvider.defaultError default_error
-
-
-        it 'level guest', inject ($state, Auth, Restrict)->
-            result = Restrict $state.get 'home'
-            expect result.can
-            .toBe true
-
-            result = Restrict $state.get 'profile'
-            expect result.can
-            .toBe false
-            expect result.error
-            .toBe default_error
-            expect result.next
-            .toBe 'login'
-
-            result = Restrict $state.get 'profile.nested'
-            expect result.can
-            .toBe false
-            expect result.error
-            .toBe default_error
-            expect result.next
-            .toBe 'login'
-
-            result = Restrict $state.get 'admin'
-            expect result.can
-            .toBe false
-            expect result.error
-            .toBe 'admin only'
-            expect result.next
-            .toBe 'home'
+        result = Restrict.check $state.get 'admin'
+        expect result.can
+        .toBe false
+        expect result.message
+        .toBe 'admin only'
+        expect result.next
+        .toBe 'home'
 
 
-        it 'level user', inject ($state, Auth, Restrict)->
-            doLoginAsUser()
+    it 'level user', inject ($state, Auth, Restrict)->
+        doLoginAsUser()
 
-            result = Restrict $state.get 'home'
-            expect result.can
-            .toBe true
+        result = Restrict.check $state.get 'home'
+        expect result.can
+        .toBe true
 
-            result = Restrict $state.get 'profile'
-            expect result.can
-            .toBe true
+        result = Restrict.check $state.get 'profile'
+        expect result.can
+        .toBe true
 
-            result = Restrict $state.get 'profile.nested'
-            expect result.can
-            .toBe true
+        result = Restrict.check $state.get 'profile.nested'
+        expect result.can
+        .toBe true
 
-            result = Restrict $state.get 'admin'
-            expect result.can
-            .toBe false
-            expect result.error
-            .toBe 'admin only'
-            expect result.next
-            .toBe 'home'
+        result = Restrict.check $state.get 'admin'
+        expect result.can
+        .toBe false
+        expect result.message
+        .toBe 'admin only'
+        expect result.next
+        .toBe 'home'
 
 
-        it 'level admin', inject ($state, Auth, Restrict)->
-            doLoginAsAdmin()
+    it 'level admin', inject ($state, Auth, Restrict)->
+        doLoginAsAdmin()
 
-            result = Restrict $state.get 'home'
-            expect result.can
-            .toBe true
+        result = Restrict.check $state.get 'home'
+        expect result.can
+        .toBe true
 
-            result = Restrict $state.get 'profile'
-            expect result.can
-            .toBe true
+        result = Restrict.check $state.get 'profile'
+        expect result.can
+        .toBe true
 
-            result = Restrict $state.get 'profile.nested'
-            expect result.can
-            .toBe true
+        result = Restrict.check $state.get 'profile.nested'
+        expect result.can
+        .toBe true
 
-            result = Restrict $state.get 'admin'
-            expect result.can
-            .toBe true
+        result = Restrict.check $state.get 'admin'
+        expect result.can
+        .toBe true
 
