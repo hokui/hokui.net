@@ -7,7 +7,7 @@ angular.module moduleCore
     _default_message_type = 'warn'
     _default_next = null
 
-    defaultError: (message)->
+    defaultMessage: (message)->
         if _.isString
             _default_message = message
         _default_message
@@ -17,11 +17,12 @@ angular.module moduleCore
             _default_next = next
         _default_next
 
-    $get: (Auth, $injector)->
-        if not _default_next?
-            throw new Error 'Need to set default state to be redirect to'
 
-        (state)->
+    $get: (Auth, $injector)->
+        enabled: ->
+            (_.isString _default_next) and _default_next isnt ''
+
+        check: (state)->
             _result =
                 can: true
 
@@ -46,9 +47,11 @@ angular.module moduleCore
 
 
 .run ($rootScope, Restrict, $state, AuthChecker, Notify)->
+    if not Restrict.enabled()
+        return
 
     $rootScope.$on AuthChecker.altStateChangeStart(), (ev, toState, toParams, fromState, fromParams)->
-        result = Restrict toState
+        result = Restrict.check toState
         first_visit = fromState.name is ''
         if  not result.can
             setTimeout ->
