@@ -42,7 +42,7 @@ angular.module moduleConfig, [
     TokenProvider.tokenPrefix ''
 
 .config (RestrictProvider)->
-    RestrictProvider.defaultError 'アクセスする権限がありません。'
+    RestrictProvider.defaultMessage 'アクセスする権限がありません。'
     RestrictProvider.defaultNext 'home'
 
 .config (AuthCheckerProvider)->
