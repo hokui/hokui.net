@@ -19,10 +19,10 @@ angular.module modulePage
                 onjou = '追'
                 if i_onjou > 1
                     onjou = onjou + Array(i_onjou).join('々')
-                onjou = onjou + '試験'
+                onjou = onjou + '試'
             else
                 onjou = ''
-            if i_onjou > 0 then"#{base}の#{onjou}" else base
+            if i_onjou > 0 then"#{base}#{onjou}" else base
 
         codeLabel: (code)->
             name = if code > 1000 then '解答' else '問題'
