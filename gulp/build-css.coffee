@@ -21,7 +21,6 @@ g.task 'css:common', ['clean'], ->
 
     g.src "#{conf.src}/style/**/*.sass"
     .pipe $.sass
-        sourceComments: 'normal'
         indentedSyntax: true
     .on 'error', onError
     .pipe $.autoprefixer()
