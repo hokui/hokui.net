@@ -333,4 +333,3 @@ describe 'AuthChecker', ->
 
             expect $state.current.name
             .not.toBe 'fake'
-

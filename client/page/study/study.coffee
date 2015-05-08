@@ -100,6 +100,3 @@ angular.module modulePage
             else
                 $scope.filteredSubject = null
                 $scope.filterMessage = ""
-
-
-

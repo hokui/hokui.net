@@ -127,4 +127,3 @@ angular.module moduleCore
                 updateTitle()
 
         updateTitle()
-

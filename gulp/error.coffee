@@ -7,6 +7,3 @@ module.exports = (arg)->
     console.warn "plugin: #{arg.plugin}"
     console.warn "error: #{arg.message}"
     process.exit 1
-
-
-

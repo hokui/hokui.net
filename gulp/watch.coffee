@@ -27,4 +27,3 @@ g.task 'watch', ['build', 'serve'], (cb)->
     g.watch "#{conf.src}/**/*.coffee", ['watch:js']
     g.watch "#{conf.src}/{page,core,component}/**/*.jade", ['watch:html']
     g.watch "#{conf.src}/index.jade", ['watch:index']
-

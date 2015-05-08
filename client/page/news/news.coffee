@@ -49,4 +49,3 @@ angular.module modulePage
         if not $scope.news?
             NotFound()
             return
-

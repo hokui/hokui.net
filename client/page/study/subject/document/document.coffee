@@ -291,5 +291,3 @@ angular.module modulePage
 
             else
                 Notify '入力にエラーがあります。', type: 'warn'
-
-

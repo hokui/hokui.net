@@ -198,5 +198,3 @@ angular.module modulePage
                 $scope.doDeleteUser user
             else
                 $scope.deleting = true
-
-

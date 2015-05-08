@@ -221,4 +221,3 @@ angular.module moduleCore
                 transformed.reverse()
 
             transformed
-

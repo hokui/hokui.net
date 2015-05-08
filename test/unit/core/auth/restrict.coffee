@@ -125,4 +125,3 @@ describe 'Restrict', ->
         result = Restrict.check $state.get 'admin'
         expect result.can
         .toBe true
-

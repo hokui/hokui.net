@@ -8,4 +8,3 @@ g.task 'build', [
     'clean:cache'
     'index'
 ]
-

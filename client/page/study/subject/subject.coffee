@@ -50,5 +50,3 @@ angular.module modulePage
 .controller 'StudySubjectMainCtrl',
     ($scope, $state, $stateParams)->
         $state.go 'study.subject.exam'
-
-

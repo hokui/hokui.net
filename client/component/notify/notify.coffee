@@ -13,5 +13,3 @@ angular.module moduleComponent
 
         $scope.alertClass = ->
             'alert--' + alertTypeClassMap[Notification.current().type]
-
-

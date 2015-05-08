@@ -193,4 +193,3 @@ angular.module modulePage
                 $scope.newSemester.subject_ids.splice idx, 1
             else
                 $scope.newSemester.subject_ids.push subject.id
-

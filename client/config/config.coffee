@@ -58,5 +58,3 @@ angular.module moduleConfig, [
 .config (markedProvider)->
     markedProvider.setOptions
         gfm: true
-
-

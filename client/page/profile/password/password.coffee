@@ -30,4 +30,3 @@ angular.module modulePage
                     $scope.errors = err.errors
             else
                 Notify '入力にエラーがあります。', type: 'warn'
-

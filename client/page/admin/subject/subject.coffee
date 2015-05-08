@@ -126,4 +126,3 @@ angular.module modulePage
                     , onError
             else
                 Notify '入力にエラーがあります。', type: 'warn'
-

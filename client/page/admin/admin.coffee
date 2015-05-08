@@ -57,4 +57,3 @@ angular.module modulePage
 
 .controller 'AdminMainCtrl',
     ($scope, Auth) ->
-

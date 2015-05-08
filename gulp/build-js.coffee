@@ -69,4 +69,3 @@ g.task 'js:build', ['js', 'html:build', 'bower'], (cb)->
     .pipe $.concat "app-#{conf.hash}.js"
     .pipe $.if conf.prod, $.uglify()
     .pipe g.dest "#{conf.dest}/"
-

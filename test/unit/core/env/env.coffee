@@ -41,4 +41,3 @@ describe 'Env', ->
 
             expect Env.seed 'seed'
             .toEqual seed
-

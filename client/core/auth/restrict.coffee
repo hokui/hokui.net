@@ -60,4 +60,3 @@ angular.module moduleCore
                     Notify result.message, type: result.message_type, delay: if first_visit then 500 else 0
             , 0
             ev.preventDefault()
-

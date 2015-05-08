@@ -42,5 +42,3 @@ angular.module modulePage
         nowYear = (new Date()).getFullYear()
         $scope.user.birthday = new Date "#{nowYear-19}/4/1"
         $scope.user.class_year_id = classYears?[classYears.length-1]?.id
-
-

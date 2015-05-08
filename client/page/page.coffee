@@ -11,4 +11,3 @@ angular.module modulePage, [
     'angular-loading-bar'
     'angularFileUpload'
 ]
-

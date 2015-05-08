@@ -22,6 +22,3 @@ g.task 'clean:cache', ['css:build', 'js:build', 'html:build'], (cb)->
     del [
         "#{conf.dest}/.cache"
     ], cb
-
-
-
