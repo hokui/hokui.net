@@ -22,7 +22,7 @@ module.exports = (config) ->
         exclude: []
 
         preprocessors:
-            'client/core/**/*.coffee': ['coverage']
+            'client/core/**/*.coffee': ['coffee', 'coverage']
             'test/unit/**/*.coffee': ['coffee']
 
         reporters: ['progress', 'coverage']
@@ -46,6 +46,3 @@ module.exports = (config) ->
             ,
                 type: 'lcov'
             ]
-
-
-
