@@ -22,7 +22,7 @@ module.exports = (config) ->
         exclude: []
 
         preprocessors:
-            'client/core/**/*.coffee': ['coverage']
+            'client/core/**/*.coffee': ['coffee', 'coverage']
             'test/unit/**/*.coffee': ['coffee']
 
         reporters: ['progress', 'coverage']
@@ -40,12 +40,8 @@ module.exports = (config) ->
         singleRun: not autoWatch
 
         coverageReporter:
-            dir : 'coverage/'
+            dir : 'build-report/'
             reporters: [
-                type: 'html'
-            ,
                 type: 'lcov'
+                subdir: '.'
             ]
-
-
-

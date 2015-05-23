@@ -8,10 +8,8 @@ html(ng-app="hokuiApp")
     <!-- inject:css -->
     <!-- endinject -->
     body
-        div(responsive-width-getter)
         div(ng-include="'/component/navbar/navbar.html'")
         div(ng-include="'/component/notify/notify.html'")
-
         #root(ui-view)
         <!-- bower:js -->
         <!-- endinject -->

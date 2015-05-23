@@ -450,4 +450,3 @@ describe 'Resource', ->
 
             expect result()
             .toEqual [obj3, obj1, obj2]
-

@@ -104,6 +104,3 @@ describe 'Notify', ->
         .toBe false
 
         $timeout.verifyNoPendingTasks()
-
-
-

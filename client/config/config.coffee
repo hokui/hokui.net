@@ -4,6 +4,7 @@ window.moduleConfig = 'hokuiConfig'
 
 angular.module moduleConfig, [
     moduleCore
+    modulePage
     'angular-google-analytics'
 ]
 
@@ -41,27 +42,19 @@ angular.module moduleConfig, [
     TokenProvider.tokenPrefix ''
 
 .config (RestrictProvider)->
-    RestrictProvider.defaultError 'アクセスする権限がありません。'
+    RestrictProvider.defaultMessage 'アクセスする権限がありません。'
     RestrictProvider.defaultNext 'home'
 
 .config (AuthCheckerProvider)->
     AuthCheckerProvider.enabled true
 
-.run ($rootScope, Restrict, $state, AuthChecker, Notify)->
-
-    $rootScope.$on AuthChecker.altStateChangeStart(), (ev, toState, toParams, fromState, fromParams)->
-        result = Restrict toState
-        first_visit = fromState.name is ''
-        if not result.can
-            setTimeout ->
-                $state.go result.next
-                Notify result.error, type: 'warn', delay: if first_visit then 500 else 0
-            , 0
-            ev.preventDefault()
+.run ($rootScope, NotFound, Notify)->
 
     $rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams, error)->
         Notify 'ページの表示に失敗しました。',
             period: -1
             type: 'danger'
 
-
+.config (markedProvider)->
+    markedProvider.setOptions
+        gfm: true

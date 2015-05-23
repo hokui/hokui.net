@@ -60,8 +60,3 @@ angular.module moduleComponent
 
         $scope.$on '$stateChangeStart', ->
             $scope.collapsed = true
-
-
-
-
-

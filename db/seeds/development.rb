@@ -87,22 +87,24 @@ sub1.documents << Document.create(subject: sub1, class_year: 93, code: 3004)
 sub1.documents << Document.create(subject: sub1, class_year: 93, code: 4001)
 sub1.documents << Document.create(subject: sub1, class_year: 93, code: 5000)
 
-doc = Document.first
-doc.document_files << DocumentFile.create(
-  document:          doc,
-  user:              guest,
-  file_name:         "dummy.pdf",
-  file_content_type: "application/pdf",
-  file_md5:          "c348a159e06d03e9905ed043ab249dda",
-  comments:          "hoge",
-  download_count:    0
-)
-doc.document_files << DocumentFile.create(
-  document:          doc,
-  user:              guest,
-  file_name:         "dummy.pdf",
-  file_content_type: "application/pdf",
-  file_md5:          "e4472dd5992625b5a62c761cd906b6c1",
-  comments:          "hoge",
-  download_count:    0
-)
+# doc = Document.first
+for doc in Document.all
+  doc.document_files << DocumentFile.create(
+    document:          doc,
+    user:              guest,
+    file_name:         "dummy.pdf",
+    file_content_type: "application/pdf",
+    file_md5:          "c348a159e06d03e9905ed043ab249dda",
+    comments:          "hoge",
+    download_count:    0
+  )
+  doc.document_files << DocumentFile.create(
+    document:          doc,
+    user:              guest,
+    file_name:         "ダミー.pdf",
+    file_content_type: "application/pdf",
+    file_md5:          "e4472dd5992625b5a62c761cd906b6c1",
+    comments:          "hoge",
+    download_count:    0
+  )
+end

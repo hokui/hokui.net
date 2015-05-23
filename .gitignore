@@ -33,4 +33,4 @@ npm-debug.log
 /public
 /dist
 
-/coverage
+/build-report

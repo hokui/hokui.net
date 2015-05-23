@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module moduleComponent
+angular.module moduleCore
 
 .directive 'responsiveWidthGetter', ($window, Responsive)->
     restrict: 'A'
@@ -38,11 +38,17 @@ angular.module moduleComponent
 
         onResize false
 
-.factory 'Responsive', ->
-    xs: false
-    sm: false
-    md: false
-    ls: false
+.provider 'Responsive', ->
+    el = document.createElement 'div'
+    el.setAttribute 'responsive-width-getter', ''
+    el.appendChild document.createTextNode ''
+    document.body.appendChild el
+
+    $get: ->
+        xs: false
+        sm: false
+        md: false
+        ls: false
 
 .run ($rootScope, Responsive)->
     $rootScope.Responsive = Responsive

@@ -4,30 +4,26 @@ angular.module moduleCore
 
 .provider 'Token', ->
 
-    _default_header_key = 'Authorization'
-    _default_storage_key = 'token'
-    _default_token_prefix = 'token'
+    _header_key = 'Authorization'
+    _storage_key = 'token'
+    _token_prefix = ''
 
     headerKey: (header_key)->
         if (_.isString header_key) and header_key
-            _default_header_key = header_key
-        _default_header_key
+            _header_key = header_key
+        _header_key
 
     storageKey: (storage_key)->
         if (_.isString storage_key) and storage_key
-            _default_storage_key = storage_key
-        _default_storage_key
+            _storage_key = storage_key
+        _storage_key
 
     tokenPrefix: (token_prefix)->
         if _.isString token_prefix
-            _default_token_prefix = token_prefix
-        _default_token_prefix
+            _token_prefix = token_prefix
+        _token_prefix
 
     $get: ($log, $http, webStorage)->
-        _header_key = _default_header_key
-        _storage_key = _default_storage_key
-        _token_prefix = _default_token_prefix
-
         _current_storage = do ->
             l = webStorage.local.isSupported
             s = webStorage.session.isSupported
@@ -55,7 +51,7 @@ angular.module moduleCore
                 storage.remove _storage_key
 
         set_token = (token, keep)->
-            if _.isString(token) and token isnt ''
+            if (_.isString token) and token isnt ''
                 _current_storage = do ->
                     l = webStorage.local.isSupported
                     s = webStorage.session.isSupported

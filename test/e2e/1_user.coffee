@@ -48,4 +48,3 @@ describe 'User', ->
 
         expect browser.getCurrentUrl()
         .toEqual 'http://localhost:9000/'
-

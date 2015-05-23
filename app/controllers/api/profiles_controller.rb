@@ -18,6 +18,7 @@ class Api::ProfilesController < Api::ApplicationController
       permit(
         :class_year_id,
         :handle_name,
+        :birthday,
         :email_mobile
       )
   end

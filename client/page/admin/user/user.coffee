@@ -51,7 +51,7 @@ angular.module modulePage
                 Notify 'ユーザーの認証に失敗しました。', type: 'danger'
 
             if not fake
-                $http.post "#{api.apiRoot()}/users/#{user.id}/approve",
+                $http.post "#{Env.apiRoot()}/users/#{user.id}/approve",
                     {}
                 .success onSuccess
                 .error onError
@@ -198,5 +198,3 @@ angular.module modulePage
                 $scope.doDeleteUser user
             else
                 $scope.deleting = true
-
-

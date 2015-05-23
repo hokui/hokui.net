@@ -2,6 +2,14 @@
 .container
     .col--sm-10.col--sm-offset-1
         h1 ユーザー登録
+        p
+            | 　氏名は本名を入力してください。
+            | 認証確認メールはELMSメールアドレス宛に送信されます。
+            | メール認証後、ログイン可能となるのは管理者の承認後になりますのでご注意ください。
+        p
+            | 　不具合等ございましたら
+            span(ng-bind-html="'hokui.net@gmail.com' | linky")
+            | までご連絡ください。
         form.form.row(role="form" name="signup" ng-submit="performSignup(signup.$valid)" novalidate)
             .panel
                 .panel__body
@@ -54,7 +62,7 @@
                     .form__group
                         .col--sm-4
                             label.form__label(for="signupBirthday") 生年月日
-                        .col--sm-8.col--no-gutter(bind-date="user.birthday" date-changed="bd_changed($current)")
+                        .col--sm-8.col--no-gutter(bind-date="user.birthday")
                             .col--xs-4
                                 select.form__control(ng-model="$year" ng-options="year as  year+'年' for year in [] | range:1955:2000")
                             .col--xs-4
@@ -71,11 +79,11 @@
                                 name="email"
                                 ng-model="user.email"
                                 required
-                                ng-pattern="/^[0-9a-zA-Z_\-]+@(ec|med)\.hokudai\.ac\.jp$/"
+                                ng-pattern="/^[0-9a-zA-Z_\-]+@(eis|med)\.hokudai\.ac\.jp$/"
                                 force-invalid="errors.email"
                                 ng-change="errors.email = null"
                                 id="signupEmail"
-                                placeholder="example@ec.hokudai.ac.jp")
+                                placeholder="example@eis.hokudai.ac.jp")
                             div(ng-show="signup.email.$dirty")
                                 .form__error(ng-show="signup.email.$error.required") 入力必須項目です
                                 .form__error(ng-show="signup.email.$error.email") 不正なメールアドレスです
@@ -100,7 +108,7 @@
                         .col--sm-4
                             label.form__label 期を選択
                         .col--sm-8
-                            .col--xs-6.col--sm-4.col--sm-3.col--lg-2(ng-repeat="year in years")
+                            .col--xs-6.col--sm-4.col--sm-3.col--lg-2(ng-repeat="year in classYears")
                                 input.form__control(type="radio" ng-model="user.class_year_id" id="signupYear{{year.id}}" value="{{year.id}}" name="radio")
                                 label.form__label(for="signupYear{{year.id}}") {{year.year}}期
 
@@ -138,4 +146,3 @@
                 .panel__foot.row
                     .col--sm-offset-4.col--sm-8
                         button.btn.btn--primary(type="submit" ng-disabled="signup.$invalid") Signup
-
