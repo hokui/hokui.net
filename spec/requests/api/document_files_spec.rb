@@ -45,7 +45,7 @@ RSpec.describe "DocumentFiles", type: :request do
 
   describe "POST /api/document_files" do
     before do
-      @filepath = File.join(Rails.root, "misc", "uploaded", "000002-dummy.pdf")
+      @filepath = File.join(Rails.root, "misc", "uploaded", "000002-ダミー.pdf")
       @json_params = {
         subject_id: 1,
         class_year: 93,
@@ -66,7 +66,7 @@ RSpec.describe "DocumentFiles", type: :request do
       expect(response.status).to eq(201)
       expect(DocumentFile.count).to eq(old_size + 1)
       df_id = json["id"]
-      expect(File.binread("/tmp/#{sprintf("%06d", df_id)}-000002-dummy.pdf")).to eq(File.binread(@filepath))
+      expect(File.binread("/tmp/#{sprintf("%06d", df_id)}-000002-ダミー.pdf")).to eq(File.binread(@filepath))
     end
 
     it "returns 422 if uploaded file is missing" do
@@ -108,7 +108,7 @@ RSpec.describe "DocumentFiles", type: :request do
 
   describe "PATCH /api/document_files/1" do
     before do
-      @filepath = File.join(Rails.root, "misc", "uploaded", "000002-dummy.pdf")
+      @filepath = File.join(Rails.root, "misc", "uploaded", "000002-ダミー.pdf")
       @json_params = {
         subject_id: 2,
         class_year: 93,
@@ -146,9 +146,9 @@ RSpec.describe "DocumentFiles", type: :request do
         file: fixture_file_upload(@filepath, "application/pdf")
       )
       expect(response.status).to eq(200)
-      expect(response.file_name).to eq("000002-dummy.pdf")
+      expect(response.file_name).to eq("000002-ダミー.pdf")
       df_id = json["id"]
-      expect(File.binread("/tmp/#{sprintf("%06d", df_id)}-000002-dummy.pdf")).to eq(File.binread(@filepath))
+      expect(File.binread("/tmp/#{sprintf("%06d", df_id)}-000002-ダミー.pdf")).to eq(File.binread(@filepath))
     end
 
     it "returns 401 to an unauthorized client" do
