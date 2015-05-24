@@ -21,7 +21,7 @@
 # uploaded files dir for dev/test
 /misc/uploaded/*
 !/misc/uploaded/000001-dummy.pdf
-!/misc/uploaded/000002-dummy.pdf
+!/misc/uploaded/000002-ダミー.pdf
 
 # front-end part below
 
