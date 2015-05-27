@@ -25,6 +25,7 @@ RSpec.configure do |config|
   end
   config.before :all do
     DatabaseRewinder.clean_all
+    DownloadToken.create!
     FactoryGirl.reload
   end
   config.after :each do

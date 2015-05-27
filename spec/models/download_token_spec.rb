@@ -26,13 +26,13 @@ RSpec.describe DownloadToken, type: :model do
     describe "delete_expired!" do
       it "deletes expired token" do
         old_size = DownloadToken.count
-        2.times do
-          create(:download_token)
-        end
         3.times do
           download_token = create(:download_token)
-          download_token.created_at = Time.now - 1.hour
+          download_token.created_at = Time.now - 3.days
           download_token.save
+        end
+        2.times do
+          create(:download_token)
         end
         DownloadToken.delete_expired!
         expect(DownloadToken.count).to eq(old_size + 2)

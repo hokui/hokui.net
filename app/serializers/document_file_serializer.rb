@@ -4,12 +4,17 @@ class DocumentFileSerializer < ActiveModel::Serializer
              :file_name,
              :file_content_type,
              :download_count,
+             :download_token,
              :created_at,
              :updated_at,
              :errors,
              :user
 
   belongs_to :document
+
+  def download_token
+    DownloadToken.last.token
+  end
 
   def user
     if object.user_id == 1

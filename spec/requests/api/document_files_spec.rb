@@ -192,10 +192,11 @@ RSpec.describe "DocumentFiles", type: :request do
     end
   end
 
+  # NOTE backward compatibility
   describe "GET /api/document_files/1/download_token" do
-    it "creates new DownloadToken and returns it" do
+    it "returns latest download token" do
       get_with_token(@guest, "/api/document_files/#{@df.id}/download_token")
-      expect(json["token"]).to eq(@df.download_tokens.last.token)
+      expect(json["token"]).to eq(DownloadToken.last.token)
     end
   end
 end

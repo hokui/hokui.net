@@ -17,7 +17,6 @@
 class DocumentFile < ActiveRecord::Base
   belongs_to :document
   belongs_to :user
-  has_many :download_tokens, dependent: :destroy
 
   validates(:document_id)       { presence }
   validates(:user_id)           { presence }
@@ -50,9 +49,5 @@ class DocumentFile < ActiveRecord::Base
 
   def file_fullpath
     "#{Figaro.env.uploaded_files_dir}/#{sprintf("%06d", id)}-#{file_name}"
-  end
-
-  def generate_download_token!
-    self.download_tokens.create!
   end
 end
