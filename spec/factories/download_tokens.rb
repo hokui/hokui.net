@@ -11,7 +11,6 @@
 
 FactoryGirl.define do
   factory :download_token do
-    document_file_id 1
     token            SecureRandom.hex(10)
   end
 end

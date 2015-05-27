@@ -65,15 +65,6 @@ RSpec.describe DocumentFile, type: :model do
         expect(df.file_fullpath).to eq("/tmp/000001-dummy.pdf")
       end
     end
-
-    describe "generate_download_token" do
-      it "creates new download token for the document file" do
-        df = create(:document_file)
-        old_size = df.download_tokens.count
-        df.generate_download_token!
-        expect(df.download_tokens.count).to eq(old_size + 1)
-      end
-    end
   end
 end
 

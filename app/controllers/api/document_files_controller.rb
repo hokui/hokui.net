@@ -42,7 +42,7 @@ class Api::DocumentFilesController < Api::ApplicationController
   end
 
   def download_token
-    render json: @document_file.generate_download_token!, status: 201
+    render json: DownloadToken.last
   end
 
   private

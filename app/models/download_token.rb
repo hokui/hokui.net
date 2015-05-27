@@ -10,11 +10,8 @@
 #
 
 class DownloadToken < ActiveRecord::Base
-  TERM_OF_VALIDITY = 30.minutes
+  TERM_OF_VALIDITY = 2.days
 
-  belongs_to :document_file
-
-  validates(:document_file_id) { presence }
   validates(:token)            { presence; uniqueness }
 
   before_validation :generate_token, on: :create
