@@ -13,6 +13,9 @@ class DocumentFileSerializer < ActiveModel::Serializer
   belongs_to :document
 
   def download_token
+    if DownloadToken.count == 0 or DownloadToken.last.expired?
+      DownloadToken.create!
+    end
     DownloadToken.last.token
   end
 

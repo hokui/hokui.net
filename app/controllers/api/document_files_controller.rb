@@ -42,6 +42,9 @@ class Api::DocumentFilesController < Api::ApplicationController
   end
 
   def download_token
+    if DownloadToken.count == 0 or DownloadToken.last.expired?
+      DownloadToken.create!
+    end
     render json: DownloadToken.last
   end
 
