@@ -173,7 +173,7 @@ angular.module modulePage
 
 
 .controller 'StudyDocumentMainCtrl',
-    ($scope, $state, $window, documents, documentFiles, ResourceFieldSorter, GenerateClassYearMap, GenerateCodeMap, GetDocumentFileToken, Download, definition, ResourceFilter)->
+    ($scope, $state, $window, documents, documentFiles, ResourceFieldSorter, GenerateClassYearMap, GenerateCodeMap, definition, ResourceFilter)->
         $scope.documents = documents
         $scope.documentFiles = documentFiles
 
@@ -202,30 +202,24 @@ angular.module modulePage
                 return a.class_year is b.class_year
             false
 
-        prevewableExt =
-            [
-                'html', 'htm', 'shtml', 'css', 'xml', 'gif', 'jpeg', 'jpg', 'js',
-                'atom', 'rss', 'txt', 'png', 'tif', 'tiff', 'ico', 'jng', 'bmp',
-                'svg', 'svgz', 'json', 'hqx', 'pdf', 'rtf', 'xls', 'swf', 'mid', 'midi', 'kar',
-                'mp3', 'ogg', 'm4a', '3gpp 3gp', 'mp4', 'mpeg', 'mpg', 'mov', 'flv', 'm4v',
-                'wmv', 'avi'
-            ]
-
+        prevewableExt = [
+            'html', 'htm', 'shtml', 'css', 'xml', 'gif', 'jpeg', 'jpg', 'js',
+            'atom', 'rss', 'txt', 'png', 'tif', 'tiff', 'ico', 'jng', 'bmp',
+            'svg', 'svgz', 'json', 'hqx', 'pdf', 'rtf', 'xls', 'swf', 'mid', 'midi', 'kar',
+            'mp3', 'ogg', 'm4a', '3gpp 3gp', 'mp4', 'mpeg', 'mpg', 'mov', 'flv', 'm4v',
+            'wmv', 'avi'
+        ]
 
         $scope.previewable = (file)->
             tmp = file.file_name.split '.'
             ext = tmp[tmp.length - 1]
             prevewableExt.indexOf(ext) > -1
 
-        $scope.downloadFile = (file)->
-            GetDocumentFileToken file, (token)->
-                url = "/contents/document_files/#{file.id}?download_token=#{token}"
-                Download url, file.file_name
+        $scope.urlForDocFile = (file)->
+            u = "/contents/document_files/#{file.id}?download_token=#{file.download_token}"
+            console.log u
+            u
 
-        $scope.previewFile = (file)->
-            GetDocumentFileToken file, (token)->
-                url = "/contents/document_files/#{file.id}?download_token=#{token}"
-                $window.location.href = url
 
 .controller 'StudyDocumentEditCtrl',
     ($scope, $http, Notify, Env, $state, documentFile)->

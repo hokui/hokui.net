@@ -19,13 +19,13 @@ table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
                 .pull-left
                     | {{file.file_name}}
                     | &nbsp;
-                    button.button-unstyled.tooltip.tooltip--top(ng-click="downloadFile(file)" tooltip="ダウンロード")
+                    a.tooltip.tooltip--top(ng-href="{{urlForDocFile(file)}}" target="_blank" download="{{file.file_name}}" tooltip="ダウンロード")
                         i.fa.fa-floppy-o
                     | &nbsp;
-                    button.button-unstyled.tooltip.tooltip--top(ng-click="previewFile(file)" ng-if="previewable(file)" tooltip="ブラウザで表示")
+                    a.tooltip.tooltip--top(ng-href="{{urlForDocFile(file)}}" target="_blank" ng-if="previewable(file)" tooltip="ブラウザで表示")
                         i.fa.fa-eye
                     | &nbsp;
-                    a.link-unstyled.tooltip.tooltip--top(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集" ng-if="user.id === file.user_id")
+                    a.tooltip.tooltip--top(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集" ng-if="user.id === file.user_id")
                         i.fa.fa-cog
                 .pull-right
                     .pull-right.text-right.downloaded {{file.download_count}}回
