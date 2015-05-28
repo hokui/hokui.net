@@ -15,23 +15,34 @@ table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
         td(ng-if="isAnswer")
             .text-center(bind-model="isAnswer(doc.code, doc)" bind-true="解答" bind-false="問題")
         td
-            .row(ng-repeat-start="file in doc.document_files")
-                .pull-left
+            .file-row(ng-repeat-start="file in doc.document_files")
+                .file-caption
                     | {{file.file_name}}
-                    | &nbsp;
-                    a.tooltip.tooltip--top(ng-href="{{urlForDocFile(file)}}" target="_blank" download="{{file.file_name}}" tooltip="ダウンロード")
-                        i.fa.fa-floppy-o
-                    | &nbsp;
-                    a.tooltip.tooltip--top(ng-href="{{urlForDocFile(file)}}" target="_blank" ng-if="previewable(file)" tooltip="ブラウザで表示")
-                        i.fa.fa-eye
-                    | &nbsp;
-                    a.tooltip.tooltip--top(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集" ng-if="user.id === file.user_id")
-                        i.fa.fa-cog
-                .pull-right
-                    .pull-right.text-right.downloaded {{file.download_count}}回
-                    .pull-right
-                        | &nbsp;
-                    .pull-right.text-right.uploader(tooltip="{{file.user.class_year}}期") {{file.user.name}}
+                .file-controls
+                    .file-control
+                        a(ng-href="{{urlForDocFile(file)}}" target="_blank" download="{{file.file_name}}" tooltip="ダウンロード")
+                            i.fa.fa-floppy-o
+                            span.hidden-xs &nbsp;ダウンロード
+                    .file-control
+                        a(ng-href="{{urlForDocFile(file)}}" target="_blank" ng-if="previewable(file)" tooltip="ブラウザで表示")
+                            i.fa.fa-eye
+                            span.hidden-xs &nbsp;プレピュー
+                    .file-control
+                        a(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集" ng-if="user.id === file.user_id")
+                            i.fa.fa-cog
+                            span.hidden-xs &nbsp;編集
+                            
+                .file-infos
+                    .file-info {{file.download_count}}回
+                    .file-info {{file.user.name}}
+
             hr.dotted(ng-repeat-end ng-if="!$last")
 
+
 p(ng-if="transformed.length === 0") 資料がまだ投稿されていません。
+
+
+//- .pull-right.text-right.downloaded {{file.download_count}}回
+//- .pull-right
+//-     | &nbsp;
+//- .pull-right.text-right.uploader(tooltip="{{file.user.class_year}}期") {{file.user.name}}
