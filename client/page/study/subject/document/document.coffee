@@ -216,9 +216,7 @@ angular.module modulePage
             prevewableExt.indexOf(ext) > -1
 
         $scope.urlForDocFile = (file)->
-            u = "/contents/document_files/#{file.id}?download_token=#{file.download_token}"
-            console.log u
-            u
+            "/contents/document_files/#{file.id}?download_token=#{file.download_token}"
 
 
 .controller 'StudyDocumentEditCtrl',
