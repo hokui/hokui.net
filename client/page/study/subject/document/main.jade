@@ -1,5 +1,6 @@
 p
     a.btn.btn--primary.btn--sm(ui-sref=".new") 新規アップロード
+p {{isSmartPhone}}
 
 table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
     tr
@@ -19,22 +20,23 @@ table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
                 .file-caption
                     | {{file.file_name}}
                 .file-controls
-                    .file-control
-                        a(ng-href="{{urlForDocFileDownload(file)}}" target="_blank" download="{{file.file_name}}" tooltip="ダウンロード")
+                    .file-control-left
+                        a(ng-href="{{urlForDocFileDownload(file)}}" target="_blank" download="{{file.file_name}}")
                             i.fa.fa-floppy-o
-                            span.hidden-xs &nbsp;ダウンロード
-                    .file-control
-                        a(ng-href="{{urlForDocFileView(file)}}" target="_blank" ng-if="previewable(file)" tooltip="ブラウザで表示")
+                            span(ng-show="!Responsive.xs || isSmartPhone") &nbsp;ダウンロード
+                    .file-control-left(ng-if="previewable(file) && !isSmartPhone")
+                        a(ng-href="{{urlForDocFileView(file)}}" target="_blank")
                             i.fa.fa-eye
                             span.hidden-xs &nbsp;プレピュー
-                    .file-control
-                        a(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集" ng-if="user.id === file.user_id")
+                    .file-control-left(ng-if="user.id === file.user_id")
+                        a(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集")
                             i.fa.fa-cog
                             span.hidden-xs &nbsp;編集
                             
-                .file-infos
-                    .file-info {{file.download_count}}回
-                    .file-info {{file.user.name}}
+                    .file-control-right
+                        span.text-gray {{file.download_count}}回
+                    .file-control-right
+                        span.text-gray {{file.user.name}}
 
             hr.dotted(ng-repeat-end ng-if="!$last")
 
