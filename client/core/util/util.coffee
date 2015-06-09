@@ -44,19 +44,14 @@ angular.module moduleCore
         year = year -1
     year - 1918
 
+.factory 'IsSmartPhone', ->
+    iphone = navigator.userAgent.indexOf('iPhone') > 0
+    ipad = navigator.userAgent.indexOf('iPad') > 0
+    ipod = navigator.userAgent.indexOf('iPod') > 0
+    android = navigator.userAgent.indexOf('Android') > 0
+    windowsPhone = navigator.userAgent.indexOf('Windows Phone') > 0
 
-.provider 'Download', ->
-    a = document.createElement 'a'
-    a.style.display = 'none'
-    a.target = '_blank'
-    a.appendChild document.createTextNode ''
-    document.body.appendChild a
-
-    $get: ->
-        (url, filename)->
-            a.href = url
-            a.download = filename
-            a.click()
+    (iphone and not ipad) or ipod or android or windowsPhone
 
 
 .directive 'bindModel', ($parse)->
