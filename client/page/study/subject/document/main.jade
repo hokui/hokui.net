@@ -20,11 +20,11 @@ table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
                     | {{file.file_name}}
                 .file-controls
                     .file-control
-                        a(ng-href="{{urlForDocFile(file)}}" target="_blank" download="{{file.file_name}}" tooltip="ダウンロード")
+                        a(ng-href="{{urlForDocFileDownload(file)}}" target="_blank" download="{{file.file_name}}" tooltip="ダウンロード")
                             i.fa.fa-floppy-o
                             span.hidden-xs &nbsp;ダウンロード
                     .file-control
-                        a(ng-href="{{urlForDocFile(file)}}" target="_blank" ng-if="previewable(file)" tooltip="ブラウザで表示")
+                        a(ng-href="{{urlForDocFileView(file)}}" target="_blank" ng-if="previewable(file)" tooltip="ブラウザで表示")
                             i.fa.fa-eye
                             span.hidden-xs &nbsp;プレピュー
                     .file-control

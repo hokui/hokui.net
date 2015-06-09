@@ -41,9 +41,10 @@ Rails.application.routes.draw do
   end
 
   namespace :contents do
-    resources :document_files,     only: [        :show,                           ] do
+    resources :document_files,     only: [                                         ] do
       member do
-        get :download
+        get 'view/:file_name', action: :view
+        get 'download/:file_name', action: :download
       end
     end
 

@@ -1,5 +1,5 @@
 class Contents::DocumentFilesController < Contents::ApplicationController
-  def show
+  def view
     @disposition = nil
     render_file
   end
