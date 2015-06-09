@@ -37,6 +37,7 @@ h1.caption
 
 
 .file-row
+    +clearfix
     min-height: 40px
 
 .file-caption
@@ -44,29 +45,20 @@ h1.caption
     line-height: 24px
 
 .file-controls
-    +clearfix
-    float: left
     height: 16px
     line-height: 16px
 
-.file-control
+.file-control-left, .file-control-right
+    height: 16px
+    line-height: 16px
+    font-size: $font-size-small
+    min-width: 20px
+
+.file-control-left
     float: left
     margin-right: 10px
 
-    height: 16px
-    line-height: 16px
-    font-size: $font-size-small
 
-
-
-.file-infos
-    +clearfix
+.file-control-right
     float: right
-
-.file-info
-    +clearfix
-    float: right
-    margin-left: 10px
-    min-width: 20px
-    text-align: right
-    font-size: $font-size-small
+    margin-right: 10px

@@ -25,7 +25,7 @@ angular.module modulePage
             cb data.token
 
 .controller 'StudySubjectCtrl',
-    ($scope, $state, NotFound, subject, GetDocumentFileToken, $window, Download)->
+    ($scope, $state, NotFound, subject, GetDocumentFileToken, $window)->
         if subject
             $scope.subject = subject
         else

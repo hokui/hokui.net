@@ -173,9 +173,10 @@ angular.module modulePage
 
 
 .controller 'StudyDocumentMainCtrl',
-    ($scope, $state, $window, documents, documentFiles, ResourceFieldSorter, GenerateClassYearMap, GenerateCodeMap, definition, ResourceFilter)->
+    ($scope, $state, $window, documents, documentFiles, ResourceFieldSorter, GenerateClassYearMap, GenerateCodeMap, definition, ResourceFilter, IsSmartPhone)->
         $scope.documents = documents
         $scope.documentFiles = documentFiles
+        $scope.isSmartPhone = IsSmartPhone
 
         documents.setSorter new ResourceFieldSorter [
             '-class_year'
