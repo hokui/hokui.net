@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.2'
 gem 'rails-api', github: 'rails-api/rails-api'
 gem 'sqlite3'
 
