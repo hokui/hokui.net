@@ -231,6 +231,10 @@ angular.module modulePage
         $scope.documentFile = documentFile
         $scope.deleting = false
 
+        $scope.cancelDeleting = ->
+            Notify '削除をキャンセルしました。', type: 'warn'
+            $scope.deleting = false
+
         $scope.performDelete = ->
             if not $scope.deleting
                 Notify 'もう一度クリックして削除します。', type: 'warn'
@@ -258,14 +262,27 @@ angular.module modulePage
 
         $scope.codeEditorTemplate = definition.codeEditorTemplate
 
+        $scope.fileChanged = ($files)->
+            e = false
+            for file in $files
+                dots = file.name.match /\./g
+                if (Array.isArray dots) and dots.length > 1
+                    e = true
+                    if not $scope.errors
+                        $scope.errors = []
+
+                    $scope.errors.push
+                        'file_md5': 'システムの仕様上、ファイル名にドット「.」を含むファイルはアップロードできません。ファイル名を変更して選択しなおしてください。'
+
+            if not e
+                $scope.errors = null
+
         $scope.uploadButtonLabel = (valid)->
             if valid
                 codeLabel = definition.codeLabel $scope.newDoc.code
                 "「#{$scope.newDoc.class_year}期の#{subject.title_ja}の#{codeLabel}」をアップロード"
             else
                 '入力に不備があります'
-
-
 
         $scope.performUpload = (valid)->
             if valid
