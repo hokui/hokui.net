@@ -269,7 +269,9 @@ angular.module modulePage
                         $scope.errors = []
 
                     $scope.errors.push
-                        'file_md5': 'システムの仕様上、ファイル名にドット「.」を含むファイルはアップロードできません。ファイル名を変更して選択しなおしてください。'
+                        'file_md5':
+                            'システムの仕様上、ファイル名にドット「.」を2つ以上含むファイルはアップロードできません。'+
+                            'ファイル名を変更して選択しなおしてください。'
 
             if not e
                 $scope.errors = null
