@@ -19,10 +19,10 @@ angular.module moduleComponent
             label: 'STUDY'
             state: 'study'
             visible: -> Auth.active()
-        ,
-            label: 'MAILLIST'
-            state: 'ml'
-            visible: -> Auth.active()
+        # ,
+        #     label: 'MAILLIST'
+        #     state: 'ml'
+        #     visible: -> Auth.active()
         ,
             label: 'ADMIN'
             state: 'admin'
