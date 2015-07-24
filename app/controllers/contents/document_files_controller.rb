@@ -1,16 +1,4 @@
 class Contents::DocumentFilesController < Contents::ApplicationController
-  def view
-    @disposition = nil
-    render_file
-  end
-
-  def download
-    @disposition = 'attachment'
-    render_file
-  end
-
-  private
-
   def render_file
     begin
       @document_file = DocumentFile.find(params[:id])
@@ -26,12 +14,14 @@ class Contents::DocumentFilesController < Contents::ApplicationController
       filepath = @document_file.file_fullpath
       filename = ERB::Util.url_encode(@document_file.file_name)
       filesize = File.stat(filepath).size
-      send_file filepath, filename: filename, length: filesize, disposition: @disposition
+      send_file filepath, filename: filename, length: filesize
     else
       # TODO
       render text: "Download not authorized", status: 401
     end
   end
+
+  private
 
   def authorize_download
     download_token = DownloadToken.find_token(params[:download_token])
