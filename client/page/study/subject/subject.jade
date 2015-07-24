@@ -1,9 +1,0 @@
-h1.caption
-    | {{subject.title_ja}}
-
-.tabs
-    .tab(ng-repeat="item in items" ui-sref-active="tab--active")
-        a(ui-sref="{{item.state}}") {{item.title}}
-
-
-div(ui-view="main")

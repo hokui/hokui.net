@@ -1,6 +1,0 @@
-.notify(ng-controller='NotifyCtrl', ng-class="{ 'notify--shown': Notification.visible() }")
-    .alert-container
-        .alert(ng-class="alertClass()")
-            | {{Notification.getMessage()}}
-            button.alert__close(ng-click="Notification.hide()")
-                i.fa.fa-times

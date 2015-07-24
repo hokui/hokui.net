@@ -1,9 +1,0 @@
-.topfix
-
-.tabs
-    .container
-        .tab(ng-repeat="item in items" ng-class="{'tab--active': isActive(item)}")
-            a(ui-sref="{{item.state}}") {{item.title}}
-
-.container
-    div(ui-view="main")

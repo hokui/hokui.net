@@ -1,9 +1,0 @@
-.container
-    p
-        a(ui-sref="home") トップへ戻る
-    h1 お知らせ一覧
-    table.table.table--bordered
-        tr(ng-repeat="news in newss.original")
-            th(style="width: 160px") {{news.created_at | date:'yyyy年M月d日'}}
-            td
-                a(ui-sref="news.detail({id: news.id})") {{news.title}}
