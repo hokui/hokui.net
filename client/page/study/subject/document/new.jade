@@ -69,7 +69,7 @@ form.form.row(role="form" name="docUpload" ng-submit="performUpload(docUpload.$v
 
                         .droparea.clickable(
                             name="files"
-                            force-invalid="files.length < 1 or file_md5"
+                            force-invalid="files.length < 1 || file_md5"
                             ng-file-select
                             ng-file-drop
                             ng-model="files"
