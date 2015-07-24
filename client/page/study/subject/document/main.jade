@@ -1,6 +1,5 @@
 p
     a.btn.btn--primary.btn--sm(ui-sref=".new") 新規アップロード
-p {{isSmartPhone}}
 
 table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
     tr
@@ -14,28 +13,34 @@ table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
         td(ng-if="inningLabel && codeMap[$index] > 0" rowspan="{{codeMap[$index]}}")
             .text-center {{inningLabel(doc.code)}}
         td(ng-if="isAnswer")
-            .text-center(bind-model="isAnswer(doc.code, doc)" bind-true="解答" bind-false="問題")
+            .text-center(bind-model="isAnswer(doc.code, doc)" bind-true="'解答'" bind-false="'問題'")
         td
             .file-row(ng-repeat-start="file in doc.document_files")
                 .file-caption
                     | {{file.file_name}}
-                .file-controls
-                    .file-control-left
+                    
+                .file-left-controls
+                    .file-control
                         a(ng-href="{{urlForDocFileDownload(file)}}" target="_blank" download="{{file.file_name}}")
                             i.fa.fa-floppy-o
-                            span(ng-show="!Responsive.xs || isSmartPhone") &nbsp;ダウンロード
-                    .file-control-left(ng-if="previewable(file) && !isSmartPhone")
-                        a(ng-href="{{urlForDocFileView(file)}}" target="_blank")
+                            span(bind-model="!Responsive.xs || isSmartPhone"
+                                 bind-true="'ダウンロード'"
+                                 bind-false="'DL'")
+
+                    .file-control(ng-if="previewable(file) && !isSmartPhone")
+                        a(ng-href="{{urlForDocFileView(file)}}" target="_self")
                             i.fa.fa-eye
                             span.hidden-xs &nbsp;プレピュー
-                    .file-control-left(ng-if="user.id === file.user_id")
+                            span.hidden-from-sm &nbsp;PV
+                    .file-control(ng-if="user.id === file.user_id")
                         a(ui-sref=".detail.edit({documentFileId: file.id})" tooltip="編集")
                             i.fa.fa-cog
-                            span.hidden-xs &nbsp;編集
-                            
-                    .file-control-right
+                            span &nbsp;編集
+
+                .file-right-controls
+                    .file-control
                         span.text-gray {{file.download_count}}回
-                    .file-control-right
+                    .file-control
                         span.text-gray {{file.user.name}}
 
             hr.dotted(ng-repeat-end ng-if="!$last")

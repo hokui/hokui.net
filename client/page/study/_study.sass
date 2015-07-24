@@ -44,21 +44,30 @@ h1.caption
     min-height: 24px
     line-height: 24px
 
-.file-controls
+.file-left-controls, .file-right-controls
     height: 16px
     line-height: 16px
 
-.file-control-left, .file-control-right
+.file-control
     height: 16px
     line-height: 16px
     font-size: $font-size-small
     min-width: 20px
 
-.file-control-left
+.file-left-controls
+    +clearfix
     float: left
-    margin-right: 10px
+    .file-control
+        float: left
+        margin-right: 10px
 
-
-.file-control-right
+.file-right-controls
+    +clearfix
     float: right
-    margin-right: 10px
+    .file-control
+        float: right
+        margin-right: 10px
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+        max-width: 160px
