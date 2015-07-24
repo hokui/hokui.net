@@ -216,11 +216,8 @@ angular.module modulePage
             ext = tmp[tmp.length - 1]
             prevewableExt.indexOf(ext) > -1
 
-        $scope.urlForDocFileDownload = (file)->
-            "/contents/document_files/#{file.id}/download/#{file.file_name}?download_token=#{file.download_token}"
-
-        $scope.urlForDocFileView = (file)->
-            "/contents/document_files/#{file.id}/view/#{file.file_name}?download_token=#{file.download_token}"
+        $scope.urlForDocFile = (file)->
+            "/contents/document_files/#{file.id}/#{file.file_name}?download_token=#{file.download_token}"
 
 
 .controller 'StudyDocumentEditCtrl',
