@@ -1,9 +1,10 @@
 .topfix
+
 .container
     .col--sm-10.col--sm-offset-1
         h2 ログイン
 
-        form.form(role="form" name="login" ng-submit="performLogin(login.$valid)" novalidate)
+        form.form(name="login" ng-submit="performLogin()" novalidate)
             .panel
                 .panel__body
                     .form__group
@@ -15,7 +16,6 @@
                                 name="email"
                                 ng-model="credencials.email"
                                 required
-                                ng-pattern="/^[0-9a-zA-Z_\-]+@(eis|med)\.hokudai\.ac\.jp$/"
                                 force-invalid="error"
                                 ng-change="error = null"
                                 id="loginInputEmail"
@@ -30,6 +30,7 @@
                         .col--sm-10
                             input.form__control(
                                 type="password"
+                                name="password"
                                 ng-model="credencials.password"
                                 required
                                 force-invalid="error"

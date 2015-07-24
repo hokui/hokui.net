@@ -32,16 +32,15 @@ angular.module modulePage
             $scope.keepLogin.a = seed.keepLogin
 
         $scope.performLogin = (valid)->
-            if valid
-                Auth.login $scope.credencials, $scope.keepLogin.a
-                .then ->
-                    News.query count: 3, (data)->
-                        $scope.newss = new ResourceStore data
-                        Notify 'ログインしました。', type: 'ok'
-                , (error)->
-                    $scope.error = true
-                    Notify 'ログインに失敗しました。入力項目をご確認ください。', type: 'warn'
-            else
+            Auth.login $scope.credencials, $scope.keepLogin.a
+            .then ->
+                News.query count: 3, (data)->
+                    $scope.newss = new ResourceStore data
+                    Notify 'ログインしました。', type: 'ok'
+                    $state.go '.', reload: true
+            , (error)->
+                $scope.error = true
+                Notify 'ログインに失敗しました。入力項目をご確認ください。', type: 'warn'
 
         if Auth.active()
             $scope.newss = newss

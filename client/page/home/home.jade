@@ -2,7 +2,7 @@
     .hero__bg
 
     .hero__login(ng-if="!Auth.active()")
-        form.form(role="form" name="form" ng-submit="performLogin(form.$valid)" novalidate)
+        form.form(name="form" ng-submit="performLogin()" novalidate)
             .form__group
                 input.form__control(
                     type="email"
@@ -15,6 +15,7 @@
             .form__group
                 input.form__control(
                     type="password"
+                    name="password"
                     ng-model="credencials.password"
                     required
                     force-invalid="error"
