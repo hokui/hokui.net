@@ -14,7 +14,7 @@ class Contents::DocumentFilesController < Contents::ApplicationController
       filepath = @document_file.file_fullpath
       filename = ERB::Util.url_encode(@document_file.file_name)
       filesize = File.stat(filepath).size
-      send_file filepath, filename: filename, length: filesize
+      send_file filepath, filename: filename, length: filesize, disposition: "inline"
     else
       # TODO
       render text: "Download not authorized", status: 401
