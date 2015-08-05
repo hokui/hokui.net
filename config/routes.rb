@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
     resources :news,               only: [:index, :show, :create, :update, :destroy]
 
-    resources :users,              only: [:index, :show, :create,          :destroy] do
+    resources :users,              only: [:index, :show, :create, :update, :destroy] do
       collection do
         post :activate
       end

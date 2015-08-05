@@ -7,6 +7,10 @@ class UserPolicy < Struct.new(:user, :user_record)
     user.admin? or user == user_record
   end
 
+  def update?
+    user.admin?
+  end
+
   def destroy?
     user.admin?
   end

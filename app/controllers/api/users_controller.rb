@@ -1,6 +1,6 @@
 class Api::UsersController < Api::ApplicationController
   skip_before_action :require_login_with_token, only: [:create, :activate]
-  before_action :set_user, only: [:show, :destroy, :approve]
+  before_action :set_user, only: [:show, :update, :destroy, :approve]
   after_action :verify_authorized, except: [:create, :profile, :activate]
 
   def index
@@ -18,6 +18,15 @@ class Api::UsersController < Api::ApplicationController
     @user = User.new(user_params)
     if @user.save
       render json: @user, status: 201
+    else
+      render json: @user, status: 422
+    end
+  end
+
+  def update
+    authorize @user
+    if @user.update_attributes(user_update_params)
+      render json: @user, status: 200
     else
       render json: @user, status: 422
     end
@@ -50,6 +59,17 @@ class Api::UsersController < Api::ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def user_update_params
+    ActionController::Parameters.new(JSON.parse(request.body.read))
+      .permit(
+        :email,
+        :family_name,
+        :given_name,
+        :handle_name,
+        :admin
+      )
   end
 
   def user_params
