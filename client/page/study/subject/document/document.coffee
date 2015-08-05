@@ -219,6 +219,9 @@ angular.module modulePage
         $scope.urlForDocFile = (file)->
             "/contents/document_files/#{file.id}/#{file.file_name}?download_token=#{file.download_token}"
 
+        $scope.docFileClick = (docFile)->
+            docFile.download_count = docFile.download_count + 1
+
 
 .controller 'StudyDocumentEditCtrl',
     ($scope, $http, Notify, Env, $state, documentFile)->

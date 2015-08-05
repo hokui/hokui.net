@@ -21,14 +21,14 @@ table.table.table--condensed.table--bordered(ng-if="transformed.length > 0")
                     
                 .file-left-controls
                     .file-control
-                        a(ng-href="{{urlForDocFile(file)}}" target="_blank" download="{{file.file_name}}")
+                        a(ng-href="{{urlForDocFile(file)}}" target="_blank" download="{{file.file_name}}"  ng-click="docFileClick(file)")
                             i.fa.fa-floppy-o
                             span(bind-model="!Responsive.xs || isSmartPhone"
                                  bind-true="'ダウンロード'"
                                  bind-false="'DL'")
 
                     .file-control(ng-if="previewable(file) && !isSmartPhone")
-                        a(ng-href="{{urlForDocFile(file)}}" target="_self")
+                        a(ng-href="{{urlForDocFile(file)}}" target="_self" ng-click="docFileClick(file)")
                             i.fa.fa-eye
                             span.hidden-xs &nbsp;プレピュー
                             span.hidden-from-sm &nbsp;PV
