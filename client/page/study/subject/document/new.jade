@@ -69,10 +69,11 @@ form.form.row(role="form" name="docUpload" ng-submit="performUpload(docUpload.$v
 
                         .droparea.clickable(
                             name="files"
-                            force-invalid="files.length < 1"
+                            force-invalid="files.length < 1 || file_md5"
                             ng-file-select
                             ng-file-drop
                             ng-model="files"
+                            ng-file-change="fileChanged($files)"
                             class="drop-box"
                             drag-over-class="dragover")
                                 | クリックしてファイルを選択
@@ -81,12 +82,10 @@ form.form.row(role="form" name="docUpload" ng-submit="performUpload(docUpload.$v
                                 br
                                 | ファイルをドロップ
                         div(ng-no-file-drop) File Drag/Drop is not supported for this browser
-                div
-                    .form__error(ng-if="!!errors.file_md5" ng-repeat="error in errors.file_md5")
-                        span(ng-switch="error")
-                            span(ng-switch="'has already been taken'") すでに全く同一のファイルがアップロードされています
-                            //- span(ng-switch-default) {{error}}
-
-
+                div(ng-show="errors" ng-repeat="(errorName, error) in errors")
+                    .form__error(ng-repeat="message in error")
+                        span(bind-model="message === 'has already been taken'" 
+                             bind-true="'すでに全く同一のファイルがアップロードされています'" 
+                             bind-false="message")
         .panel__foot.row
-            button.btn.btn--block.btn--primary(type="submit" ng-disabled="docUpload.$invalid") {{uploadButtonLabel(docUpload.$valid)}}
+            button.btn.btn--block.btn--primary(type="submit" ng-disabled="docUpload.$invalid || errors") {{uploadButtonLabel(docUpload.$valid)}}

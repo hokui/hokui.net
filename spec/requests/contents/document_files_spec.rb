@@ -5,7 +5,7 @@ RSpec.describe "DocumentFiles", type: :request do
     it "sends the document file" do
       df = create(:document_file)
       dt = DownloadToken.last
-      get("/contents/document_files/#{df.id}?download_token=#{dt.token}")
+      get("/contents/document_files/#{df.id}/#{df.file_name}?download_token=#{dt.token}")
       expect(response.status).to eq(200)
       expect(response.body).to eq(File.binread(File.join(Rails.root, "misc", "uploaded", "000001-dummy.pdf")))
     end
@@ -15,7 +15,7 @@ RSpec.describe "DocumentFiles", type: :request do
       dt = DownloadToken.last
       dt.created_at = Time.now - 3.days
       dt.save!
-      get("/contents/document_files/#{df.id}?download_token=#{dt.token}")
+      get("/contents/document_files/#{df.id}/#{df.file_name}?download_token=#{dt.token}")
       expect(response.status).to eq(401)
       expect(response.body).to eq("Download not authorized")
       dt.created_at = Time.now
@@ -24,7 +24,7 @@ RSpec.describe "DocumentFiles", type: :request do
 
     it "returns 404 if specified document file is missing" do
       dt = create(:download_token)
-      get("/contents/document_files/1000?download_token=#{dt.token}")
+      get("/contents/document_files/1000/hoge.pdf?download_token=#{dt.token}")
       expect(response.status).to eq(404)
       expect(response.body).to eq("File not found")
     end

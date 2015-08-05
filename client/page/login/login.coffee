@@ -23,15 +23,13 @@ angular.module modulePage
         $scope.error = false
 
         $scope.performLogin = (valid)->
-            if valid
-                Auth.login $scope.credencials, $scope.keepLogin
-                .then ->
-                    $state.go 'home'
-                    Notify 'ログインしました。', type: 'ok'
-                , (error)->
-                    $scope.error = true
-                    Notify 'ログインに失敗しました。入力項目をご確認ください。', type: 'warn'
-            else
+            Auth.login $scope.credencials, $scope.keepLogin
+            .then ->
+                $state.go 'home'
+                Notify 'ログインしました。', type: 'ok'
+            , (error)->
+                $scope.error = true
+                Notify 'ログインに失敗しました。入力項目をご確認ください。', type: 'warn'
 
         seed = Env.seed 'login'
         if seed?

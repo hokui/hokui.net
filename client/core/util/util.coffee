@@ -53,25 +53,20 @@ angular.module moduleCore
 
     (iphone and not ipad) or ipod or android or windowsPhone
 
-
 .directive 'bindModel', ($parse)->
     restrict: 'A'
     link: (scope, element, attrs)->
         target = element[0]
 
-        mapGetter = $parse attrs.bindMap
-        getMap = ->
-            mapGetter scope
-
         performBind = (model)->
             if attrs.bindTrue and attrs.bindFalse
                 if model
-                    target.innerText = attrs.bindTrue
+                    target.innerText = ($parse attrs.bindTrue) scope
                 else
-                    target.innerText = attrs.bindFalse
+                    target.innerText = ($parse attrs.bindFalse) scope
                 return
             else
-                map = getMap()
+                map = ($parse attrs.bindMap) scope
                 if map and angular.isObject(map) or angular.isArray(map)
                     if map[model]
                         target.innerText = map[model]

@@ -216,11 +216,8 @@ angular.module modulePage
             ext = tmp[tmp.length - 1]
             prevewableExt.indexOf(ext) > -1
 
-        $scope.urlForDocFileDownload = (file)->
-            "/contents/document_files/#{file.id}/download/#{file.file_name}?download_token=#{file.download_token}"
-
-        $scope.urlForDocFileView = (file)->
-            "/contents/document_files/#{file.id}/view/#{file.file_name}?download_token=#{file.download_token}"
+        $scope.urlForDocFile = (file)->
+            "/contents/document_files/#{file.id}/#{file.file_name}?download_token=#{file.download_token}"
 
 
 .controller 'StudyDocumentEditCtrl',
@@ -230,6 +227,10 @@ angular.module modulePage
 
         $scope.documentFile = documentFile
         $scope.deleting = false
+
+        $scope.cancelDeleting = ->
+            Notify '削除をキャンセルしました。', type: 'warn'
+            $scope.deleting = false
 
         $scope.performDelete = ->
             if not $scope.deleting
@@ -258,14 +259,29 @@ angular.module modulePage
 
         $scope.codeEditorTemplate = definition.codeEditorTemplate
 
+        $scope.fileChanged = ($files)->
+            e = false
+            for file in $files
+                dots = file.name.match /\./g
+                if (Array.isArray dots) and dots.length > 1
+                    e = true
+                    if not $scope.errors
+                        $scope.errors = []
+
+                    $scope.errors.push
+                        'file_md5':
+                            'システムの仕様上、ファイル名にドット「.」を2つ以上含むファイルはアップロードできません。'+
+                            'ファイル名を変更して選択しなおしてください。'
+
+            if not e
+                $scope.errors = null
+
         $scope.uploadButtonLabel = (valid)->
             if valid
                 codeLabel = definition.codeLabel $scope.newDoc.code
                 "「#{$scope.newDoc.class_year}期の#{subject.title_ja}の#{codeLabel}」をアップロード"
             else
                 '入力に不備があります'
-
-
 
         $scope.performUpload = (valid)->
             if valid
