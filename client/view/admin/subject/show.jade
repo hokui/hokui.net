@@ -1,0 +1,67 @@
+p
+    a(href="/admin/subject") 一覧へ戻る
+    
+loading(show="{{!(subject || resolved)}}")
+
+p(v-show="!subject && resolved") 該当する学年が見つかりませんでした。
+
+div(v-if="subject")
+    h2 {{subject.title_ja}}
+    .tabs
+        .tab(v-class="'tab-active': viewMode === 'detail'")
+            a(href="/admin/subject/{{subject.id}}") 標準
+        .tab(v-class="'tab-active': viewMode === 'json'")
+            a(href="/admin/subject/{{subject.id}}/json") JSON
+        .tab(v-class="'tab-active': viewMode === 'edit'")
+            a(href="/admin/subject/{{subject.id}}/edit") 編集
+        .tab(v-class="'tab-active': viewMode === 'delete'")
+            a(href="/admin/subject/{{subject.id}}/delete") 削除
+
+    .spacer
+    
+
+    div(v-show="viewMode === 'json'")
+        pre
+            code {{subject | json}}
+    
+    table.table(v-show="viewMode === 'detail'")
+        tr
+            th ID
+            td {{subject.id}}
+        tr
+            th 日本語名
+            td {{subject.title_ja}}
+        tr
+            th 英語名
+            td {{subject.title_en}}
+        tr
+            th 作成日時
+            td {{subject.created_at}}
+        tr
+            th 更新日時
+            td {{subject.updated_at}}
+    
+    .row(v-show="viewMode === 'delete'")
+        form(v-on="submit: performDelete($event)" autocomplete="off")
+            .control-group
+                .col-sm-3
+                    label.control-label 確認用コード
+                .col-sm-9
+                    .control-static.unselectable
+                        code {{code}}
+            .control-group
+                .col-sm-3
+                    label.control-label(for="confirmedCode") コード入力
+                .col-sm-9
+                    input.control(
+                        v-model="confirmedCode"
+                        v-validate="match: matchCode"
+                        placeholder="確認のために上のコードを入力してください"
+                        id="confirmedCode")
+            .control-group
+                .col-sm-9.col-sm-push-3
+                    button.btn.btn-red(type="submit" v-attr="disabled: invalid") 削除する
+
+            
+div(v-show="viewMode === 'edit'")
+    div(v-view="admin_subject_edit")

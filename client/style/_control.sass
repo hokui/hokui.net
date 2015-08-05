@@ -1,0 +1,205 @@
+input,
+button,
+select,
+textarea
+    font-family: inherit
+    font-size: inherit
+    line-height: inherit
+
+
+.required-mark
+    &:before
+        content: '*'
+        font-size: 16px
+        color: $color-red-deep
+
+.control-group
+    +clearfix
+    margin-bottom: $line-height-computed / 2
+
+.control-label
+    display: block
+    padding: 8px 0
+
+.control-help
+    font-size: 12px
+    color: $color-gray
+
+.control-error
+    font-size: 12px
+    color: $color-red-deep
+
+
+*[disabled]
+    pointer-events: none
+    cursor: no-drop
+    opacity: .5
+    box-shadow: none
+    user-select: none
+    -moz-user-select: none
+    -webkit-user-select: none
+    -ms-user-select: none
+
+
+input,
+select,
+textarea,
+.editor
+    &.control
+        appearance: none
+        -webkit-appearance: none
+        -moz-appearance: none
+        outline: none
+        border: 0
+        display: block
+        width: 100%
+        color: inherit
+        font-size: inherit
+        padding: 0 8px
+        height: 36px
+        line-height: 36px
+        border: solid 1px $control-border-color
+        border-radius: 2px
+
+    &.control.control-small
+        padding: 0 4px
+        height: 28px
+        line-height: 28px
+
+    &:focus
+        border-color: $control-active-border-color
+
+
+input.control
+    &::-webkit-input-placeholder
+        color: $control-border-color
+    &:-ms-input-placeholder
+        color: $control-border-color
+    &::-moz-placeholder
+        color: $control-border-color
+.editor.control
+    &:before
+        color: $control-border-color
+    &:focus
+        border-color: $control-active-border-color
+
+.control-static
+    height: 36px
+    line-height: 36px
+    padding: 0
+    margin: 0
+
+textarea.control
+    padding: 8px
+    border: solid 1px $control-border-color
+    min-height: 200px
+
+
+.editor.control
+    color: $color-darkgray
+    outline: none
+    min-height: 200px
+    padding: 8px
+    border: solid 1px $control-border-color
+
+    &:before
+        content: attr(placeholder)
+
+input.control[type="search"]
+    box-sizing: border-box
+
+    border-radius: 18px
+    padding-left: 18px
+    &.control.control-small
+        border-radius: 14px
+        padding-left: 14px
+
+
+
+
+input[type="radio"].control,
+input[type="checkbox"].control
+    width: 0
+    height: 0
+    margin: 0
+    border: 0
+    position: absolute
+    visiblity: hidden
+    pointer-events: none
+
+    $outer-size: 16px
+    $inner-size: 10px
+    $margin: 6px
+
+    & + label.control-label
+        display: inline-block
+        user-select: none
+        position: relative
+        padding: 8px
+        padding-left: $outer-size + $margin
+        margin-right: 12px
+        cursor: pointer
+        &:before, &:after
+            content: ""
+            display: block
+            position: absolute
+
+        &:before
+            top: 50%
+            left: 0
+            margin-top: - $outer-size / 2
+            width: $outer-size
+            height: $outer-size
+            border: 1px solid $control-border-color
+            background-color: #fff
+
+        &:after
+            top: 50%
+            left: 0
+            margin-top: - $inner-size / 2
+            margin-left: ($outer-size - $inner-size) / 2
+            width: $inner-size
+            height: $inner-size
+            background-color: $color-green-blight
+            opacity: 0
+            transition: opacity ease-in-out .2s
+
+    &:focus + label.control-label
+        &:before
+            border-color: $control-active-border-color
+
+    &:hover + label.control-label
+        &:after
+            opacity: .2
+
+    &:checked + label.control-label
+        &:after
+            opacity: 1
+
+    &:checked:hover + label.control-label
+        &:after
+            opacity: .9
+
+    &[type="radio"]
+        & + label.control-label
+            &:before
+                border-radius: $outer-size / 2
+            &:after
+                border-radius: $inner-size / 2
+
+    &[type="checkbox"]
+        & + label.control-label
+            &:before
+                border-radius: 2px
+            &:after
+                border-radius: 2px
+
+
+select.control
+    background-color: $bg-color
+    background-image: url(../assets/arrow.svg)
+    background-repeat: no-repeat
+    background-position: right 4px center
+    background-size: 14px
+
+    overflow: hidden

@@ -1,0 +1,153 @@
+$tooltip-padding: 4px 8px
+$tooltip-z: 100
+
+$tooltip-arrow-size: 6px
+$tooltip-bg: $color-darkgray
+$tooltip-color: $bg-color
+$tooltip-font-size: 12px
+$tooltip-border-radius: 3px
+$tooltip-color: #fff
+$tooltip-bg: #000
+$tooltip-opacity: .9
+
+
+.tooltip
+    z-index: $tooltip-z
+    position: relative
+
+    &:before, &:after
+        position: absolute
+        display: block
+
+    &:before
+        content: ''
+        background-color: transparent
+        width: 0
+        height: 0
+
+        border-top-color: $tooltip-bg
+        border-bottom-color: $tooltip-bg
+        border-left-color: $tooltip-bg
+        border-right-color: $tooltip-bg
+
+
+    &:after
+        color: $tooltip-color
+        background-color: $tooltip-bg
+        font-size: $tooltip-font-size
+        border-radius: $tooltip-border-radius
+        word-break: keep-all
+        word-wrap: normal
+        // set these when shown
+        content: ''
+        padding: 0
+
+
+.tooltip[tooltip]
+    &.tooltip:not(.tooltip-toggle):hover, &.tooltip-shown
+        &:after
+            padding: $tooltip-padding
+            content: attr(tooltip)
+            white-space: nowrap
+
+
+%tooltip-top-shown
+    &:before
+        border-style: solid
+        border-width: $tooltip-arrow-size
+        border-bottom-color: transparent
+        border-left-color: transparent
+        border-right-color: transparent
+        left: 50%
+        margin-left: - $tooltip-arrow-size
+        top: 0
+        margin-top: - $tooltip-arrow-size
+
+    &:after
+        left: 50%
+        top: -$tooltip-arrow-size
+        transform: translate(-50%, -100%)
+
+
+%tooltip-bottom-shown
+    &:before
+        border-style: solid
+        border-width: $tooltip-arrow-size
+        border-top-color: transparent
+        border-left-color: transparent
+        border-right-color: transparent
+        left: 50%
+        margin-left: - $tooltip-arrow-size
+        top: 100%
+        margin-top: - $tooltip-arrow-size
+
+    &:after
+        left: 50%
+        transform: translateX(-50%)
+        top: 100%
+        margin-top: $tooltip-arrow-size
+
+
+%tooltip-left-shown
+    &:before
+        border-style: solid
+        border-width: $tooltip-arrow-size
+        border-top-color: transparent
+        border-bottom-color: transparent
+        border-right-color: transparent
+        left: 0
+        margin-left: - $tooltip-arrow-size - 1px
+        top: 50%
+        margin-top: - $tooltip-arrow-size
+
+    &:after
+        left: - $tooltip-arrow-size
+        top: 50%
+        transform: translate(-100%, -50%)
+
+
+%tooltip-right-shown
+    &:before
+        border-style: solid
+        border-width: $tooltip-arrow-size
+        border-top-color: transparent
+        border-bottom-color: transparent
+        border-left-color: transparent
+        right: 0
+        margin-right: - $tooltip-arrow-size
+        top: 50%
+        margin-top: - $tooltip-arrow-size
+
+    &:after
+        left: 100%
+        top: 50%
+        margin-left: $tooltip-arrow-size
+        transform: translate(0%, -50%)
+
+.tooltip.tooltip-top
+    &:not(.tooltip-toggle):hover
+        @extend %tooltip-top-shown
+    &.tooltip-shown
+        @extend %tooltip-top-shown
+
+
+.tooltip.tooltip-bottom:not(.tooltip-hidden)
+    &:not(.tooltip-toggle):hover
+        @extend %tooltip-bottom-shown
+
+    &.tooltip-shown
+        @extend %tooltip-bottom-shown
+
+.tooltip.tooltip-left
+    &:not(.tooltip-toggle):hover
+        @extend %tooltip-left-shown
+
+    &.tooltip-shown
+        @extend %tooltip-left-shown
+
+.tooltip.tooltip-right
+    &:not(.tooltip-toggle):hover,
+        @extend %tooltip-right-shown
+
+    &.tooltip-shown
+        @extend %tooltip-right-shown

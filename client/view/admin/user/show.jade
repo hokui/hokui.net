@@ -1,0 +1,78 @@
+p
+    a(href="/admin/user") 一覧へ戻る
+    
+loading(show="{{!(user || resolved)}}")
+
+p(v-show="!user && resolved") ユーザーが見つかりませんでした。
+
+div(v-if="user")
+    h2 {{user.handle_name}}（{{user.family_name}} {{user.given_name}}）
+    
+    .tabs
+        .tab(v-class="'tab-active': viewMode === 'detail'")
+            a(href="/admin/user/{{user.id}}") 標準
+        .tab(v-class="'tab-active': viewMode === 'json'")
+            a(href="/admin/user/{{user.id}}/json") JSON
+        .tab(v-class="'tab-active': viewMode === 'edit'")
+            a(href="/admin/user/{{user.id}}/edit") 編集
+    
+    .spacer
+    
+    div(v-show="viewMode === 'json'")
+        pre
+            code {{user | json}}
+    
+    table.table(v-show="viewMode === 'detail'")
+        tr
+            th ID
+            td {{user.id}}
+        tr
+            th ハンドルネーム
+            td {{user.handle_name}}
+        tr
+            th 氏名
+            td {{user.family_name}} {{user.given_name}}
+        tr
+            th 管理者
+            td {{user.admin}}
+        tr
+            th 誕生日
+            td {{user.birthday | date 'YYYY年MM年DD日'}}
+            
+        tr
+            th ELMSアドレス
+            td {{user.email}}
+        tr
+            th 携帯アドレス
+            td {{user.email_mobile}}
+            
+        tr
+            th activation_state
+            td {{user.activation_state}}
+        tr
+            th approval_state
+            td {{user.approval_state}}
+
+        tr
+            th 登録日時
+            td {{user.created_at | date 'YYYY年MM年DD日HH時mm分mm秒'}}
+        tr
+            th 更新日時
+            td {{user.updated_at | date 'YYYY年MM年DD日HH時mm分mm秒'}}
+
+            
+        tr
+            th 最終ログイン
+            td {{user.last_login_at | date 'YYYY年MM年DD日HH時mm分mm秒'}}
+        tr
+            th 最終ログアウト
+            td {{user.last_logout_at | date 'YYYY年MM年DD日HH時mm分mm秒'}}
+        tr
+            th 最終アクティビティ
+            td {{user.last_activity_at | date 'YYYY年MM年DD日HH時mm分mm秒'}}
+        tr
+            th 最終ログインIP
+            td {{user.last_login_from_ip_address}}
+            
+div(v-show="viewMode === 'edit'")
+    div(v-view="admin_user_edit")

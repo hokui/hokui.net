@@ -1,0 +1,45 @@
+$tip-padding-v: 1px
+$tip-font-size: 14px
+$tip-height: $tip-padding-v * 2 + $tip-font-size * $line-height-base
+
+$tip-margin-bottom: 2px
+
+=tip-variant($color)
+    color: $color
+    border-color: $color
+    &:hover, &.tip-active
+        background-color: $color
+        color: $bg-color
+
+.tip
+    $h: 20px
+    display: inline-block
+    height: $h
+    line-height: $h
+
+    font-size: 13px
+    border-radius: $h / 2
+
+    padding: 0 ($h / 2)
+
+    margin: 4px 0
+
+    border-style: solid
+    border-width: 1px
+
+    cursor: pointer
+
+    a
+        display: block
+        width: 100%
+        height: 100%
+        padding: $tip-padding-v $tip-height / 2
+        +link-unstyled
+        color: inherit
+
+
+.tip-disabled
+    opacity: 0.5
+
+.tip
+    +tip-variant($color-green)

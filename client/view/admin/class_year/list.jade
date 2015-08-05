@@ -1,0 +1,20 @@
+h1 学年
+
+loading(show="{{ !classYears }}")
+    
+p
+    a(href="/admin/class_year/new") 新規作成
+
+table.table(v-if="classYears")
+    thead
+        tr
+            th.clickable.nobr(v-on="click: sortById()")
+                | ID&nbsp;
+                i.fa(v-class="iconType('id')")
+            th.clickable.nobr(v-on="click: sortByYear()")
+                | 期&nbsp;
+                i.fa(v-class="iconType('year')")
+    tr(v-repeat="cy: classYears" track-by="id")
+        td.text-center {{cy.id}}
+        td.text-center
+            a(href="/admin/class_year/{{cy.id}}") {{cy.year}}期

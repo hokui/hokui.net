@@ -1,0 +1,96 @@
+
+.sidebar-overlay
+    z-index: $sidebar-z - 1
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+
+.sidebar
+    position: fixed
+    float: 0
+    left: 0
+    right: auto
+    top: 0
+
+    z-index: $sidebar-z
+
+    height: 100%
+    min-height: 500px
+    padding-top: $header-height + 12px
+    padding-left: 24px
+    padding-right: 24px
+    padding-bottom: 6px
+
+
+    width: $sidebar-width
+
+    background-color: $bg-color
+    // border-right: solid 1px $color-lightgray
+
+
+    @media (max-width: $screen-break-point)
+        left: -$sidebar-width
+        padding-top: $header-narrow-height + 8px
+        background-color: #f9f9f9
+        &.sidebar-open
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px 0px
+
+    transition: left .4s ease
+
+    &.sidebar-open
+        left: 0
+
+
+    hr
+        margin: 24px 0
+        background-color: $text-color
+
+.sidebar-global-links
+    margin-top: 16px
+    margin-bottom: 24px
+    padding: 0
+
+    .sidebar-global-link
+        width: 100px
+        text-align: left
+        font-size: 16px
+        margin-bottom: 16px
+        a
+            +link-unstyled
+            color: $text-color
+            padding: 4px 2px
+
+            border-bottom: solid 2px transparent
+            &:hover
+                border-bottom-color: $color-green-strong
+    .sidebar-global-link-active
+        a
+            border-bottom-color: $color-green-strong
+
+
+
+.sidebar-links
+    a
+        +link-unstyled
+        color: $text-color
+
+
+    margin-bottom: 24px
+    padding: 0
+
+    .sidebar-link
+        width: 100px
+        text-align: left
+        font-size: 14px
+        margin-bottom: 8px
+        margin-left: 16px
+        a
+            padding: 4px 2px
+
+            border-bottom: solid 2px transparent
+
+    .sidebar-link-active
+        a
+            color: $color-gray

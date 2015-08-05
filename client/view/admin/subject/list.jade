@@ -1,0 +1,43 @@
+h1 教科
+
+loading(show="{{ !subjects }}")
+    
+p
+    a(href="/admin/subject/new") 新規作成
+
+table.table.table-condensed
+    tr
+        th 検索
+        td
+            input.control.control-small(
+                type="search"
+                v-model="transformOption.filter.search.text"
+                placeholder="正規表現が使えます")
+            input.control(
+                type="checkbox"
+                v-model="transformOption.filter.search.titleJa"
+                id="subjecyMatcTitleJa")
+            label.control-label(for="subjecyMatcTitleJa") 日本語名
+            input.control(
+                type="checkbox"
+                v-model="transformOption.filter.search.titleEn"
+                id="subjecyMatcTitleEn")
+            label.control-label(for="subjecyMatcTitleEn") 英語名
+
+table.table(v-if="subjects")
+    thead
+        tr
+            th.clickable.nobr(v-on="click: sortById()")
+                | ID&nbsp;
+                i.fa(v-class="iconType('id')")
+            th.clickable.nobr.text-left(v-on="click: sortByTitleJa()")
+                | 日本語&nbsp;
+                i.fa(v-class="iconType('titleJa')")
+            th.clickable.nobr.text-left(v-on="click: sortByTitleEn()")
+                | 英語&nbsp;
+                i.fa(v-class="iconType('titleEn')")
+    tr(v-repeat="subject: subjects" track-by="id")
+        td.text-center {{subject.id}}
+        td
+            a(href="/admin/subject/{{subject.id}}") {{subject.title_ja}}
+        td {{subject.title_en}}

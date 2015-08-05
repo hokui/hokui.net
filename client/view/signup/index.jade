@@ -1,0 +1,153 @@
+
+.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2.col-lg-6.col-lg-push-3
+    .text-center
+        h1 ユーザー登録申請
+        p.text-center
+            a(href="login") トップへ戻る
+
+        p
+            | 何か不明な点があれば
+            a(href="/help") ヘルプ
+            | の「登録に関して」を御覧ください。
+
+        div(v-if="!signupRequested")
+            p
+                | 「#[strong 携帯メール]」以外すべて入力してください。
+            
+        div(v-if="signupRequested")
+            p
+                strong
+                    | すでにお使いの端末にてユーザー登録申請を受け付けています。
+                    br
+                    | 登録申請に使用したELMSメールアドレス宛に認証メールを送信致しましたので、ご確認ください。
+                        
+
+    loading(show="{{!classYears}}")
+
+    form.row(v-if="classYears" v-on="submit: performSignup($event)" autocomplete="off")
+        .control-group
+            .col-sm-4
+                label.control-label(for="familyName") 苗字
+            .col-sm-8
+                input.control(
+                    v-model="user.family_name"
+                    placeholder="苗字"
+                    v-validate="required"
+                    id="familyName")
+                .control-help 必ず本名を入力してください
+
+        .control-group
+            .col-sm-4
+                label.control-label(for="givenName") 名前
+            .col-sm-8
+                input.control(
+                    v-model="user.given_name"
+                    placeholder="名前"
+                    v-validate="required"
+                    id="givenName")
+                .control-help 必ず本名を入力してください
+
+        .control-group
+            .col-sm-4
+                label.control-label(for="handleName") ハンドルネーム
+            .col-sm-8
+                input.control(
+                    v-model="user.handle_name"
+                    placeholder="ハンドルネーム"
+                    v-validate="required, spaceStartEnd"
+                    id="handleName")
+                .control-help 長すぎるとサイトのレイアウトの都合で表示が省略されることがあります
+                .control-error(v-repeat="e in errors.handle_name" v-show="errors.handle_name")
+                    | {{e}}
+                div(v-show="validation.user.handle_name.dirty")
+                    .control-error(v-show="validation.user.handle_name.spaceStartEnd")
+                        | 空白で始まるもしくは空白で終わる名前は設定できません
+
+        .control-group
+            .col-sm-4
+                label.control-label(for="birthday") 生年月日
+            .col-sm-8
+                datebind(value="{{@ user.birthday}}")
+
+        .control-group
+            .col-sm-4
+                label.control-label 期を選択
+            .col-sm-8
+                .row.row-grow
+                    .col-xs-3(v-repeat="cy: classYears")
+                        input.control(
+                            type="radio"
+                            v-model="user.class_year_id"
+                            value="{{cy.id}}"
+                            id="classYear{{cy.year}}")
+                        label.control-label(for="classYear{{cy.year}}") {{cy.year}}期
+
+
+        .control-group
+            .col-sm-4
+                label.control-label(for="email") ELMSメールアドレス
+            .col-sm-8
+                input.control(
+                    type="email"
+                    v-model="user.email"
+                    placeholder="example@eis.hokudai.ac.jp"
+                    v-validate="hokudaiMail"
+                    id="email")
+                .control-help @med.hokudai.ac.jpも使うことができます
+                div(v-show="validation.user.email.dirty")
+                    .control-error(v-show="validation.user.email.hokudaiMail")
+                        | @med.hokudai.ac.jp もしくは @eis.hokudai.ac.jp
+                        | のメールアドレスを入力してください
+                .control-error(v-repeat="e in errors.email" v-show="errors.email")
+                    | {{e}}
+
+        .control-group
+            .col-sm-4
+                label.control-label(for="password")
+                    | パスワード
+            .col-sm-8
+                input.control(
+                    type="password"
+                    v-model="user.password"
+                    placeholder="パスワード"
+                    v-validate="minLength: 4"
+                    id="password")
+                div(v-show="validation.user.password.dirty")
+                    .control-error(v-show="validation.user.password.minLength") 短すぎます
+
+        .control-group
+            .col-sm-4
+                label.control-label(for="reenteredPassword") パスワードの確認
+            .col-sm-8
+                input.control(
+                    type="password"
+                    v-model="reenteredPassword"
+                    placeholder="パスワードを再入力してください"
+                    v-validate="required, match: matchPassword"
+                    id="reenteredPassword")
+                div(v-show="validation.reenteredPassword.dirty")
+                    .control-error(v-show="validation.reenteredPassword.mat") パスワードが一致しません
+
+        .control-group
+            .col-sm-4
+                label.control-label(for="emailMobile") 携帯メール（任意）
+            .col-sm-8
+                input.control(
+                    type="email"
+                    v-model="user.email_mobile"
+                    placeholder="携帯メールアドレス"
+                    v-validate="mail"
+                    id="emailMobile")
+                .control-help 任意入力項目です
+                div(v-show="validation.user.email_mobile.dirty")
+                    .control-error(v-show="validation.user.email_mobile.mail") 不正なメールアドレスの形式です
+                .control-error(v-repeat="e in errors.email_mobile" v-show="errors.email_mobile")
+                    | {{e}}
+
+        .col-xs-12
+            hr
+
+        .col-sm-8.col-sm-push-4
+            button.btn.btn-green(type="submit" v-attr="disabled: invalid")
+                span(v-show="invalid") 入力に不備があります
+                span(v-show="valid") ユーザー登録の申請をする

@@ -1,0 +1,109 @@
+.col-sm-10.col-sm-push-1.col-md-8.col-md-push-2.col-lg-6.col-lg-push-3
+    h1 Help
+    p
+        | 問い合わせ先はすべて
+        a(href="mailto:hokui@gmail.com") hokui@gmail.com
+        | になります。本ページを読んだ上で解決しない場合はご連絡ください。
+    p
+        a(href="/") トップへ戻る
+
+    h2 ログインに関して
+    
+    table.qa
+        tr.qa-q-low
+            td.qa-icon
+                i.fa.fa-question
+            td
+                h3 パスワードを忘れてしまった
+        tr.qa-a-low
+            td.qa-icon
+                i.fa.fa-lightbulb-o
+            td
+                p
+                    a(href="/reset_password") パスワードのリセットページ
+                    | をご利用ください。リセットされたパスワードを使ってログインした後は
+                    strong 必ずプロフィールページからパスワードの再設定
+                    | を行ってください。
+
+    h2 登録に関して
+
+    table.qa
+        tr.qa-q-low
+            td.qa-icon
+                i.fa.fa-question
+            td
+                h3 どうやって登録するのか
+        tr.qa-a-low
+            td.qa-icon
+                i.fa.fa-lightbulb-o
+            td
+                p
+                    | 登録してログインできるようになるまでには、 以下のステップが必要です。
+                ol
+                    li
+                        a(href="/signup") ユーザー登録申請ページ
+                        | からユーザー登録申請を行う
+                    li
+                        | 申請に使用した#[strong ELMSメールアドレス]に、
+                        | メールアドレスの所持の確認のために認証メールが届く
+                    li
+                        | 認証メールに記載されたURLをクリックして登録申請を完了する
+                    li
+                        | 管理人が登録申請を確認し、本人確認が取れれば承認されてログインできるようになる
+
+    table.qa
+        tr.qa-q-low
+            td.qa-icon
+                i.fa.fa-question
+            td
+                h3 認証メールが来ない
+        tr.qa-a-low
+            td.qa-icon
+                i.fa.fa-lightbulb-o
+            td
+                p
+                    | なんらかの理由により認証メールを
+                    | 紛失してしまった、あるいは受信できなかった場合は
+                    a(href="/reactivation") 認証メールの再送信ページ
+                    | から認証メールの再送信を行うことができます。
+                    | 認証メールは登録申請に使用したELMSアドレスに送信されます。
+
+                p
+                    | #[code @ec.hokudai.ac.jp]からの移行手続きをしていないなどで
+                    | #[code @eis.hokudai.ac.jp]のアドレスを所持していない方は、
+                    | 北医ネットをご利用になることはできません。
+                p
+                    | ELMSメールアドレスの取得に関しては、情報基盤センターが対応しています。
+
+    table.qa
+        tr.qa-q-low
+            td.qa-icon
+                i.fa.fa-question
+            td
+                h3 誤ったメールアドレスで登録申請してしまったかもしれない
+        tr.qa-a-low
+            td.qa-icon
+                i.fa.fa-lightbulb-o
+            td
+                p
+                    a(href="mailto:hokui@gmail.com") hokui@gmail.com
+                    | までご連絡ください。個別に対応いたします。
+
+    table.qa
+        tr.qa-q-low
+            td.qa-icon
+                i.fa.fa-question
+            td
+                h3 認証メールのURLを踏んでしばらく経つのに、ログインできるようにならない
+        tr.qa-a-low
+            td.qa-icon
+                i.fa.fa-lightbulb-o
+            td
+                p
+                    | 管理人の承認が遅れている可能性があります。あまりにも長期間ログインできない状態が
+                    | 続く場合は#[a(href="mailto:hokui@gmail.com") hokui@gmail.com]まで
+                    | ご連絡ください。
+
+
+    p.text-center
+        a(href="/") トップへ戻る

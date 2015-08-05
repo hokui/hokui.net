@@ -1,0 +1,30 @@
+.toast
+    $y: 10px
+    $h: 30px
+    left: 50%
+    padding: 0 8px
+    min-height: $h
+    line-height: $h
+    z-index: 1000
+    position: fixed
+    min-width: 320px
+    max-width: 600px
+    width: 50%
+
+    text-align: center
+
+    cursor: pointer
+    background-color: rgba(#000, .6)
+    color: $color-lightgray
+    border-radius: $h / 2
+
+
+    bottom: - $h
+    transform: translateX(-50%) rotateX( 90deg )
+
+    transition: transform .3s ease, bottom .1s ease .3s
+    &.toast-open
+        bottom: $y
+        transform: translateX(-50%) rotateX( 0deg )
+
+        transition: transform .3s ease .1s, bottom .1s ease

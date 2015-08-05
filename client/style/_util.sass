@@ -1,0 +1,55 @@
+button.unstyled
+    +button-unstyled
+
+a.unstyled
+    +link-unstyled
+
+ul, ol
+    &.list-unstyled
+        +list-unstyled
+
+ul.list-inline
+    +clearfix
+    margin-left: 0
+    padding: 0
+    list-style: none
+    li
+        margin-right: 8px
+        float: left
+    li:last-child
+        margin-right: 0
+
+ul.list-nomb
+    margin-bottom: 0
+
+.text-left
+    text-align: left !important
+
+.text-center
+    text-align: center !important
+
+.text-right
+    text-align: right !important
+
+.spacer
+    width: 100%
+    height: 1px
+    margin-bottom: $line-height-computed / 2 - 1px
+
+.clickable
+    cursor: pointer
+
+.nobr
+    white-space: nowrap
+
+.allbr
+    word-break: break-all
+
+.text-caution
+    color: $color-red
+
+.unselectable
+    user-select: none
+    -moz-user-select: none
+    -webkit-user-select: none
+    -ms-user-select: none

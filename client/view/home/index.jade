@@ -1,0 +1,13 @@
+
+.col-sm-12.col-md-10.col-md-push-1
+
+    h1 Welcome to hokui.net
+    h2 おしらせ
+    loading(show="{{!newss}}")
+    ul.news(v-show="newss")
+        li(v-repeat="news: newss")
+            a.news-link(href="/news/{{news.id}}")
+                datebadge.news-date(value="{{news.created_at}}")
+                .news-title {{news.title}}
+
+    

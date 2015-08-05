@@ -1,0 +1,22 @@
+.main
+    +clearfix
+
+.wrap
+    min-height: 100%
+    position: relative
+    padding-top: $header-height
+    @media (max-width: $screen-break-point)
+        padding-top: $header-narrow-height
+
+    padding-bottom: $footer-height + 40px
+
+.content
+    +clearfix
+    padding-top: 12px
+    @media (max-width: $screen-break-point)
+        padding-top: 8px
+
+
+.content-with-sidebar
+    @media (min-width: $screen-break-point)
+        margin-left: $sidebar-width

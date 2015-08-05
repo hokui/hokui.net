@@ -1,0 +1,38 @@
+.datebadge
+    $size: $datebadge-size
+    $size-year: 12px
+    $size-md: $size - $size-year
+    $radius: 4px
+    position: relative
+    display: inline-block
+    width: $size
+    height: $size
+    user-select: none
+
+
+
+    .datebadge-year, .datebadge-monthdate
+        position: absolute
+        width: $size
+        text-align: center
+
+        color: $color-white
+        word-break: keep-all
+
+    .datebadge-year
+        height: $size-year
+        line-height: $size-year
+        top: 0
+        font-size: 12px
+        background-color: $color-blue-lgrayish
+        border-top-left-radius: $radius
+        border-top-right-radius: $radius
+
+    .datebadge-monthdate
+        height: $size-md
+        line-height: $size-md
+        top: $size-year
+        font-size: 14px
+        background-color: $color-blue-soft
+        border-bottom-left-radius: $radius
+        border-bottom-right-radius: $radius

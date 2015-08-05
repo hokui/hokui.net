@@ -1,0 +1,82 @@
+div(v-if="user")
+    p.text-caution
+        | ユーザー情報を強制的に変更します。
+    p
+        button.btn.btn-red(v-show="!editConfirmed" v-on="click: editConfirmed = true" v-attr="disabled: user.id === you.id")
+            span(v-if="user.id !== you.id") 編集を続行する
+            span(v-if="user.id === you.id") 自分自身の情報を変更することはできません
+        button.btn.btn-yellow(v-show="editConfirmed" v-on="click: editConfirmed = false") 編集をやめる
+
+    form.row(v-on="submit: performSave($event)" v-show="editConfirmed" autocomplete="off")
+        .control-group
+            .col-sm-3
+                label.control-label(for="familyName") 苗字
+            .col-sm-9
+                input.control(
+                    v-model="user.family_name"
+                    placeholder="苗字"
+                    v-validate="required"
+                    id="familyName")
+
+        .control-group
+            .col-sm-3
+                label.control-label(for="givenName") 名前
+            .col-sm-9
+                input.control(
+                    v-model="user.given_name"
+                    placeholder="名前"
+                    v-validate="required"
+                    id="givenName")
+
+        .control-group
+            .col-sm-3
+                label.control-label(for="handleName") ハンドルネーム
+            .col-sm-9
+                input.control(
+                    v-model="user.handle_name"
+                    placeholder="ハンドルネーム"
+                    v-validate="required, spaceStartEnd"
+                    id="handleName")
+                .control-help
+                    | 適切ではない名前が設定されたユーザーが変更の対象となります
+                .control-error(v-repeat="e in errors.handle_name" v-show="errors.handle_name")
+                    | {{e}}
+                div(v-show="validation.user.handle_name.dirty")
+                    .control-error(v-show="validation.user.handle_name.spaceStartEnd")
+                        | 空白で始まるもしくは空白で終わる名前は設定できません
+
+        .control-group
+            .col-sm-3
+                label.control-label(for="email") ELMSメール
+            .col-sm-9
+                input.control(
+                    type="email"
+                    v-model="user.email"
+                    placeholder="example@eis.hokudai.ac.jp"
+                    v-validate="hokudaiMail"
+                    id="email")
+                div(v-show="validation.user.email.dirty")
+                    .control-error(v-show="validation.user.email.hokudaiMail")
+                        | @med.hokudai.ac.jp もしくは @eis.hokudai.ac.jp のみ有効
+                .control-error(v-repeat="e in errors.email" v-show="errors.email")
+                    | {{e}}
+                    
+
+        .control-group(v-if="user.approval_state === 'approved'")
+            .col-sm-3 管理者
+            .col-sm-9
+                input.control(
+                    type="checkbox"
+                    name="keepLogin"
+                    v-model="user.admin"
+                    id="admin")
+                label.control-label(for="admin") 管理者権限
+                .control-help
+                    | 今、あなたのモラルが試されています。
+        .col-xs-12
+            hr
+
+        .col-sm-9.col-sm-push-4
+            button.btn.btn-red(type="submit" v-attr="disabled: invalid")
+                span(v-show="invalid") 入力に不備があります
+                span(v-show="valid") ユーザー情報を上書きする

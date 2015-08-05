@@ -1,0 +1,54 @@
+.header
+    .header-title(v-class="'header-title-pushed': active")
+        a(href="/")
+            | H
+            span.accent-character O
+            | KUI.NET
+            
+    .header-sidebar-toggler(v-if="active")
+        button.unstyled(v-on="click: sidebarToggle()" )
+            .baricon.baricon-header(v-class="'baricon-bars': !isSidebarOpen, 'baricon-times': isSidebarOpen")
+                .baricon-bar
+                .baricon-bar
+                .baricon-bar
+                    
+    .header-links(v-if="active")
+        .header-link(v-repeat="item: items" v-class="'header-link-active': activeItemIndex == $index")
+            a(href="{{item.href}}")
+                i.fa.fa-fw(v-class="'fa-'+item.icon")
+                | {{item.label}}
+
+            
+.wrap
+    .sidebar-overlay(v-on="mousedown: closeSidebar" v-show="isSidebarOpen")
+    
+    .sidebar(v-class="'sidebar-open': isSidebarOpen" v-show="usingSidebar || responsive.xs || responsive.sm")
+        .sidebar-global-menu.hidden-md-lg
+            .sidebar-global-links
+                .sidebar-global-link(v-repeat="item: items" v-class="'sidebar-global-link-active': activeItemIndex == $index")
+                    a(href="{{item.href}}")
+                        i.fa.fa-fw(v-class="'fa-'+item.icon")
+                        | {{item.label}}
+
+            hr(v-if="usingSidebar")
+        .sidebar-content(v-view="sidebar_content")
+    
+
+    .content(v-view="content" v-class="'content-with-sidebar': usingSidebar")
+    
+    .footer
+        .footer-items
+            .footer-item-text
+                a(href="/") Top
+            .footer-item-text
+                a(href="/help") Help
+            .footer-item-text(v-show="active")
+                a(href="/credit") Credit
+            .footer-item-text Developing on
+            a.footer-item.tooltip.tooltip-top(tooltip="Github" href="https://github.com/hokui/hokui.net" target="_blank")
+                img(src=require("../../assets/octocat.png"))
+            .footer-item-text Powered by
+            a.footer-item.tooltip.tooltip-top(tooltip="Ruby on Rails" href="http://rubyonrails.org/" target="_blank")
+                img(src=require("../../assets/rails.png"))
+            a.footer-item.tooltip.tooltip-top(tooltip="Vue.js" href="http://vuejs.org/" target="_blank")
+                img(src=require("../../assets/vue.png"))

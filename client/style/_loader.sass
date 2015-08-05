@@ -1,0 +1,44 @@
+@keyframes loader-rotate
+    from
+        transform: rotate(0deg)
+    to
+        transform: rotate(360deg)
+
+
+.loader
+    $size: 60px
+    $weight: 2px
+
+    position: fixed
+    z-index: $loader-z
+    left: 50%
+    top: 50%
+    margin-left: -$size/2
+    margin-top: -$size/2
+    border-width: $weight
+    border-style: solid
+    border-color: transparent
+    border-top-color: $color-blue-blight
+    width: $size
+    height: $size
+    border-radius: $size / 2
+
+    animation: loader-rotate .3s linear infinite
+
+    display: none
+    &.loader-active
+        display: block
+
+.loader-overlay
+    pointer-events: none
+    z-index: $loader-overlay-z
+    background-color: rgba(#fff, .3)
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+
+    display: none
+    &.overlay-active
+        display: block

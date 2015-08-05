@@ -1,0 +1,45 @@
+.col-sm-12.col-md-10.col-md-push-1
+    h1 Profile
+    p
+        | #[strong 氏名]・#[strong ELMSメールアドレス]を変更したい場合は、
+        a(href="mailto:hokui@gmail.com") hokui@gmail.com
+        | までご連絡ください。
+
+    form(v-on="submit: performSave($event)")
+        .control-group
+            .col-sm-3.col-no-gutter
+                label.control-label(for="handleName") ハンドルネーム
+            .col-sm-9.col-no-gutter
+                input.control(
+                    v-model="user.handle_name"
+                    placeholder="ハンドルネーム"
+                    v-validate="required, sapceStartEnd"
+                    id="handleName")
+                .control-error(v-show="validation.user.handle_name.required") 入力してください
+                div(v-show="validation.user.handle_name.dirty")
+                    .control-error(v-show="validation.user.handle_name.sapceStartEnd")
+                        | 空白で始まるもしくは空白で終わる名前は設定できません
+                .control-error(v-repeat="e in errors.handle_name" v-show="errors.handle_name")
+                    | {{e}}
+                
+        .control-group
+            .col-sm-3.col-no-gutter
+                label.control-label(for="birthday") 生年月日
+            .col-sm-9.col-no-gutter
+                datebind(value="{{@ user.birthday}}")
+
+        .control-group
+            .col-sm-3.col-no-gutter
+                label.control-label 設定（ブラウザごと）
+            .col-sm-9.col-no-gutter
+                input.control(
+                    type="checkbox"
+                    v-model="useTargetBlank"
+                    id="useTargetBlank")
+                label.control-label(for="useTargetBlank") 資料ページでプレビューを押したとき新規タブで開く
+
+        hr
+
+        .row
+            .col-sm-9.col-sm-push-3.col-no-gutter
+                button.btn.btn-green(type="submit" v-attr="disabled: invalid") 更新する

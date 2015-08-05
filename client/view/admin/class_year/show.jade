@@ -1,0 +1,64 @@
+p
+    a(href="/admin/class_year") 一覧へ戻る
+    
+loading(show="{{!(cy || resolved)}}")
+
+p(v-show="!cy && resolved") 該当する学年が見つかりませんでした。
+
+div(v-if="cy")
+    h2 {{cy.year}}期
+    .tabs
+        .tab(v-class="'tab-active': viewMode === 'detail'")
+            a(href="/admin/class_year/{{cy.id}}") 標準
+        .tab(v-class="'tab-active': viewMode === 'json'")
+            a(href="/admin/class_year/{{cy.id}}/json") JSON
+        .tab(v-class="'tab-active': viewMode === 'edit'")
+            a(href="/admin/class_year/{{cy.id}}/edit") 編集
+        .tab(v-class="'tab-active': viewMode === 'delete'")
+            a(href="/admin/class_year/{{cy.id}}/delete") 削除
+
+    .spacer
+    
+
+    div(v-show="viewMode === 'json'")
+        pre
+            code {{cy | json}}
+    
+    table.table(v-show="viewMode === 'detail'")
+        tr
+            th ID
+            td {{cy.id}}
+        tr
+            th 学年
+            td {{cy.year}}
+        tr
+            th 作成日時
+            td {{cy.created_at}}
+        tr
+            th 更新日時
+            td {{cy.updated_at}}
+            
+    .row(v-show="viewMode === 'delete'")
+        form(v-on="submit: performDelete($event)" autocomplete="off")
+            .control-group
+                .col-sm-3
+                    label.control-label 確認用コード
+                .col-sm-9
+                    .control-static.unselectable
+                        code {{code}}
+            .control-group
+                .col-sm-3
+                    label.control-label(for="confirmedCode") コード入力
+                .col-sm-9
+                    input.control(
+                        v-model="confirmedCode"
+                        v-validate="match: matchCode"
+                        placeholder="確認のために上のコードを入力してください"
+                        id="confirmedCode")
+            .control-group
+                .col-sm-9.col-sm-push-3
+                    button.btn.btn-red(type="submit" v-attr="disabled: invalid") 削除する
+
+            
+div(v-show="viewMode === 'edit'")
+    div(v-view="admin_cy_edit")

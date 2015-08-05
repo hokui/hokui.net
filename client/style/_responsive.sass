@@ -1,0 +1,65 @@
+.responsive-width-getter
+    position: fixed
+    visibility: hidden
+    pointer-events: none
+    @media (max-width: $screen-xs-max)
+        z-index: 0
+    @media (min-width: $screen-xs-max) and (max-width: $screen-sm-max)
+        z-index: 1
+    @media (min-width: $screen-sm-max) and (max-width: $screen-md-max)
+        z-index: 2
+    @media (min-width: $screen-md-max)
+        z-index: 3
+
+
+.hidden-xs
+    @media (max-width: $screen-xs-max)
+        display: none !important
+
+.hidden-sm
+    @media (min-width: $screen-xs-max) and (max-width: $screen-sm-max)
+        display: none !important
+
+.hidden-md
+    @media (min-width: $screen-sm-max) and (max-width: $screen-md-max)
+        display: none !important
+
+.hidden-lg
+    @media (min-width: $screen-md-max)
+        display: none !important
+
+
+.hidden-xs-sm
+    @media (max-width: $screen-sm-max)
+        display: none !important
+
+.hidden-xs-sm-md
+    @media (max-width: $screen-md-max)
+        display: none !important
+
+.hidden-sm-md-lg
+    @media (min-width: $screen-xs-max)
+        display: none !important
+
+.hidden-md-lg
+    @media (min-width: $screen-sm-max)
+        display: none !important
+
+
+.shown-xs
+    @extend .hidden-sm-md-lg
+
+.shown-xs-sm
+    @extend .hidden-md-lg
+
+.shown-xs-sm-md
+    @extend .hidden-lg
+
+.shown-sm-md-lg
+    @extend .hidden-xs
+
+.shown-md-lg
+    @extend .hidden-xs-sm
+
+.shown-lg
+    @extend .hidden-xs-sm-md

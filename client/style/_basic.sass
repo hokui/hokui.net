@@ -1,0 +1,84 @@
+*
+    box-sizing: border-box
+    &:before, &:after
+        box-sizing: border-box
+
+html, body, #app
+    height: 100%
+    min-height: 100%
+
+
+html
+    font-family: 'Source Sans Pro', 'Helvetica Neue', "Hiragino Kaku Gothic ProN", Meiryo, Arial, sans-serif
+    font-size: $font-size-base
+    color: $text-color
+    background: $bg-color
+    overflow: none scroll
+
+a
+    color: $link-color
+    text-decoration: none
+    font-weight: 400
+    &:hover
+        text-decoration: underline
+
+p
+    line-height: $line-height-base
+    margin: 0 0 ($line-height-computed / 2)
+
+pre
+    margin: 0 0 $line-height-computed / 2
+
+code
+    font-family: monaco, consolas, Courier, monospace
+
+pre > code
+    font-size: 14px
+    display: block
+    overflow-x: auto
+    -webkit-text-size-adjust: none
+
+
+:not(pre) > code
+    margin-left: 3px
+    margin-right: 3px
+    padding-right: 4px
+    padding-left: 4px
+    font-size: .9em
+    background-color: $color-green-pale
+    border-radius: 4px
+
+h1, h2, h3, h4, h5, h6,
+    font-weight: 600
+    line-height: 1.2
+
+// # NOTE: normalize.css heading font-size
+// h1: 2em
+// h2: 1.5em
+// h3: 1.17em
+// h4: 1em
+// h5: 0.83em
+// h6: 0.67em
+
+h1, h2, h3
+    margin-top: $line-height-computed
+    margin-bottom: ($line-height-computed / 2)
+
+h4, h5, h6
+    margin-top: ($line-height-computed / 2)
+    margin-bottom: ($line-height-computed / 2)
+
+
+hr
+    border: 0
+    height: 1px
+    background-color: $color-lightgray
+    margin: 0 0 ($line-height-computed / 2)
+
+ul, ol
+    margin: 0 0 $line-height-computed / 2
+    padding-left: 24px
+
+h1.page-title
+    font-weight: 100
+    font-size: 2.5em

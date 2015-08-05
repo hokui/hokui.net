@@ -1,0 +1,35 @@
+div
+    div(v-if="!editing")
+        p
+            a(href="/admin/class_year") 一覧へ戻る
+        h2(v-if="cy") 学年を新規作成する
+    form.row(v-if="cy" v-on="submit: performSave($event)" autocomplete="off")
+        .control-group
+            .col-sm-3
+                label.control-label(for="cyYear") 期
+            .col-sm-9
+                input.control(
+                    type="number"
+                    integer
+                    v-model="cy.year"
+                    placeholder="数値のみ"
+                    v-validate="min: 91, max: 149"
+                    min="91"
+                    max="149"
+                    id="cyYear")
+                .control-help 91以上、149以下に設定してください
+                .control-error(v-repeat="e in errors.year" v-show="errors.year")
+                    | {{e}}
+                div(v-show="validation.cy.year.dirty")
+                    .control-error(v-show="validation.cy.year.min")
+                        | 小さすぎます
+                    .control-error(v-show="validation.cy.year.max")
+                        | 大きすぎます
+
+        .col-xs-12
+            hr
+
+        .col-sm-9.col-sm-push-3
+            button.btn.btn-green(type="submit" v-attr="disabled: invalid")
+                span(v-show="invalid") 入力に不備があります
+                span(v-show="valid") 保存する

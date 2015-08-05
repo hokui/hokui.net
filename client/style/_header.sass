@@ -1,0 +1,91 @@
+.header
+    position: fixed
+    top: 0
+    width: 100%
+    margin: 0
+    padding: 0
+    z-index: $header-z
+    height: $header-height
+
+    @media (max-width: $screen-break-point)
+        height: $header-narrow-height
+
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.25)
+    background-color: white
+
+.header-title
+    text-align: center
+    width: 100%
+    height: $header-narrow-height
+    line-height: $header-narrow-height
+    font-size: 24px
+
+    @media (min-width: $screen-break-point)
+        height: $header-height
+        line-height: $header-height
+        font-size: 32px
+
+    a
+        color: $text-color
+        +link-unstyled
+
+    .accent-character
+        color: $color-red
+
+.header-title-pushed
+    @media (min-width: $screen-break-point)
+        width: $sidebar-width
+
+
+
+.header-sidebar-toggler
+    position: absolute
+    top: 0
+    left: $grid-gutter / 2
+    height: $header-narrow-height
+    line-height: $header-narrow-height
+    @media (min-width: $screen-break-point)
+        display: none
+
+
+.baricon.baricon-header
+    $size: 28px
+    margin-top: ($header-narrow-height - $size) / 2
+    +baricon-size($size)
+    +baricon-color($text-color)
+
+
+
+
+.header-links
+    @media (max-width: $screen-break-point)
+        display: none
+
+    +clearfix
+    position: absolute
+    top: 0
+    right: 0
+    // left: $sidebar-width
+    padding: 0 12px
+
+    .header-link
+        float: left
+        font-size: 18px
+        margin-left: 16px
+        height: $header-height
+        line-height: $header-height
+        a
+            +link-unstyled
+            color: $text-color
+            padding: 4px 2px
+
+            border-bottom-style: solid
+            border-bottom-color: $color-green-strong
+            border-bottom-width: 0px
+            transition: border-bottom-width .2s ease
+            &:hover
+                border-bottom-width: 2px
+
+    .header-link-active
+        a
+            border-bottom-width: 2px

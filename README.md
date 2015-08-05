@@ -36,3 +36,17 @@ bundle exec rails s -p 3001
 ```
 
 ## フロントエンド
+### 設計
+* `client/` ... クライントのソースコード
+  * `assets/` ... 静的ファイル
+  * `lib/` ... ビジネスロジックっぽいものを集める
+  * `component/` ... 共通で使用するVue componentを宣言
+  * `view/` ... ルーティングに応じて`v-view`にバインドされるコンポーネントを配置
+  * `style/` ... スタイルシート。`index.sass`から開始
+* `build/` ... ビルド済みパッケージの出力場所。dev/prodで共通
+
+
+### commands
+* `npm start` ... 開発サーバー起動。`http://localhost:8080`
+* `npm run dev` ... デバッグでビルド
+* `npm run prod` ... プロダクションビルド

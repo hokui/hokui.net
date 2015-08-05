@@ -1,0 +1,93 @@
+
+
+.btn
+    appearance: none
+    -webkit-appearance: none
+    -moz-appearance: none
+    // outline: none
+
+
+    display: inline-block
+    margin-bottom: 0
+    font-weight: normal
+    text-align: center
+    v-align: middle
+    touch-action: manipulation
+    cursor: pointer
+    background-image: none
+    border: 1px solid transparent
+    user-select: none
+
+    padding: 6px 12px
+    font-size: 16px
+    line-height: $line-height-base
+    border-radius: 2px
+
+    transition-property: background-color, color, border-color
+    transition-duration:  .2s
+    transition-timing-function: ease-in-out
+
+    &:hover,
+    &:focus,
+        text-decoration: none
+
+
+.btn-block
+    display: block
+    width: 100%
+
+
+=make-btn($color, $bg, $active-bg, $border, $active-border)
+    color: $color
+    background-color: $bg
+    border: 1px solid $border
+
+    &:active
+        background-image: none
+
+    &:hover,
+    &:focus,
+    &:active
+        background-color: $active-bg
+        border-color: $active-border
+
+
+=make-btn-ghost($color)
+    color: $color
+    background-color: transparent
+    border: 1px solid $color
+
+    &:active
+        background-image: none
+
+    &:hover,
+    &:focus,
+    &:active
+        color: $bg-color
+        background-color: $color
+        border-color: $color
+
+.btn
+    &:not(.btn-ghost)
+        +make-btn($color-black, $color-lightgray, $color-gray, $color-darkgray, $color-darkgray)
+    &.btn-ghost
+        +make-btn-ghost($color-darkgray)
+
+.btn-green
+    &:not(.btn-ghost)
+        +make-btn($color-white, $color-green-deep, $color-green-dark, $color-green-deep, $color-green-dark)
+    &.btn-ghost
+        +make-btn-ghost($color-green-deep)
+
+.btn-red
+    &:not(.btn-ghost)
+        +make-btn($color-white, $color-red, $color-red-deep, $color-red, $color-red-deep)
+    &.btn-ghost
+        +make-btn-ghost($color-red)
+
+
+.btn-yellow
+    &:not(.btn-ghost)
+        +make-btn($color-white, $color-yellow, $color-yellow-strong, $color-yellow, $color-yellow-strong)
+    &.btn-ghost
+        +make-btn-ghost($color-yellow)

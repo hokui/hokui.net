@@ -1,0 +1,5 @@
+.dialog(v-class="'dialog-open': open")
+    p {{open}}
+    content
+
+.dialog-overlay(v-show="open" v-on="mousedown: open = !open")
