@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
 
   after_create :send_activation_needed_email!
   after_create :register_ml_member!
+  before_destroy :unregister_ml_member!
 
   scope :waiting_approval,      -> { where(activation_state: "active", approval_state: "waiting") }
   scope :active_approved_users, -> { where(activation_state: "active", approval_state: "approved") }
@@ -97,6 +98,11 @@ class User < ActiveRecord::Base
     list.get(:add_member, { member_id: member.id })
     self.ml_member_id = member.id
     self.save!
+  end
+
+  def unregister_ml_member!
+    # member = MailingList::Member.where id: self.ml_member_id
+    # member.destroy!
   end
 
   class << self
