@@ -7,5 +7,5 @@ module.exports = Vue.extend
         performLogout: ->
             @$auth.logout()
             Vue.nextTick =>
-                @$toast 'ログアウトしました。'
                 @$router.go '/', true
+                @$toast 'ログアウトしました。'

@@ -1,0 +1,54 @@
+p
+    a(href="/admin/news") 一覧へ戻る
+    
+loading(show="{{!(news || resolved)}}")
+
+p(v-show="!news && resolved") 該当する学年が見つかりませんでした。
+
+div(v-if="news")
+    h2 {{news.title}}
+    .tabs
+        .tab(v-class="'tab-active': viewMode === 'detail'")
+            a(href="/admin/news/{{news.id}}") 標準
+        .tab(v-class="'tab-active': viewMode === 'json'")
+            a(href="/admin/news/{{news.id}}/json") JSON
+        .tab(v-class="'tab-active': viewMode === 'edit'")
+            a(href="/admin/news/{{news.id}}/edit") 編集
+        .tab(v-class="'tab-active': viewMode === 'delete'")
+            a(href="/admin/news/{{news.id}}/delete") 削除
+
+    .spacer
+    
+
+    div(v-if="viewMode === 'json'")
+        pre
+            code {{news | json}}
+    div(v-if="viewMode === 'detail'")
+        table.table
+            tr
+                th ID
+                td {{news.id}}
+            tr
+                th タイトル
+                td {{news.title}}
+            tr
+                th 本文
+                td
+                    button.btn.btn-blue.btn-small(v-on="click: previewing = true") プレビュー
+            tr
+                th 作成日時
+                td {{news.created_at}}
+            tr
+                th 更新日時
+                td {{news.updated_at}}
+            
+        modal(open="{{@ previewing}}")
+            pre
+                code {{news.text}}
+            
+    .row(v-if="viewMode === 'delete'")
+        model-delete(model="{{news}}" next="/admin/news")
+
+            
+div(v-show="viewMode === 'edit'")
+    div(v-view="admin_edit")

@@ -3,30 +3,26 @@ Vue = require 'vue'
 config = require '../../config'
 
 parseError = require '../../lib/parse_error'
-setting = require '../../lib/setting'
+signupRequested = (require '../../lib/store').local.signupRequested
 
 ClassYear = require '../../resource/class_year'
 
 module.exports = Vue.extend
     template: do require './index.jade'
     data: ->
-        defaultBirthday = ->
-            now = new Date
-            new Date(now.getFullYear() - 19, 0, 1)
-
         errors: {}
         classYears: null
         user:
             family_name: ''
             given_name: ''
             handle_name: ''
-            birthday: defaultBirthday()
+            birthday: ''+((new Date).getFullYear()-19)+'-01-01'
             email: ''
             email_mobile: ''
             class_year_id: null
             password: ''
         reenteredPassword: ''
-        signupRequested: setting.signupRequested.get()
+        signupRequested: signupRequested.get()
 
     computed:
         matchPassword: ->
@@ -50,13 +46,13 @@ module.exports = Vue.extend
 
             @$http
             .post "#{config.api}/users", @user, =>
-                setting.signupRequested.set true
+                @signupRequested.set true
                 @$router.go '/login'
                 @$toast 'ユーザー登録申請を受け付けました'
             .error (data)->
                 @errors = parseError data.errors
                 @$toast '入力にエラーがあります'
-            .always ->
+            .always =>
                 @$loader false
 
 

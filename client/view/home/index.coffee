@@ -1,10 +1,8 @@
 Vue = require 'vue'
+marked = require 'marked'
+
 config = require '../../config'
-
 News = require '../../resource/news'
-
-setting = require '../../lib/setting'
-
 
 module.exports = Vue.extend
     template: do require './index.jade'
@@ -12,16 +10,17 @@ module.exports = Vue.extend
         newss: null
         user: @$auth.user()
         showNews: false
+        previewing: false
+
+        selectedNews: null
+        selectedNewsContent: ''
+
     methods:
-        toggleNewsDialog: ->
-            @showNews = not @showNews
+        preview: (news)->
+            @previewing = true
+            @selectedNews = news
+            @selectedNewsContent = marked news.text
 
-
-    ready: ->
-        News.get (items)=>
-            @newss = items
-
-    components:
-        dialog:
-            props: ['open']
-            template: do require './d.jade'
+    created: ->
+        @$resolve
+            newss: News.get()

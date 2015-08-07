@@ -1,12 +1,13 @@
 require 'normalize.css/normalize.css'
 require 'font-awesome/css/font-awesome.css'
-(require 'google-fonts').add 'Source Sans Pro': true
 
 
 if /localhost/.test location.host
     require 'webpack-dev-server/client?http://localhost:9000'
 
-require('es6-promise').polyfill()
+# require('es6-promise').polyfill()
+window._Promise = window.Promise
+window.Promise = require 'bluebird'
 require 'vue'
 require 'vue-validator'
 require 'vue-resource'

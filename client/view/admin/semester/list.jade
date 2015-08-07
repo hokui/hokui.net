@@ -1,0 +1,64 @@
+h1 学期
+p 各学年の学期ごとの履修教科のマップです
+
+loading(show="{{ !semesters || !subjects || !classYears }}")
+    
+p
+    a(href="/admin/semester/new") 新規作成
+
+table.table.table-condensed
+    tr(v-if="classYears")
+        th 入学期
+        td
+            ul.list-inline.list-nomb
+                li
+                    .tip(v-on="click: tO.filter.classYearId = 0" v-class="'tip-active': tO.filter.classYearId === 0") すべて
+                li(v-repeat="cy: classYears")
+                    .tip(v-on="click: tO.filter.classYearId = cy.id" v-class="'tip-active': tO.filter.classYearId === cy.id") {{cy.year}}期
+    tr
+        th 学年
+        td
+            ul.list-inline.list-nomb
+                li
+                    .tip(v-on="click: tO.filter.grade = null" v-class="'tip-active': tO.filter.grade === null") すべて
+                li(v-repeat="grade: gradeFilters")
+                    .tip(v-on="click: tO.filter.grade = grade" v-class="'tip-active': tO.filter.grade === grade") {{grade}}年
+
+    tr
+        th 学期
+        td
+            ul.list-inline.list-nomb
+                li
+                    .tip(v-on="click: tO.filter.semester = null" v-class="'tip-active': tO.filter.semester === null") すべて
+                li(v-repeat="semesterFilters")
+                    .tip(v-on="click: tO.filter.semester = $key" v-class="'tip-active': tO.filter.semester === $key") {{$value}}
+
+    tr
+        th 検索
+        td
+            input.control.control-small(
+                type="search"
+                v-model="searchText"
+                placeholder="教科名で検索します。正規表現が使えます")
+
+
+table.table(v-if="semesters && classYears && subjects")
+    thead
+        tr
+            th.clickable.nobr.unselectable(v-on="click: sortById()")
+                | ID&nbsp;
+                i.fa(v-class="iconType('id')")
+            th.no-br.text-left 入学期
+            th.no-br.text-left 学期
+            th.text-left 履修教科
+    tr(v-repeat="semester: semesters" track-by="id")
+        td.text-center {{semester.id}}
+        td.no-br
+            | {{semYear(semester)}}期
+        td.no-br
+            a(href="/admin/semester/{{semester.id}}")
+                |{{semName(semester)}}
+        td
+            ul.list-inline.list-nomb
+                li(v-repeat="subject: semSubjects(semester)")
+                    | {{subject.title_ja}}

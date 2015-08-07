@@ -6,7 +6,6 @@
     -moz-appearance: none
     // outline: none
 
-
     display: inline-block
     margin-bottom: 0
     font-weight: normal
@@ -18,9 +17,9 @@
     border: 1px solid transparent
     user-select: none
 
-    padding: 6px 12px
+    padding: 6px 8px
     font-size: 16px
-    line-height: $line-height-base
+    line-height: 20px
     border-radius: 2px
 
     transition-property: background-color, color, border-color
@@ -31,6 +30,12 @@
     &:focus,
         text-decoration: none
 
+    &[disabled]
+        +disabled
+
+.btn-small
+    padding: 4px 4px
+    font-size: 14px
 
 .btn-block
     display: block
@@ -85,9 +90,14 @@
     &.btn-ghost
         +make-btn-ghost($color-red)
 
-
 .btn-yellow
     &:not(.btn-ghost)
         +make-btn($color-white, $color-yellow, $color-yellow-strong, $color-yellow, $color-yellow-strong)
     &.btn-ghost
         +make-btn-ghost($color-yellow)
+
+.btn-blue
+    &:not(.btn-ghost)
+        +make-btn($color-white, $color-blue, $color-blue-strong, $color-blue, $color-blue-strong)
+    &.btn-ghost
+        +make-btn-ghost($color-blue)

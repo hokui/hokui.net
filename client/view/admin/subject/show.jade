@@ -3,7 +3,7 @@ p
     
 loading(show="{{!(subject || resolved)}}")
 
-p(v-show="!subject && resolved") 該当する学年が見つかりませんでした。
+p(v-if="!subject && resolved") 該当する学年が見つかりませんでした。
 
 div(v-if="subject")
     h2 {{subject.title_ja}}
@@ -20,11 +20,11 @@ div(v-if="subject")
     .spacer
     
 
-    div(v-show="viewMode === 'json'")
+    div(v-if="viewMode === 'json'")
         pre
             code {{subject | json}}
     
-    table.table(v-show="viewMode === 'detail'")
+    table.table(v-if="viewMode === 'detail'")
         tr
             th ID
             td {{subject.id}}
@@ -41,27 +41,9 @@ div(v-if="subject")
             th 更新日時
             td {{subject.updated_at}}
     
-    .row(v-show="viewMode === 'delete'")
-        form(v-on="submit: performDelete($event)" autocomplete="off")
-            .control-group
-                .col-sm-3
-                    label.control-label 確認用コード
-                .col-sm-9
-                    .control-static.unselectable
-                        code {{code}}
-            .control-group
-                .col-sm-3
-                    label.control-label(for="confirmedCode") コード入力
-                .col-sm-9
-                    input.control(
-                        v-model="confirmedCode"
-                        v-validate="match: matchCode"
-                        placeholder="確認のために上のコードを入力してください"
-                        id="confirmedCode")
-            .control-group
-                .col-sm-9.col-sm-push-3
-                    button.btn.btn-red(type="submit" v-attr="disabled: invalid") 削除する
+    .row(v-if="viewMode === 'delete'")
+        model-delete(model="{{subject}}" next="/admin/subject")
 
-            
+
 div(v-show="viewMode === 'edit'")
-    div(v-view="admin_subject_edit")
+    div(v-view="admin_edit")

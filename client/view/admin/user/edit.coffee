@@ -6,6 +6,7 @@ parseError = require '../../../lib/parse_error'
 module.exports = Vue.extend
     template: do require './edit.jade'
     data: ->
+        you: @$auth.user()
         classYears: []
         user: null
         you: @$auth.user()
@@ -33,9 +34,10 @@ module.exports = Vue.extend
 
     ready: ->
         @editing = true
-        User.find id: (Number @$context().params.id), (item)=>
-            @resolved = true
-            @user = item.$copy()
+        if id = Number @$context().params.id
+            User.find id: id, (item)=>
+                @resolved = true
+                @user = item.$copy()
 
-            @$watch 'user.handle_name', (e)=>
-                @errors.handle_name = null
+                @$watch 'user.handle_name', (e)=>
+                    @errors.handle_name = null

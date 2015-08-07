@@ -20,6 +20,14 @@ module.exports = Vue.extend
             href: '/admin/subject'
             label: '教科'
             active: /^\/admin\/subject/
+        ,
+            href: '/admin/semester'
+            label: '学期'
+            active: /^\/admin\/semester/
+        ,
+            href: '/admin/news'
+            label: 'お知らせ'
+            active: /^\/admin\/news/
         ]
         activeItemIndex: -1
 

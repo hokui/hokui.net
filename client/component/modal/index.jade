@@ -1,0 +1,10 @@
+.modal-overlay(v-if="open" v-on="mousedown: close()")
+
+.modal(v-if="open" v-transition="modal" v-on="mousedown: block($event)")
+    .modal-close
+        button(v-on="click: close()")
+            i.fa.fa-times
+    .modal-header(v-if="title")
+        h2 {{title}}
+    .modal-content
+            content

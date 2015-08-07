@@ -2,60 +2,66 @@ Vue = require 'vue'
 
 Subject = require '../../../resource/subject'
 
-setting = require '../../../lib/setting'
+store = require '../../../lib/store'
+transformOption = store.session.subjectTransformOption
 
 module.exports = Vue.extend
     template: do require './list.jade'
     data: ->
         subjects: null
 
-        transformOption: setting.subjectTransformOption.get()
+        tO: transformOption.get()
 
     methods:
         refresh: ->
-            Subject.transformed @transformOption
+            Subject.transformed @tO
             , (items)=>
                 @subjects = items
 
         sortById: ->
-            if @transformOption.sort is 'id'
-                @transformOption.inverted = not @transformOption.inverted
+            if @tO.sort is 'id'
+                @tO.inverted = not @tO.inverted
             else
-                @transformOption.sort = 'id'
-                @transformOption.inverted = false
+                @tO.sort = 'id'
+                @tO.inverted = false
 
             @refresh()
 
         sortByTitleJa: ->
-            if @transformOption.sort is 'titleJa'
-                @transformOption.inverted = not @transformOption.inverted
+            if @tO.sort is 'titleJa'
+                @tO.inverted = not @tO.inverted
             else
-                @transformOption.sort = 'titleJa'
-                @transformOption.inverted = false
+                @tO.sort = 'titleJa'
+                @tO.inverted = false
 
             @refresh()
 
         sortByTitleEn: ->
-            if @transformOption.sort is 'titleEn'
-                @transformOption.inverted = not @transformOption.inverted
+            if @tO.sort is 'titleEn'
+                @tO.inverted = not @tO.inverted
             else
-                @transformOption.sort = 'titleEn'
-                @transformOption.inverted = false
+                @tO.sort = 'titleEn'
+                @tO.inverted = false
 
             @refresh()
 
         iconType: (name)->
-            if @transformOption.sort is name
-                if @transformOption.inverted
+            if @tO.sort is name
+                if @tO.inverted
                     'fa-caret-down'
                 else
                     'fa-caret-up'
             else
                 'fa-sort'
 
+        applyFilter: (subject)->
+            tO = store.session.semesterTransformOption.get()
+            tO.filter.subjectIds = [subject.id]
+            store.session.semesterTransformOption.set tO
+
     ready: ->
-        @$watch 'transformOption', (v)->
-            setting.subjectTransformOption.set v
+        @$watch 'tO', (v)->
+            transformOption.set v
             @refresh()
         , deep: true
 

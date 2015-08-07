@@ -2,42 +2,42 @@ Vue = require 'vue'
 
 ClassYear = require '../../../resource/class_year'
 
-setting = require '../../../lib/setting'
+transformOption = (require '../../../lib/store').session.classYearTransformOption
 
 module.exports = Vue.extend
     template: do require './list.jade'
     data: ->
         classYears: null
 
-        transformOption: setting.classYearTransformOption.get()
+        tO: transformOption.get()
 
     methods:
         refresh: ->
-            ClassYear.transformed @transformOption
+            ClassYear.transformed @tO
             , (items)=>
                 @classYears = items
 
         sortById: ->
-            if @transformOption.sort is 'id'
-                @transformOption.inverted = not @transformOption.inverted
+            if @tO.sort is 'id'
+                @tO.inverted = not @tO.inverted
             else
-                @transformOption.sort = 'id'
-                @transformOption.inverted = false
+                @tO.sort = 'id'
+                @tO.inverted = false
 
             @refresh()
 
         sortByYear: ->
-            if @transformOption.sort is 'year'
-                @transformOption.inverted = not @transformOption.inverted
+            if @tO.sort is 'year'
+                @tO.inverted = not @tO.inverted
             else
-                @transformOption.sort = 'year'
-                @transformOption.inverted = false
+                @tO.sort = 'year'
+                @tO.inverted = false
 
             @refresh()
 
         iconType: (name)->
-            if @transformOption.sort is name
-                if @transformOption.inverted
+            if @tO.sort is name
+                if @tO.inverted
                     'fa-caret-down'
                 else
                     'fa-caret-up'
@@ -45,8 +45,8 @@ module.exports = Vue.extend
                 'fa-sort'
 
     ready: ->
-        @$watch 'transformOption', (v)->
-            setting.classYearTransformOption.set v
+        @$watch 'tO', (v)->
+            transformOption.set v
             @refresh()
         , deep: true
 

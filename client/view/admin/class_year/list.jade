@@ -14,7 +14,10 @@ table.table(v-if="classYears")
             th.clickable.nobr(v-on="click: sortByYear()")
                 | 期&nbsp;
                 i.fa(v-class="iconType('year')")
+            th
     tr(v-repeat="cy: classYears" track-by="id")
         td.text-center {{cy.id}}
         td.text-center
             a(href="/admin/class_year/{{cy.id}}") {{cy.year}}期
+        td
+            a(href="/admin/semester?class_year_id={{cy.id}}") カリキュラム

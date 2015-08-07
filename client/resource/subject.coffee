@@ -21,5 +21,4 @@ Subject.addFilter 'search', (value)->
                 return true
         false
 
-
 module.exports = Subject

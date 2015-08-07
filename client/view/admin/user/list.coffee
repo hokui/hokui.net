@@ -2,17 +2,14 @@ Vue = require 'vue'
 
 User = require '../../../resource/user'
 ClassYear = require '../../../resource/class_year'
-setting = require '../../../lib/setting'
-
+transformOption = (require '../../../lib/store').session.userTransformOption
 
 
 module.exports = Vue.extend
     template: do require './list.jade'
     data: ->
         users: null
-        classYears: null
-
-        transformOption: setting.userTransformOption.get()
+        tO: transformOption.get()
 
         statusFilters:
             all:
@@ -25,33 +22,33 @@ module.exports = Vue.extend
                 label: '管理者'
     methods:
         refresh: ->
-            User.transformed @transformOption, (items)=>
+            User.transformed @tO, (items)=>
                 @users = items
 
         sortById: ->
-            if @transformOption.sort is 'id'
-                @transformOption.inverted = not @transformOption.inverted
+            if @tO.sort is 'id'
+                @tO.inverted = not @tO.inverted
             else
-                @transformOption.sort = 'id'
-                @transformOption.inverted = false
+                @tO.sort = 'id'
+                @tO.inverted = false
 
         sortByStatus: ->
-            if @transformOption.sort is 'status'
-                @transformOption.inverted = not @transformOption.inverted
+            if @tO.sort is 'status'
+                @tO.inverted = not @tO.inverted
             else
-                @transformOption.sort = 'status'
-                @transformOption.inverted = false
+                @tO.sort = 'status'
+                @tO.inverted = false
 
         sortByYear: ->
-            if @transformOption.sort is 'classYear'
-                @transformOption.inverted = not @transformOption.inverted
+            if @tO.sort is 'classYear'
+                @tO.inverted = not @tO.inverted
             else
-                @transformOption.sort = 'classYear'
-                @transformOption.inverted = false
+                @tO.sort = 'classYear'
+                @tO.inverted = false
 
         iconType: (name)->
-            if @transformOption.sort is name
-                if @transformOption.inverted
+            if @tO.sort is name
+                if @tO.inverted
                     'fa-caret-down'
                 else
                     'fa-caret-up'
@@ -63,19 +60,17 @@ module.exports = Vue.extend
                 (ClassYear.retrieve id: id)?.year or ''
             else
                 ''
+    created: ->
+        @$resolve
+            classYears: ClassYear.get()
 
     ready: ->
-        @$watch 'transformOption', (v)->
-            setting.userTransformOption.set v
+        @$watch 'tO', (v)->
+            transformOption.set v
             @refresh()
         , deep: true
 
         @refresh()
-
-        ClassYear.get (items)=>
-            @classYears = items
-
-        console.log User.__filters.search
 
     filters:
         'omitDomain': (email)->

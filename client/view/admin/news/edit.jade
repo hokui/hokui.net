@@ -1,0 +1,50 @@
+div(v-if="!editing")
+    p
+        a(href="/admin/news") 一覧へ戻る
+    h2(v-if="news") お知らせを新規作成する
+    
+//- .test(v-if="news")
+//-     .test-inner
+//-         pre
+//-             code {{news.text}}
+
+    
+form.row(v-if="news" v-on="submit: performSave($event)" autocomplete="off")
+    .control-group
+        .col-xs-12
+            label.control-label(for="newsTitle") タイトル
+        .col-xs-12
+            input.control(
+                v-model="news.title"
+                placeholder="タイトル"
+                v-validate="required"
+                id="newsTitle")
+            .control-error(v-repeat="e in errors.title" v-show="errors.title")
+                | {{e}}
+
+    .control-group
+        .col-xs-12
+            label.control-label(for="newsText") 本文（Markdown）
+        .col-xs-12
+            .editor.control(
+                v-editable="news.text"
+                contenteditable="true"
+                placeholder="本文"
+                id="newsText")
+            .control-error(v-repeat="e in errors.text" v-show="errors.text")
+                | {{e}}
+
+    .col-xs-12
+        hr
+
+    .col-xs-12
+        ul.list-inline
+            li
+                button.btn.btn-blue(type="button" v-attr="disabled: !news.text" v-on="click: preview()") プレビュー
+            li
+                button.btn.btn-green(type="submit" v-attr="disabled: invalid || !news.text")
+                    span(v-show="invalid") 入力に不備があります
+                    span(v-show="valid") 保存する
+
+modal(open="{{@ previewing}}" title="{{news?news.title:''}}")
+    div(v-html="compiledText")

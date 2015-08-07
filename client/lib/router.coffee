@@ -1,4 +1,5 @@
 page = require 'page'
+qs = require 'qs'
 
 targetViews = {}
 attachedModels = {}
@@ -139,11 +140,18 @@ routerBase =
         page path
     start: (Vue)->
         if not __started
+            page '*', (context, next)->
+                context.query = qs.parse context.querystring
+                next()
             Route.registerRoutes()
             page()
         else
             console.warn 'Tried to start routing twice'
         __started = true
+
+    trimQuery: ->
+        page.redirect currentContext.pathname
+
     route: (params)->
         if Array.isArray params
             for p in params

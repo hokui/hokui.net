@@ -1,6 +1,6 @@
 module.exports = (Vue, options)->
 
-    Vue.component 'datebind',
+    Vue.component 'date-bind',
         replace: true
         template: do require './index.jade'
         props:

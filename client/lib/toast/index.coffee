@@ -5,6 +5,7 @@ module.exports = (Vue)->
         template: do require './index.jade'
         data: ->
             message: ''
+            period: -1
             timeoutId: null
         methods:
             cancelClosing: ->
@@ -17,12 +18,12 @@ module.exports = (Vue)->
                 @message = message
 
                 # auto close: not provided or set positive
-                i_period = Math.abs((parseInt period) or 4000)
+                @period = Math.abs((parseInt period) or 4000)
                 @cancelClosing()
-                if i_period > 0
+                if @period > 0
                     @timeoutId = setTimeout =>
                         @close()
-                    , i_period
+                    , @period
 
             close: ->
                 @cancelClosing()
@@ -30,7 +31,7 @@ module.exports = (Vue)->
 
     vm.$mount().$appendTo document.body
 
-    Vue.router.on '$pageUpdated', ->
+    Vue.router.on '$pageUpdating', ->
         vm.close()
 
     toast = (message, period)->

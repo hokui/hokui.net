@@ -1,14 +1,15 @@
 Vue = require 'vue'
 
 parseError = require '../../lib/parse_error'
-setting = require '../../lib/setting'
+useTargetBlank = (require '../../lib/store').local.useTargetBlank
+
 
 module.exports = Vue.extend
     template: do require './index.jade'
     data: ->
         errors: {}
         user: Vue.auth.user true
-        useTargetBlank: setting.useTargetBlank.get()
+        useTargetBlank: useTargetBlank.get()
     validator:
         validates:
             sapceStartEnd: (v)->
@@ -25,7 +26,7 @@ module.exports = Vue.extend
             .always =>
                 @$loader false
             .then =>
-                setting.useTargetBlank.set @useTargetBlank
+                useTargetBlank.set @useTargetBlank
                 @$toast 'プロフィールを更新しました'
             , (res)=>
                 @errors = parseError res.data.errors

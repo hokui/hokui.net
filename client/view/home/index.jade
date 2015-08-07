@@ -6,8 +6,12 @@
     loading(show="{{!newss}}")
     ul.news(v-show="newss")
         li(v-repeat="news: newss")
-            a.news-link(href="/news/{{news.id}}")
-                datebadge.news-date(value="{{news.created_at}}")
+            a.news-link.clickable(v-on="click: preview(news)")
+                date-badge.news-date(value="{{news.created_at}}")
                 .news-title {{news.title}}
 
+    p {{async}}
     
+modal(open="{{@ previewing}}" title="{{selectedNews?selectedNews.title:''}}")
+    
+    div(v-html="selectedNewsContent")

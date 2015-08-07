@@ -1,0 +1,49 @@
+p
+    a(href="/admin/semester") 一覧へ戻る
+    
+loading(show="{{!(semester || resolved)}}")
+
+p(v-if="!semester && resolved") 該当する学期が見つかりませんでした。
+
+div(v-if="semester")
+    h2 {{semName(semester)}}
+    .tabs
+        .tab(v-class="'tab-active': viewMode === 'detail'")
+            a(href="/admin/semester/{{semester.id}}") 標準
+        .tab(v-class="'tab-active': viewMode === 'json'")
+            a(href="/admin/semester/{{semester.id}}/json") JSON
+        .tab(v-class="'tab-active': viewMode === 'edit'")
+            a(href="/admin/semester/{{semester.id}}/edit") 編集
+        .tab(v-class="'tab-active': viewMode === 'delete'")
+            a(href="/admin/semester/{{semester.id}}/delete") 削除
+
+    .spacer
+    
+
+    div(v-if="viewMode === 'json'")
+        pre
+            code {{semester | json}}
+    
+    table.table(v-if="viewMode === 'detail'")
+        tr
+            th ID
+            td {{semester.id}}
+        tr
+            th 履修教科
+            td
+                ul.list-inline.list-nomb
+                    li(v-repeat="subject: semSubjects(semester)")
+                        | {{subject.title_ja}}
+        tr
+            th 作成日時
+            td {{semester.created_at}}
+        tr
+            th 更新日時
+            td {{semester.updated_at}}
+    
+    .row(v-if="viewMode === 'delete'")
+        model-delete(model="{{semester}}" next="/admin/semester")
+
+
+div(v-show="viewMode === 'edit'")
+    div(v-view="admin_edit")

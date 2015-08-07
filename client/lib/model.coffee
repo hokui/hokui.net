@@ -13,13 +13,13 @@ copy = (arr)->
         c[i] = v
 
 
-class ModelItem
+class Item
     constructor: (base, model)->
         Object.defineProperty this, 'model', value: model
         extend this, base
 
     $copy: ->
-        new ModelItem this, @model
+        @model.create this
 
     $save: (cb, err_cb)->
         param = {}
@@ -46,10 +46,10 @@ class ModelItem
 
         if updating
             @model.__resource.update param, this, handler
-            .error err_cb
+            .error -> err_cb?()
         else
             @model.__resource.save {}, this, handler
-            .error err_cb
+            .error -> err_cb?()
 
     $delete: (cb, err_cb)->
         has_pk = false
@@ -70,21 +70,22 @@ class ModelItem
             else
                 @model.__updated = true
             cb()
-        .error ->
-            error_cb?()
+        .error -> error_cb?()
 
 class Model
-    __resource: null
-    __pks: {}
-    __items: null
-    __updated: false
-    __pending: null
-    __sorters: {}
-    __filters: {}
+    Item: Item
 
     constructor: (url)->
         @url = url
+        @__items = null
+        @__updated = false
+        @__pending = null
+        @__sorters = {}
+        @__filters = {}
+
         @__resource = Vue.resource config.api + url
+
+        @__pks = {}
         for m in url.match /(:.+?(:|\/|\.))|(:.+$)/g
             m = m
             .replace ':', ''
@@ -93,29 +94,30 @@ class Model
             if m
                 @__pks[m] = true
 
-    fetch: (cb)->
+    fetch: ->
         if not @__pending
             @__pending = new Promise (resolve, reject)=>
                 @__resource.get (items)=>
                     @__items = []
                     for item in items
-                        @__items.push new ModelItem item, this
+                        @__items.push new @Item item, this
                     @__updated = false
                     @__pending = null
-                    resolve()
-                .error reject
+                    resolve @__items
+                .error ->
+                    resolve null
 
-        @__pending.then =>
-            cb()
+        @__pending
 
     get: (cb)->
         if not @__items or @__updated
-            @fetch =>
-                cb @__items
+            @fetch().then =>
+                cb? @__items
+                @__items
         else
             new Promise (resolve)=>
-                resolve()
-                cb @__items
+                cb? @__items
+                resolve @__items
 
     transformed: (param, cb)->
         @get =>
@@ -132,17 +134,25 @@ class Model
                 transformed.reverse()
             cb transformed
 
+    # SYNCHRONOUS
     addSorter: (name, sorter)->
         @__sorters[name] = sorter
 
+    # SYNCHRONOUS
     addFilter: (name, f)->
         @__filters[name] = f
 
-
+    # SYNCHRONOUS
     retrieve: (search,  multiple)->
         if not @__items
             console.warn 'Items are not fetched'
             return null
+
+        match = (v, item)->
+            if Array.isArray v
+                (v.indexOf item[k]) > -1
+            else
+                item[k] is v
 
         found = false
         if multiple? and multiple
@@ -151,7 +161,7 @@ class Model
             result = null
         for item in @__items
             for k, v of search
-                if item[k] is v
+                if match v, item
                     if multiple
                         result.push item
                     else
@@ -167,8 +177,9 @@ class Model
 
         cb @retrieve search, multiple
 
-    create: (scheme)->
-        new ModelItem scheme, this
+    # SYNCHRONOUS
+    create: (base)->
+        new @Item base, this
 
 
 module.exports = Model

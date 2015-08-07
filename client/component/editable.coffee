@@ -2,25 +2,23 @@ module.exports = (Vue, options)->
     Vue.directive 'editable',
         twoWay: true
         updatePlaceholder: (text)->
-            if @placeholder and text
+            if @defaultPlaceholder and @el.innerText
                 if @el.getAttribute 'placeholder'
                     @el.setAttribute 'placeholder', ''
             else
                 if not @el.getAttribute 'placeholder'
-                    @el.setAttribute 'placeholder', @placeholder
+                    @el.setAttribute 'placeholder', @defaultPlaceholder
         bind: ->
-            @placeholder = @el.getAttribute 'placeholder'
-
             @el.setAttribute 'contenteditable', true
+            @defaultPlaceholder = @el.getAttribute 'placeholder'
+
             @handler = (->
-                text = @el.innerText
-                @set text
-                @updatePlaceholder text
+                @set @el.innerText
+                @updatePlaceholder()
             ).bind this
             @el.addEventListener 'input', @handler
         update: (value)->
-            @updatePlaceholder value
-            if _.isString value
-                @el.innerText = value
+            @el.innerText = value
+            @updatePlaceholder()
         unbind: ->
             @el.removeEventListener 'input', @handler

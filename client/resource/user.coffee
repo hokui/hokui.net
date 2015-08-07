@@ -34,6 +34,7 @@ User.addFilter 'search', (value)->
     r = new RegExp value.text
 
     (user)->
+        console.log 'u search'
         if not value.text or (not value.handleName and not value.fullName and not value.email )
             return true
         if value.handleName

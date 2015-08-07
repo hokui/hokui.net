@@ -39,25 +39,7 @@ div(v-if="cy")
             td {{cy.updated_at}}
             
     .row(v-show="viewMode === 'delete'")
-        form(v-on="submit: performDelete($event)" autocomplete="off")
-            .control-group
-                .col-sm-3
-                    label.control-label 確認用コード
-                .col-sm-9
-                    .control-static.unselectable
-                        code {{code}}
-            .control-group
-                .col-sm-3
-                    label.control-label(for="confirmedCode") コード入力
-                .col-sm-9
-                    input.control(
-                        v-model="confirmedCode"
-                        v-validate="match: matchCode"
-                        placeholder="確認のために上のコードを入力してください"
-                        id="confirmedCode")
-            .control-group
-                .col-sm-9.col-sm-push-3
-                    button.btn.btn-red(type="submit" v-attr="disabled: invalid") 削除する
+        model-delete(model="{{cy}}" next="/admin/class_year")
 
             
 div(v-show="viewMode === 'edit'")

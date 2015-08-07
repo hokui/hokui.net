@@ -1,0 +1,19 @@
+h1 学年
+
+loading(show="{{ !newss }}")
+    
+p
+    a(href="/admin/news/new") 新規作成
+
+table.table(v-if="newss")
+    thead
+        tr
+            th.clickable.nobr.unselectable(v-on="click: sortById()")
+                | ID&nbsp;
+                i.fa(v-class="iconType('id')")
+            th.text-left
+                | タイトル
+    tr(v-repeat="news: newss" track-by="id")
+        td.text-center {{news.id}}
+        td
+            a(href="/admin/news/{{news.id}}") {{news.title}}

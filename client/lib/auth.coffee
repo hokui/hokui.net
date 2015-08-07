@@ -43,7 +43,6 @@ module.exports = (Vue)->
             Vue.http
             .get "#{config.api}/profile", (data)->
                 setUser data
-                resolve res
             .error ->
                 user = null
 

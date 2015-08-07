@@ -1,11 +1,12 @@
+div
 div(v-if="user")
     p.text-caution
-        | ユーザー情報を強制的に変更します。
+        | ユーザー情報を強制的に変更します。誤った情報で登録してしまったユーザー向けです。
     p
-        button.btn.btn-red(v-show="!editConfirmed" v-on="click: editConfirmed = true" v-attr="disabled: user.id === you.id")
+        button.btn.btn-yellow(v-show="!editConfirmed" v-on="click: editConfirmed = true" v-attr="disabled: user.id === you.id")
             span(v-if="user.id !== you.id") 編集を続行する
             span(v-if="user.id === you.id") 自分自身の情報を変更することはできません
-        button.btn.btn-yellow(v-show="editConfirmed" v-on="click: editConfirmed = false") 編集をやめる
+        button.btn(v-show="editConfirmed" v-on="click: editConfirmed = false") 編集をやめる
 
     form.row(v-on="submit: performSave($event)" v-show="editConfirmed" autocomplete="off")
         .control-group
@@ -62,21 +63,25 @@ div(v-if="user")
                     | {{e}}
                     
 
-        .control-group(v-if="user.approval_state === 'approved'")
-            .col-sm-3 管理者
+        .control-group
+            .col-sm-3
+                label.control-label 管理者
             .col-sm-9
                 input.control(
                     type="checkbox"
                     name="keepLogin"
                     v-model="user.admin"
-                    id="admin")
+                    id="admin"
+                    v-attr="disabled: user.approval_state !== 'approved'")
                 label.control-label(for="admin") 管理者権限
-                .control-help
-                    | 今、あなたのモラルが試されています。
+                .control-alert(v-if="user.approval_state !== 'approved'")
+                    | 未承認ユーザーは管理者に任命できません
+                .control-help(v-if="user.approval_state === 'approved'")
+                    | 管理者の任命は慎重に行ってください
         .col-xs-12
             hr
 
-        .col-sm-9.col-sm-push-4
-            button.btn.btn-red(type="submit" v-attr="disabled: invalid")
+        .col-sm-9.col-sm-push-3
+            button.btn.btn-yellow(type="submit" v-attr="disabled: invalid")
                 span(v-show="invalid") 入力に不備があります
                 span(v-show="valid") ユーザー情報を上書きする

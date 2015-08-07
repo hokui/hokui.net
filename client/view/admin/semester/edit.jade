@@ -1,0 +1,40 @@
+div
+    div(v-if="!editing")
+        p
+            a(href="/admin/subject") 一覧へ戻る
+        h2(v-if="subject") 教科を新規作成する
+
+    form.row(v-if="subject" v-on="submit: performSave($event)" autocomplete="off")
+        .control-group
+            .col-sm-3
+                label.control-label(for="subjectTileeJa") 日本語名
+            .col-sm-9
+                input.control(
+                    v-model="subject.title_ja"
+                    placeholder="日本語名"
+                    v-validate="required"
+                    id="subjectTileeJa")
+                .control-error(v-repeat="e in errors.title_ja" v-show="errors.title_ja")
+                    | {{e}}
+        .control-group
+            .col-sm-3
+                label.control-label(for="subjectTileeEn") 英語名
+            .col-sm-9
+                input.control(
+                    v-model="subject.title_en"
+                    placeholder="英語名"
+                    v-validate="required, latin"
+                    id="subjectTileeEn")
+                .control-error(v-repeat="e in errors.title_en" v-show="errors.title_en")
+                    | {{e}}
+                div(v-show="validation.subject.title_en.dirty")
+                    .control-error(v-show="validation.subject.title_en.latin")
+                        | 小文字英数字および"_"（アンダーバー）のみ入力してください
+
+        .col-xs-12
+            hr
+
+        .col-sm-9.col-sm-push-3
+            button.btn.btn-green(type="submit" v-attr="disabled: invalid")
+                span(v-show="invalid") 入力に不備があります
+                span(v-show="valid") 保存する

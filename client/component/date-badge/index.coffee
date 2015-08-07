@@ -1,5 +1,5 @@
 module.exports = (Vue, options)->
-    Vue.component 'datebadge',
+    Vue.component 'date-badge',
         props: ['value']
         template: do require './index.jade'
         data: ->

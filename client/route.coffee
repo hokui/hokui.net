@@ -25,6 +25,10 @@ base = [
     views:
         content: require './view/help'
 ,
+    url: '/reset_password'
+    views:
+        content: require './view/reset_password'
+,
     url: '/credit'
     data:
         rule:
@@ -66,7 +70,11 @@ admin = [
             data:
                 mode: 'edit'
             views:
-                admin_user_edit: require './view/admin/user/edit'
+                admin_edit: require './view/admin/user/edit'
+        ,
+            url: '/delete'
+            data:
+                mode: 'delete'
         ]
     ]
 ,
@@ -98,7 +106,7 @@ admin = [
             data:
                 mode: 'edit'
             views:
-                admin_cy_edit: require './view/admin/class_year/edit'
+                admin_edit: require './view/admin/class_year/edit'
         ,
             url: '/delete'
             data:
@@ -134,12 +142,85 @@ admin = [
             data:
                 mode: 'edit'
             views:
-                admin_subject_edit: require './view/admin/subject/edit'
+                admin_edit: require './view/admin/subject/edit'
         ,
             url: '/delete'
             data:
                 mode: 'delete'
         ]
+    ]
+,
+    url: '/semester'
+    data:
+        title: '教科管理'
+    subs: [
+        url: '/'
+        views:
+            admin_main: require './view/admin/semester/list'
+    ,
+    #     url: '/new'
+    #     views:
+    #         admin_main: require './view/admin/semester/edit'
+    # ,
+        url: '/:id'
+        views:
+            admin_main: require './view/admin/semester/show'
+        subs: [
+            url: '/'
+            data:
+                mode: 'detail'
+        ,
+            url: '/json'
+            data:
+                mode: 'json'
+    #     ,
+    #         url: '/edit'
+    #         data:
+    #             mode: 'edit'
+    #         views:
+    #             admin_edit: require './view/admin/semester/edit'
+    #     ,
+    #         url: '/delete'
+    #         data:
+    #             mode: 'delete'
+        ]
+    ]
+,
+    url: '/news'
+    data:
+        title: 'お知らせ管理'
+    subs: [
+        url: '/'
+        views:
+            admin_main: require './view/admin/news/list'
+    ,
+        url: '/new'
+        views:
+            admin_main: require './view/admin/news/edit'
+    ,
+        url: '/:id'
+        views:
+            admin_main: require './view/admin/news/show'
+        subs: [
+            url: '/'
+            data:
+                mode: 'detail'
+        ,
+            url: '/json'
+            data:
+                mode: 'json'
+        ,
+            url: '/edit'
+            data:
+                mode: 'edit'
+            views:
+                admin_edit: require './view/admin/news/edit'
+        ,
+            url: '/delete'
+            data:
+                mode: 'delete'
+        ]
+
     ]
 ]
 

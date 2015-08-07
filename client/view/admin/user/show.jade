@@ -15,14 +15,16 @@ div(v-if="user")
             a(href="/admin/user/{{user.id}}/json") JSON
         .tab(v-class="'tab-active': viewMode === 'edit'")
             a(href="/admin/user/{{user.id}}/edit") 編集
+        .tab(v-class="'tab-active': viewMode === 'delete'")
+            a(href="/admin/user/{{user.id}}/delete") 削除
     
     .spacer
     
-    div(v-show="viewMode === 'json'")
+    div(v-if="viewMode === 'json'")
         pre
             code {{user | json}}
     
-    table.table(v-show="viewMode === 'detail'")
+    table.table(v-if="viewMode === 'detail'")
         tr
             th ID
             td {{user.id}}
@@ -73,6 +75,12 @@ div(v-if="user")
         tr
             th 最終ログインIP
             td {{user.last_login_from_ip_address}}
+
+    .row(v-if="viewMode === 'delete'")
+        p.text-caution(v-if="user.id === you.id") 自分自身を削除することはできません
+        div(v-if="user.id !== you.id")
+            model-delete(model="{{user}}" next="/admin/user")
+                    
             
 div(v-show="viewMode === 'edit'")
-    div(v-view="admin_user_edit")
+    div(v-view="admin_edit")

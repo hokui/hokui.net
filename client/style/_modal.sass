@@ -1,0 +1,92 @@
+.modal-overlay
+    position: fixed
+    z-index: $modal-overlay-z
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    background-color: rgba(#000, .3)
+
+    display: inline-block
+    vertical-align: middle
+    overflow: hidden
+
+
+
+.modal
+    position: fixed
+    z-index: $modal-z
+
+    left: 50%
+    top: 50%
+    transform: translate(-50%, -50%)
+
+    max-width: 800px
+    min-width: 360px
+    width: 80%
+
+    background-color: $bg-color
+    border-radius: 4px
+    box-shadow: 0 0 10px 0 rgba(#000, .8)
+
+
+.modal-header
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    height: 42px
+
+    border-top-left-radius: 4px
+    border-top-right-radius: 4px
+    background-color: $color-green-soft
+    h2
+        margin: 0
+        padding: 0 12px
+        line-height: 42px
+        font-size: 20px
+
+    & + .modal-content
+        margin-top: 42px
+
+.modal-close
+    z-index: 1
+    position: absolute
+    right: 12px
+    top: 0
+    height: 42px
+    button
+        +button-unstyled
+        font-size: 24px
+        line-height: 42px
+
+.modal-content
+    max-height: 300px
+
+    @media ( min-height: 500px )
+        max-height: 400px
+    @media ( min-height: 600px )
+        max-height: 500px
+    @media ( min-height: 700px )
+        max-height: 600px
+    @media ( min-height: 800px )
+        max-height: 700px
+
+    overflow: scroll
+    padding: 8px 12px
+
+
+.modal-enter
+    animation: fade .2s ease-out
+
+.modal-leave
+    animation: fade .2s reverse ease-out
+
+@keyframes fade
+    0%
+        opacity: 0
+        transform: translate(-50%, -40%)
+
+    100%
+        opacity: 1
+        transform: translate(-50%, -50%)
