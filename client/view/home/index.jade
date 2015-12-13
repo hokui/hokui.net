@@ -3,15 +3,8 @@
 
     h1 Welcome to hokui.net
     h2 おしらせ
-    loading(show="{{!newss}}")
-    ul.news(v-show="newss")
-        li(v-repeat="news: newss")
-            a.news-link.clickable(v-on="click: preview(news)")
-                date-badge.news-date(value="{{news.created_at}}")
-                .news-title {{news.title}}
-
-    p {{async}}
-    
-modal(open="{{@ previewing}}" title="{{selectedNews?selectedNews.title:''}}")
-    
-    div(v-html="selectedNewsContent")
+    pre
+        code {{newss|json}}
+    //- ul.news(v-if="newss")
+    //-     li(v-repeat="news: newss")
+    //-         pre {{news | json}}

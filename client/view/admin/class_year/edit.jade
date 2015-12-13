@@ -1,8 +1,11 @@
+
 div
-    div(v-if="!editing")
+div(v-if="cy")
+    div(v-if="!cy.id")
         p
             a(href="/admin/class_year") 一覧へ戻る
-        h2(v-if="cy") 学年を新規作成する
+        h2 学年を新規作成する
+        
     form.row(v-if="cy" v-on="submit: performSave($event)" autocomplete="off")
         .control-group
             .col-sm-3
@@ -32,4 +35,6 @@ div
         .col-sm-9.col-sm-push-3
             button.btn.btn-green(type="submit" v-attr="disabled: invalid")
                 span(v-show="invalid") 入力に不備があります
-                span(v-show="valid") 保存する
+                span(v-show="valid")
+                    span(v-show="cy.id") 保存する
+                    span(v-show="!cy.id") 作成する

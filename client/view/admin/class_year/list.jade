@@ -8,10 +8,10 @@ p
 table.table(v-if="classYears")
     thead
         tr
-            th.clickable.nobr(v-on="click: sortById()")
+            th.clickable.nobr.unselectable(v-on="click: sortById()")
                 | ID&nbsp;
                 i.fa(v-class="iconType('id')")
-            th.clickable.nobr(v-on="click: sortByYear()")
+            th.clickable.nobr.unselectable(v-on="click: sortByYear()")
                 | 期&nbsp;
                 i.fa(v-class="iconType('year')")
             th

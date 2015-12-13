@@ -1,4 +1,4 @@
-config = require '../../config'
+config = require '../config'
 
 module.exports = (Vue)->
     Vue.router.on '$pageUpdated', (context, next, past)->

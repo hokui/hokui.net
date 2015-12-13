@@ -61,8 +61,10 @@
         line-height: 42px
 
 .modal-content
-    max-height: 300px
+    max-height: 200px
 
+    @media ( min-height: 400px )
+        max-height: 300px
     @media ( min-height: 500px )
         max-height: 400px
     @media ( min-height: 600px )
@@ -85,7 +87,7 @@
 @keyframes fade
     0%
         opacity: 0
-        transform: translate(-50%, -40%)
+        transform: translate(-50%, -45%)
 
     100%
         opacity: 1

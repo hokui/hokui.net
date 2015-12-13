@@ -15,7 +15,7 @@ module.exports = Vue.extend
     methods:
         refresh: ->
             Subject.transformed @tO
-            , (items)=>
+            .then (items)=>
                 @subjects = items
 
         sortById: ->

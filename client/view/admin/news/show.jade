@@ -1,9 +1,9 @@
 p
     a(href="/admin/news") 一覧へ戻る
     
-loading(show="{{!(news || resolved)}}")
+loading(show="{{!(rejected || resolved)}}")
 
-p(v-show="!news && resolved") 該当する学年が見つかりませんでした。
+p(v-show="rejeted") 該当する学年が見つかりませんでした。
 
 div(v-if="news")
     h2 {{news.title}}
@@ -42,7 +42,7 @@ div(v-if="news")
                 th 更新日時
                 td {{news.updated_at}}
             
-        modal(open="{{@ previewing}}")
+        modal(open="{{@ previewing}}" title="{{news.title}}")
             pre
                 code {{news.text}}
             

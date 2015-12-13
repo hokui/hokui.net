@@ -40,7 +40,10 @@ store.session.$add 'newsTransformOption',
     inverted: false
 
 
-store.local.$add 'useTargetBlank', true
+store.local.$add 'userSetting',
+    useTargetBlank: true
+    closeSidebarOnTapOutside: true
+
 store.local.$add 'signupRequested', false
 
 store.session.$trim()

@@ -1,8 +1,7 @@
-Model = require '../lib/model'
+Vue = require 'vue'
+config = require '../config'
 
-ClassYear = new Model '/class_years/:id'
-
-ClassYear.addSorter 'id', (a, b)-> a.id - b.id
-ClassYear.addSorter 'year', (a, b)-> a.year - b.year
-
-module.exports = ClassYear
+module.exports = Vue.resource "#{config.api}/class_years/:id", {},
+    transoformResponse: (res)->
+        console.log res
+        res

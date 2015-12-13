@@ -17,11 +17,10 @@
     z-index: $sidebar-z
 
     height: 100%
-    min-height: 500px
     padding-top: $header-height + 12px
-    padding-left: 24px
-    padding-right: 24px
-    padding-bottom: 6px
+    padding-bottom: 12px
+
+    overflow: scroll
 
 
     width: $sidebar-width
@@ -44,12 +43,11 @@
 
 
     hr
-        margin: 24px 0
+        margin: 24px 16px
         background-color: $text-color
 
 .sidebar-global-links
-    margin-top: 16px
-    margin-bottom: 24px
+    margin: 16px 16px 24px
     padding: 0
 
     .sidebar-global-link
@@ -73,24 +71,26 @@
 
 .sidebar-links
     a
+        display: block
         +link-unstyled
         color: $text-color
 
-
-    margin-bottom: 24px
+    margin: 16px 16px 24px
     padding: 0
 
     .sidebar-link
-        width: 100px
+        // width: 100px
         text-align: left
         font-size: 14px
         margin-bottom: 8px
-        margin-left: 16px
+        margin-left: 12px
+        margin-right: 12px
         a
-            padding: 4px 2px
+            padding: 4px 8px
 
             border-bottom: solid 2px transparent
 
     .sidebar-link-active
-        a
-            color: $color-gray
+        background-color: $color-green-light
+        // a
+        //     color: $color-gray

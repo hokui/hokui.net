@@ -1,0 +1,73 @@
+h1 ユーザー
+
+loading(show="{{!users || !classYears}}")
+
+table.table.table-condensed
+    tr
+        th 状態
+        td
+            ul.list-inline.list-nomb
+                li(v-repeat="statusFilters")
+                    .tip(v-on="click: tO.filter.status = $key" v-class="'tip-active': tO.filter.status === $key") {{label}}
+    tr(v-if="classYears")
+        th 学年
+        td
+            ul.list-inline.list-nomb
+                li
+                    .tip(v-on="click: tO.filter.classYearId = 0" v-class="'tip-active': tO.filter.classYearId === 0") すべて
+                li(v-repeat="cy: classYears")
+                    .tip(v-on="click: tO.filter.classYearId = cy.id" v-class="'tip-active': tO.filter.classYearId === cy.id") {{cy.year}}期
+
+    tr
+        th 検索
+        td
+            input.control.control-small(
+                type="search"
+                v-model="tO.filter.search.text"
+                placeholder="正規表現が使えます")
+            input.control(
+                type="checkbox"
+                v-model="tO.filter.search.handleName"
+                id="userMatchHandleName")
+            label.control-label(for="userMatchHandleName") HN
+            input.control(
+                type="checkbox"
+                v-model="tO.filter.search.fullName"
+                id="userMatchFullName")
+            label.control-label(for="userMatchFullName") 氏名
+            input.control(
+                type="checkbox"
+                v-model="tO.filter.search.email"
+                id="userMatchEmail")
+            label.control-label(for="userMatchEmail") メールアドレス
+                
+table.table(v-if="users && classYears")
+    thead
+        tr
+            th.clickable.nobr.unselectable(v-on="click: sortById()")
+                | ID&nbsp;
+                i.fa(v-class="iconType('id')")
+            th.text-left HN
+            th.text-left 本名
+            th.text-left.hidden-xs-sm Email
+            th.clickable.nobr.unselectable(v-on="click: sortByYear()")
+                | 期
+                i.fa(v-class="iconType('classYear')")
+
+            th.clickable.nobr.unselectable(v-on="click: sortByStatus()")
+                | 状態&nbsp;
+                i.fa(v-class="iconType('status')")
+
+    tr(v-repeat="user: users" track-by="id" )
+        td.text-center {{user.id}}
+            
+        td.allbr
+            a(href="/admin/user/{{user.id}}") {{user.handle_name}}
+            td  {{user.family_name + ' ' + user.given_name}}
+        td.hidden-xs-sm {{user.email | omitDomain}}
+        td.text-center
+            a(href="/admin/class_year/{{user.class_year_id}}")
+                | {{cyLabel(user.class_year_id)}}
+                span.hidden-xs-sm 期
+        td.text-center
+            status-icon(user="{{user}}")

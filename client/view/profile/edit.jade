@@ -1,0 +1,63 @@
+p
+    | #[strong 氏名]・#[strong ELMSメールアドレス]を変更したい場合は、
+    a(href="mailto:hokui@gmail.com") hokui@gmail.com
+    | までご連絡ください。
+    
+form(v-on="submit: performSaveProfile($event)" v-if="classYears")
+    .control-group
+        .col-sm-3
+            label.control-label(for="handleName") ハンドルネーム
+        .col-sm-9
+            input.control(
+                v-model="user.handle_name"
+                placeholder="ハンドルネーム"
+                v-validate="required, sapceStartEnd"
+                id="handleName")
+            .control-error(v-show="validation.user.handle_name.required") 入力してください
+            div(v-show="validation.user.handle_name.dirty")
+                .control-error(v-show="validation.user.handle_name.sapceStartEnd")
+                    | 空白で始まるもしくは空白で終わる名前は設定できません
+            .control-error(v-repeat="e in errors.handle_name" v-show="errors.handle_name")
+                | {{e}}
+            
+    .control-group
+        .col-sm-3
+            label.control-label(for="birthday") 生年月日
+        .col-sm-9
+            date-bind(value="{{@ user.birthday}}")
+
+    .control-group
+        .col-sm-3
+            label.control-label 期を選択
+        .col-sm-9
+            .row.row-grow
+                .col-xs-3(v-repeat="cy: classYears")
+                    input.control(
+                        type="radio"
+                        v-model="user.class_year_id"
+                        value="{{cy.id}}"
+                        id="classYear{{cy.year}}")
+                    label.control-label(for="classYear{{cy.year}}") {{cy.year}}期
+
+
+    .control-group
+        .col-sm-3
+            label.control-label(for="emailMobile") 携帯メール（任意）
+        .col-sm-9
+            input.control(
+                type="email"
+                v-model="user.email_mobile"
+                placeholder="携帯メールアドレス"
+                v-validate="mail"
+                id="emailMobile")
+            .control-help 任意入力項目です
+            div(v-show="validation.user.email_mobile.dirty")
+                .control-error(v-show="validation.user.email_mobile.mail") 不正なメールアドレスの形式です
+            .control-error(v-repeat="e in errors.email_mobile" v-show="errors.email_mobile")
+                | {{e}}
+    .col-xs-12
+        hr
+
+    .row
+        .col-sm-9.col-sm-push-3
+            button.btn.btn-green(type="submit" v-attr="disabled: invalid") 更新する

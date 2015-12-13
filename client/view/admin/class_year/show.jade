@@ -1,9 +1,9 @@
 p
     a(href="/admin/class_year") 一覧へ戻る
     
-loading(show="{{!(cy || resolved)}}")
+loading(show="{{!(resolved || rejected)}}")
 
-p(v-show="!cy && resolved") 該当する学年が見つかりませんでした。
+p(v-show="rejected") 該当する学年が見つかりませんでした。
 
 div(v-if="cy")
     h2 {{cy.year}}期
@@ -43,4 +43,4 @@ div(v-if="cy")
 
             
 div(v-show="viewMode === 'edit'")
-    div(v-view="admin_cy_edit")
+    div(v-view="admin_edit")

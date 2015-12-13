@@ -22,7 +22,7 @@ module.exports = Vue.extend
             active: /^\/admin\/subject/
         ,
             href: '/admin/semester'
-            label: '学期'
+            label: 'カリキュラム'
             active: /^\/admin\/semester/
         ,
             href: '/admin/news'

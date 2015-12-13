@@ -6,34 +6,30 @@ parseError = require '../../../lib/parse_error'
 module.exports = Vue.extend
     template: do require './edit.jade'
     data: ->
-        cy: null
-        editing: false
         errors: {}
 
     methods:
         performSave: (e)->
             e.preventDefault()
 
-            @cy.$save (item)=>
+            @cy.$save().then (item)=>
                 @$router.go "/admin/class_year/#{item.id}"
                 @$toast if @editing then '学年を更新しました' else '学年を追加しました'
             , (err)=>
                 @errors = parseError err.errors
                 @$toast '入力にエラーがあります'
+    created: ->
+        @$resolve
+            cy: do =>
+                if id = Number @$context().params.id
+                    ClassYear.find id: id
+                    .then (item)->
+                        item.$copy()
+                else
+                    ClassYear.create
+                        year: null
 
-    ready: ->
-        startWatching = =>
-            @$watch 'cy.year', (e)=>
-                @errors.year = null
 
-
-        if @$context().params.id
-            @editing = true
-            ClassYear.find id: (Number @$context().params.id), (item)=>
-                @resolved = true
-                @cy = item.$copy()
-                startWatching()
-        else
-            @editing = false
-            @cy = ClassYear.create year: null
-            startWatching()
+    resolved: ->
+        @$watch 'cy.year', (e)=>
+            @errors.year = null

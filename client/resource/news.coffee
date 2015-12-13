@@ -1,7 +1,7 @@
-Model = require '../lib/model'
+Vue = require 'vue'
+config = require '../config'
 
-News = new Model '/news/:id'
-
-News.addSorter 'id', (a, b)-> a.id - b.id
-
-module.exports = News
+module.exports = Vue.resource "#{config.api}/news/:id", {}, {},
+    transformResponse: (res)->
+        console.log res
+        res.data

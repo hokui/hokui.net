@@ -1,27 +1,18 @@
 Vue = require 'vue'
 config = require '../config'
 
-extend = (a, b, copy)->
-    target = if copy then (extend {}, a, false) else a
-    for k, v of b
-        target[k] = v
-    target
-
-copy = (arr)->
-    c = new Array arr.length
-    for i, v of arr
-        c[i] = v
+u = require './util'
 
 
 class Item
     constructor: (base, model)->
         Object.defineProperty this, 'model', value: model
-        extend this, base
+        u.extend this, base
 
     $copy: ->
         @model.create this
 
-    $save: (cb, err_cb)->
+    $save: ->
         param = {}
         updating = false
         for pk of @model.__pks
@@ -29,29 +20,35 @@ class Item
                 param[pk] = this[pk]
                 updating = true
 
-        handler = (data)=>
-            extend this, data
+        new Promise (resolve, reject)=>
+
+            handler = (data)=>
+                u.extend this, data
+                if @model.__items
+                    if updating
+                        overwrited = false
+                        for i, v of @model.__items
+                            if v.id is this.id
+                                console.log 'over wrote'
+                                @model.__items[i] = this
+                                overwrited = true
+                                break
+                        if not overwrited
+                            @model.__updated = true
+                    else
+                        @model.__items.push this
+                resolve this
+
             if updating
-                overwrited = false
-                for i, v of @model.__items
-                    if v.id is this.id
-                        @model.__items[i] = this
-                        overwrited = true
-                        break
-                if not overwrited
-                    @model.__updated = true
+                promise = @model.__resource.update param, this, handler
+                .error reject
             else
-                @model.__items.push this
-            cb this
+                promise = @model.__resource.save {}, this, handler
+                .error reject
 
-        if updating
-            @model.__resource.update param, this, handler
-            .error -> err_cb?()
-        else
-            @model.__resource.save {}, this, handler
-            .error -> err_cb?()
 
-    $delete: (cb, err_cb)->
+
+    $delete: ->
         has_pk = false
         param = {}
         for pk of @model.__pks
@@ -69,8 +66,10 @@ class Item
                 @model.__items.splice idx, 1
             else
                 @model.__updated = true
-            cb()
-        .error -> error_cb?()
+
+        .then (->), (err)->
+            throw err.data
+
 
 class Model
     Item: Item
@@ -105,23 +104,24 @@ class Model
                     @__pending = null
                     resolve @__items
                 .error ->
-                    resolve null
+                    reject null
 
         @__pending
 
-    get: (cb)->
+    get: ->
         if not @__items or @__updated
             @fetch().then =>
-                cb? @__items
                 @__items
         else
             new Promise (resolve)=>
-                cb? @__items
-                resolve @__items
+                if @__items
+                    resolve @__items
+                else
+                    reject null
 
-    transformed: (param, cb)->
-        @get =>
-            transformed = copy @__items
+    transformed: (param)->
+        @get().then =>
+            transformed = u.copy @__items
             p = param || {}
             if typeof p.filter is 'object'
                 for name, value of p.filter
@@ -132,7 +132,7 @@ class Model
                 transformed.sort sorter
             if p.inverted
                 transformed.reverse()
-            cb transformed
+            transformed
 
     # SYNCHRONOUS
     addSorter: (name, sorter)->
@@ -169,17 +169,18 @@ class Model
                         break
         result
 
-    find: (search, cb, multiple)->
-        if not @__items or @__updated
-            @fetch =>
-                cb @retrieve search, multiple
-            return
+    find: (search, multiple)->
+        @get().then =>
+            new Promise (resolve, reject)=>
+                item = @retrieve search, multiple
+                if item
+                    resolve item
+                else
+                    reject null
 
-        cb @retrieve search, multiple
 
     # SYNCHRONOUS
     create: (base)->
         new @Item base, this
-
 
 module.exports = Model

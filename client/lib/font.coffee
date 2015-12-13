@@ -1,5 +1,5 @@
 makeArray = (arr)->
-    Array.isArray(arr) ? arr : [arr]
+    if Array.isArray(arr) then arr else [arr]
 
 getHref = (fonts)->
     family = Object.keys(fonts).map (name)->
@@ -11,7 +11,7 @@ getHref = (fonts)->
         else
             name + ':' + makeArray(details).join ','
 
-    'http://fonts.googleapis.com/css?family=' + family.join '|'
+    '//fonts.googleapis.com/css?family=' + family.join '|'
 
 module.exports = (fonts)->
     href = getHref fonts

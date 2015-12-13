@@ -1,12 +1,12 @@
 p
     a(href="/admin/semester") 一覧へ戻る
     
-loading(show="{{!(semester || resolved)}}")
+loading(show="{{!(rejected || resolved)}}")
 
-p(v-if="!semester && resolved") 該当する学期が見つかりませんでした。
+p(v-if="rejected") 該当する学期が見つかりませんでした。
 
 div(v-if="semester")
-    h2 {{semName(semester)}}
+    h2  {{semYear(semester)}}期の{{semName(semester)}}
     .tabs
         .tab(v-class="'tab-active': viewMode === 'detail'")
             a(href="/admin/semester/{{semester.id}}") 標準
@@ -29,11 +29,18 @@ div(v-if="semester")
             th ID
             td {{semester.id}}
         tr
+            th 入学期
+            td {{semYear(semester)}}期
+        tr
+            th 学期
+            td {{semName(semester)}}
+        tr
             th 履修教科
             td
-                ul.list-inline.list-nomb
+                ul.list-inline.list-nomb(v-if="semester.subject_ids.length > 0")
                     li(v-repeat="subject: semSubjects(semester)")
                         | {{subject.title_ja}}
+                .text-muted(v-if="semester.subject_ids.length === 0") 教科が選択されていません
         tr
             th 作成日時
             td {{semester.created_at}}

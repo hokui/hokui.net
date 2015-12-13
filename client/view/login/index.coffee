@@ -1,8 +1,6 @@
 Vue = require 'vue'
 
 config = require '../../config'
-signupRequested = (require '../../lib/store').local.signupRequested
-
 
 module.exports = Vue.extend
     template: do require './index.jade'
@@ -23,9 +21,8 @@ module.exports = Vue.extend
             @$loader()
             @$auth.login @credentials, @keepLogin
             .then =>
-                signupRequested.set false
-                @$toast 'ようこそ、北医ネットへ！'
                 @$router.go '/', true
+                @$toast 'ようこそ、北医ネットへ！'
             , =>
                 @$toast 'メールアドレスもしくはパスワードが間違っています'
                 @$loader false

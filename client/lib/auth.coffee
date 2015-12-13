@@ -1,22 +1,14 @@
 config = require '../config'
-token = require './token'
+u = require '../util'
 
-UserModel = require '../resource/user'
-
-user = null
-
-extend = (a, b, copy)->
-    target = if copy then (extend {}, a, false) else a
-    for k, v of b
-        target[k] = v
-    target
-
-
-setUser = (u)->
-    UserModel.__updated = true
-    user = u
+api = config.api
 
 module.exports = (Vue)->
+    user = null
+
+    setUser = (u)->
+        user = u
+
     auth =
         level: ->
             if user?
@@ -34,37 +26,39 @@ module.exports = (Vue)->
         active: -> user?
         user: (copy)->
             if copy? and copy
-                extend {}, user,  true
+                u.extend {}, user,  true
             else
                 user
         admin: ->
             !!(user and user.admin)
         check: ->
             Vue.http
-            .get "#{config.api}/profile", (data)->
+            .get "#{api}/profile", (data)->
                 setUser data
-            .error ->
-                user = null
+            .error =>
+                @silentLogout()
 
         login: (credentials, keepLogin)->
             Vue.http
-            .post "#{config.api}/session", credentials, (data)->
-                token.set data.token, keepLogin
+            .post "#{api}/session", credentials, (data)->
+                Vue.token.set data.token, keepLogin
                 setUser data.user
-            .error ->
-                user = null
+            .error =>
+                @silentLogout()
 
         update: (newUser)->
             Vue.http
-            .put "#{config.api}/profile", newUser, (data)->
+            .put "#{api}/profile", newUser, (data)->
                 setUser data
 
-        logout: ->
-            if token.exists()
-                Vue.http
-                .delete "#{config.api}/session"
+        silentLogout: ->
             user = null
-            token.clear()
+            Vue.token.clear()
 
-    Vue.auth = auth
-    Vue.prototype.$auth = auth
+        logout: ->
+            if Vue.token.exists()
+                Vue.http
+                .delete "#{api}/session"
+            @silentLogout()
+
+    Vue.auth = Vue.prototype.$auth = auth

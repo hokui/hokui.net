@@ -1,4 +1,4 @@
-h1 学期
+h1 カリキュラム
 p 各学年の学期ごとの履修教科のマップです
 
 loading(show="{{ !semesters || !subjects || !classYears }}")
@@ -8,7 +8,7 @@ p
 
 table.table.table-condensed
     tr(v-if="classYears")
-        th 入学期
+        th 学年
         td
             ul.list-inline.list-nomb
                 li
@@ -16,7 +16,7 @@ table.table.table-condensed
                 li(v-repeat="cy: classYears")
                     .tip(v-on="click: tO.filter.classYearId = cy.id" v-class="'tip-active': tO.filter.classYearId === cy.id") {{cy.year}}期
     tr
-        th 学年
+        th 年次
         td
             ul.list-inline.list-nomb
                 li
@@ -48,17 +48,20 @@ table.table(v-if="semesters && classYears && subjects")
             th.clickable.nobr.unselectable(v-on="click: sortById()")
                 | ID&nbsp;
                 i.fa(v-class="iconType('id')")
-            th.no-br.text-left 入学期
-            th.no-br.text-left 学期
+            th.nobr
+                span(v-show="responsive.xs") 学期
+                span(v-show="!responsive.xs") 入学期 - 学期
             th.text-left 履修教科
     tr(v-repeat="semester: semesters" track-by="id")
         td.text-center {{semester.id}}
-        td.no-br
-            | {{semYear(semester)}}期
-        td.no-br
+        td.nobr.text-center
             a(href="/admin/semester/{{semester.id}}")
-                |{{semName(semester)}}
+                span(v-show="responsive.xs")
+                    | {{semYear(semester)}}-{{semName(semester, true)}}
+                span(v-show="!responsive.xs")
+                    | {{semYear(semester)}}期 - {{semName(semester)}}
         td
             ul.list-inline.list-nomb
                 li(v-repeat="subject: semSubjects(semester)")
-                    | {{subject.title_ja}}
+                    span.text-small.shown-xs {{subject.title_ja}}
+                    span.hidden-xs {{subject.title_ja}}

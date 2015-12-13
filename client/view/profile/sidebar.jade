@@ -1,0 +1,5 @@
+.sidebar-links
+    h2
+        a(href="/profile") Profile
+    .sidebar-link(v-repeat="item: items" v-class="'sidebar-link-active': activeItemIndex == $index")
+        a(href="{{item.href}}") {{item.label}}

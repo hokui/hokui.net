@@ -1,9 +1,7 @@
 Vue = require 'vue'
 
 config = require '../../config'
-
-parseError = require '../../lib/parse_error'
-signupRequested = (require '../../lib/store').local.signupRequested
+u = require '../../util'
 
 ClassYear = require '../../resource/class_year'
 
@@ -11,7 +9,6 @@ module.exports = Vue.extend
     template: do require './index.jade'
     data: ->
         errors: {}
-        classYears: null
         user:
             family_name: ''
             given_name: ''
@@ -22,7 +19,6 @@ module.exports = Vue.extend
             class_year_id: null
             password: ''
         reenteredPassword: ''
-        signupRequested: signupRequested.get()
 
     computed:
         matchPassword: ->
@@ -35,7 +31,7 @@ module.exports = Vue.extend
             spaceStartEnd: (v)->
                 not /^( |　)|( |　)$/.test v
             mail: (v)->
-                not v or /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test v
+                not v or u.reg.mail.test v
             hokudaiMail: (v)->
                 /^\w+([\.-]?\w+)*@(eis|med)\.hokudai\.ac\.jp$/.test v
     methods:
@@ -46,7 +42,6 @@ module.exports = Vue.extend
 
             @$http
             .post "#{config.api}/users", @user, =>
-                @signupRequested.set true
                 @$router.go '/login'
                 @$toast 'ユーザー登録申請を受け付けました'
             .error (data)->
@@ -54,6 +49,13 @@ module.exports = Vue.extend
                 @$toast '入力にエラーがあります'
             .always =>
                 @$loader false
+
+    created: ->
+        @$resolve
+            classYears: ClassYear.get()
+
+    resolved: ->
+        @user.class_year_id = @classYears[@classYears.length - 1].id
 
 
     ready: ->
@@ -63,14 +65,3 @@ module.exports = Vue.extend
             @errors.handle_name = null
         @$watch 'user.email_mobile', (e)->
             @errors.handle_name = null
-
-        @$loader()
-
-        ClassYear.get (items)=>
-            @$loader false
-            if items
-                @classYears = items
-                @user.class_year_id = @classYears[@classYears.length - 1].id
-            else
-                @$router.go '/login'
-                @$toast 'DB error'

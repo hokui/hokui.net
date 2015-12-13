@@ -6,8 +6,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var argv = require('yargs').argv;
 
 
-var options = new function() {
+var conf = new function() {
   this.prod = !!argv.p;
+  this.src = './client';
   this.fileName = this.prod ? '[name]-[hash]' : '[name]';
   this.destDirName = 'build';
   this.defines = {
@@ -17,29 +18,24 @@ var options = new function() {
 
 module.exports = new function() {
 
-  if (options.prod) {
+  if (conf.prod) {
   } else {
     this.devtool = '#inline-source-map';
   }
 
 
   this.module = {
-    loaders: [{
-        test: /\.coffee$/, loader: 'coffee!source-map'
-      },{
-        test: /\.jade$/,   loader: 'jade?self'
-      },{
-        test: /\.(png|jpe?g|gif)$/, loader: 'file'
-      },{
-        test: /\.sass$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap!sass?indentedSyntax&sourceMap!autoprefixer?browsers=last 2 versions')
-      },{
-        test: /\.css$/,
+    loaders: [
+      { test: /\.coffee$/, loader: 'coffee!source-map' },
+      { test: /\.jade$/,   loader: 'jade?self' },
+      { test: /\.(png|jpe?g|gif)$/, loader: 'file'},
+      { test: /\.sass$/,
+        loader: ExtractTextPlugin.extract('css!sass?indentedSyntax&sourceMap!autoprefixer')
+      },
+      { test: /\.css$/,
         loader: ExtractTextPlugin.extract('css?sourceMap')
-      },{
-         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url?limit=10000&minetype=application/font-woff' },
-      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' }
+      },
+      { test: /\.(ttf|eot|svg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' }
     ]
   };
 
@@ -50,43 +46,47 @@ module.exports = new function() {
 
 
   this.entry = {
-    app: ['./client/index.coffee'],
-    vendor: ['./client/vendor.coffee']
+    app: [conf.src+'/index.coffee'],
+    vendor: [conf.src+'/vendor.coffee']
   };
 
   this.output = {
-    path: path.join(__dirname, options.destDirName),
+    path: path.join(__dirname, conf.destDirName),
     publicPath: '/',
-    filename:  options.fileName + '.js',
+    filename:  conf.fileName + '.js',
     chunkFilename: '[id].js'
   };
 
 
   this.plugins = [
     new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin(options.defines),
-    new webpack.optimize.CommonsChunkPlugin('vendor', options.fileName + '.js'),
-    new ExtractTextPlugin(options.fileName + '.css', { allChunks: false }),
+    new webpack.DefinePlugin(conf.defines),
+    new webpack.optimize.CommonsChunkPlugin('vendor', conf.fileName + '.js'),
+    new ExtractTextPlugin(conf.fileName + '.css', { allChunks: false }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
     new HtmlWebpackPlugin({
-      template: 'client/index.html',
-      favicon: './client/assets/favicon.ico',
+      template: conf.src+'/index.html',
+      favicon: conf.src+'/assets/favicon.ico',
       inject: 'body'
     })
   ];
 
 
   this.devServer = {
-    contentBase: './' + options.destDirName,
+    contentBase: './' + conf.destDirName,
     noInfo: true,
     hot: false,
     lazy: false,
     inline: true,
     historyApiFallback: true,
     stats: { colors: true },
-    port: 9000,
     proxy: {
-      "/api/*": "http://localhost:3000",
-      "/contents/*": "http://localhost:3000"
+      '/api/*': 'http://localhost:3000',
+      '/contents/*': 'http://localhost:3000'
     }
   };
 }

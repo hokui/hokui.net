@@ -1,10 +1,11 @@
 div
-    div(v-if="!editing")
+div(v-if="subject")
+    div(v-if="!subject.id")
         p
             a(href="/admin/subject") 一覧へ戻る
-        h2(v-if="subject") 教科を新規作成する
+        h2 教科を新規作成する
 
-    form.row(v-if="subject" v-on="submit: performSave($event)" autocomplete="off")
+    form.row(v-on="submit: performSave($event)" autocomplete="off")
         .control-group
             .col-sm-3
                 label.control-label(for="subjectTileeJa") 日本語名
@@ -37,4 +38,6 @@ div
         .col-sm-9.col-sm-push-3
             button.btn.btn-green(type="submit" v-attr="disabled: invalid")
                 span(v-show="invalid") 入力に不備があります
-                span(v-show="valid") 保存する
+                span(v-show="valid")
+                    span(v-show="subject.id") 保存する
+                    span(v-show="!subject.id") 作成する

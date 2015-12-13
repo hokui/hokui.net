@@ -6,15 +6,11 @@ module.exports = Vue.extend
     template: do require './show.jade'
     data: ->
         you: @$auth.user()
-        
-        resolved: false
-        user: null
+
         viewMode: 'detail'
 
     ready: ->
         @$on '$pageUpdated', (context, next)=>
             @viewMode = next.data.mode or 'detail'
-
-            User.find id: (Number @$context().params.id), (item)=>
-                @resolved = true
-                @user = item
+            @$resolve
+                user: User.find id: (Number @$context().params.id)

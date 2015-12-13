@@ -2,68 +2,58 @@ h1 ユーザー
 
 loading(show="{{!users || !classYears}}")
 
-table.table.table-condensed
+table.table.table-condensed(v-if="users")
     tr
         th 状態
         td
             ul.list-inline.list-nomb
                 li(v-repeat="statusFilters")
-                    .tip(v-on="click: tO.filter.status = $key" v-class="'tip-active': tO.filter.status === $key") {{label}}
+                    .tip(
+                        v-on="click: users.filter('status', $key)"
+                        v-class="'tip-active': users.filtered('status', $key)")
+                        | {{$value}}
     tr(v-if="classYears")
         th 学年
         td
             ul.list-inline.list-nomb
                 li
-                    .tip(v-on="click: tO.filter.classYearId = 0" v-class="'tip-active': tO.filter.classYearId === 0") すべて
+                    .tip(v-on="click: users.filter('cy', 0)" v-class="'tip-active': users.filtered('cy', 0)") すべて
                 li(v-repeat="cy: classYears")
-                    .tip(v-on="click: tO.filter.classYearId = cy.id" v-class="'tip-active': tO.filter.classYearId === cy.id") {{cy.year}}期
+                    .tip(v-on="click: users.filter('cy', cy.id)" v-class="'tip-active': users.filtered('cy', cy.id)") {{cy.year}}期
 
     tr
         th 検索
         td
             input.control.control-small(
                 type="search"
-                v-model="tO.filter.search.text"
-                placeholder="正規表現が使えます")
-            input.control(
-                type="checkbox"
-                v-model="tO.filter.search.handleName"
-                id="userMatchHandleName")
-            label.control-label(for="userMatchHandleName") HN
-            input.control(
-                type="checkbox"
-                v-model="tO.filter.search.fullName"
-                id="userMatchFullName")
-            label.control-label(for="userMatchFullName") 氏名
-            input.control(
-                type="checkbox"
-                v-model="tO.filter.search.email"
-                id="userMatchEmail")
-            label.control-label(for="userMatchEmail") メールアドレス
-                
+                v-on="input: users.filter('search', $event.target.value)"
+                placeholder="HN、氏名、メールアドレスに検索をかけます")
+
+button.btn(v-on="click: digest()")
+
 table.table(v-if="users && classYears")
     thead
         tr
-            th.clickable.nobr.unselectable(v-on="click: sortById()")
+            th.clickable.nobr.unselectable(v-on="click: users.sort('id')")
                 | ID&nbsp;
                 i.fa(v-class="iconType('id')")
             th.text-left HN
             th.text-left 本名
             th.text-left.hidden-xs-sm Email
-            th.clickable.nobr.unselectable(v-on="click: sortByYear()")
+            th.clickable.nobr.unselectable(v-on="click: users.sort('cy')")
                 | 期
-                i.fa(v-class="iconType('classYear')")
-
-            th.clickable.nobr.unselectable(v-on="click: sortByStatus()")
+                i.fa(v-class="iconType('cy')")
+    
+            th.clickable.nobr.unselectable(v-on="click: users.sort('status')")
                 | 状態&nbsp;
                 i.fa(v-class="iconType('status')")
 
-    tr(v-repeat="user: users" track-by="id" )
+    tr(v-repeat="user: users.transformed()" track-by="id")
         td.text-center {{user.id}}
             
         td.allbr
             a(href="/admin/user/{{user.id}}") {{user.handle_name}}
-            td  {{user.family_name + ' ' + user.given_name}}
+            td {{user.family_name + ' ' + user.given_name}}
         td.hidden-xs-sm {{user.email | omitDomain}}
         td.text-center
             a(href="/admin/class_year/{{user.class_year_id}}")

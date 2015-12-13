@@ -32,7 +32,8 @@ module.exports = (Vue, options)->
 
         methods:
             getDates: ->
-                last = (new Date(@cache.getFullYear(), @cache.getMonth() + 1, 0)).getDate()
+                d = new Date(@cache.getFullYear(), @cache.getMonth() + 1, 0)
+                last = d.getDate()
                 ds = []
                 for d in [1..last]
                     ds.push

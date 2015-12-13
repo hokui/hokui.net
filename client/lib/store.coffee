@@ -1,10 +1,32 @@
 config = require '../config'
 
+fillDefault = (base, def)->
+    for k in Object.keys base
+        if not def.hasOwnProperty k
+            delete base[k]
+
+    for k, v of def
+        if not base[k]?
+            base[k] = v
+            continue
+
+        if typeof v is 'object'
+            if typeof base[k] is 'object'
+                fillDefault base[k], v
+            else
+                base[k] = v
+
 class Item
     constructor: (@store, @name, @defaultValue)->
         @store[@name] = this
-        if not @get()?
+        s = @get()
+        if not s?
             @set @defaultValue
+        else
+            if typeof @defaultValue is 'object'
+                if typeof s is 'object'
+                    fillDefault s, @defaultValue
+                    @set s
 
     set: (v)->
         s = @store.$get()

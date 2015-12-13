@@ -24,7 +24,8 @@ User.addFilter 'status', (value)->
         when 'pending'
             (user)-> user.activation_state is 'pending'
         when 'waiting'
-            (user)-> user.activation_state is 'active' and user.approval_state is 'waiting'
+            (user)->
+                user.activation_state is 'active' and user.approval_state is 'waiting'
         when 'admin'
             (user)-> user.admin
         else
@@ -34,7 +35,6 @@ User.addFilter 'search', (value)->
     r = new RegExp value.text
 
     (user)->
-        console.log 'u search'
         if not value.text or (not value.handleName and not value.fullName and not value.email )
             return true
         if value.handleName

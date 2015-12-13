@@ -1,35 +1,60 @@
 div
-    div(v-if="!editing")
+div(v-if="semester")
+    div(v-if="!semester.id")
         p
-            a(href="/admin/subject") 一覧へ戻る
-        h2(v-if="subject") 教科を新規作成する
+            a(href="/admin/semester") 一覧へ戻る
+        h2 教科を新規作成する
+    
+    pre
+        code {{semester | json}}
 
-    form.row(v-if="subject" v-on="submit: performSave($event)" autocomplete="off")
+    form.row(v-if="semester" v-on="submit: performSave($event)" autocomplete="off")
         .control-group
             .col-sm-3
-                label.control-label(for="subjectTileeJa") 日本語名
+                label.control-label 学年
             .col-sm-9
-                input.control(
-                    v-model="subject.title_ja"
-                    placeholder="日本語名"
+                .row.row-grow
+                    .col-xs-3(v-repeat="cy: classYears")
+                        input.control(
+                            type="radio"
+                            v-model="semester.class_year_id"
+                            value="{{cy.id}}"
+                            v-validate="required"
+                            id="classYear{{cy.year}}")
+                        label.control-label(for="classYear{{cy.year}}") {{cy.year}}期
+
+        .control-group
+            .col-sm-3
+                label.control-label(for="semesterIdentifier") 年次 - 学期
+            .col-sm-9
+                select.control(
+                    v-model="semester.identifier"
+                    options="identifierOptions"
                     v-validate="required"
-                    id="subjectTileeJa")
-                .control-error(v-repeat="e in errors.title_ja" v-show="errors.title_ja")
+                    id="semesterIdentifier")
+                .control-error(v-repeat="e in errors.identifier" v-show="errors.identifier")
                     | {{e}}
         .control-group
             .col-sm-3
-                label.control-label(for="subjectTileeEn") 英語名
+                label.control-label 教科
             .col-sm-9
-                input.control(
-                    v-model="subject.title_en"
-                    placeholder="英語名"
-                    v-validate="required, latin"
-                    id="subjectTileeEn")
-                .control-error(v-repeat="e in errors.title_en" v-show="errors.title_en")
-                    | {{e}}
-                div(v-show="validation.subject.title_en.dirty")
-                    .control-error(v-show="validation.subject.title_en.latin")
-                        | 小文字英数字および"_"（アンダーバー）のみ入力してください
+                .row.row-grow
+                    .col-xs-7.col-sm-8
+                        input.control.control-small(type="search" v-model="searchSubjectText" placeholder="教科を名前で検索")
+                    .col-xs-5.col-sm-4
+                        button.btn.btn-block.btn-small(type="button" v-attr="disabled: semester.subject_ids.length === 0" v-on="click: showSelectedSubjects = true") 選択した教科を確認
+                .row.row-grow
+                    .col-xs-6.col-sm-4.col-md-3(v-repeat="subject: subjects | filterBy searchSubjectText in 'title_ja'")
+                        input.control(
+                            type="checkbox"
+                            v-select="semester.subject_ids"
+                            number
+                            value="{{subject.id}}"
+                            id="subject{{subject.id}}")
+                        label.control-label(for="subject{{subject.id}}") {{subject.title_ja}}
+                
+                
+
 
         .col-xs-12
             hr
@@ -37,4 +62,12 @@ div
         .col-sm-9.col-sm-push-3
             button.btn.btn-green(type="submit" v-attr="disabled: invalid")
                 span(v-show="invalid") 入力に不備があります
-                span(v-show="valid") 保存する
+                span(v-show="valid")
+                    span(v-show="semester.id") 保存する
+                    span(v-show="!semester.id") 作成する
+
+
+modal(open="{{@ showSelectedSubjects}}" title="選択した教科")
+    ul
+        li(v-repeat="subject in semSubjects(semester)")
+            | {{subject.title_ja}}

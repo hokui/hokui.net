@@ -26,7 +26,7 @@ module.exports = (Vue, options)->
             performDelete: (e)->
                 e.preventDefault()
 
-                @model.$delete =>
+                @model.$delete().then =>
                     @$router.go @next
                     @$toast '削除しました'
 

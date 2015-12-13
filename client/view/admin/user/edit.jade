@@ -6,7 +6,7 @@ div(v-if="user")
         button.btn.btn-yellow(v-show="!editConfirmed" v-on="click: editConfirmed = true" v-attr="disabled: user.id === you.id")
             span(v-if="user.id !== you.id") 編集を続行する
             span(v-if="user.id === you.id") 自分自身の情報を変更することはできません
-        button.btn(v-show="editConfirmed" v-on="click: editConfirmed = false") 編集をやめる
+        button.btn.btn-yellow(v-show="editConfirmed" v-on="click: editConfirmed = false") 編集をやめる
 
     form.row(v-on="submit: performSave($event)" v-show="editConfirmed" autocomplete="off")
         .control-group

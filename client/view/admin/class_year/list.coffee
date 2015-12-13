@@ -2,19 +2,19 @@ Vue = require 'vue'
 
 ClassYear = require '../../../resource/class_year'
 
-transformOption = (require '../../../lib/store').session.classYearTransformOption
+tO = (require '../../../lib/store').session.classYearTransformOption
 
 module.exports = Vue.extend
     template: do require './list.jade'
     data: ->
         classYears: null
 
-        tO: transformOption.get()
+        tO: tO.get()
 
     methods:
         refresh: ->
             ClassYear.transformed @tO
-            , (items)=>
+            .then (items)=>
                 @classYears = items
 
         sortById: ->
@@ -46,7 +46,7 @@ module.exports = Vue.extend
 
     ready: ->
         @$watch 'tO', (v)->
-            transformOption.set v
+            tO.set v
             @refresh()
         , deep: true
 

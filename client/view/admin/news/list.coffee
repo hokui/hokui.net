@@ -14,7 +14,7 @@ module.exports = Vue.extend
     methods:
         refresh: ->
             News.transformed @tO
-            , (items)=>
+            .then (items)=>
                 @newss = items
 
         sortById: ->

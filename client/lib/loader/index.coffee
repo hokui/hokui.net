@@ -18,8 +18,8 @@ module.exports = (Vue)->
 
     vm.$mount().$appendTo document.body
 
-    Vue.router.on '$pageUpdating', ->
-        vm.hide()
+    # Vue.router.on '$pageUpdating', ->
+    #     vm.hide()
 
     Vue.loader = loader
     Vue.prototype.$loader = loader

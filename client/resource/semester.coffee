@@ -1,6 +1,9 @@
 Model = require '../lib/model'
 
 Semester = new Model '/semesters/:id'
+# Subject = require './subject'
+# ClassYear = require './class'
+
 
 Semester.addSorter 'id', (a, b)-> a.id - b.id
 
@@ -14,14 +17,14 @@ Semester.addFilter 'classYearId', (value)->
 Semester.addFilter 'grade', (value)->
     (semester)->
         if value
-            semester.identifier.substr(0,1) is ''+value
+            semester.identifier.substr(0, 1) is ''+value
         else
             return true
 
 Semester.addFilter 'semester', (value)->
     (semester)->
         if value
-            semester.identifier.substr(1,1) is value
+            semester.identifier.substr(1, 1) is value
         else
             return true
 
@@ -35,5 +38,13 @@ Semester.addFilter 'subjectIds', (value)->
                 return true
 
         false
+
+class Semester.Item extends Semester.Item
+    subjects: ->
+        [
+            title_ja: 'hage'
+        ,
+            title_ja: 'piyo'
+        ]
 
 module.exports = Semester

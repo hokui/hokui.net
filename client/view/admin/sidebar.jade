@@ -1,5 +1,5 @@
 .sidebar-links
     h2
-        a(href="/admin") ADMIN
+        a(href="/admin") Admin
     .sidebar-link(v-repeat="item: items" v-class="'sidebar-link-active': activeItemIndex == $index")
         a(href="{{item.href}}") {{item.label}}

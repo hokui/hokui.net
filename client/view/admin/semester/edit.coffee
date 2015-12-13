@@ -1,47 +1,92 @@
 Vue = require 'vue'
 
+Semester = require '../../../resource/semester'
+ClassYear = require '../../../resource/class_year'
 Subject = require '../../../resource/subject'
+
 parseError = require '../../../lib/parse_error'
+helper = require './helper'
 
 module.exports = Vue.extend
     template: do require './edit.jade'
     data: ->
-        subject: null
-        editing: false
+        searchSubjectText: ''
+        showSelectedSubjects: false
+        identifierOptions: do ->
+            options = [
+                value: null
+                text: '-'
+            ]
+            for grade in [2..6]
+                options
+                for ab in [
+                    code:'a'
+                    text:'前期'
+                ,
+                    code:'b'
+                    text: '後期'
+                ]
+                    options.push
+                        value: "#{grade}#{ab.code}"
+                        text: "#{grade}年#{ab.text}"
+            options
         errors: {}
 
     methods:
+        semSubjects: helper.subjects
+
         performSave: (e)->
             e.preventDefault()
 
-            @subject.$save (item)=>
-                @$router.go "/admin/subject/#{item.id}"
-                @$toast if @editing then '教科を更新しました' else '教科を追加しました'
+            @semester.$save().then (item)=>
+                @$router.go "/admin/semester/#{item.id}"
+                @$toast if @editing then 'カリキュラムを更新しました' else 'カリキュラムを追加しました'
             , (err)=>
                 @errors = parseError err.errors
                 @$toast '入力にエラーがあります'
-    validator:
-        validates:
-            latin: (v)->
-                /^[0-9a-z_]+$/.test v
 
-    ready: ->
-        startWatching = =>
-            @$watch 'subject.title_ja', (e)=>
-                @errors.title_ja = null
-            @$watch 'subject.title_en', (e)=>
-                @errors.title_en = null
+    created: ->
+
+        @$resolve
+            semester: do =>
+                if id = Number @$context().params.id
+                    console.log id
+                    Semester.find id: id
+                    .then (item)->
+                        item.$copy()
+                else
+                    s = Semester.create
+                        class_year_id: null
+                        identifier: null
+                        subject_ids: []
+
+            subjects: Subject.get()
+            classYears: ClassYear.get()
 
 
-        if id = Number @$context().params.id
-            @editing = true
-            Subject.find id: id, (item)=>
-                @resolved = true
-                @subject = item.$copy()
-                startWatching()
-        else
-            @editing = false
-            @subject = Subject.create
-                title_ja: ''
-                title_en: ''
-            startWatching()
+    directives:
+        select:
+            twoWay: true
+            cast: (v)->
+                if @el.getAttribute 'number'
+                    (Number v) or v
+                else
+                    v
+            bind: ->
+                @handler = (->
+                    if (idx = @value.indexOf @cast(@el.value)) > -1
+                        if not @el.checked
+                            @value.splice idx, 1
+                    else
+                        if @el.checked
+                            @value.push @cast(@el.value)
+                    @$set @value
+                ).bind this
+                @el.addEventListener 'change', @handler
+
+            update: (v)->
+                @value = v
+                @el.checked = (v.indexOf @cast(@el.value)) > -1
+
+            unbind: ->
+                @el.removeEventListener 'change', @handler

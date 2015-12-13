@@ -1,45 +1,76 @@
 .col-sm-12.col-md-10.col-md-push-1
-    h1 Profile
-    p
-        | #[strong 氏名]・#[strong ELMSメールアドレス]を変更したい場合は、
-        a(href="mailto:hokui@gmail.com") hokui@gmail.com
-        | までご連絡ください。
+    h1 プロフィール
+    p {{user.handle_name}}さんのプロフィールです。
 
-    form(v-on="submit: performSave($event)")
-        .control-group
-            .col-sm-3.col-no-gutter
-                label.control-label(for="handleName") ハンドルネーム
-            .col-sm-9.col-no-gutter
-                input.control(
-                    v-model="user.handle_name"
-                    placeholder="ハンドルネーム"
-                    v-validate="required, sapceStartEnd"
-                    id="handleName")
-                .control-error(v-show="validation.user.handle_name.required") 入力してください
-                div(v-show="validation.user.handle_name.dirty")
-                    .control-error(v-show="validation.user.handle_name.sapceStartEnd")
-                        | 空白で始まるもしくは空白で終わる名前は設定できません
-                .control-error(v-repeat="e in errors.handle_name" v-show="errors.handle_name")
-                    | {{e}}
-                
-        .control-group
-            .col-sm-3.col-no-gutter
-                label.control-label(for="birthday") 生年月日
-            .col-sm-9.col-no-gutter
-                date-bind(value="{{@ user.birthday}}")
+    .tabs
+        .tab(v-class="'tab-active': viewMode === 'detail'")
+            a(href="/profile") 詳細
+        .tab(v-class="'tab-active': viewMode === 'edit'")
+            a(href="/profile/edit") 編集
+        .tab(v-class="'tab-active': viewMode === 'setting'")
+            a(href="/profile/setting") 設定
 
-        .control-group
-            .col-sm-3.col-no-gutter
-                label.control-label 設定（ブラウザごと）
-            .col-sm-9.col-no-gutter
-                input.control(
-                    type="checkbox"
-                    v-model="useTargetBlank"
-                    id="useTargetBlank")
-                label.control-label(for="useTargetBlank") 資料ページでプレビューを押したとき新規タブで開く
+    .spacer
 
-        hr
+    div(v-if="viewMode === 'json'")
+        pre
+            code {{subject | json}}
+        
+    table.table(v-if="viewMode === 'detail'")
+        tr
+            th ハンドルネーム
+            td {{user.handle_name}}
+        tr
+            th 氏名
+            td {{user.family_name}} {{user.given_name}}
+        tr
+            th 期
+            td {{cyLabel}}
+        tr(v-if="user.admin")
+            th 管理者
+            td あなたは管理者です！
+        tr
+            th 生年月日
+            td {{user.birthday | date 'YYYY年M月D日'}}
+        tr
+            th ELMSメールアドレス
+            td {{user.email}}
+        tr
+            th 携帯メールアドレス
+            td
+                span(v-if="user.email_mobile") {{user.email_mobile}}
+                span.text-muted(v-if="!user.email_mobile") 登録されていません
+        tr
+            th 登録日
+            td {{user.created_at | date 'YYYY年M月D日'}}
 
-        .row
-            .col-sm-9.col-sm-push-3.col-no-gutter
-                button.btn.btn-green(type="submit" v-attr="disabled: invalid") 更新する
+    div(v-show="viewMode === 'edit'")
+        div(v-view="profile_edit")
+
+    div(v-if="viewMode === 'setting'")
+        p 動作等の設定をします。設定は#[strong ブラウザごと]に保存されます。
+        form(v-on="submit: performSaveSetting($event)")
+            .control-group
+                .col-sm-3
+                    label.control-label 動作
+                .col-sm-9
+                    input.control(
+                        type="checkbox"
+                        v-model="userSetting.useTargetBlank"
+                        id="useTargetBlank")
+                    label.control-label(for="useTargetBlank") プレビューを押したとき新規タブで開く
+                    .control-help デフォルト：ON
+
+                    input.control(
+                        type="checkbox"
+                        v-model="userSetting.closeSidebarOnTapOutside"
+                        id="closeSidebarOnTapOutside")
+                    label.control-label(for="closeSidebarOnTapOutside") サイドバーの外をタップorクリックした時にサイドバーを閉じる
+                    .control-help デフォルト：ON
+
+            .col-xs-12
+                hr
+
+            .row
+                .col-sm-9.col-sm-push-3
+                    button.btn.btn-green(type="submit" v-attr="disabled: invalid") 設定する

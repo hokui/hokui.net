@@ -10,18 +10,9 @@
             a(href="/help") ヘルプ
             | の「登録に関して」を御覧ください。
 
-        div(v-if="!signupRequested")
-            p
-                | 「#[strong 携帯メール]」以外すべて入力してください。
+        p
+            | 「#[strong 携帯メール]」以外すべて入力してください。
             
-        div(v-if="signupRequested")
-            p
-                strong
-                    | すでにお使いの端末にてユーザー登録申請を受け付けています。
-                    br
-                    | 登録申請に使用したELMSメールアドレス宛に認証メールを送信致しましたので、ご確認ください。
-                        
-
     loading(show="{{!classYears}}")
 
     form.row(v-if="classYears" v-on="submit: performSignup($event)" autocomplete="off")
@@ -63,24 +54,24 @@
                     .control-error(v-show="validation.user.handle_name.spaceStartEnd")
                         | 空白で始まるもしくは空白で終わる名前は設定できません
 
-        .control-group
-            .col-sm-4
-                label.control-label(for="birthday") 生年月日
-            .col-sm-8
-                date-bind(value="{{@ user.birthday}}")
-
-        .control-group
-            .col-sm-4
-                label.control-label 期を選択
-            .col-sm-8
-                .row.row-grow
-                    .col-xs-3(v-repeat="cy: classYears")
-                        input.control(
-                            type="radio"
-                            v-model="user.class_year_id"
-                            value="{{cy.id}}"
-                            id="classYear{{cy.year}}")
-                        label.control-label(for="classYear{{cy.year}}") {{cy.year}}期
+        //- .control-group
+        //-     .col-sm-4
+        //-         label.control-label(for="birthday") 生年月日
+        //-     .col-sm-8
+        //-         date-bind(value="{{@ user.birthday}}")
+        //- 
+        //- .control-group
+        //-     .col-sm-4
+        //-         label.control-label 期を選択
+        //-     .col-sm-8
+        //-         .row.row-grow
+        //-             .col-xs-3(v-repeat="cy: classYears")
+        //-                 input.control(
+        //-                     type="radio"
+        //-                     v-model="user.class_year_id"
+        //-                     value="{{cy.id}}"
+        //-                     id="classYear{{cy.year}}")
+        //-                 label.control-label(for="classYear{{cy.year}}") {{cy.year}}期
 
 
         .control-group

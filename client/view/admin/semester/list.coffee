@@ -12,8 +12,6 @@ module.exports = Vue.extend
     template: do require './list.jade'
     data: ->
         semesters: null
-        classYears: null
-        subjects: null
 
         tO: transformOption.get()
 
@@ -28,7 +26,7 @@ module.exports = Vue.extend
     methods:
         refresh: ->
             Semester.transformed @tO
-            , (items)=>
+            .then (items)=>
                 @semesters = items
 
         sortById: ->
@@ -54,6 +52,14 @@ module.exports = Vue.extend
         semSubjects: helper.subjects
     created: ->
         @$useResponsive()
+        @$resolve
+            subjects: Subject.get().then (items)=>
+                if s = (Subject.retrieve id: @tO.filter.subjectIds)
+                    @searchText = s.title_ja
+                items
+
+            classYears: ClassYear.get()
+
     ready: ->
         @$watch 'searchText', (v)=>
             if not v
@@ -76,30 +82,20 @@ module.exports = Vue.extend
                 @transformOption.set @tO
                 @refresh()
 
-        ClassYear.get (items)=>
-            @classYears = items
-
-        Subject.get (items)=>
-            @subjects = items
-            if s = (Subject.retrieve id: @tO.filter.subjectIds)
-                @searchText = s.title_ja
 
         @$watch 'tO', (v)->
             transformOption.set v
             @refresh()
         , deep: true
 
-        console.log @$context().query
-
         if grade = Number @$context().query?.grade
             if 2 <= grade <= 6
                 @tO.filter.grade = grade
 
         if cyId = Number @$context().query?.class_year_id
-            console.log cyId
             @tO.filter.classYearId = cyId
 
-        @$router.trimQuery()
+        # @$router.trimQuery()
 
 
         @refresh()

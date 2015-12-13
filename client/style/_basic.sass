@@ -3,10 +3,9 @@
     &:before, &:after
         box-sizing: border-box
 
-html, body, #app
-    height: 100%
-    min-height: 100%
-
+html, body
+    margin: 0
+    padding: 0
 
 html
     font-family: 'Source Sans Pro', 'Helvetica Neue', "Hiragino Kaku Gothic ProN", Meiryo, Arial, sans-serif
@@ -14,6 +13,16 @@ html
     color: $text-color
     background: $bg-color
     overflow: none scroll
+    height: 100%
+
+body
+    min-height: 100%
+    height: 100%
+
+#app
+    position: relative
+    min-height: 100%
+
 
 a
     color: $link-color
@@ -30,7 +39,6 @@ pre
     margin: 0 0 $line-height-computed / 2
 
 code
-    background-color: $color-lightgray
     font-family: monaco, consolas, Courier, monospace
 
 pre > code
@@ -47,7 +55,7 @@ pre > code
     padding-right: 4px
     padding-left: 4px
     font-size: .9em
-    background-color: $color-green-pale
+    background-color: $green-200
     border-radius: 4px
 
 h1, h2, h3, h4, h5, h6,
@@ -74,13 +82,9 @@ h4, h5, h6
 hr
     border: 0
     height: 1px
-    background-color: $color-lightgray
+    background-color: $grey-200
     margin: 0 0 ($line-height-computed / 2)
 
 ul, ol
     margin: 0 0 $line-height-computed / 2
     padding-left: 24px
-
-h1.page-title
-    font-weight: 100
-    font-size: 2.5em

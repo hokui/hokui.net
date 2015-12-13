@@ -1,37 +1,36 @@
 Vue = require 'vue'
 
-parseError = require '../../lib/parse_error'
-useTargetBlank = (require '../../lib/store').local.useTargetBlank
+ClassYear = require '../../resource/class_year'
+
+u = require '../../lib/util'
+userSetting = (require '../../lib/store').local.userSetting
 
 
 module.exports = Vue.extend
     template: do require './index.jade'
     data: ->
         errors: {}
-        user: Vue.auth.user true
-        useTargetBlank: useTargetBlank.get()
-    validator:
-        validates:
-            sapceStartEnd: (v)->
-                not /^( |　)|( |　)$/.test v
+        user: @$auth.user()
+        userSetting: userSetting.get()
 
+        viewMode: 'detail'
+    computed:
+        cyLabel: ->
+            if @classYears
+                (ClassYear.retrieve id: @user.class_year_id).year + '期'
+            else
+                ''
 
     methods:
-        performSave: (e)->
+        performSaveSetting: (e)->
             e.preventDefault()
 
-            @$loader()
+            userSetting.set @userSetting
+            @$toast '設定を更新しました'
 
-            @$auth.update @user
-            .always =>
-                @$loader false
-            .then =>
-                useTargetBlank.set @useTargetBlank
-                @$toast 'プロフィールを更新しました'
-            , (res)=>
-                @errors = parseError res.data.errors
-                @$toast '更新に失敗しました'
+    created: ->
+        @$resolve
+            classYears: ClassYear.get()
 
-    ready: ->
-        @$watch 'user.handle_name', (e)->
-            @errors.handle_name = null
+        @$on '$pageUpdated', (context, next)=>
+            @viewMode = next.data.mode

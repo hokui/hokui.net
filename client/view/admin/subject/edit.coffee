@@ -14,7 +14,7 @@ module.exports = Vue.extend
         performSave: (e)->
             e.preventDefault()
 
-            @subject.$save (item)=>
+            @subject.$save().then (item)=>
                 @$router.go "/admin/subject/#{item.id}"
                 @$toast if @editing then '教科を更新しました' else '教科を追加しました'
             , (err)=>
@@ -25,23 +25,19 @@ module.exports = Vue.extend
             latin: (v)->
                 /^[0-9a-z_]+$/.test v
 
-    ready: ->
-        startWatching = =>
-            @$watch 'subject.title_ja', (e)=>
-                @errors.title_ja = null
-            @$watch 'subject.title_en', (e)=>
-                @errors.title_en = null
-
-
-        if id = Number @$context().params.id
-            @editing = true
-            Subject.find id: id, (item)=>
-                @resolved = true
-                @subject = item.$copy()
-                startWatching()
-        else
-            @editing = false
-            @subject = Subject.create
-                title_ja: ''
-                title_en: ''
-            startWatching()
+    created: ->
+        @$resolve
+            subject: do =>
+                if id = Number @$context().params.id
+                    Subject.find id: id
+                    .then (item)->
+                        item.$copy()
+                else
+                    Subject.create
+                        title_ja: ''
+                        title_en: ''
+    resolved: ->
+        @$watch 'subject.title_ja', (e)=>
+            @errors.title_ja = null
+        @$watch 'subject.title_en', (e)=>
+            @errors.title_en = null

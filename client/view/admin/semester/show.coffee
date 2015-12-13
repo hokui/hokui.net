@@ -9,26 +9,20 @@ helper = require './helper'
 module.exports = Vue.extend
     template: do require './show.jade'
     data: ->
-        resolved: false
-        semester: null
-        classYears: null
-        subjects: null
-
         viewMode: 'detail'
 
     methods:
         semName: helper.name
+        semYear: helper.year
         semSubjects: helper.subjects
-        
-    ready: ->
-        ClassYear.get (items)=>
-            @classYears = items
-        Subject.get (items)=>
-            @subjects = items
+    created: ->
+        @$resolve
+            subjects: Subject.get()
+            classYears: ClassYear.get()
+            semester: Semester.find id: (Number @$context().params.id)
 
+
+    ready: ->
+        # @viewMode = @$route().data.mode
         @$on '$pageUpdated', (context, next)=>
             @viewMode = next.data.mode
-
-            Semester.find id: (Number @$context().params.id), (item)=>
-                @resolved = true
-                @semester = item

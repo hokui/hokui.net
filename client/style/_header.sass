@@ -5,13 +5,20 @@
     margin: 0
     padding: 0
     z-index: $header-z
-    height: $header-height
 
+    height: $header-height
     @media (max-width: $screen-break-point)
         height: $header-narrow-height
 
     box-shadow: 0 0 4px 0 rgba(0,0,0,0.25)
     background-color: white
+
+
+.header-shaddow
+    padding-top: $header-height
+    @media (max-width: $screen-break-point)
+        padding-top: $header-narrow-height
+
 
 .header-title
     text-align: center
@@ -30,30 +37,7 @@
         +link-unstyled
 
     .accent-character
-        color: $color-red
-
-.header-title-pushed
-    @media (min-width: $screen-break-point)
-        width: $sidebar-width
-
-
-
-.header-sidebar-toggler
-    position: absolute
-    top: 0
-    left: $grid-gutter / 2
-    height: $header-narrow-height
-    line-height: $header-narrow-height
-    @media (min-width: $screen-break-point)
-        display: none
-
-
-.baricon.baricon-header
-    $size: 28px
-    margin-top: ($header-narrow-height - $size) / 2
-    +baricon-size($size)
-    +baricon-color($text-color)
-
+        color: $red-500
 
 
 
@@ -80,7 +64,7 @@
             padding: 4px 2px
 
             border-bottom-style: solid
-            border-bottom-color: $color-green-strong
+            border-bottom-color: $link-color
             border-bottom-width: 0px
             transition: border-bottom-width .2s ease
             &:hover

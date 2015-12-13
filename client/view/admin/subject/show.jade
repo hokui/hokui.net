@@ -1,9 +1,9 @@
 p
     a(href="/admin/subject") 一覧へ戻る
     
-loading(show="{{!(subject || resolved)}}")
+loading(show="{{!(rejected || resolved)}}")
 
-p(v-if="!subject && resolved") 該当する学年が見つかりませんでした。
+p(v-if="rejected") 該当する教科が見つかりませんでした。
 
 div(v-if="subject")
     h2 {{subject.title_ja}}

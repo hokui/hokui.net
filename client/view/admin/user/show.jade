@@ -1,9 +1,9 @@
 p
     a(href="/admin/user") 一覧へ戻る
     
-loading(show="{{!(user || resolved)}}")
+loading(show="{{!(resolved || resolved)}}")
 
-p(v-show="!user && resolved") ユーザーが見つかりませんでした。
+p(v-show="rejected") ユーザーが見つかりませんでした。
 
 div(v-if="user")
     h2 {{user.handle_name}}（{{user.family_name}} {{user.given_name}}）

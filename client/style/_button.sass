@@ -35,7 +35,8 @@
 
 .btn-small
     padding: 4px 4px
-    font-size: 14px
+    line-height: 16px
+    font-size: 13px
 
 .btn-block
     display: block
@@ -74,30 +75,30 @@
 
 .btn
     &:not(.btn-ghost)
-        +make-btn($color-black, $color-lightgray, $color-gray, $color-darkgray, $color-darkgray)
+        +make-btn($text-color, $grey-700, $grey-400, $grey-700, $grey-400)
     &.btn-ghost
-        +make-btn-ghost($color-darkgray)
+        +make-btn-ghost($text-color)
 
 .btn-green
     &:not(.btn-ghost)
-        +make-btn($color-white, $color-green-deep, $color-green-dark, $color-green-deep, $color-green-dark)
+        +make-btn($text-color-inverted, $green-500, $green-700, $green-400, $green-600)
     &.btn-ghost
-        +make-btn-ghost($color-green-deep)
+        +make-btn-ghost($green-500)
 
 .btn-red
     &:not(.btn-ghost)
-        +make-btn($color-white, $color-red, $color-red-deep, $color-red, $color-red-deep)
+        +make-btn($text-color-inverted, $red-600, $red-400, $red-600, $red-300)
     &.btn-ghost
-        +make-btn-ghost($color-red)
+        +make-btn-ghost($red-600)
 
 .btn-yellow
     &:not(.btn-ghost)
-        +make-btn($color-white, $color-yellow, $color-yellow-strong, $color-yellow, $color-yellow-strong)
+        +make-btn($text-color-inverted, $yellow-600, $yellow-400, $yellow-600, $yellow-300)
     &.btn-ghost
-        +make-btn-ghost($color-yellow)
+        +make-btn-ghost($yellow-600)
 
 .btn-blue
     &:not(.btn-ghost)
-        +make-btn($color-white, $color-blue, $color-blue-strong, $color-blue, $color-blue-strong)
+        +make-btn($text-color-inverted, $blue-600, $blue-400, $blue-600, $blue-300)
     &.btn-ghost
-        +make-btn-ghost($color-blue)
+        +make-btn-ghost($blue-600)

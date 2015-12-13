@@ -8,8 +8,6 @@ module.exports = Vue.extend
     data: ->
         you: @$auth.user()
         classYears: []
-        user: null
-        you: @$auth.user()
         errors: {}
         editConfirmed: false
     validator:
@@ -24,20 +22,17 @@ module.exports = Vue.extend
         performSave: (e)->
             e.preventDefault()
 
-            @user.$save (item)=>
+            @user.$save().then (item)=>
                 @$router.go "/admin/user/#{item.id}"
                 @$toast 'ユーザー情報を変更しました'
             , (err)=>
                 @errors = parseError err.errors
                 @$toast '入力にエラーがあります'
 
-
-    ready: ->
-        @editing = true
-        if id = Number @$context().params.id
-            User.find id: id, (item)=>
-                @resolved = true
-                @user = item.$copy()
-
-                @$watch 'user.handle_name', (e)=>
-                    @errors.handle_name = null
+    created: ->
+        @$resolve
+            user: (User.find id: Number @$context().params.id).then (item)->
+                item.$copy()
+    resolved: ->
+        @$watch 'user.handle_name', (e)=>
+            @errors.handle_name = null
