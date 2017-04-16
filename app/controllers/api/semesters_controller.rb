@@ -1,4 +1,5 @@
 class Api::SemestersController < Api::ApplicationController
+  skip_before_action :require_login_with_token, only: [:index, :show]
   before_action :set_semester, only: [:show, :update, :destroy]
   after_action :verify_authorized, except: [:index, :show]
 
